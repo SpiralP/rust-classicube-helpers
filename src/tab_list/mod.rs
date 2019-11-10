@@ -71,7 +71,7 @@ impl TabList {
 
   pub fn find_entity_id_by_name(&self, search: String) -> Option<u8> {
     self
-      .entries
+      .get_all()
       .iter()
       .find_map(|(id, entry)| {
         // try exact match first
@@ -86,7 +86,7 @@ impl TabList {
         // exact match failed,
         // match from the right, choose the one with most chars matched
         let mut id_positions: Vec<(_, usize)> = self
-          .entries
+          .get_all()
           .iter()
           .filter_map(|(id, entry)| {
             let nick_name = entry.get_nick_name();
@@ -141,6 +141,8 @@ impl TabList {
 
 impl Drop for TabList {
   fn drop(&mut self) {
+    self.entries.clear();
+
     unsafe {
       self.unregister_listeners();
     }
