@@ -9,14 +9,14 @@ use std::{
 
 /// safe access to entities list
 pub struct Entities {
-  entities: HashMap<usize, Entity>,
+  entities: HashMap<u8, Entity>,
 }
 
 impl Entities {
   /// register event listeners, listeners will unregister on drop
   pub fn register() -> Self {
     let mut this = {
-      let mut entities = HashMap::new();
+      let mut entities = HashMap::with_capacity(256);
       // add self entity which always exists
       entities.insert(ENTITY_SELF_ID, Entity { id: ENTITY_SELF_ID });
 
@@ -64,7 +64,7 @@ impl Entities {
     }
   }
 
-  pub fn get(&self, id: usize) -> Option<&Entity> {
+  pub fn get(&self, id: u8) -> Option<&Entity> {
     self.entities.get(&id)
   }
 }
@@ -78,7 +78,7 @@ impl Drop for Entities {
 extern "C" fn on_entity_added(obj: *mut c_void, id: c_int) {
   let module = obj as *mut Entities;
   let module = unsafe { &mut *module };
-  let id = id as usize;
+  let id = id as u8;
 
   module.entities.insert(id, Entity { id });
 }
@@ -86,7 +86,7 @@ extern "C" fn on_entity_added(obj: *mut c_void, id: c_int) {
 extern "C" fn on_entity_removed(obj: *mut c_void, id: c_int) {
   let module = obj as *mut Entities;
   let module = unsafe { &mut *module };
-  let id = id as usize;
+  let id = id as u8;
 
   module.entities.remove(&id);
 }

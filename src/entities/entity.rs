@@ -2,19 +2,19 @@ use classicube_sys::Entities;
 use std::ffi::CStr;
 
 /// 255 is self entity
-pub const ENTITY_SELF_ID: usize = 255;
+pub const ENTITY_SELF_ID: u8 = 255;
 
 #[derive(Debug)]
 pub struct Entity {
-  pub id: usize,
+  pub id: u8,
 }
 
 impl Entity {
   unsafe fn get_entity(&self) -> &classicube_sys::Entity {
-    &*Entities.List[self.id]
+    &*Entities.List[self.id as usize]
   }
 
-  pub fn get_id(&self) -> usize {
+  pub fn get_id(&self) -> u8 {
     self.id
   }
 
