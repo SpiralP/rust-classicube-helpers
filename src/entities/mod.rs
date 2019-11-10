@@ -18,7 +18,7 @@ impl Entities {
     let mut this = {
       let mut entities = HashMap::with_capacity(256);
       // add self entity which always exists
-      entities.insert(ENTITY_SELF_ID, Entity { id: ENTITY_SELF_ID });
+      entities.insert(ENTITY_SELF_ID, Entity::from_id(ENTITY_SELF_ID));
 
       Self { entities }
     };
@@ -80,7 +80,7 @@ extern "C" fn on_entity_added(obj: *mut c_void, id: c_int) {
   let module = unsafe { &mut *module };
   let id = id as u8;
 
-  module.entities.insert(id, Entity { id });
+  module.entities.insert(id, Entity::from_id(id));
 }
 
 extern "C" fn on_entity_removed(obj: *mut c_void, id: c_int) {

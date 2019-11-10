@@ -6,16 +6,20 @@ pub const ENTITY_SELF_ID: u8 = 255;
 
 #[derive(Debug)]
 pub struct Entity {
-  pub id: u8,
+  id: u8,
 }
 
 impl Entity {
-  unsafe fn get_entity(&self) -> &classicube_sys::Entity {
-    &*Entities.List[self.id as usize]
+  pub fn from_id(id: u8) -> Self {
+    Self { id }
   }
 
   pub fn get_id(&self) -> u8 {
     self.id
+  }
+
+  unsafe fn get_entity(&self) -> &classicube_sys::Entity {
+    &*Entities.List[self.id as usize]
   }
 
   pub fn get_pos(&self) -> [f32; 3] {
