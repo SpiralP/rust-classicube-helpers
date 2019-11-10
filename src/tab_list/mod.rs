@@ -133,6 +133,10 @@ impl TabList {
       })
       .map(|a| a as u8)
   }
+
+  pub fn get_all(&self) -> &EntriesType {
+    self.entries.as_ref().get_ref()
+  }
 }
 
 impl Drop for TabList {
