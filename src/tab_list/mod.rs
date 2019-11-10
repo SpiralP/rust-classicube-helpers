@@ -8,11 +8,11 @@ use std::{
 };
 
 /// safe access to TabList
-pub struct TabListModule {
+pub struct TabList {
   entries: HashMap<u8, TabListEntry>,
 }
 
-impl TabListModule {
+impl TabList {
   /// register event listeners, listeners will unregister on drop
   pub fn register() -> Self {
     let mut this = Self {
@@ -25,7 +25,7 @@ impl TabListModule {
   }
 
   fn register_listeners(&mut self) {
-    let ptr: *mut TabListModule = self;
+    let ptr: *mut TabList = self;
 
     unsafe {
       Event_RegisterInt(
@@ -47,7 +47,7 @@ impl TabListModule {
   }
 
   fn unregister_listeners(&mut self) {
-    let ptr: *mut TabListModule = self;
+    let ptr: *mut TabList = self;
 
     unsafe {
       Event_UnregisterInt(
@@ -133,14 +133,14 @@ impl TabListModule {
   }
 }
 
-impl Drop for TabListModule {
+impl Drop for TabList {
   fn drop(&mut self) {
     self.unregister_listeners();
   }
 }
 
 extern "C" fn on_tablist_added(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabListModule;
+  let module = obj as *mut TabList;
   let module = unsafe { &mut *module };
   let id = id as u8;
 
@@ -148,7 +148,7 @@ extern "C" fn on_tablist_added(obj: *mut c_void, id: c_int) {
 }
 
 extern "C" fn on_tablist_changed(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabListModule;
+  let module = obj as *mut TabList;
   let module = unsafe { &mut *module };
   let id = id as u8;
 
@@ -156,7 +156,7 @@ extern "C" fn on_tablist_changed(obj: *mut c_void, id: c_int) {
 }
 
 extern "C" fn on_tablist_removed(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabListModule;
+  let module = obj as *mut TabList;
   let module = unsafe { &mut *module };
   let id = id as u8;
 
