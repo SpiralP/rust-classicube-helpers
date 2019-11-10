@@ -5,67 +5,68 @@ use classicube_sys::{Event_RegisterInt, Event_UnregisterInt, TabListEvents};
 use std::{
   collections::HashMap,
   os::raw::{c_int, c_void},
+  pin::Pin,
 };
+
+type EntriesType = HashMap<u8, TabListEntry>;
 
 /// safe access to TabList
 pub struct TabList {
-  entries: HashMap<u8, TabListEntry>,
+  pub entries: Pin<Box<EntriesType>>,
 }
 
 impl TabList {
   /// register event listeners, listeners will unregister on drop
   pub fn register() -> Self {
     let mut this = Self {
-      entries: HashMap::with_capacity(256),
+      entries: Box::pin(HashMap::with_capacity(256)),
     };
 
-    this.register_listeners();
+    unsafe {
+      this.register_listeners();
+    }
 
     this
   }
 
-  fn register_listeners(&mut self) {
-    let ptr: *mut TabList = self;
+  unsafe fn register_listeners(&mut self) {
+    let ptr: *mut EntriesType = self.entries.as_mut().get_unchecked_mut();
 
-    unsafe {
-      Event_RegisterInt(
-        &mut TabListEvents.Added,
-        ptr as *mut c_void,
-        Some(on_tablist_added),
-      );
-      Event_RegisterInt(
-        &mut TabListEvents.Changed,
-        ptr as *mut c_void,
-        Some(on_tablist_changed),
-      );
-      Event_RegisterInt(
-        &mut TabListEvents.Removed,
-        ptr as *mut c_void,
-        Some(on_tablist_removed),
-      );
-    }
+    Event_RegisterInt(
+      &mut TabListEvents.Added,
+      ptr as *mut c_void,
+      Some(on_tablist_added),
+    );
+    Event_RegisterInt(
+      &mut TabListEvents.Changed,
+      ptr as *mut c_void,
+      Some(on_tablist_changed),
+    );
+    Event_RegisterInt(
+      &mut TabListEvents.Removed,
+      ptr as *mut c_void,
+      Some(on_tablist_removed),
+    );
   }
 
-  fn unregister_listeners(&mut self) {
-    let ptr: *mut TabList = self;
+  unsafe fn unregister_listeners(&mut self) {
+    let ptr: *mut EntriesType = self.entries.as_mut().get_unchecked_mut();
 
-    unsafe {
-      Event_UnregisterInt(
-        &mut TabListEvents.Added,
-        ptr as *mut c_void,
-        Some(on_tablist_added),
-      );
-      Event_UnregisterInt(
-        &mut TabListEvents.Changed,
-        ptr as *mut c_void,
-        Some(on_tablist_changed),
-      );
-      Event_UnregisterInt(
-        &mut TabListEvents.Removed,
-        ptr as *mut c_void,
-        Some(on_tablist_removed),
-      );
-    }
+    Event_UnregisterInt(
+      &mut TabListEvents.Added,
+      ptr as *mut c_void,
+      Some(on_tablist_added),
+    );
+    Event_UnregisterInt(
+      &mut TabListEvents.Changed,
+      ptr as *mut c_void,
+      Some(on_tablist_changed),
+    );
+    Event_UnregisterInt(
+      &mut TabListEvents.Removed,
+      ptr as *mut c_void,
+      Some(on_tablist_removed),
+    );
   }
 
   pub fn find_entity_id_by_name(&self, search: String) -> Option<u8> {
@@ -84,7 +85,7 @@ impl TabList {
       .or_else(|| {
         // exact match failed,
         // match from the right, choose the one with most chars matched
-        let mut id_positions: Vec<(u8, usize)> = self
+        let mut id_positions: Vec<(_, usize)> = self
           .entries
           .iter()
           .filter_map(|(id, entry)| {
@@ -130,35 +131,38 @@ impl TabList {
 
         id_positions.first().map(|(id, _pos)| *id)
       })
+      .map(|a| a as u8)
   }
 }
 
 impl Drop for TabList {
   fn drop(&mut self) {
-    self.unregister_listeners();
+    unsafe {
+      self.unregister_listeners();
+    }
   }
 }
 
 extern "C" fn on_tablist_added(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabList;
-  let module = unsafe { &mut *module };
+  let entries = obj as *mut EntriesType;
+  let entries = unsafe { &mut *entries };
   let id = id as u8;
 
-  module.entries.insert(id, TabListEntry::from_id(id));
+  entries.insert(id, TabListEntry::from_id(id));
 }
 
 extern "C" fn on_tablist_changed(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabList;
-  let module = unsafe { &mut *module };
+  let entries = obj as *mut EntriesType;
+  let entries = unsafe { &mut *entries };
   let id = id as u8;
 
-  module.entries.insert(id, TabListEntry::from_id(id));
+  entries.insert(id, TabListEntry::from_id(id));
 }
 
 extern "C" fn on_tablist_removed(obj: *mut c_void, id: c_int) {
-  let module = obj as *mut TabList;
-  let module = unsafe { &mut *module };
+  let entries = obj as *mut EntriesType;
+  let entries = unsafe { &mut *entries };
   let id = id as u8;
 
-  module.entries.remove(&id);
+  entries.remove(&id);
 }
