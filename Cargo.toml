@@ -1,0 +1,8 @@
+[package]
+name = "classicube-helpers"
+version = "0.1.0"
+authors = ["SpiralP <spiral.palmer@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
