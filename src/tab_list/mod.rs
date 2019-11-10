@@ -1,7 +1,10 @@
 mod entry;
 
 pub use self::entry::TabListEntry;
-use classicube_sys::{Event_RegisterInt, Event_UnregisterInt, TabListEvents};
+use classicube_sys::{
+  Event_RegisterInt, Event_RegisterVoid, Event_UnregisterInt, Event_UnregisterVoid, NetEvents,
+  TabListEvents,
+};
 use std::{
   collections::HashMap,
   os::raw::{c_int, c_void},
@@ -47,6 +50,12 @@ impl TabList {
       ptr as *mut c_void,
       Some(on_tablist_removed),
     );
+
+    Event_RegisterVoid(
+      &mut NetEvents.Disconnected,
+      ptr as *mut c_void,
+      Some(on_disconnected),
+    );
   }
 
   unsafe fn unregister_listeners(&mut self) {
@@ -67,6 +76,12 @@ impl TabList {
       ptr as *mut c_void,
       Some(on_tablist_removed),
     );
+
+    Event_UnregisterVoid(
+      &mut NetEvents.Disconnected,
+      ptr as *mut c_void,
+      Some(on_disconnected),
+    );
   }
 
   pub fn find_entity_id_by_name(&self, search: String) -> Option<u8> {
@@ -75,7 +90,7 @@ impl TabList {
       .iter()
       .find_map(|(id, entry)| {
         // try exact match first
-        let nick_name = entry.get_nick_name();
+        let nick_name = entry.get_nick_name()?;
         if nick_name == search {
           Some(*id)
         } else {
@@ -89,7 +104,7 @@ impl TabList {
           .get_all()
           .iter()
           .filter_map(|(id, entry)| {
-            let nick_name = entry.get_nick_name();
+            let nick_name = entry.get_nick_name()?;
 
             // search: &0<Realm 7&0> &dAdo&elf Hit&aler
             // entry :               ^
@@ -171,4 +186,11 @@ extern "C" fn on_tablist_removed(obj: *mut c_void, id: c_int) {
   let id = id as u8;
 
   entries.remove(&id);
+}
+
+extern "C" fn on_disconnected(obj: *mut c_void) {
+  let entries = obj as *mut EntriesType;
+  let entries = unsafe { &mut *entries };
+
+  entries.clear();
 }
