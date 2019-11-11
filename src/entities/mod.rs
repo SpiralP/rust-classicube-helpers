@@ -79,6 +79,11 @@ impl Entities {
   pub fn get_all(&self) -> &EntitiesType {
     self.entities.as_ref().get_ref()
   }
+
+  #[inline]
+  pub fn get_all_mut(&mut self) -> Pin<&mut EntitiesType> {
+    self.entities.as_mut()
+  }
 }
 
 impl Drop for Entities {

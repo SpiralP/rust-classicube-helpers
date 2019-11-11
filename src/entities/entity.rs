@@ -25,11 +25,6 @@ impl Entity {
   }
 
   #[inline]
-  unsafe fn get_entity_mut(&mut self) -> &mut classicube_sys::Entity {
-    &mut *Entities.List[self.id as usize]
-  }
-
-  #[inline]
   pub fn get_position(&self) -> Vec3 {
     let entity = unsafe { self.get_entity() };
     entity.Position
@@ -55,10 +50,13 @@ impl Entity {
   }
 
   #[inline]
-  pub fn get_model_eye_y(&mut self) -> f32 {
-    let entity = unsafe { self.get_entity_mut() };
+  pub fn get_model_eye_y(&self) -> f32 {
+    let entity = unsafe { self.get_entity() };
     let model = unsafe { &*entity.Model };
     let get_eye_y = model.GetEyeY.unwrap();
+
+    // it most likely doesn't mutate the Entity
+    let entity = entity as *const _ as *mut _;
     unsafe { (get_eye_y)(entity) }
   }
 
@@ -69,9 +67,21 @@ impl Entity {
   }
 
   #[inline]
-  pub fn get_real_name(&self) -> String {
+  pub fn get_display_name(&self) -> String {
     let entity = unsafe { self.get_entity() };
     let c_str = unsafe { CStr::from_ptr(&entity.DisplayNameRaw as *const i8) };
     c_str.to_string_lossy().to_string()
+  }
+
+  #[inline]
+  pub fn get_eye_position(&self) -> Vec3 {
+    let mut pos = self.get_position();
+    pos.Y += self.get_eye_height();
+    pos
+  }
+
+  #[inline]
+  pub fn get_eye_height(&self) -> f32 {
+    self.get_model_eye_y() * self.get_model_scale().Y
   }
 }
