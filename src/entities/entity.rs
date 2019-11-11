@@ -25,6 +25,11 @@ impl Entity {
   }
 
   #[inline]
+  unsafe fn get_entity_mut(&mut self) -> &mut classicube_sys::Entity {
+    &mut *Entities.List[self.id as usize]
+  }
+
+  #[inline]
   pub fn get_position(&self) -> Vec3 {
     let entity = unsafe { self.get_entity() };
     entity.Position
@@ -47,6 +52,20 @@ impl Entity {
   pub fn get_velocity(&self) -> Vec3 {
     let entity = unsafe { self.get_entity() };
     entity.Velocity
+  }
+
+  #[inline]
+  pub fn get_model_eye_y(&mut self) -> f32 {
+    let entity = unsafe { self.get_entity_mut() };
+    let model = unsafe { &*entity.Model };
+    let get_eye_y = model.GetEyeY.unwrap();
+    unsafe { (get_eye_y)(entity) }
+  }
+
+  #[inline]
+  pub fn get_model_scale(&self) -> Vec3 {
+    let entity = unsafe { self.get_entity() };
+    entity.ModelScale
   }
 
   #[inline]

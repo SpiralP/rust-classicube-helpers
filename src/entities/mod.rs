@@ -65,10 +65,17 @@ impl Entities {
     );
   }
 
+  #[inline]
   pub fn get(&self, id: u8) -> Option<&Entity> {
     self.entities.get(&id)
   }
 
+  #[inline]
+  pub fn get_mut(&mut self, id: u8) -> Option<&mut Entity> {
+    self.entities.get_mut(&id)
+  }
+
+  #[inline]
   pub fn get_all(&self) -> &EntitiesType {
     self.entities.as_ref().get_ref()
   }
