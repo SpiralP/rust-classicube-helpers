@@ -15,7 +15,7 @@ type EntriesType = HashMap<u8, TabListEntry>;
 
 /// safe access to TabList
 pub struct TabList {
-  pub entries: Pin<Box<EntriesType>>,
+  entries: Pin<Box<EntriesType>>,
 }
 
 impl TabList {
@@ -149,8 +149,24 @@ impl TabList {
       .map(|a| a as u8)
   }
 
+  #[inline]
+  pub fn get(&self, id: u8) -> Option<&TabListEntry> {
+    self.entries.get(&id)
+  }
+
+  #[inline]
+  pub fn get_mut(&mut self, id: u8) -> Option<&mut TabListEntry> {
+    self.entries.get_mut(&id)
+  }
+
+  #[inline]
   pub fn get_all(&self) -> &EntriesType {
     self.entries.as_ref().get_ref()
+  }
+
+  #[inline]
+  pub fn get_all_mut(&mut self) -> Pin<&mut EntriesType> {
+    self.entries.as_mut()
   }
 }
 

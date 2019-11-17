@@ -88,6 +88,8 @@ impl Entities {
 
 impl Drop for Entities {
   fn drop(&mut self) {
+    self.entities.clear();
+
     unsafe {
       self.unregister_listeners();
     }
