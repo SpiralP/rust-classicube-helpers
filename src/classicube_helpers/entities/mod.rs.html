@@ -109,6 +109,8 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">entity</span>;
 
@@ -200,6 +202,8 @@
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Entities</span> {
   <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="self">self</span>.<span class="ident">entities</span>.<span class="ident">clear</span>();
+
     <span class="kw">unsafe</span> {
       <span class="self">self</span>.<span class="ident">unregister_listeners</span>();
     }
