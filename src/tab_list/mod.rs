@@ -143,15 +143,15 @@ impl TabList {
     );
   }
 
-  pub fn find_entity_id_by_name(&self, search: String) -> Option<u8> {
+  pub fn find_entity_by_name(&self, search: String) -> Option<&TabListEntry> {
     self
       .get_all()
       .iter()
-      .find_map(|(id, entry)| {
+      .find_map(|(_id, entry)| {
         // try exact match first
         let nick_name = entry.get_nick_name()?;
         if nick_name == search {
-          Some(*id)
+          Some(entry)
         } else {
           None
         }
@@ -162,7 +162,7 @@ impl TabList {
         let mut id_positions: Vec<(_, usize)> = self
           .get_all()
           .iter()
-          .filter_map(|(id, entry)| {
+          .filter_map(|(_id, entry)| {
             let nick_name = entry.get_nick_name()?;
 
             // search: &0<Realm 7&0> &dAdo&elf Hit&aler
@@ -191,21 +191,15 @@ impl TabList {
             let search = remove_beginning_color(&search);
             let real_nick = remove_beginning_color(&nick_name);
 
-            search.rfind(&real_nick).map(|pos| (*id, pos))
+            search.rfind(&real_nick).map(|pos| (entry, pos))
           })
           .collect();
 
         // choose smallest position, or "most chars matched"
-        id_positions.sort_unstable_by(|(id1, pos1), (id2, pos2)| {
-          pos1
-            .partial_cmp(pos2)
-            .unwrap()
-            .then_with(|| id1.partial_cmp(&id2).unwrap())
-        });
+        id_positions.sort_unstable_by(|(_, pos1), (_, pos2)| pos1.partial_cmp(pos2).unwrap());
 
-        id_positions.first().map(|(id, _pos)| *id)
+        id_positions.first().map(|(entry, _pos)| *entry)
       })
-      .map(|a| a as u8)
   }
 
   #[inline]
