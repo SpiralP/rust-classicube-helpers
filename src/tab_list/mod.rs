@@ -143,12 +143,13 @@ impl TabList {
     );
   }
 
-  pub fn find_entity_by_name(&self, search: String) -> Option<&TabListEntry> {
+  pub fn find_entry_by_nick_name(&self, search: String) -> Option<&TabListEntry> {
     self
       .get_all()
       .iter()
       .find_map(|(_id, entry)| {
         // try exact match first
+        // this should match if there are no <Local> or tags on the front
         let nick_name = entry.get_nick_name()?;
         if nick_name == search {
           Some(entry)
@@ -159,7 +160,7 @@ impl TabList {
       .or_else(|| {
         // exact match failed,
         // match from the right, choose the one with most chars matched
-        let mut id_positions: Vec<(_, usize)> = self
+        let mut positions: Vec<_> = self
           .get_all()
           .iter()
           .filter_map(|(_id, entry)| {
@@ -191,14 +192,30 @@ impl TabList {
             let search = remove_beginning_color(&search);
             let real_nick = remove_beginning_color(&nick_name);
 
-            search.rfind(&real_nick).map(|pos| (entry, pos))
+            // search in reverse
+            let search: String = search.chars().rev().collect();
+            let real_nick: String = real_nick.chars().rev().collect();
+
+            search.find(&real_nick).map(|pos| (entry, nick_name, pos))
           })
           .collect();
 
-        // choose smallest position, or "most chars matched"
-        id_positions.sort_unstable_by(|(_, pos1), (_, pos2)| pos1.partial_cmp(pos2).unwrap());
+        // searching from the end, right to left
+        // search = NotSpiralP
+        // SpiralP     pos = 0
+        // NotSpiralP  pos = 0
+        // SpiralP2    not found
 
-        id_positions.first().map(|(entry, _pos)| *entry)
+        // choose smallest find position (most matched from end to start)
+        // then choose largest name size for equal positions
+        positions.sort_unstable_by(|(_entry1, name1, pos1), (_entry2, name2, pos2)| {
+          pos1
+            .partial_cmp(pos2)
+            .unwrap()
+            .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
+        });
+
+        positions.first().map(|(entry, _name, _pos)| *entry)
       })
   }
 
@@ -262,4 +279,41 @@ extern "C" fn on_disconnected(obj: *mut c_void) {
   let event_handler = unsafe { &*event_handler };
 
   event_handler.handle_event(TabListEvent::Disconnected);
+}
+
+#[test]
+fn test_match_names() {
+  let search = "NotSpiralP";
+  let names = vec!["hello", "SpiralP", "SpiralP2", "NotSpiralP", "SpiralP2"];
+
+  let mut positions: Vec<_> = names
+    .iter()
+    .filter_map(|nick_name| {
+      fn remove_beginning_color(s: &str) -> &str {
+        if s.len() >= 2 && s.starts_with('&') {
+          let (_color, s) = s.split_at(2);
+          s
+        } else {
+          s
+        }
+      }
+
+      let search = remove_beginning_color(&search);
+      let real_nick = remove_beginning_color(&nick_name);
+
+      // search in reverse
+      let search: String = search.chars().rev().collect();
+      let real_nick: String = real_nick.chars().rev().collect();
+
+      search.find(&real_nick).map(|pos| (nick_name, pos))
+    })
+    .collect();
+
+  positions.sort_unstable_by(|(name1, pos1), (name2, pos2)| {
+    pos1
+      .partial_cmp(pos2)
+      .unwrap()
+      .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
+  });
+  println!("{:#?}", positions);
 }
