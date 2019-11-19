@@ -5,7 +5,7 @@ pub trait EventType {
   fn event_type(&self) -> Self::EventType;
 }
 
-type Callback<E> = Box<dyn Fn(&E)>;
+type Callback<E> = Box<dyn Fn(&E) + 'static>;
 
 #[derive(Default)]
 pub struct EventHandler<E>
