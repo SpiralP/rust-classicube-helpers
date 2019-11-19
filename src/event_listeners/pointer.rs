@@ -17,17 +17,25 @@ use std::{
 
 #[derive(Debug)]
 pub enum PointerEvent {
+  /// Pointer position changed (Arg is delta from last position)
   Moved(c_int, c_int, c_int),
+  /// Left mouse or touch is pressed (Arg is index)
   Down(c_int),
+  /// Left mouse or touch is released (Arg is index)
   Up(c_int),
+  /// Raw pointer position changed (Arg is delta)
   RawMoved(c_int, c_int, c_int),
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub enum PointerEventType {
+  /// Pointer position changed (Arg is delta from last position)
   Moved,
+  /// Left mouse or touch is pressed (Arg is index)
   Down,
+  /// Left mouse or touch is released (Arg is index)
   Up,
+  /// Raw pointer position changed (Arg is delta)
   RawMoved,
 }
 

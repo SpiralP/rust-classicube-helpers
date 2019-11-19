@@ -1,3 +1,4 @@
+mod input;
 mod pointer;
 
-pub use self::pointer::*;
+pub use self::{input::*, pointer::*};
