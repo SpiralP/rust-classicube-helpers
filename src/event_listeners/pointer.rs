@@ -72,7 +72,7 @@ impl PointerEventListener {
 
   pub fn on<F>(&mut self, event_type: PointerEventType, callback: F)
   where
-    F: Fn(&PointerEvent),
+    F: FnMut(&PointerEvent),
     F: 'static,
   {
     self.event_handler.on(event_type, callback);
@@ -140,29 +140,29 @@ impl Drop for PointerEventListener {
 }
 
 extern "C" fn on_pointer_moved(obj: *mut c_void, idx: c_int, x_delta: c_int, y_delta: c_int) {
-  let event_handler = obj as *const EventHandler<PointerEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<PointerEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(PointerEvent::Moved(idx, x_delta, y_delta));
 }
 
 extern "C" fn on_pointer_down(obj: *mut c_void, idx: c_int) {
-  let event_handler = obj as *const EventHandler<PointerEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<PointerEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(PointerEvent::Down(idx));
 }
 
 extern "C" fn on_pointer_up(obj: *mut c_void, idx: c_int) {
-  let event_handler = obj as *const EventHandler<PointerEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<PointerEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(PointerEvent::Up(idx));
 }
 
 extern "C" fn on_pointer_raw_moved(obj: *mut c_void, idx: c_int, x_delta: c_int, y_delta: c_int) {
-  let event_handler = obj as *const EventHandler<PointerEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<PointerEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(PointerEvent::RawMoved(idx, x_delta, y_delta));
 }

@@ -85,7 +85,7 @@ impl TabList {
 
   pub fn on<F>(&mut self, event_type: TabListEventType, callback: F)
   where
-    F: Fn(&TabListEvent),
+    F: FnMut(&TabListEvent),
     F: 'static,
   {
     self.event_handler.on(event_type, callback);
@@ -251,32 +251,32 @@ impl Drop for TabList {
 }
 
 extern "C" fn on_tablist_added(obj: *mut c_void, id: c_int) {
-  let event_handler = obj as *const EventHandler<TabListEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<TabListEvent>;
+  let event_handler = unsafe { &mut *event_handler };
   let id = id as u8;
 
   event_handler.handle_event(TabListEvent::Added(TabListEntry::from_id(id)));
 }
 
 extern "C" fn on_tablist_changed(obj: *mut c_void, id: c_int) {
-  let event_handler = obj as *const EventHandler<TabListEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<TabListEvent>;
+  let event_handler = unsafe { &mut *event_handler };
   let id = id as u8;
 
   event_handler.handle_event(TabListEvent::Changed(TabListEntry::from_id(id)));
 }
 
 extern "C" fn on_tablist_removed(obj: *mut c_void, id: c_int) {
-  let event_handler = obj as *const EventHandler<TabListEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<TabListEvent>;
+  let event_handler = unsafe { &mut *event_handler };
   let id = id as u8;
 
   event_handler.handle_event(TabListEvent::Removed(id));
 }
 
 extern "C" fn on_disconnected(obj: *mut c_void) {
-  let event_handler = obj as *const EventHandler<TabListEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<TabListEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(TabListEvent::Disconnected);
 }

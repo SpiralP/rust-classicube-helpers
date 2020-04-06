@@ -5,7 +5,7 @@ pub trait EventType {
   fn event_type(&self) -> Self::EventType;
 }
 
-type Callback<E> = Box<dyn Fn(&E) + 'static>;
+type Callback<E> = Box<dyn FnMut(&E) + 'static>;
 
 #[derive(Default)]
 pub struct EventHandler<E>
@@ -27,15 +27,18 @@ where
 
   pub fn on<F>(&mut self, event_type: E::EventType, callback: F)
   where
-    F: Fn(&E),
+    F: FnMut(&E),
     F: 'static,
   {
-    let vec = self.callbacks.entry(event_type).or_insert_with(Vec::new);
-    vec.push(Box::new(callback));
+    self
+      .callbacks
+      .entry(event_type)
+      .or_insert_with(Vec::new)
+      .push(Box::new(callback));
   }
 
-  pub fn handle_event(&self, event: E) {
-    if let Some(callbacks) = self.callbacks.get(&event.event_type()) {
+  pub fn handle_event(&mut self, event: E) {
+    if let Some(callbacks) = self.callbacks.get_mut(&event.event_type()) {
       for callback in callbacks {
         callback(&event);
       }

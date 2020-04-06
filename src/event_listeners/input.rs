@@ -79,7 +79,7 @@ impl InputEventListener {
 
   pub fn on<F>(&mut self, event_type: InputEventType, callback: F)
   where
-    F: Fn(&InputEvent),
+    F: FnMut(&InputEvent),
     F: 'static,
   {
     self.event_handler.on(event_type, callback);
@@ -147,36 +147,36 @@ impl Drop for InputEventListener {
 }
 
 extern "C" fn on_input_press(obj: *mut c_void, key_char: c_int) {
-  let event_handler = obj as *const EventHandler<InputEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<InputEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(InputEvent::Press(key_char));
 }
 
 extern "C" fn on_input_down(obj: *mut c_void, key: c_int, was: cc_bool) {
-  let event_handler = obj as *const EventHandler<InputEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<InputEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(InputEvent::Down(key, was));
 }
 
 extern "C" fn on_input_up(obj: *mut c_void, key: c_int) {
-  let event_handler = obj as *const EventHandler<InputEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<InputEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(InputEvent::Up(key));
 }
 
 extern "C" fn on_input_wheel(obj: *mut c_void, delta: c_float) {
-  let event_handler = obj as *const EventHandler<InputEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<InputEvent>;
+  let event_handler = unsafe { &mut *event_handler };
 
   event_handler.handle_event(InputEvent::Wheel(delta));
 }
 
 extern "C" fn on_input_text_changed(obj: *mut c_void, s: *const classicube_sys::String) {
-  let event_handler = obj as *const EventHandler<InputEvent>;
-  let event_handler = unsafe { &*event_handler };
+  let event_handler = obj as *mut EventHandler<InputEvent>;
+  let event_handler = unsafe { &mut *event_handler };
   let s = unsafe { s.as_ref().unwrap() };
 
   event_handler.handle_event(InputEvent::TextChanged(s.to_string()));
