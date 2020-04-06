@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `detour` crate."><meta name="keywords" content="rust, rustlang, rust-lang, detour"><title>detour - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../detour/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate detour</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all detour's items</p></a><div class="block items"><ul><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'detour', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/detour/lib.rs.html#1-158' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>detour</a></span></h1><div class='docblock'><p>A cross-platform detour library written in Rust.</p>
+<h2 id="intro" class="section-header"><a href="#intro">Intro</a></h2>
+<p>This library provides a thread-safe, inline detouring functionality by
+disassembling and patching functions during runtime, using assembly opcodes
+allocated within executable memory. It modifies the target functions and
+replaces their prolog with an unconditional jump.</p>
+<p>Beyond the basic functionality this library handles several different edge
+cases:</p>
+<ul>
+<li>Relative branches.</li>
+<li>RIP relative operands.</li>
+<li>Detects NOP-padding.</li>
+<li>Relay for large offsets (&gt;2GB).</li>
+<li>Supports hot patching.</li>
+</ul>
+<h2 id="detours" class="section-header"><a href="#detours">Detours</a></h2>
+<p>Three different types of detours are provided:</p>
+<ul>
+<li>
+<p><a href="./struct.StaticDetour.html">Static</a>: A static &amp; type-safe interface.
+Thanks to its static nature it can accept a closure as its detour, but is
+required to be statically defined at compile time.</p>
+</li>
+<li>
+<p><a href="./struct.GenericDetour.html">Generic</a>: A type-safe interface — the same
+prototype is enforced for both the target and the detour. It is also
+enforced when invoking the original target.</p>
+</li>
+<li>
+<p><a href="./struct.RawDetour.html">Raw</a>: The underlying building block that the
+others types abstract upon. It has no type-safety and interacts with raw
+pointers. It should be avoided unless any types are references, or not
+known until runtime.</p>
+</li>
+</ul>
+<h2 id="features" class="section-header"><a href="#features">Features</a></h2>
+<ul>
+<li><strong>nightly</strong>: Enabled by default. Required for static detours, due to
+usage of <em>const_fn</em> &amp; <em>unboxed_closures</em>.<br />
+The feature also enables a more extensive test suite.</li>
+</ul>
+<h2 id="platforms" class="section-header"><a href="#platforms">Platforms</a></h2>
+<ul>
+<li>Both <code>x86</code> &amp; <code>x86-64</code> are supported.</li>
+</ul>
+<h2 id="procedure" class="section-header"><a href="#procedure">Procedure</a></h2>
+<p>To illustrate a detour on an x86 platform:</p>
+<pre><code class="language-c">0 int return_five() {
+1     return 5;
+00400020 [b8 05 00 00 00] mov eax, 5
+00400025 [c3]             ret
+2 }
+3
+4 int detour_function() {
+5     return 10;
+00400040 [b8 0A 00 00 00] mov eax, 10
+00400045 [c3]             ret
+6 }
+</code></pre>
+<p>To detour <code>return_five</code> the library by default tries to replace five bytes
+with a relative jump (the optimal scenario), which works in this case.
+Executable memory will be allocated for the instruction and the function's
+prolog will be replaced.</p>
+<pre><code class="language-c">0 int return_five() {
+1     return detour_function();
+00400020 [e9 16 00 00 00] jmp 1b &lt;detour_function&gt;
+00400025 [c3]             ret
+2 }
+3
+4 int detour_function() {
+5     return 10;
+00400040 [b8 0a 00 00 00] mov eax, 10
+00400045 [c3]             ret
+6 }
+</code></pre>
+<p>Beyond what is shown here, a trampoline is also generated so the original
+function can be called regardless whether the function is hooked or not.</p>
+</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table><tr class='module-item'><td><a class="macro" href="macro.static_detour.html" title='detour::static_detour macro'>static_detour</a></td><td class='docblock-short'><p>A macro for defining static, type-safe detours.</p>
+</td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.GenericDetour.html" title='detour::GenericDetour struct'>GenericDetour</a></td><td class='docblock-short'><p>A type-safe detour.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.RawDetour.html" title='detour::RawDetour struct'>RawDetour</a></td><td class='docblock-short'><p>A raw detour.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.StaticDetour.html" title='detour::StaticDetour struct'>StaticDetour</a></td><td class='docblock-short'><p>A type-safe static detour.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.Error.html" title='detour::Error enum'>Error</a></td><td class='docblock-short'><p>A representation of all possible errors.</p>
+</td></tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table><tr class='module-item'><td><a class="trait" href="trait.Function.html" title='detour::Function trait'>Function</a></td><td class='docblock-short'><p>Trait representing a function that can be used as a target or detour for
+detouring.</p>
+</td></tr><tr class='module-item'><td><a class="trait" href="trait.HookableWith.html" title='detour::HookableWith trait'>HookableWith</a></td><td class='docblock-short'><p>Trait indicating that <code>Self</code> can be detoured by the given function <code>D</code>.</p>
+</td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table><tr class='module-item'><td><a class="type" href="type.Result.html" title='detour::Result type'>Result</a></td><td class='docblock-short'><p>The result of a detour operation.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "detour";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

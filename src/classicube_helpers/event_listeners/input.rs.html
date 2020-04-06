@@ -263,7 +263,7 @@
 
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event_type</span>: <span class="ident">InputEventType</span>, <span class="ident">callback</span>: <span class="ident">F</span>)
   <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">InputEvent</span>),
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">InputEvent</span>),
     <span class="ident">F</span>: <span class="lifetime">&#39;static</span>,
   {
     <span class="self">self</span>.<span class="ident">event_handler</span>.<span class="ident">on</span>(<span class="ident">event_type</span>, <span class="ident">callback</span>);
@@ -331,36 +331,36 @@
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">on_input_press</span>(<span class="ident">obj</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">key_char</span>: <span class="ident">c_int</span>) {
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">event_handler</span> };
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
 
   <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">InputEvent</span>::<span class="ident">Press</span>(<span class="ident">key_char</span>));
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">on_input_down</span>(<span class="ident">obj</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">key</span>: <span class="ident">c_int</span>, <span class="ident">was</span>: <span class="ident">cc_bool</span>) {
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">event_handler</span> };
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
 
   <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">InputEvent</span>::<span class="ident">Down</span>(<span class="ident">key</span>, <span class="ident">was</span>));
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">on_input_up</span>(<span class="ident">obj</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">key</span>: <span class="ident">c_int</span>) {
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">event_handler</span> };
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
 
   <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">InputEvent</span>::<span class="ident">Up</span>(<span class="ident">key</span>));
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">on_input_wheel</span>(<span class="ident">obj</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">delta</span>: <span class="ident">c_float</span>) {
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">event_handler</span> };
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
 
   <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">InputEvent</span>::<span class="ident">Wheel</span>(<span class="ident">delta</span>));
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">on_input_text_changed</span>(<span class="ident">obj</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span>) {
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
-  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">event_handler</span> };
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="ident">InputEvent</span><span class="op">&gt;</span>;
+  <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
   <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() };
 
   <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">InputEvent</span>::<span class="ident">TextChanged</span>(<span class="ident">s</span>.<span class="ident">to_string</span>()));

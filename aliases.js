@@ -1,4 +1,17 @@
 var ALIASES = {};
 ALIASES["arrayvec"] = {};
+ALIASES["bitflags"] = {};
+ALIASES["cfg_if"] = {};
 ALIASES["classicube_helpers"] = {};
 ALIASES["classicube_sys"] = {};
+ALIASES["detour"] = {};
+ALIASES["generic_array"] = {};
+ALIASES["kernel32"] = {};
+ALIASES["lazy_static"] = {};
+ALIASES["libc"] = {};
+ALIASES["libudis86_sys"] = {};
+ALIASES["mmap_fixed"] = {};
+ALIASES["region"] = {};
+ALIASES["slice_pool"] = {};
+ALIASES["typenum"] = {};
+ALIASES["winapi"] = {};
