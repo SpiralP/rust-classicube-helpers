@@ -33,7 +33,7 @@ impl Entity {
   #[inline]
   pub fn get_head(&self) -> [f32; 2] {
     let entity = unsafe { self.get_entity() };
-    [entity.HeadX, entity.HeadY]
+    [entity.Pitch, entity.Yaw]
   }
 
   /// [x, y, z], numbers are 0-360
