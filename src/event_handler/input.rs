@@ -12,7 +12,7 @@ make_event_handler!(
             name: key,
             rust_type: Key,
             c_type: c_int,
-            to_rust: |key| key,
+            to_rust: |key| key as Key,
         },
     )
 );
@@ -48,7 +48,7 @@ make_event_handler!(
             name: key,
             rust_type: Key,
             c_type: c_int,
-            to_rust: |key| key,
+            to_rust: |key| key as Key,
         },
     )
 );
