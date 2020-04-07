@@ -30,10 +30,10 @@ make_event_handler!(
             to_rust: |key| key as Key,
         },
         {
-            name: was_down,
+            name: repeating,
             rust_type: bool,
             c_type: cc_bool,
-            to_rust: |was_down| was_down != 0,
+            to_rust: |repeating| repeating != 0,
         },
     )
 );
