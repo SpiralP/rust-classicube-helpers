@@ -8,3 +8,4 @@ edition = "2018"
 classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
 detour = "0.7.1"
 futures = { version = "0.3.4", optional = true }
+paste = "0.1.10"

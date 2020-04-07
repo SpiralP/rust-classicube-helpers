@@ -1,146 +1,71 @@
 mod entry;
-mod events;
 
-pub use self::{entry::TabListEntry, events::*};
-use crate::{create_callback, EventHandler};
-use classicube_sys::{
-    Event_RegisterInt, Event_RegisterVoid, Event_UnregisterInt, Event_UnregisterVoid, NetEvents,
-    TabListEvents,
-};
-use std::{
-    cell::UnsafeCell,
-    collections::HashMap,
-    os::raw::{c_int, c_void},
-    pin::Pin,
-    rc::Rc,
-};
+pub use self::entry::TabListEntry;
+use crate::event_handler::{net_events, tab_list};
+use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 type EntriesType = HashMap<u8, TabListEntry>;
 
 /// safe access to TabList
+#[derive(Default)]
 pub struct TabList {
     entries: Rc<UnsafeCell<EntriesType>>,
-    event_handler: Pin<Box<EventHandler<TabListEvent>>>,
+    _added: tab_list::AddedEventHandler,
+    _changed: tab_list::ChangedEventHandler,
+    _removed: tab_list::RemovedEventHandler,
+    _disconnected: net_events::DisconnectedEventHandler,
 }
 
 impl TabList {
     /// register event listeners, listeners will unregister on drop
-    pub fn register() -> Self {
+    pub fn new() -> Self {
         let entries = HashMap::with_capacity(256);
         let entries = Rc::new(UnsafeCell::new(entries));
 
-        let mut event_handler = Box::pin(EventHandler::new());
+        let mut added = tab_list::AddedEventHandler::new();
+        let mut changed = tab_list::ChangedEventHandler::new();
+        let mut removed = tab_list::RemovedEventHandler::new();
+        let mut disconnected = net_events::DisconnectedEventHandler::new();
 
         {
             let entries = entries.clone();
-            event_handler.on(TabListEventType::Added, move |event| {
-                if let TabListEvent::Added(entry) = event {
-                    let entries = unsafe { &mut *entries.get() };
-                    entries.insert(entry.get_id(), entry.clone());
-                }
+            added.on(move |tab_list::AddedEvent { entry }| {
+                let entries = unsafe { &mut *entries.get() };
+                entries.insert(entry.get_id(), entry.clone());
             });
         }
 
         {
             let entries = entries.clone();
-            event_handler.on(TabListEventType::Changed, move |event| {
-                if let TabListEvent::Changed(entry) = event {
-                    let entries = unsafe { &mut *entries.get() };
-                    entries.insert(entry.get_id(), entry.clone());
-                }
+            changed.on(move |tab_list::ChangedEvent { entry }| {
+                let entries = unsafe { &mut *entries.get() };
+                entries.insert(entry.get_id(), entry.clone());
             });
         }
 
         {
             let entries = entries.clone();
-            event_handler.on(TabListEventType::Removed, move |event| {
-                if let TabListEvent::Removed(id) = event {
-                    let entries = unsafe { &mut *entries.get() };
-                    entries.remove(id);
-                }
+            removed.on(move |tab_list::RemovedEvent { id }| {
+                let entries = unsafe { &mut *entries.get() };
+                entries.remove(id);
             });
         }
 
         {
             let entries = entries.clone();
-            event_handler.on(TabListEventType::Disconnected, move |event| {
-                if let TabListEvent::Disconnected = event {
-                    let entries = unsafe { &mut *entries.get() };
-                    entries.clear();
-                }
+            disconnected.on(move |_| {
+                let entries = unsafe { &mut *entries.get() };
+                entries.clear();
             });
         }
 
-        let mut this = Self {
+        Self {
             entries,
-            event_handler,
-        };
-
-        unsafe {
-            this.register_listeners();
+            _added: added,
+            _changed: changed,
+            _removed: removed,
+            _disconnected: disconnected,
         }
-
-        this
-    }
-
-    pub fn on<F>(&mut self, event_type: TabListEventType, callback: F)
-    where
-        F: FnMut(&TabListEvent),
-        F: 'static,
-    {
-        self.event_handler.on(event_type, callback);
-    }
-
-    unsafe fn register_listeners(&mut self) {
-        let ptr: *mut EventHandler<TabListEvent> = self.event_handler.as_mut().get_unchecked_mut();
-
-        Event_RegisterInt(
-            &mut TabListEvents.Added,
-            ptr as *mut c_void,
-            Some(on_tablist_added),
-        );
-        Event_RegisterInt(
-            &mut TabListEvents.Changed,
-            ptr as *mut c_void,
-            Some(on_tablist_changed),
-        );
-        Event_RegisterInt(
-            &mut TabListEvents.Removed,
-            ptr as *mut c_void,
-            Some(on_tablist_removed),
-        );
-
-        Event_RegisterVoid(
-            &mut NetEvents.Disconnected,
-            ptr as *mut c_void,
-            Some(on_disconnected),
-        );
-    }
-
-    unsafe fn unregister_listeners(&mut self) {
-        let ptr: *mut EventHandler<TabListEvent> = self.event_handler.as_mut().get_unchecked_mut();
-
-        Event_UnregisterInt(
-            &mut TabListEvents.Added,
-            ptr as *mut c_void,
-            Some(on_tablist_added),
-        );
-        Event_UnregisterInt(
-            &mut TabListEvents.Changed,
-            ptr as *mut c_void,
-            Some(on_tablist_changed),
-        );
-        Event_UnregisterInt(
-            &mut TabListEvents.Removed,
-            ptr as *mut c_void,
-            Some(on_tablist_removed),
-        );
-
-        Event_UnregisterVoid(
-            &mut NetEvents.Disconnected,
-            ptr as *mut c_void,
-            Some(on_disconnected),
-        );
     }
 
     pub fn find_entry_by_nick_name(&self, search: String) -> Option<&TabListEntry> {
@@ -233,35 +158,6 @@ impl TabList {
         unsafe { &mut *self.entries.get() }
     }
 }
-
-impl Drop for TabList {
-    fn drop(&mut self) {
-        self.get_all_mut().clear();
-
-        unsafe {
-            self.unregister_listeners();
-        }
-    }
-}
-
-create_callback!(on_tablist_added, (id: c_int), TabListEvent, {
-    TabListEvent::Added(TabListEntry::from_id(id as u8))
-});
-
-create_callback!(on_tablist_changed, (id: c_int), TabListEvent, {
-    TabListEvent::Changed(TabListEntry::from_id(id as u8))
-});
-
-create_callback!(on_tablist_removed, (id: c_int), TabListEvent, {
-    TabListEvent::Removed(id as u8)
-});
-
-create_callback!(
-    on_disconnected,
-    (),
-    TabListEvent,
-    TabListEvent::Disconnected
-);
 
 #[test]
 fn test_match_names() {

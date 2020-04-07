@@ -1,85 +1,133 @@
 #![feature(coerce_unsized)]
 #![feature(unsize)]
+#![allow(clippy::redundant_closure_call)]
 
-mod entities;
-mod event_handler;
-mod event_listeners;
-mod shared;
-mod tab_list;
+mod callback_handler;
+pub mod entities;
+pub mod event_handler;
+pub mod shared;
+pub mod tab_list;
 
-pub use crate::{entities::*, event_handler::*, event_listeners::*, shared::*, tab_list::*};
-
+#[doc(hidden)]
 #[macro_export]
-macro_rules! create_callback(
-
-
-    // create_callback!(
-    //     on_disconnected,
-    //     (),
-    //     TabListEvent,
-    //     TabListEvent::Disconnected
-    // );
+macro_rules! make_event_handler {
     (
-        $callback:ident,
-        (),
-        $event_type:ty,
-        $event:path
+        $(#[$attr:meta])*
+        $event_type:ident,
+        $event_name:ident,
+        $func_type:ident,
+        (
+            $( {
+                name: $name:ident,
+                rust_type: $rust_type:ty,
+                c_type: $c_type:ty,
+                to_rust: $to_rust:expr,
+            }, )*
+        )
     ) => {
-        create_callback!(
-            $callback,
-            (),
-            $event_type,
-            { $event }
-        );
-    };
+        paste::item! {
+            #[derive(Debug)]
+            pub struct [<$event_name Event>] {
+                $(pub $name: $rust_type, )*
+            }
 
+            $(#[$attr])*
+            pub struct [<$event_name EventHandler>] {
+                registered: bool,
+                callback_handler: ::std::pin::Pin<Box<$crate::callback_handler::CallbackHandler<[<$event_name Event>]>>>,
+            }
 
-    // create_callback!(
-    //     on_input_press,
-    //     (key: c_int),
-    //     InputEvent,
-    //     InputEvent::Press
-    // );
-    (
-        $callback:ident,
-        ( $($arg:ident: $arg_type:ty),* ),
-        $event_type:ty,
-        $event:path
-    ) => {
-        create_callback!(
-            $callback,
-            ( $($arg: $arg_type),* ),
-            $event_type,
-            $event(
-                $($arg),*
-            )
-        );
-    };
+            impl [<$event_name EventHandler>] {
+                pub fn new() -> Self {
+                    Self {
+                        registered: false,
+                        callback_handler: Box::pin($crate::callback_handler::CallbackHandler::new()),
+                    }
+                }
 
+                pub fn on<F>(&mut self, callback: F)
+                where
+                    F: FnMut(&[<$event_name Event>]),
+                    F: 'static,
+                {
+                    self.callback_handler.on(callback);
 
-    // create_callback!(
-    //     on_input_text_changed,
-    //     (s_ptr: *const classicube_sys::String),
-    //     InputEvent,
-    //     {
-    //         let s = unsafe { s_ptr.as_ref().unwrap() }.to_string();
-    //         InputEvent::TextChanged(s)
-    //     }
-    // );
-    (
-        $callback:ident,
-        ( $($arg:ident: $arg_type:ty),* ),
-        $event_type:ty,
-        $event:expr
-    ) => {
-        extern "C" fn $callback(
-            obj: *mut c_void,
-            $($arg: $arg_type),*
-        ) {
-            let event_handler = obj as *mut EventHandler<$event_type>;
-            let event_handler = unsafe { &mut *event_handler };
+                    unsafe {
+                        self.register_listener();
+                    }
+                }
 
-            event_handler.handle_event($event);
+                unsafe fn register_listener(&mut self) {
+                    if !self.registered {
+                        let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
+                            self.callback_handler.as_mut().get_unchecked_mut();
+
+                        ::classicube_sys::[<Event_Register $func_type>](
+                            &mut ::classicube_sys::[<$event_type Events>].$event_name,
+                            ptr as *mut ::std::os::raw::c_void,
+                            Some(Self::callback),
+                        );
+
+                        self.registered = true;
+                    }
+                }
+
+                unsafe fn unregister_listener(&mut self) {
+                    if self.registered {
+                        let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
+                            self.callback_handler.as_mut().get_unchecked_mut();
+
+                        ::classicube_sys::[<Event_Unregister $func_type>](
+                            &mut ::classicube_sys::[<$event_type Events>].$event_name,
+                            ptr as *mut ::std::os::raw::c_void,
+                            Some(Self::callback),
+                        );
+                    }
+                }
+
+                extern "C" fn callback(
+                    obj: *mut ::std::os::raw::c_void,
+                    $($name: $c_type, )*
+                ) {
+                    let event_handler = obj as *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]>;
+                    let event_handler = unsafe { &mut *event_handler };
+
+                    event_handler.handle_event([<$event_name Event>] {
+                        $($name: ($to_rust)($name), )*
+                    });
+                }
+
+                // fn send_internal(
+                //     &mut self,
+                //     $($arg_name: $arg_type, )*
+                // ) {
+                //     unsafe {
+                //         [<Event_Raise $event_type>](
+                //             &mut [<$event_type Events>].$event_name,
+                //             $($arg_name, )*
+                //         );
+                //     }
+                // }
+
+                // pub fn send(&mut self, event: [<$event_name Event>]) {
+                //     let message = OwnedString::new(event.message);
+                //     let message_type = event.message_type;
+                // }
+            }
+
+            impl Drop for [<$event_name EventHandler>] {
+                fn drop(&mut self) {
+                    unsafe {
+                        self.unregister_listener();
+                    }
+                }
+            }
+
+            impl Default for [<$event_name EventHandler>] {
+                fn default() -> Self {
+                    Self::new()
+                }
+            }
         }
     };
-);
+}

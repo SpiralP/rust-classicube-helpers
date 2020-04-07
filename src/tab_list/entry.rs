@@ -1,7 +1,7 @@
 use classicube_sys::{StringsBuffer_UNSAFE_Get, TabList};
 use std::os::raw::c_int;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct TabListEntry {
     id: u8,
 }
@@ -11,12 +11,12 @@ impl TabListEntry {
         Self { id }
     }
 
-    pub fn get_id(&self) -> u8 {
+    pub fn get_id(self) -> u8 {
         self.id
     }
 
     /// or "Player"
-    pub fn get_real_name(&self) -> Option<String> {
+    pub fn get_real_name(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
         if offset != 0 {
@@ -30,7 +30,7 @@ impl TabListEntry {
     }
 
     /// or "Text"
-    pub fn get_nick_name(&self) -> Option<String> {
+    pub fn get_nick_name(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
         if offset != 0 {
@@ -43,7 +43,7 @@ impl TabListEntry {
         }
     }
 
-    pub fn get_group(&self) -> Option<String> {
+    pub fn get_group(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
         if offset != 0 {
