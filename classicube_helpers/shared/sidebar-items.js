@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SyncShared",""],["ThreadShared",""]]});
+initSidebarItems({"struct":[["FutureShared",""],["SyncShared",""],["ThreadShared",""]]});
