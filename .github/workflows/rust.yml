@@ -32,7 +32,8 @@ jobs:
       - name: Build docs
         uses: actions-rs/cargo@v1
         with:
-          command: doc --all-features
+          command: doc
+          args: --all-features
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
