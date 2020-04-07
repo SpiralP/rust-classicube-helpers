@@ -4,9 +4,10 @@
 
 mod callback_handler;
 pub mod entities;
-pub mod event_handler;
+pub mod events;
 pub mod shared;
 pub mod tab_list;
+pub mod tick;
 
 #[doc(hidden)]
 #[macro_export]

@@ -1,7 +1,7 @@
 mod entry;
 
 pub use self::entry::TabListEntry;
-use crate::event_handler::{net_events, tab_list};
+use crate::events::{net, tab_list};
 use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 type EntriesType = HashMap<u8, TabListEntry>;
@@ -13,7 +13,7 @@ pub struct TabList {
     added: tab_list::AddedEventHandler,
     changed: tab_list::ChangedEventHandler,
     removed: tab_list::RemovedEventHandler,
-    disconnected: net_events::DisconnectedEventHandler,
+    disconnected: net::DisconnectedEventHandler,
 }
 
 impl TabList {
@@ -25,7 +25,7 @@ impl TabList {
         let mut added = tab_list::AddedEventHandler::new();
         let mut changed = tab_list::ChangedEventHandler::new();
         let mut removed = tab_list::RemovedEventHandler::new();
-        let mut disconnected = net_events::DisconnectedEventHandler::new();
+        let mut disconnected = net::DisconnectedEventHandler::new();
 
         {
             let entries = entries.clone();
@@ -94,7 +94,7 @@ impl TabList {
 
     pub fn on_disconnected<F>(&mut self, callback: F)
     where
-        F: FnMut(&net_events::DisconnectedEvent),
+        F: FnMut(&net::DisconnectedEvent),
         F: 'static,
     {
         self.disconnected.on(callback)

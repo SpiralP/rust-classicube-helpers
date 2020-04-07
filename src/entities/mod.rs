@@ -1,7 +1,7 @@
 mod entity;
 
 pub use self::entity::{Entity, ENTITY_SELF_ID};
-use crate::event_handler::entity::*;
+use crate::events::entity::*;
 use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 /// safe access to entities list and entity events

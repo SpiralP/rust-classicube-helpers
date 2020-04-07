@@ -2,7 +2,7 @@ use crate::{make_event_handler, tab_list::TabListEntry};
 use std::os::raw::c_int;
 
 make_event_handler!(
-    /// new TabList entry
+    /// Tab list entry is created
     TabList,
     Added,
     Int,
@@ -17,7 +17,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// TabList entry changed
+    /// Tab list entry is modified
     TabList,
     Changed,
     Int,
@@ -32,7 +32,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// TabList entry removed
+    /// Tab list entry is removed
     TabList,
     Removed,
     Int,
