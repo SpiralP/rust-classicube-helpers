@@ -5,10 +5,9 @@
 // 	struct Event_PointerMove RawMoved; /* Raw pointer position changed (Arg is delta) */
 // } PointerEvents;
 
-use crate::{EventHandler, EventType};
+use crate::{create_callback, EventHandler, EventType};
 use classicube_sys::{
-    Event_RegisterInt, Event_RegisterPointerMove, Event_UnregisterInt, Event_UnregisterPointerMove,
-    PointerEvents,
+    Event_RegisterInt, Event_RegisterMove, Event_UnregisterInt, Event_UnregisterMove, PointerEvents,
 };
 use std::{
     os::raw::{c_int, c_void},
@@ -81,7 +80,7 @@ impl PointerEventListener {
     unsafe fn register_listeners(&mut self) {
         let ptr: *mut EventHandler<PointerEvent> = self.event_handler.as_mut().get_unchecked_mut();
 
-        Event_RegisterPointerMove(
+        Event_RegisterMove(
             &mut PointerEvents.Moved,
             ptr as *mut c_void,
             Some(on_pointer_moved),
@@ -97,7 +96,7 @@ impl PointerEventListener {
             Some(on_pointer_up),
         );
 
-        Event_RegisterPointerMove(
+        Event_RegisterMove(
             &mut PointerEvents.RawMoved,
             ptr as *mut c_void,
             Some(on_pointer_raw_moved),
@@ -107,7 +106,7 @@ impl PointerEventListener {
     unsafe fn unregister_listeners(&mut self) {
         let ptr: *mut EventHandler<PointerEvent> = self.event_handler.as_mut().get_unchecked_mut();
 
-        Event_UnregisterPointerMove(
+        Event_UnregisterMove(
             &mut PointerEvents.Moved,
             ptr as *mut c_void,
             Some(on_pointer_moved),
@@ -123,7 +122,7 @@ impl PointerEventListener {
             Some(on_pointer_up),
         );
 
-        Event_UnregisterPointerMove(
+        Event_UnregisterMove(
             &mut PointerEvents.RawMoved,
             ptr as *mut c_void,
             Some(on_pointer_raw_moved),
@@ -139,30 +138,25 @@ impl Drop for PointerEventListener {
     }
 }
 
-extern "C" fn on_pointer_moved(obj: *mut c_void, idx: c_int, x_delta: c_int, y_delta: c_int) {
-    let event_handler = obj as *mut EventHandler<PointerEvent>;
-    let event_handler = unsafe { &mut *event_handler };
+create_callback!(
+    on_pointer_moved,
+    (idx: c_int, x_delta: c_int, y_delta: c_int),
+    PointerEvent,
+    PointerEvent::Moved
+);
 
-    event_handler.handle_event(PointerEvent::Moved(idx, x_delta, y_delta));
-}
+create_callback!(
+    on_pointer_down,
+    (idx: c_int),
+    PointerEvent,
+    PointerEvent::Down
+);
 
-extern "C" fn on_pointer_down(obj: *mut c_void, idx: c_int) {
-    let event_handler = obj as *mut EventHandler<PointerEvent>;
-    let event_handler = unsafe { &mut *event_handler };
+create_callback!(on_pointer_up, (idx: c_int), PointerEvent, PointerEvent::Up);
 
-    event_handler.handle_event(PointerEvent::Down(idx));
-}
-
-extern "C" fn on_pointer_up(obj: *mut c_void, idx: c_int) {
-    let event_handler = obj as *mut EventHandler<PointerEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-
-    event_handler.handle_event(PointerEvent::Up(idx));
-}
-
-extern "C" fn on_pointer_raw_moved(obj: *mut c_void, idx: c_int, x_delta: c_int, y_delta: c_int) {
-    let event_handler = obj as *mut EventHandler<PointerEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-
-    event_handler.handle_event(PointerEvent::RawMoved(idx, x_delta, y_delta));
-}
+create_callback!(
+    on_pointer_raw_moved,
+    (idx: c_int, x_delta: c_int, y_delta: c_int),
+    PointerEvent,
+    PointerEvent::RawMoved
+);

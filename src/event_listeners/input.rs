@@ -6,7 +6,7 @@
 // 	struct Event_String TextChanged; /* HTML text input changed */
 // } InputEvents;
 
-use crate::{EventHandler, EventType};
+use crate::{create_callback, EventHandler, EventType};
 use classicube_sys::{
     cc_bool, Event_RegisterFloat, Event_RegisterInput, Event_RegisterInt, Event_RegisterString,
     Event_UnregisterFloat, Event_UnregisterInput, Event_UnregisterInt, Event_UnregisterString,
@@ -146,38 +146,30 @@ impl Drop for InputEventListener {
     }
 }
 
-extern "C" fn on_input_press(obj: *mut c_void, key_char: c_int) {
-    let event_handler = obj as *mut EventHandler<InputEvent>;
-    let event_handler = unsafe { &mut *event_handler };
+create_callback!(on_input_press, (key: c_int), InputEvent, InputEvent::Press);
 
-    event_handler.handle_event(InputEvent::Press(key_char));
-}
+create_callback!(
+    on_input_down,
+    (key: c_int, was: cc_bool),
+    InputEvent,
+    InputEvent::Down
+);
 
-extern "C" fn on_input_down(obj: *mut c_void, key: c_int, was: cc_bool) {
-    let event_handler = obj as *mut EventHandler<InputEvent>;
-    let event_handler = unsafe { &mut *event_handler };
+create_callback!(on_input_up, (key: c_int), InputEvent, InputEvent::Up);
 
-    event_handler.handle_event(InputEvent::Down(key, was));
-}
+create_callback!(
+    on_input_wheel,
+    (delta: c_float),
+    InputEvent,
+    InputEvent::Wheel
+);
 
-extern "C" fn on_input_up(obj: *mut c_void, key: c_int) {
-    let event_handler = obj as *mut EventHandler<InputEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-
-    event_handler.handle_event(InputEvent::Up(key));
-}
-
-extern "C" fn on_input_wheel(obj: *mut c_void, delta: c_float) {
-    let event_handler = obj as *mut EventHandler<InputEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-
-    event_handler.handle_event(InputEvent::Wheel(delta));
-}
-
-extern "C" fn on_input_text_changed(obj: *mut c_void, s: *const classicube_sys::String) {
-    let event_handler = obj as *mut EventHandler<InputEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-    let s = unsafe { s.as_ref().unwrap() };
-
-    event_handler.handle_event(InputEvent::TextChanged(s.to_string()));
-}
+create_callback!(
+    on_input_text_changed,
+    (s_ptr: *const classicube_sys::String),
+    InputEvent,
+    {
+        let s = unsafe { s_ptr.as_ref().unwrap() }.to_string();
+        InputEvent::TextChanged(s)
+    }
+);

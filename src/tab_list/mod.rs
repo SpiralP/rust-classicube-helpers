@@ -2,7 +2,7 @@ mod entry;
 mod events;
 
 pub use self::{entry::TabListEntry, events::*};
-use crate::EventHandler;
+use crate::{create_callback, EventHandler};
 use classicube_sys::{
     Event_RegisterInt, Event_RegisterVoid, Event_UnregisterInt, Event_UnregisterVoid, NetEvents,
     TabListEvents,
@@ -217,22 +217,18 @@ impl TabList {
             })
     }
 
-    #[inline]
     pub fn get(&self, id: u8) -> Option<&TabListEntry> {
         self.get_all().get(&id)
     }
 
-    #[inline]
     pub fn get_mut(&mut self, id: u8) -> Option<&mut TabListEntry> {
         self.get_all_mut().get_mut(&id)
     }
 
-    #[inline]
     pub fn get_all(&self) -> &EntriesType {
         unsafe { &*self.entries.get() }
     }
 
-    #[inline]
     pub fn get_all_mut(&mut self) -> &mut EntriesType {
         unsafe { &mut *self.entries.get() }
     }
@@ -248,36 +244,24 @@ impl Drop for TabList {
     }
 }
 
-extern "C" fn on_tablist_added(obj: *mut c_void, id: c_int) {
-    let event_handler = obj as *mut EventHandler<TabListEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-    let id = id as u8;
+create_callback!(on_tablist_added, (id: c_int), TabListEvent, {
+    TabListEvent::Added(TabListEntry::from_id(id as u8))
+});
 
-    event_handler.handle_event(TabListEvent::Added(TabListEntry::from_id(id)));
-}
+create_callback!(on_tablist_changed, (id: c_int), TabListEvent, {
+    TabListEvent::Changed(TabListEntry::from_id(id as u8))
+});
 
-extern "C" fn on_tablist_changed(obj: *mut c_void, id: c_int) {
-    let event_handler = obj as *mut EventHandler<TabListEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-    let id = id as u8;
+create_callback!(on_tablist_removed, (id: c_int), TabListEvent, {
+    TabListEvent::Removed(id as u8)
+});
 
-    event_handler.handle_event(TabListEvent::Changed(TabListEntry::from_id(id)));
-}
-
-extern "C" fn on_tablist_removed(obj: *mut c_void, id: c_int) {
-    let event_handler = obj as *mut EventHandler<TabListEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-    let id = id as u8;
-
-    event_handler.handle_event(TabListEvent::Removed(id));
-}
-
-extern "C" fn on_disconnected(obj: *mut c_void) {
-    let event_handler = obj as *mut EventHandler<TabListEvent>;
-    let event_handler = unsafe { &mut *event_handler };
-
-    event_handler.handle_event(TabListEvent::Disconnected);
-}
+create_callback!(
+    on_disconnected,
+    (),
+    TabListEvent,
+    TabListEvent::Disconnected
+);
 
 #[test]
 fn test_match_names() {
