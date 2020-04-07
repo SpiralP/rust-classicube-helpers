@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BlockChangedEvent",""],["BlockChangedEventHandler","User changes a block"],["HackPermissionsChangedEvent",""],["HackPermissionsChangedEventHandler","Hack permissions of the player changes"],["HeldBlockChangedEvent",""],["HeldBlockChangedEventHandler","Held block in hotbar changes"]]});

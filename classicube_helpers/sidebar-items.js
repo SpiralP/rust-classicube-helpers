@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["entities",""],["event_handler",""],["shared",""],["tab_list",""]]});
+initSidebarItems({"mod":[["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""]]});

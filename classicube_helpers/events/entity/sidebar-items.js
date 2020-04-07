@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AddedEvent",""],["AddedEventHandler","Entity is spawned in the current world"],["RemovedEvent",""],["RemovedEventHandler","Entity is despawned from the current world"]]});
