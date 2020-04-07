@@ -10,10 +10,10 @@ type EntriesType = HashMap<u8, TabListEntry>;
 #[derive(Default)]
 pub struct TabList {
     entries: Rc<UnsafeCell<EntriesType>>,
-    _added: tab_list::AddedEventHandler,
-    _changed: tab_list::ChangedEventHandler,
-    _removed: tab_list::RemovedEventHandler,
-    _disconnected: net_events::DisconnectedEventHandler,
+    added: tab_list::AddedEventHandler,
+    changed: tab_list::ChangedEventHandler,
+    removed: tab_list::RemovedEventHandler,
+    disconnected: net_events::DisconnectedEventHandler,
 }
 
 impl TabList {
@@ -61,11 +61,43 @@ impl TabList {
 
         Self {
             entries,
-            _added: added,
-            _changed: changed,
-            _removed: removed,
-            _disconnected: disconnected,
+            added,
+            changed,
+            removed,
+            disconnected,
         }
+    }
+
+    pub fn on_added<F>(&mut self, callback: F)
+    where
+        F: FnMut(&tab_list::AddedEvent),
+        F: 'static,
+    {
+        self.added.on(callback)
+    }
+
+    pub fn on_changed<F>(&mut self, callback: F)
+    where
+        F: FnMut(&tab_list::ChangedEvent),
+        F: 'static,
+    {
+        self.changed.on(callback)
+    }
+
+    pub fn on_removed<F>(&mut self, callback: F)
+    where
+        F: FnMut(&tab_list::RemovedEvent),
+        F: 'static,
+    {
+        self.removed.on(callback)
+    }
+
+    pub fn on_disconnected<F>(&mut self, callback: F)
+    where
+        F: FnMut(&net_events::DisconnectedEvent),
+        F: 'static,
+    {
+        self.disconnected.on(callback)
     }
 
     pub fn find_entry_by_nick_name(&self, search: String) -> Option<&TabListEntry> {

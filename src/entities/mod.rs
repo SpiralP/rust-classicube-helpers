@@ -9,8 +9,8 @@ use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 pub struct Entities {
     entities: Rc<UnsafeCell<HashMap<u8, Entity>>>,
 
-    _added: AddedEventHandler,
-    _removed: RemovedEventHandler,
+    added: AddedEventHandler,
+    removed: RemovedEventHandler,
 }
 
 impl Entities {
@@ -44,9 +44,25 @@ impl Entities {
 
         Self {
             entities,
-            _added: added,
-            _removed: removed,
+            added,
+            removed,
         }
+    }
+
+    pub fn on_added<F>(&mut self, callback: F)
+    where
+        F: FnMut(&AddedEvent),
+        F: 'static,
+    {
+        self.added.on(callback)
+    }
+
+    pub fn on_removed<F>(&mut self, callback: F)
+    where
+        F: FnMut(&RemovedEvent),
+        F: 'static,
+    {
+        self.removed.on(callback)
     }
 
     pub fn get(&self, id: u8) -> Option<&Entity> {
