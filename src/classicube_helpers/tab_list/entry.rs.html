@@ -60,60 +60,60 @@
 <span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">StringsBuffer_UNSAFE_Get</span>, <span class="ident">TabList</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TabListEntry</span> {
-  <span class="ident">id</span>: <span class="ident">u8</span>,
+    <span class="ident">id</span>: <span class="ident">u8</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TabListEntry</span> {
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_id</span>(<span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-    <span class="self">Self</span> { <span class="ident">id</span> }
-  }
-
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-    <span class="self">self</span>.<span class="ident">id</span>
-  }
-
-  <span class="doccomment">/// or &quot;Player&quot;</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_real_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
-
-    <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-      <span class="prelude-val">Some</span>(
-        <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">3</span>)) }
-          .<span class="ident">to_string</span>(),
-      )
-    } <span class="kw">else</span> {
-      <span class="prelude-val">None</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_id</span>(<span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">id</span> }
     }
-  }
 
-  <span class="doccomment">/// or &quot;Text&quot;</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_nick_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
-
-    <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-      <span class="prelude-val">Some</span>(
-        <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">2</span>)) }
-          .<span class="ident">to_string</span>(),
-      )
-    } <span class="kw">else</span> {
-      <span class="prelude-val">None</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_id</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+        <span class="self">self</span>.<span class="ident">id</span>
     }
-  }
 
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_group</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
+    <span class="doccomment">/// or &quot;Player&quot;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_real_name</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
 
-    <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-      <span class="prelude-val">Some</span>(
-        <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">1</span>)) }
-          .<span class="ident">to_string</span>(),
-      )
-    } <span class="kw">else</span> {
-      <span class="prelude-val">None</span>
+        <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="prelude-val">Some</span>(
+                <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">3</span>)) }
+                    .<span class="ident">to_string</span>(),
+            )
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
+        }
     }
-  }
+
+    <span class="doccomment">/// or &quot;Text&quot;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_nick_name</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
+
+        <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="prelude-val">Some</span>(
+                <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">2</span>)) }
+                    .<span class="ident">to_string</span>(),
+            )
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_group</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
+
+        <span class="kw">if</span> <span class="ident">offset</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="prelude-val">Some</span>(
+                <span class="kw">unsafe</span> { <span class="ident">StringsBuffer_UNSAFE_Get</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabList</span>.<span class="ident">_buffer</span>, <span class="ident">c_int</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">-</span> <span class="number">1</span>)) }
+                    .<span class="ident">to_string</span>(),
+            )
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
+        }
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "classicube_helpers";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

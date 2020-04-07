@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AddedEvent",""],["AddedEventHandler","new TabList entry"],["ChangedEvent",""],["ChangedEventHandler","TabList entry changed"],["RemovedEvent",""],["RemovedEventHandler","TabList entry removed"]]});
