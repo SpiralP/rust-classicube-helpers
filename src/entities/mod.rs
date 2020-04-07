@@ -5,6 +5,7 @@ use crate::event_handler::entity::*;
 use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 /// safe access to entities list and entity events
+#[derive(Default)]
 pub struct Entities {
     entities: Rc<UnsafeCell<HashMap<u8, Entity>>>,
 
@@ -14,7 +15,7 @@ pub struct Entities {
 
 impl Entities {
     /// register event listeners, listeners will unregister on drop
-    pub fn register() -> Self {
+    pub fn new() -> Self {
         let mut entities = HashMap::with_capacity(256);
 
         // add self entity which always exists
