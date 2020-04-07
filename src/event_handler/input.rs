@@ -10,9 +10,9 @@ make_event_handler!(
     (
         {
             name: key,
-            rust_type: Key,
+            rust_type: char,
             c_type: c_int,
-            to_rust: |key| key as Key,
+            to_rust: |key| key as u8 as char,
         },
     )
 );
