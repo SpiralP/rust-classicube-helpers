@@ -48,17 +48,16 @@ impl TickEventHandler {
             let ptr: *mut CallbackHandler<TickEvent> =
                 self.callback_handler.as_mut().get_unchecked_mut();
 
+            debug_assert!(Server.IsSinglePlayer == 0);
+            debug_assert!(Server.Tick.is_some());
+
             if Server.IsSinglePlayer == 0 {
                 if let Some(tick_original) = Server.Tick {
                     TICK_DETOUR
                         .initialize(tick_original, Self::callback)
                         .unwrap();
                     TICK_DETOUR.enable().unwrap();
-                } else {
-                    unimplemented!("Server.Tick null");
                 }
-            } else {
-                unimplemented!("IsSinglePlayer");
             }
 
             TICK_CALLBACK.with(|cell| {
