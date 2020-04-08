@@ -6,6 +6,6 @@ edition = "2018"
 
 [dependencies]
 classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
-detour = "0.7.1"
+detour = { git = "https://github.com/SpiralP/detour-rs.git" }
 futures = { version = "0.3.4", optional = true }
 paste = "0.1.10"

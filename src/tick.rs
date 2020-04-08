@@ -1,17 +1,19 @@
 use crate::callback_handler::CallbackHandler;
 use classicube_sys::*;
 use detour::static_detour;
-use std::{cell::Cell, pin::Pin};
-
-// hack so that our tick detour can call our custom callbacks
-// TODO we're only allowing 1 instance of TickEventListener...
-thread_local!(
-    static TICK_CALLBACK: Cell<Option<*mut CallbackHandler<TickEvent>>> = Cell::new(None);
-);
+use std::{
+    cell::RefCell,
+    rc::{Rc, Weak},
+};
 
 static_detour! {
   pub static TICK_DETOUR: unsafe extern "C" fn(*mut ScheduledTask);
 }
+
+thread_local!(
+    static TICK_CALLBACK_HANDLERS: RefCell<Vec<Weak<RefCell<CallbackHandler<TickEvent>>>>> =
+        RefCell::new(Vec::new());
+);
 
 #[derive(Debug)]
 pub struct TickEvent {
@@ -19,15 +21,13 @@ pub struct TickEvent {
 }
 
 pub struct TickEventHandler {
-    registered: bool,
-    callback_handler: Pin<Box<CallbackHandler<TickEvent>>>,
+    callback_handler: Rc<RefCell<CallbackHandler<TickEvent>>>,
 }
 
 impl TickEventHandler {
     pub fn new() -> Self {
         Self {
-            registered: false,
-            callback_handler: Box::pin(CallbackHandler::new()),
+            callback_handler: Rc::new(RefCell::new(CallbackHandler::new())),
         }
     }
 
@@ -36,61 +36,92 @@ impl TickEventHandler {
         F: FnMut(&TickEvent),
         F: 'static,
     {
-        self.callback_handler.on(callback);
+        self.callback_handler.borrow_mut().on(callback);
 
         unsafe {
             self.register_listener();
         }
     }
 
-    unsafe fn register_listener(&mut self) {
-        if !self.registered {
-            let ptr: *mut CallbackHandler<TickEvent> =
-                self.callback_handler.as_mut().get_unchecked_mut();
+    fn check_register_detour() {
+        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+            if callback_handlers.borrow().is_empty() {
+                // if we were empty, (re-)detour
 
-            debug_assert!(Server.IsSinglePlayer == 0);
-            debug_assert!(Server.Tick.is_some());
+                unsafe {
+                    let tick_original = Server.Tick.unwrap();
 
-            if Server.IsSinglePlayer == 0 {
-                if let Some(tick_original) = Server.Tick {
-                    TICK_DETOUR
-                        .initialize(tick_original, Self::callback)
-                        .unwrap();
+                    TICK_DETOUR.initialize(tick_original, Self::detour).unwrap();
                     TICK_DETOUR.enable().unwrap();
                 }
             }
+        });
+    }
 
-            TICK_CALLBACK.with(|cell| {
-                cell.set(Some(ptr));
-            });
+    fn check_unregister_detour() {
+        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+            if callback_handlers.borrow().is_empty() {
+                // if we are now empty, remove detour
 
-            self.registered = true;
-        }
+                unsafe {
+                    // ignore result
+                    let _ = TICK_DETOUR.disable();
+                }
+            }
+        });
+    }
+
+    unsafe fn register_listener(&mut self) {
+        Self::check_register_detour();
+
+        let weak = Rc::downgrade(&self.callback_handler);
+
+        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+            for callback_handler in &*callback_handlers.borrow() {
+                if callback_handler.ptr_eq(&weak) {
+                    // we already have a handler registered
+                    return;
+                }
+            }
+
+            callback_handlers.borrow_mut().push(weak);
+        });
     }
 
     unsafe fn unregister_listener(&mut self) {
-        if self.registered {
-            {
-                // ignore result
-                let _ = TICK_DETOUR.disable();
-            }
+        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+            let mut callback_handlers = callback_handlers.borrow_mut();
 
-            TICK_CALLBACK.with(|cell| {
-                cell.take();
-            });
-        }
+            let my_weak = Rc::downgrade(&self.callback_handler);
+
+            let mut i = 0;
+            while i != callback_handlers.len() {
+                // if it's our weak, remove it
+                if callback_handlers[i].ptr_eq(&my_weak) {
+                    callback_handlers.remove(i);
+                } else {
+                    i += 1;
+                }
+            }
+        });
+
+        Self::check_unregister_detour();
     }
 
-    fn callback(task: *mut ScheduledTask) {
+    fn detour(task: *mut ScheduledTask) {
         unsafe {
             // call original Server.Tick
             TICK_DETOUR.call(task);
         }
 
-        TICK_CALLBACK.with(|maybe_ptr| {
-            if let Some(ptr) = maybe_ptr.get() {
-                let callback_handler = unsafe { &mut *ptr };
-                callback_handler.handle_event(TickEvent { task });
+        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+            let callback_handlers = callback_handlers.borrow_mut();
+            for weak_callback_handler in &*callback_handlers {
+                if let Some(callback_handler) = weak_callback_handler.upgrade() {
+                    callback_handler
+                        .borrow_mut()
+                        .handle_event(TickEvent { task });
+                }
             }
         });
     }
