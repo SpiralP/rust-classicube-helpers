@@ -5,6 +5,7 @@ ALIASES["cfg_if"] = {};
 ALIASES["classicube_helpers"] = {};
 ALIASES["classicube_sys"] = {};
 ALIASES["detour"] = {};
+ALIASES["detours_sys"] = {};
 ALIASES["futures"] = {};
 ALIASES["futures_channel"] = {};
 ALIASES["futures_core"] = {};

@@ -109,21 +109,54 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">callback_handler</span>::<span class="ident">CallbackHandler</span>;
 <span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">detour</span>::<span class="ident">static_detour</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell</span>::<span class="ident">Cell</span>, <span class="ident">pin</span>::<span class="ident">Pin</span>};
-
-<span class="comment">// hack so that our tick detour can call our custom callbacks</span>
-<span class="comment">// TODO we&#39;re only allowing 1 instance of TickEventListener...</span>
-<span class="macro">thread_local</span><span class="macro">!</span>(
-    <span class="kw">static</span> <span class="ident">TICK_CALLBACK</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">CallbackHandler</span><span class="op">&lt;</span><span class="ident">TickEvent</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Cell</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>);
-);
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">cell</span>::<span class="ident">RefCell</span>,
+    <span class="ident">rc</span>::{<span class="ident">Rc</span>, <span class="ident">Weak</span>},
+};
 
 <span class="macro">static_detour</span><span class="macro">!</span> {
   <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TICK_DETOUR</span>: <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ScheduledTask</span>);
 }
+
+<span class="macro">thread_local</span><span class="macro">!</span>(
+    <span class="kw">static</span> <span class="ident">TICK_CALLBACK_HANDLERS</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">CallbackHandler</span><span class="op">&lt;</span><span class="ident">TickEvent</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
+        <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+);
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TickEvent</span> {
@@ -131,15 +164,13 @@
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TickEventHandler</span> {
-    <span class="ident">registered</span>: <span class="ident">bool</span>,
-    <span class="ident">callback_handler</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">CallbackHandler</span><span class="op">&lt;</span><span class="ident">TickEvent</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">callback_handler</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">CallbackHandler</span><span class="op">&lt;</span><span class="ident">TickEvent</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TickEventHandler</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">registered</span>: <span class="bool-val">false</span>,
-            <span class="ident">callback_handler</span>: <span class="ident">Box</span>::<span class="ident">pin</span>(<span class="ident">CallbackHandler</span>::<span class="ident">new</span>()),
+            <span class="ident">callback_handler</span>: <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">CallbackHandler</span>::<span class="ident">new</span>())),
         }
     }
 
@@ -148,61 +179,92 @@
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">TickEvent</span>),
         <span class="ident">F</span>: <span class="lifetime">&#39;static</span>,
     {
-        <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">on</span>(<span class="ident">callback</span>);
+        <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">borrow_mut</span>().<span class="ident">on</span>(<span class="ident">callback</span>);
 
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">register_listener</span>();
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">register_listener</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">registered</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">CallbackHandler</span><span class="op">&lt;</span><span class="ident">TickEvent</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">as_mut</span>().<span class="ident">get_unchecked_mut</span>();
+    <span class="kw">fn</span> <span class="ident">check_register_detour</span>() {
+        <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
+            <span class="kw">if</span> <span class="ident">callback_handlers</span>.<span class="ident">borrow</span>().<span class="ident">is_empty</span>() {
+                <span class="comment">// if we were empty, (re-)detour</span>
 
-            <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">Server</span>.<span class="ident">IsSinglePlayer</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);
-            <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">Server</span>.<span class="ident">Tick</span>.<span class="ident">is_some</span>());
+                <span class="kw">unsafe</span> {
+                    <span class="kw">let</span> <span class="ident">tick_original</span> <span class="op">=</span> <span class="ident">Server</span>.<span class="ident">Tick</span>.<span class="ident">unwrap</span>();
 
-            <span class="kw">if</span> <span class="ident">Server</span>.<span class="ident">IsSinglePlayer</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">tick_original</span>) <span class="op">=</span> <span class="ident">Server</span>.<span class="ident">Tick</span> {
-                    <span class="ident">TICK_DETOUR</span>
-                        .<span class="ident">initialize</span>(<span class="ident">tick_original</span>, <span class="self">Self</span>::<span class="ident">callback</span>)
-                        .<span class="ident">unwrap</span>();
+                    <span class="ident">TICK_DETOUR</span>.<span class="ident">initialize</span>(<span class="ident">tick_original</span>, <span class="self">Self</span>::<span class="ident">detour</span>).<span class="ident">unwrap</span>();
                     <span class="ident">TICK_DETOUR</span>.<span class="ident">enable</span>().<span class="ident">unwrap</span>();
                 }
             }
+        });
+    }
 
-            <span class="ident">TICK_CALLBACK</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-                <span class="ident">cell</span>.<span class="ident">set</span>(<span class="prelude-val">Some</span>(<span class="ident">ptr</span>));
-            });
+    <span class="kw">fn</span> <span class="ident">check_unregister_detour</span>() {
+        <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
+            <span class="kw">if</span> <span class="ident">callback_handlers</span>.<span class="ident">borrow</span>().<span class="ident">is_empty</span>() {
+                <span class="comment">// if we are now empty, remove detour</span>
 
-            <span class="self">self</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        }
+                <span class="kw">unsafe</span> {
+                    <span class="comment">// ignore result</span>
+                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TICK_DETOUR</span>.<span class="ident">disable</span>();
+                }
+            }
+        });
+    }
+
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">register_listener</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="self">Self</span>::<span class="ident">check_register_detour</span>();
+
+        <span class="kw">let</span> <span class="ident">weak</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">callback_handler</span>);
+
+        <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
+            <span class="kw">for</span> <span class="ident">callback_handler</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">callback_handlers</span>.<span class="ident">borrow</span>() {
+                <span class="kw">if</span> <span class="ident">callback_handler</span>.<span class="ident">ptr_eq</span>(<span class="kw-2">&amp;</span><span class="ident">weak</span>) {
+                    <span class="comment">// we already have a handler registered</span>
+                    <span class="kw">return</span>;
+                }
+            }
+
+            <span class="ident">callback_handlers</span>.<span class="ident">borrow_mut</span>().<span class="ident">push</span>(<span class="ident">weak</span>);
+        });
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">unregister_listener</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">registered</span> {
-            {
-                <span class="comment">// ignore result</span>
-                <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">TICK_DETOUR</span>.<span class="ident">disable</span>();
-            }
+        <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">callback_handlers</span> <span class="op">=</span> <span class="ident">callback_handlers</span>.<span class="ident">borrow_mut</span>();
 
-            <span class="ident">TICK_CALLBACK</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-                <span class="ident">cell</span>.<span class="ident">take</span>();
-            });
-        }
+            <span class="kw">let</span> <span class="ident">my_weak</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">callback_handler</span>);
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">while</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="ident">callback_handlers</span>.<span class="ident">len</span>() {
+                <span class="comment">// if it&#39;s our weak, remove it</span>
+                <span class="kw">if</span> <span class="ident">callback_handlers</span>[<span class="ident">i</span>].<span class="ident">ptr_eq</span>(<span class="kw-2">&amp;</span><span class="ident">my_weak</span>) {
+                    <span class="ident">callback_handlers</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
+                } <span class="kw">else</span> {
+                    <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                }
+            }
+        });
+
+        <span class="self">Self</span>::<span class="ident">check_unregister_detour</span>();
     }
 
-    <span class="kw">fn</span> <span class="ident">callback</span>(<span class="ident">task</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ScheduledTask</span>) {
+    <span class="kw">fn</span> <span class="ident">detour</span>(<span class="ident">task</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ScheduledTask</span>) {
         <span class="kw">unsafe</span> {
             <span class="comment">// call original Server.Tick</span>
             <span class="ident">TICK_DETOUR</span>.<span class="ident">call</span>(<span class="ident">task</span>);
         }
 
-        <span class="ident">TICK_CALLBACK</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">maybe_ptr</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ptr</span>) <span class="op">=</span> <span class="ident">maybe_ptr</span>.<span class="ident">get</span>() {
-                <span class="kw">let</span> <span class="ident">callback_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr</span> };
-                <span class="ident">callback_handler</span>.<span class="ident">handle_event</span>(<span class="ident">TickEvent</span> { <span class="ident">task</span> });
+        <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">callback_handlers</span> <span class="op">=</span> <span class="ident">callback_handlers</span>.<span class="ident">borrow_mut</span>();
+            <span class="kw">for</span> <span class="ident">weak_callback_handler</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">callback_handlers</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">callback_handler</span>) <span class="op">=</span> <span class="ident">weak_callback_handler</span>.<span class="ident">upgrade</span>() {
+                    <span class="ident">callback_handler</span>
+                        .<span class="ident">borrow_mut</span>()
+                        .<span class="ident">handle_event</span>(<span class="ident">TickEvent</span> { <span class="ident">task</span> });
+                }
             }
         });
     }
