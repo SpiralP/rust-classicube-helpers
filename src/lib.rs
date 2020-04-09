@@ -9,6 +9,8 @@ pub mod shared;
 pub mod tab_list;
 pub mod tick;
 
+pub use detour;
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! make_event_handler {
