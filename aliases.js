@@ -1,5 +1,4 @@
 var ALIASES = {};
-ALIASES["arrayvec"] = {};
 ALIASES["bitflags"] = {};
 ALIASES["cfg_if"] = {};
 ALIASES["classicube_helpers"] = {};
