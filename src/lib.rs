@@ -8,6 +8,7 @@ pub mod events;
 pub mod shared;
 pub mod tab_list;
 pub mod tick;
+pub mod with_inner;
 
 pub use detour;
 
