@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["AQUA",""],["BLACK",""],["BLUE",""],["GOLD",""],["GRAY",""],["GREEN",""],["LIME",""],["MAROON",""],["NAVY",""],["PINK",""],["PURPLE",""],["RED",""],["SILVER",""],["TEAL",""],["WHITE",""],["YELLOW",""]]});
