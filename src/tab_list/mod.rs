@@ -100,7 +100,7 @@ impl TabList {
         self.disconnected.on(callback)
     }
 
-    pub fn find_entry_by_nick_name(&self, search: String) -> Option<&TabListEntry> {
+    pub fn find_entry_by_nick_name(&self, search: &str) -> Option<&TabListEntry> {
         self.get_all()
             .iter()
             .find_map(|(_id, entry)| {
