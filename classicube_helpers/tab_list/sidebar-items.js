@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TabList","safe access to TabList"],["TabListEntry",""]]});
+initSidebarItems({"fn":[["remove_color",""]],"struct":[["TabList","safe access to TabList"],["TabListEntry",""]]});
