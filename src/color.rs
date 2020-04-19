@@ -1,0 +1,16 @@
+pub const BLACK: &str = "&0";
+pub const NAVY: &str = "&1";
+pub const GREEN: &str = "&2";
+pub const TEAL: &str = "&3";
+pub const MAROON: &str = "&4";
+pub const PURPLE: &str = "&5";
+pub const GOLD: &str = "&6";
+pub const SILVER: &str = "&7";
+pub const GRAY: &str = "&8";
+pub const BLUE: &str = "&9";
+pub const LIME: &str = "&a";
+pub const AQUA: &str = "&b";
+pub const RED: &str = "&c";
+pub const PINK: &str = "&d";
+pub const YELLOW: &str = "&e";
+pub const WHITE: &str = "&f";

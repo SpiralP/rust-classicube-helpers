@@ -3,6 +3,7 @@
 #![allow(clippy::redundant_closure_call)]
 
 mod callback_handler;
+pub mod color;
 pub mod entities;
 pub mod events;
 pub mod shared;
