@@ -106,11 +106,16 @@ impl TabList {
             .find_map(|(_id, entry)| {
                 // try exact match first
                 // this should match if there are no <Local> or tags on the front
-                let nick_name = entry.get_nick_name()?;
+                let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
                 if nick_name == search {
                     Some(entry)
                 } else {
-                    None
+                    // compare both with colors removed
+                    if remove_color(nick_name) == remove_color(&search) {
+                        Some(entry)
+                    } else {
+                        None
+                    }
                 }
             })
             .or_else(|| {
@@ -120,7 +125,7 @@ impl TabList {
                     .get_all()
                     .iter()
                     .filter_map(|(_id, entry)| {
-                        let nick_name = entry.get_nick_name()?;
+                        let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
 
                         // search: &0<Realm 7&0> &dAdo&elf Hit&aler
                         // entry :               ^
@@ -225,4 +230,24 @@ fn test_match_names() {
             .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
     });
     println!("{:#?}", positions);
+}
+
+pub fn remove_color<T: AsRef<str>>(text: T) -> String {
+    let mut found_ampersand = false;
+
+    text.as_ref()
+        .chars()
+        .filter(|&c| {
+            if c == '&' {
+                // we remove all amps but they're kept in chat if repeated
+                found_ampersand = true;
+                false
+            } else if found_ampersand {
+                found_ampersand = false;
+                false
+            } else {
+                true
+            }
+        })
+        .collect()
 }
