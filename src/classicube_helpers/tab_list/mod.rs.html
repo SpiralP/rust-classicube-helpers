@@ -285,7 +285,7 @@
             <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">clone</span>();
             <span class="ident">added</span>.<span class="ident">on</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">tab_list</span>::<span class="ident">AddedEvent</span> { <span class="ident">entry</span> }<span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">entries</span>.<span class="ident">get</span>() };
-                <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">entry</span>.<span class="ident">get_id</span>(), <span class="ident">entry</span>.<span class="ident">clone</span>());
+                <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">entry</span>.<span class="ident">get_id</span>(), <span class="kw-2">*</span><span class="ident">entry</span>);
             });
         }
 
@@ -293,7 +293,7 @@
             <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">clone</span>();
             <span class="ident">changed</span>.<span class="ident">on</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">tab_list</span>::<span class="ident">ChangedEvent</span> { <span class="ident">entry</span> }<span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">entries</span>.<span class="ident">get</span>() };
-                <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">entry</span>.<span class="ident">get_id</span>(), <span class="ident">entry</span>.<span class="ident">clone</span>());
+                <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">entry</span>.<span class="ident">get_id</span>(), <span class="kw-2">*</span><span class="ident">entry</span>);
             });
         }
 

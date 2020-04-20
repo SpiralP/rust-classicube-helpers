@@ -140,6 +140,17 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">callback_handler</span>::<span class="ident">CallbackHandler</span>;
 <span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="kw-2">*</span>;
@@ -252,9 +263,20 @@
     }
 
     <span class="kw">fn</span> <span class="ident">detour</span>(<span class="ident">task</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ScheduledTask</span>) {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="comment">// call original Server.Tick</span>
             <span class="ident">TICK_DETOUR</span>.<span class="ident">call</span>(<span class="ident">task</span>);
+        }
+
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
+        <span class="kw">unsafe</span> {
+            <span class="comment">// linux crashes from using trampoline :(</span>
+            <span class="comment">// it doesn&#39;t crash on normal function exports</span>
+            <span class="comment">// but since Server.Tick is a field on a struct it must be weird?</span>
+            <span class="ident">TICK_DETOUR</span>.<span class="ident">disable</span>().<span class="ident">unwrap</span>();
+            (<span class="ident">Server</span>.<span class="ident">Tick</span>.<span class="ident">unwrap</span>())(<span class="ident">task</span>);
+            <span class="ident">TICK_DETOUR</span>.<span class="ident">enable</span>().<span class="ident">unwrap</span>();
         }
 
         <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
