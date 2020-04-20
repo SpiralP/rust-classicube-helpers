@@ -109,9 +109,20 @@ impl TickEventHandler {
     }
 
     fn detour(task: *mut ScheduledTask) {
+        #[cfg(windows)]
         unsafe {
             // call original Server.Tick
             TICK_DETOUR.call(task);
+        }
+
+        #[cfg(not(windows))]
+        unsafe {
+            // linux crashes from using trampoline :(
+            // it doesn't crash on normal function exports
+            // but since Server.Tick is a field on a struct it must be weird?
+            TICK_DETOUR.disable().unwrap();
+            (Server.Tick.unwrap())(task);
+            TICK_DETOUR.enable().unwrap();
         }
 
         TICK_CALLBACK_HANDLERS.with(|callback_handlers| {

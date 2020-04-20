@@ -31,7 +31,7 @@ impl TabList {
             let entries = entries.clone();
             added.on(move |tab_list::AddedEvent { entry }| {
                 let entries = unsafe { &mut *entries.get() };
-                entries.insert(entry.get_id(), entry.clone());
+                entries.insert(entry.get_id(), *entry);
             });
         }
 
@@ -39,7 +39,7 @@ impl TabList {
             let entries = entries.clone();
             changed.on(move |tab_list::ChangedEvent { entry }| {
                 let entries = unsafe { &mut *entries.get() };
-                entries.insert(entry.get_id(), entry.clone());
+                entries.insert(entry.get_id(), *entry);
             });
         }
 
