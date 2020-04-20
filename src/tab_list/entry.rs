@@ -29,7 +29,7 @@ impl TabListEntry {
         }
     }
 
-    /// or "Text"
+    /// or "Text" or "list"
     pub fn get_nick_name(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
@@ -53,6 +53,15 @@ impl TabListEntry {
             )
         } else {
             None
+        }
+    }
+
+    pub fn get_rank(self) -> Option<u8> {
+        let rank = unsafe { TabList.GroupRanks[self.id as usize] };
+        if rank == 0 {
+            None
+        } else {
+            Some(rank)
         }
     }
 }

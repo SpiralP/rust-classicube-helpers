@@ -9,6 +9,12 @@ type EntriesType = HashMap<u8, TabListEntry>;
 /// safe access to TabList
 #[derive(Default)]
 pub struct TabList {
+    // we can use UnsafeCell because these simple HashMap tasks
+    // won't cause any extra events to be emitted, which would cause
+    // recursion
+    //
+    // the exposed on_* methods should not emit any events or we break
+    // borrowing rules
     entries: Rc<UnsafeCell<EntriesType>>,
     added: tab_list::AddedEventHandler,
     changed: tab_list::ChangedEventHandler,
@@ -30,6 +36,15 @@ impl TabList {
         {
             let entries = entries.clone();
             added.on(move |tab_list::AddedEvent { entry }| {
+                log::debug!(
+                    "TabList AddedEvent {:?} {:?}",
+                    [
+                        entry.get_real_name(),
+                        entry.get_nick_name(),
+                        entry.get_group(),
+                    ],
+                    entry.get_rank(),
+                );
                 let entries = unsafe { &mut *entries.get() };
                 entries.insert(entry.get_id(), *entry);
             });
@@ -121,6 +136,8 @@ impl TabList {
             .or_else(|| {
                 // exact match failed,
                 // match from the right, choose the one with most chars matched
+
+                // tablist doesn't include <Local map chat> or [xtitles], so match from right to left
                 let mut positions: Vec<_> = self
                     .get_all()
                     .iter()
@@ -197,6 +214,42 @@ impl TabList {
 }
 
 #[test]
+fn test_find_entry_by_nick_name() {
+    use classicube_sys::*;
+
+    let tab_list = TabList::new();
+
+    let pairs = [
+        ("goodlyay", "&a&f�&a Goodly"),
+        ("SpiralP", "&u&bs&fp&6i&fr&ba"),
+    ];
+
+    for (i, (real_nick, nick_name)) in pairs.iter().enumerate() {
+        unsafe {
+            let player = OwnedString::new(*real_nick);
+            let list = OwnedString::new(*nick_name);
+            let group = OwnedString::new("group");
+            TabList_Set(
+                i as _,
+                player.as_cc_string(),
+                list.as_cc_string(),
+                group.as_cc_string(),
+                0,
+            );
+
+            Event_RaiseInt(&mut TabListEvents.Added, i as _);
+        }
+    }
+
+    println!(
+        "{:#?}",
+        tab_list
+            .find_entry_by_nick_name("&7<Local>&u&u[&9Agg.Boo&9&u] &bs&fp&6i&fr&ba")
+            .unwrap()
+    );
+}
+
+#[test]
 fn test_match_names() {
     let search = "NotSpiralP";
     let names = vec!["hello", "SpiralP", "SpiralP2", "NotSpiralP", "SpiralP2"];
@@ -250,4 +303,18 @@ pub fn remove_color<T: AsRef<str>>(text: T) -> String {
             }
         })
         .collect()
+}
+
+#[test]
+fn test_remove_color() {
+    let pairs = [
+        ("SpiralP", "SpiralP"),
+        ("SpiralP", "SpiralP"),
+        ("SpiralP", "SpiralP"),
+        ("SpiralP", "&bS&fp&6i&fr&balP"),
+    ];
+
+    for (a, b) in &pairs {
+        assert_eq!(remove_color(b), *a);
+    }
 }

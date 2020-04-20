@@ -87,6 +87,8 @@ macro_rules! make_event_handler {
                             ptr as *mut ::std::os::raw::c_void,
                             Some(Self::callback),
                         );
+
+                        self.registered = false;
                     }
                 }
 
@@ -97,9 +99,13 @@ macro_rules! make_event_handler {
                     let event_handler = obj as *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]>;
                     let event_handler = unsafe { &mut *event_handler };
 
-                    event_handler.handle_event([<$event_name Event>] {
+                    let event = [<$event_name Event>] {
                         $($name: ($to_rust)($name), )*
-                    });
+                    };
+
+                    ::log::debug!("{} {:?}", stringify!([<$event_type>]), event);
+
+                    event_handler.handle_event(event);
                 }
 
                 // fn send_internal(
