@@ -19,6 +19,7 @@ ALIASES["kernel32"] = {};
 ALIASES["lazy_static"] = {};
 ALIASES["libc"] = {};
 ALIASES["libudis86_sys"] = {};
+ALIASES["log"] = {};
 ALIASES["memchr"] = {};
 ALIASES["mmap_fixed"] = {};
 ALIASES["paste"] = {};

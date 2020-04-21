@@ -136,6 +136,12 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">coerce_unsized</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unsize</span>)]</span>
@@ -226,6 +232,8 @@
                             <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> ::<span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_void</span>,
                             <span class="prelude-val">Some</span>(<span class="self">Self</span>::<span class="ident">callback</span>),
                         );
+
+                        <span class="self">self</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">false</span>;
                     }
                 }
 
@@ -236,9 +244,13 @@
                     <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">callback_handler</span>::<span class="ident">CallbackHandler</span><span class="op">&lt;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]<span class="op">&gt;</span>;
                     <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
 
-                    <span class="ident">event_handler</span>.<span class="ident">handle_event</span>([<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>] {
+                    <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>] {
                         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">to_rust</span>)(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>), )<span class="op">*</span>
-                    });
+                    };
+
+                    ::<span class="ident">log</span>::<span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;{} {:?}&quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>([<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span><span class="op">&gt;</span>]), <span class="ident">event</span>);
+
+                    <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">event</span>);
                 }
 
                 <span class="comment">// fn send_internal(</span>

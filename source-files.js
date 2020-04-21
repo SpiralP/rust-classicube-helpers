@@ -19,6 +19,7 @@ sourcesIndex["kernel32"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["lazy_static"] = {"name":"","files":["inline_lazy.rs","lib.rs"]};
 sourcesIndex["libc"] = {"name":"","dirs":[{"name":"windows","files":["mod.rs","msvc.rs"]}],"files":["fixed_width_ints.rs","lib.rs","macros.rs"]};
 sourcesIndex["libudis86_sys"] = {"name":"","files":["api.rs","itab.rs","lib.rs","types.rs"]};
+sourcesIndex["log"] = {"name":"","files":["lib.rs","macros.rs"]};
 sourcesIndex["memchr"] = {"name":"","dirs":[{"name":"x86","files":["avx.rs","mod.rs","sse2.rs"]}],"files":["fallback.rs","iter.rs","lib.rs","naive.rs"]};
 sourcesIndex["mmap_fixed"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["paste"] = {"name":"","files":["lib.rs"]};

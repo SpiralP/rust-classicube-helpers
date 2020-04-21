@@ -56,6 +56,15 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">StringsBuffer_UNSAFE_Get</span>, <span class="ident">TabList</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>;
@@ -88,7 +97,7 @@
         }
     }
 
-    <span class="doccomment">/// or &quot;Text&quot;</span>
+    <span class="doccomment">/// or &quot;Text&quot; or &quot;list&quot;</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_nick_name</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
 
@@ -112,6 +121,15 @@
             )
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_rank</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">rank</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">GroupRanks</span>[<span class="self">self</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] };
+        <span class="kw">if</span> <span class="ident">rank</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="prelude-val">None</span>
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">rank</span>)
         }
     }
 }
