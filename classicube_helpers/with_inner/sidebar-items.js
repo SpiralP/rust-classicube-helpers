@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["WithInner",""]]});
+initSidebarItems({"trait":[["CellGetSet",""],["OptionWithInner",""]]});
