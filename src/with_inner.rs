@@ -1,10 +1,28 @@
 use std::{
-    cell::RefCell,
+    cell::{Cell, RefCell},
     sync::{Mutex, RwLock},
     thread::LocalKey,
 };
 
-pub trait WithInner<O> {
+pub trait CellGetSet<T> {
+    fn get(&'static self) -> T;
+    fn set(&'static self, value: T);
+}
+
+impl<T> CellGetSet<T> for LocalKey<Cell<T>>
+where
+    T: Copy,
+{
+    fn get(&'static self) -> T {
+        self.with(|cell| cell.get())
+    }
+
+    fn set(&'static self, value: T) {
+        self.with(|cell| cell.set(value))
+    }
+}
+
+pub trait OptionWithInner<O> {
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T;
@@ -14,7 +32,7 @@ pub trait WithInner<O> {
         F: FnOnce(&mut O) -> T;
 }
 
-impl<O> WithInner<O> for LocalKey<RefCell<Option<O>>> {
+impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
@@ -42,7 +60,7 @@ impl<O> WithInner<O> for LocalKey<RefCell<Option<O>>> {
     }
 }
 
-impl<O> WithInner<O> for Mutex<Option<O>> {
+impl<O> OptionWithInner<O> for Mutex<Option<O>> {
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
@@ -66,7 +84,7 @@ impl<O> WithInner<O> for Mutex<Option<O>> {
     }
 }
 
-impl<O> WithInner<O> for RwLock<Option<O>> {
+impl<O> OptionWithInner<O> for RwLock<Option<O>> {
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,

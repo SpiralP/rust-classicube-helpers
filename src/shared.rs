@@ -103,6 +103,15 @@ impl<T> FutureShared<T> {
         let mut guard = self.lock().await;
         f(&mut guard)
     }
+
+    pub async fn with_async<F, FUT, R>(&mut self, f: F) -> R
+    where
+        F: FnOnce(&mut T) -> FUT,
+        FUT: futures::Future<Output = R>,
+    {
+        let mut guard = self.lock().await;
+        f(&mut guard).await
+    }
 }
 
 #[cfg(feature = "futures")]
