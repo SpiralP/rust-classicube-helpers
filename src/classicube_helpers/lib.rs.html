@@ -142,6 +142,7 @@
 <span id="142">142</span>
 <span id="143">143</span>
 <span id="144">144</span>
+<span id="145">145</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">coerce_unsized</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unsize</span>)]</span>
@@ -154,8 +155,9 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">shared</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tab_list</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tick</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">with_inner</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">traits</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">traits</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">detour</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
