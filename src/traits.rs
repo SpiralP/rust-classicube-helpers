@@ -23,16 +23,19 @@ where
 }
 
 pub trait OptionWithInner<O> {
+    #[must_use]
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T;
 
+    #[must_use]
     fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T;
 }
 
 impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
+    #[must_use]
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
@@ -46,6 +49,7 @@ impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
         })
     }
 
+    #[must_use]
     fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T,
@@ -61,6 +65,7 @@ impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
 }
 
 impl<O> OptionWithInner<O> for Mutex<Option<O>> {
+    #[must_use]
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
@@ -72,6 +77,7 @@ impl<O> OptionWithInner<O> for Mutex<Option<O>> {
         }
     }
 
+    #[must_use]
     fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T,
@@ -85,6 +91,7 @@ impl<O> OptionWithInner<O> for Mutex<Option<O>> {
 }
 
 impl<O> OptionWithInner<O> for RwLock<Option<O>> {
+    #[must_use]
     fn with_inner<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
@@ -96,6 +103,7 @@ impl<O> OptionWithInner<O> for RwLock<Option<O>> {
         }
     }
 
+    #[must_use]
     fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T,
