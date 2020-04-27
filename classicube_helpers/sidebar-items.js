@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["color",""],["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""],["traits",""]]});
+initSidebarItems({"mod":[["color",""],["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""]],"trait":[["CellGetSet",""],["OptionWithInner",""]]});
