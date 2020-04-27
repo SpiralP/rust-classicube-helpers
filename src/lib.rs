@@ -9,7 +9,7 @@ pub mod events;
 pub mod shared;
 pub mod tab_list;
 pub mod tick;
-pub mod traits;
+mod traits;
 
 pub use crate::traits::*;
 pub use detour;
