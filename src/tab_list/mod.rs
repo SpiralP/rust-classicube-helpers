@@ -213,7 +213,7 @@ impl TabList {
     }
 }
 
-#[ignore]
+#[cfg(not(feature = "ci"))]
 #[test]
 fn test_find_entry_by_nick_name() {
     use classicube_sys::*;
