@@ -318,6 +318,7 @@
 <span id="318">318</span>
 <span id="319">319</span>
 <span id="320">320</span>
+<span id="321">321</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">entry</span>;
 
@@ -534,6 +535,7 @@
     }
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ci&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_find_entry_by_nick_name</span>() {
     <span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="kw-2">*</span>;
