@@ -319,6 +319,19 @@
 <span id="319">319</span>
 <span id="320">320</span>
 <span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">entry</span>;
 
@@ -437,85 +450,90 @@
         <span class="self">self</span>.<span class="ident">disconnected</span>.<span class="ident">on</span>(<span class="ident">callback</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_entry_by_nick_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">get_all</span>()
+    <span class="kw">fn</span> <span class="ident">best_match</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+        <span class="comment">// tablist doesn&#39;t include &lt;Local map chat&gt; or [xtitles], so match from right to left</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">positions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">get_all</span>()
             .<span class="ident">iter</span>()
-            .<span class="ident">find_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
-                <span class="comment">// try exact match first</span>
-                <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
+            .<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">nick_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_nick_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
-                <span class="kw">if</span> <span class="ident">nick_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">search</span> {
+
+                <span class="comment">// search: &amp;0&lt;Realm 7&amp;0&gt; &amp;dAdo&amp;elf Hit&amp;aler</span>
+                <span class="comment">// entry :               ^</span>
+                <span class="comment">// &amp;3[arsclacxe&amp;3] &amp;aPee&amp;2birb</span>
+                <span class="comment">//                 ^</span>
+                <span class="comment">// &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod&#39;s Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert</span>
+                <span class="comment">//                                     ^</span>
+                <span class="comment">// &amp;c[&amp;4Co&amp;4m&amp;6mmu&amp;4nist&amp;c] TEHNOOBSHOW</span>
+                <span class="comment">//                          ^ (notice the color is at &quot;&amp;c[&quot;)</span>
+                <span class="comment">// &amp;3SpiralP</span>
+                <span class="comment">// ^ (matched by exact)</span>
+                <span class="comment">// &amp;7S0m</span>
+                <span class="comment">// ^ (matched by exact)</span>
+
+                <span class="comment">// fn remove_beginning_color(s: &amp;str) -&gt; &amp;str {</span>
+                <span class="comment">//     if s.len() &gt;= 2 &amp;&amp; s.starts_with(&#39;&amp;&#39;) {</span>
+                <span class="comment">//         let (_color, s) = s.split_at(2);</span>
+                <span class="comment">//         s</span>
+                <span class="comment">//     } else {</span>
+                <span class="comment">//         s</span>
+                <span class="comment">//     }</span>
+                <span class="comment">// }</span>
+
+                <span class="comment">// remove color</span>
+                <span class="kw">let</span> <span class="ident">search</span> <span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>);
+                <span class="kw">let</span> <span class="ident">real_nick</span> <span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>);
+
+                <span class="comment">// search in reverse</span>
+                <span class="kw">let</span> <span class="ident">search</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">search</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
+                <span class="kw">let</span> <span class="ident">real_nick</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">real_nick</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
+
+                <span class="ident">search</span>.<span class="ident">find</span>(<span class="kw-2">&amp;</span><span class="ident">real_nick</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">pos</span><span class="op">|</span> (<span class="ident">entry</span>, <span class="ident">nick_name</span>, <span class="ident">pos</span>))
+            })
+            .<span class="ident">collect</span>();
+
+        <span class="comment">// searching from the end, right to left</span>
+        <span class="comment">// search = NotSpiralP</span>
+        <span class="comment">// SpiralP     pos = 0</span>
+        <span class="comment">// NotSpiralP  pos = 0</span>
+        <span class="comment">// SpiralP2    not found</span>
+
+        <span class="comment">// choose smallest find position (most matched from end to start)</span>
+        <span class="comment">// then choose largest name size for equal positions</span>
+        <span class="ident">positions</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span>(<span class="ident">_entry1</span>, <span class="ident">name1</span>, <span class="ident">pos1</span>), (<span class="ident">_entry2</span>, <span class="ident">name2</span>, <span class="ident">pos2</span>)<span class="op">|</span> {
+            <span class="ident">pos1</span>.<span class="ident">partial_cmp</span>(<span class="ident">pos2</span>)
+                .<span class="ident">unwrap</span>()
+                .<span class="ident">then_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
+        });
+
+        <span class="ident">positions</span>.<span class="ident">first</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">entry</span>, <span class="ident">_name</span>, <span class="ident">_pos</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">entry</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_entry_by_nick_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">option</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_all</span>().<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
+            <span class="comment">// try exact match first</span>
+            <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
+            <span class="kw">let</span> <span class="ident">nick_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_nick_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
+            <span class="kw">if</span> <span class="ident">nick_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">search</span> {
+                <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
+            } <span class="kw">else</span> {
+                <span class="comment">// compare with colors removed</span>
+                <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
                 } <span class="kw">else</span> {
-                    <span class="comment">// compare both with colors removed</span>
-                    <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="ident">nick_name</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
-                        <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
-                    } <span class="kw">else</span> {
-                        <span class="prelude-val">None</span>
-                    }
+                    <span class="prelude-val">None</span>
                 }
-            })
-            .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                <span class="comment">// exact match failed,</span>
-                <span class="comment">// match from the right, choose the one with most chars matched</span>
+            }
+        });
 
-                <span class="comment">// tablist doesn&#39;t include &lt;Local map chat&gt; or [xtitles], so match from right to left</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">positions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
-                    .<span class="ident">get_all</span>()
-                    .<span class="ident">iter</span>()
-                    .<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
-                        <span class="kw">let</span> <span class="ident">nick_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_nick_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">a</span>) <span class="op">=</span> <span class="ident">option</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">a</span>)
+        } <span class="kw">else</span> {
+            <span class="comment">// exact match failed,</span>
+            <span class="comment">// match from the right, choose the one with most chars matched</span>
 
-                        <span class="comment">// search: &amp;0&lt;Realm 7&amp;0&gt; &amp;dAdo&amp;elf Hit&amp;aler</span>
-                        <span class="comment">// entry :               ^</span>
-                        <span class="comment">// &amp;3[arsclacxe&amp;3] &amp;aPee&amp;2birb</span>
-                        <span class="comment">//                 ^</span>
-                        <span class="comment">// &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod&#39;s Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert</span>
-                        <span class="comment">//                                     ^</span>
-                        <span class="comment">// &amp;c[&amp;4Co&amp;4m&amp;6mmu&amp;4nist&amp;c] TEHNOOBSHOW</span>
-                        <span class="comment">//                          ^ (notice the color is at &quot;&amp;c[&quot;)</span>
-                        <span class="comment">// &amp;3SpiralP</span>
-                        <span class="comment">// ^ (matched by exact)</span>
-                        <span class="comment">// &amp;7S0m</span>
-                        <span class="comment">// ^ (matched by exact)</span>
-
-                        <span class="kw">fn</span> <span class="ident">remove_beginning_color</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
-                            <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">2</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&#39;&amp;&#39;</span>) {
-                                <span class="kw">let</span> (<span class="ident">_color</span>, <span class="ident">s</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">split_at</span>(<span class="number">2</span>);
-                                <span class="ident">s</span>
-                            } <span class="kw">else</span> {
-                                <span class="ident">s</span>
-                            }
-                        }
-
-                        <span class="comment">// remove color at beginning</span>
-                        <span class="kw">let</span> <span class="ident">search</span> <span class="op">=</span> <span class="ident">remove_beginning_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>);
-                        <span class="kw">let</span> <span class="ident">real_nick</span> <span class="op">=</span> <span class="ident">remove_beginning_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>);
-
-                        <span class="comment">// search in reverse</span>
-                        <span class="kw">let</span> <span class="ident">search</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">search</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
-                        <span class="kw">let</span> <span class="ident">real_nick</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">real_nick</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
-
-                        <span class="ident">search</span>.<span class="ident">find</span>(<span class="kw-2">&amp;</span><span class="ident">real_nick</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">pos</span><span class="op">|</span> (<span class="ident">entry</span>, <span class="ident">nick_name</span>, <span class="ident">pos</span>))
-                    })
-                    .<span class="ident">collect</span>();
-
-                <span class="comment">// searching from the end, right to left</span>
-                <span class="comment">// search = NotSpiralP</span>
-                <span class="comment">// SpiralP     pos = 0</span>
-                <span class="comment">// NotSpiralP  pos = 0</span>
-                <span class="comment">// SpiralP2    not found</span>
-
-                <span class="comment">// choose smallest find position (most matched from end to start)</span>
-                <span class="comment">// then choose largest name size for equal positions</span>
-                <span class="ident">positions</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span>(<span class="ident">_entry1</span>, <span class="ident">name1</span>, <span class="ident">pos1</span>), (<span class="ident">_entry2</span>, <span class="ident">name2</span>, <span class="ident">pos2</span>)<span class="op">|</span> {
-                    <span class="ident">pos1</span>.<span class="ident">partial_cmp</span>(<span class="ident">pos2</span>)
-                        .<span class="ident">unwrap</span>()
-                        .<span class="ident">then_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
-                });
-
-                <span class="ident">positions</span>.<span class="ident">first</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">entry</span>, <span class="ident">_name</span>, <span class="ident">_pos</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">entry</span>)
-            })
+            <span class="self">self</span>.<span class="ident">best_match</span>(<span class="ident">search</span>)
+        }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
@@ -545,6 +563,7 @@
     <span class="kw">let</span> <span class="ident">pairs</span> <span class="op">=</span> [
         (<span class="string">&quot;goodlyay&quot;</span>, <span class="string">&quot;&amp;a&amp;f�&amp;a Goodly&quot;</span>),
         (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;&amp;u&amp;bs&amp;fp&amp;6i&amp;fr&amp;ba&quot;</span>),
+        (<span class="string">&quot;&quot;</span>, <span class="string">&quot;&amp;9&amp;9\u{b}&amp;9 &amp;rSp&amp;9&amp;3a&amp;9c&amp;1e&quot;</span>),
     ];
 
     <span class="kw">for</span> (<span class="ident">i</span>, (<span class="ident">real_nick</span>, <span class="ident">nick_name</span>)) <span class="kw">in</span> <span class="ident">pairs</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
@@ -568,6 +587,13 @@
         <span class="string">&quot;{:#?}&quot;</span>,
         <span class="ident">tab_list</span>
             .<span class="ident">find_entry_by_nick_name</span>(<span class="string">&quot;&amp;7&lt;Local&gt;&amp;u&amp;u[&amp;9Agg.Boo&amp;9&amp;u] &amp;bs&amp;fp&amp;6i&amp;fr&amp;ba&quot;</span>)
+            .<span class="ident">unwrap</span>()
+    );
+
+    <span class="macro">println</span><span class="macro">!</span>(
+        <span class="string">&quot;{:#?}&quot;</span>,
+        <span class="ident">tab_list</span>
+            .<span class="ident">find_entry_by_nick_name</span>(<span class="string">&quot;&amp;9[&amp;b� &amp;rBi&amp;9r&amp;1d &amp;b�&amp;9] &amp;9\u{b}&amp;9 &amp;rSp&amp;3a&amp;9c&amp;1e&quot;</span>)
             .<span class="ident">unwrap</span>()
     );
 }
