@@ -115,85 +115,90 @@ impl TabList {
         self.disconnected.on(callback)
     }
 
-    pub fn find_entry_by_nick_name(&self, search: &str) -> Option<&TabListEntry> {
-        self.get_all()
+    fn best_match(&self, search: &str) -> Option<&TabListEntry> {
+        // tablist doesn't include <Local map chat> or [xtitles], so match from right to left
+        let mut positions: Vec<_> = self
+            .get_all()
             .iter()
-            .find_map(|(_id, entry)| {
-                // try exact match first
-                // this should match if there are no <Local> or tags on the front
+            .filter_map(|(_id, entry)| {
                 let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
-                if nick_name == search {
+
+                // search: &0<Realm 7&0> &dAdo&elf Hit&aler
+                // entry :               ^
+                // &3[arsclacxe&3] &aPee&2birb
+                //                 ^
+                // &x<&xVIP&x> &x[&lGod's Architect&x] &x[&eΩ&x] Kylbert
+                //                                     ^
+                // &c[&4Co&4m&6mmu&4nist&c] TEHNOOBSHOW
+                //                          ^ (notice the color is at "&c[")
+                // &3SpiralP
+                // ^ (matched by exact)
+                // &7S0m
+                // ^ (matched by exact)
+
+                // fn remove_beginning_color(s: &str) -> &str {
+                //     if s.len() >= 2 && s.starts_with('&') {
+                //         let (_color, s) = s.split_at(2);
+                //         s
+                //     } else {
+                //         s
+                //     }
+                // }
+
+                // remove color
+                let search = remove_color(&search);
+                let real_nick = remove_color(&nick_name);
+
+                // search in reverse
+                let search: String = search.chars().rev().collect();
+                let real_nick: String = real_nick.chars().rev().collect();
+
+                search.find(&real_nick).map(|pos| (entry, nick_name, pos))
+            })
+            .collect();
+
+        // searching from the end, right to left
+        // search = NotSpiralP
+        // SpiralP     pos = 0
+        // NotSpiralP  pos = 0
+        // SpiralP2    not found
+
+        // choose smallest find position (most matched from end to start)
+        // then choose largest name size for equal positions
+        positions.sort_unstable_by(|(_entry1, name1, pos1), (_entry2, name2, pos2)| {
+            pos1.partial_cmp(pos2)
+                .unwrap()
+                .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
+        });
+
+        positions.first().map(|(entry, _name, _pos)| *entry)
+    }
+
+    pub fn find_entry_by_nick_name(&self, search: &str) -> Option<&TabListEntry> {
+        let option = self.get_all().iter().find_map(|(_id, entry)| {
+            // try exact match first
+            // this should match if there are no <Local> or tags on the front
+            let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
+            if nick_name == search {
+                Some(entry)
+            } else {
+                // compare with colors removed
+                if remove_color(&nick_name) == remove_color(&search) {
                     Some(entry)
                 } else {
-                    // compare both with colors removed
-                    if remove_color(nick_name) == remove_color(&search) {
-                        Some(entry)
-                    } else {
-                        None
-                    }
+                    None
                 }
-            })
-            .or_else(|| {
-                // exact match failed,
-                // match from the right, choose the one with most chars matched
+            }
+        });
 
-                // tablist doesn't include <Local map chat> or [xtitles], so match from right to left
-                let mut positions: Vec<_> = self
-                    .get_all()
-                    .iter()
-                    .filter_map(|(_id, entry)| {
-                        let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
+        if let Some(a) = option {
+            Some(a)
+        } else {
+            // exact match failed,
+            // match from the right, choose the one with most chars matched
 
-                        // search: &0<Realm 7&0> &dAdo&elf Hit&aler
-                        // entry :               ^
-                        // &3[arsclacxe&3] &aPee&2birb
-                        //                 ^
-                        // &x<&xVIP&x> &x[&lGod's Architect&x] &x[&eΩ&x] Kylbert
-                        //                                     ^
-                        // &c[&4Co&4m&6mmu&4nist&c] TEHNOOBSHOW
-                        //                          ^ (notice the color is at "&c[")
-                        // &3SpiralP
-                        // ^ (matched by exact)
-                        // &7S0m
-                        // ^ (matched by exact)
-
-                        fn remove_beginning_color(s: &str) -> &str {
-                            if s.len() >= 2 && s.starts_with('&') {
-                                let (_color, s) = s.split_at(2);
-                                s
-                            } else {
-                                s
-                            }
-                        }
-
-                        // remove color at beginning
-                        let search = remove_beginning_color(&search);
-                        let real_nick = remove_beginning_color(&nick_name);
-
-                        // search in reverse
-                        let search: String = search.chars().rev().collect();
-                        let real_nick: String = real_nick.chars().rev().collect();
-
-                        search.find(&real_nick).map(|pos| (entry, nick_name, pos))
-                    })
-                    .collect();
-
-                // searching from the end, right to left
-                // search = NotSpiralP
-                // SpiralP     pos = 0
-                // NotSpiralP  pos = 0
-                // SpiralP2    not found
-
-                // choose smallest find position (most matched from end to start)
-                // then choose largest name size for equal positions
-                positions.sort_unstable_by(|(_entry1, name1, pos1), (_entry2, name2, pos2)| {
-                    pos1.partial_cmp(pos2)
-                        .unwrap()
-                        .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
-                });
-
-                positions.first().map(|(entry, _name, _pos)| *entry)
-            })
+            self.best_match(search)
+        }
     }
 
     pub fn get(&self, id: u8) -> Option<&TabListEntry> {
@@ -223,6 +228,7 @@ fn test_find_entry_by_nick_name() {
     let pairs = [
         ("goodlyay", "&a&f�&a Goodly"),
         ("SpiralP", "&u&bs&fp&6i&fr&ba"),
+        ("", "&9&9\u{b}&9 &rSp&9&3a&9c&1e"),
     ];
 
     for (i, (real_nick, nick_name)) in pairs.iter().enumerate() {
@@ -246,6 +252,13 @@ fn test_find_entry_by_nick_name() {
         "{:#?}",
         tab_list
             .find_entry_by_nick_name("&7<Local>&u&u[&9Agg.Boo&9&u] &bs&fp&6i&fr&ba")
+            .unwrap()
+    );
+
+    println!(
+        "{:#?}",
+        tab_list
+            .find_entry_by_nick_name("&9[&b� &rBi&9r&1d &b�&9] &9\u{b}&9 &rSp&3a&9c&1e")
             .unwrap()
     );
 }
