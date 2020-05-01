@@ -9,7 +9,7 @@ classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
 detour = { git = "https://github.com/SpiralP/detour-rs.git" }
 futures = { version = "0.3.4", optional = true }
 log = "0.4.8"
-paste = "0.1.10"
+paste = "0.1.11"
 
 [features]
 ci = []

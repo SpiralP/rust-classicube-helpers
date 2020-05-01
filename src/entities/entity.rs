@@ -60,7 +60,7 @@ impl Entity {
 
     pub fn get_display_name(self) -> String {
         let entity = unsafe { self.get_entity() };
-        let c_str = unsafe { CStr::from_ptr(&entity.DisplayNameRaw as *const i8) };
+        let c_str = unsafe { CStr::from_ptr(&entity.NameRaw as *const i8) };
         c_str.to_string_lossy().to_string()
     }
 
