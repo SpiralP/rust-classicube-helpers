@@ -78,15 +78,9 @@
 <span id="78">78</span>
 <span id="79">79</span>
 <span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">make_event_handler</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::{<span class="ident">c_float</span>, <span class="ident">c_int</span>};
 
 <span class="macro">make_event_handler</span><span class="macro">!</span>(
     <span class="doccomment">/// Pointer position changed (Arg is delta from last position)</span>
@@ -149,24 +143,18 @@
     <span class="doccomment">/// Raw pointer position changed (Arg is delta)</span>
     <span class="ident">Pointer</span>,
     <span class="ident">RawMoved</span>,
-    <span class="ident">Move</span>,
+    <span class="ident">RawMove</span>,
     (
         {
-            <span class="ident">name</span>: <span class="ident">idx</span>,
-            <span class="ident">rust_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">c_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>,
-        },
-        {
             <span class="ident">name</span>: <span class="ident">x_delta</span>,
-            <span class="ident">rust_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">c_type</span>: <span class="ident">c_int</span>,
+            <span class="ident">rust_type</span>: <span class="ident">c_float</span>,
+            <span class="ident">c_type</span>: <span class="ident">c_float</span>,
             <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>,
         },
         {
             <span class="ident">name</span>: <span class="ident">y_delta</span>,
-            <span class="ident">rust_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">c_type</span>: <span class="ident">c_int</span>,
+            <span class="ident">rust_type</span>: <span class="ident">c_float</span>,
+            <span class="ident">c_type</span>: <span class="ident">c_float</span>,
             <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>,
         },
     )
