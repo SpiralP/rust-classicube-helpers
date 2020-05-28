@@ -2,6 +2,7 @@ mod entity;
 
 pub use self::entity::{Entity, ENTITY_SELF_ID};
 use crate::events::entity::*;
+use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
 use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 /// safe access to entities list and entity events
@@ -42,10 +43,25 @@ impl Entities {
             });
         }
 
-        Self {
+        let mut s = Self {
             entities,
             added,
             removed,
+        };
+
+        s.update_to_real_entities();
+
+        s
+    }
+
+    fn update_to_real_entities(&mut self) {
+        let entities = unsafe { &mut *self.entities.get() };
+        entities.clear();
+
+        for id in 0..ENTITIES_MAX_COUNT {
+            if !unsafe { Entities.List[id as usize] }.is_null() {
+                entities.insert(id as u8, Entity::from_id(id as u8));
+            }
         }
     }
 

@@ -2,6 +2,7 @@ mod entry;
 
 pub use self::entry::TabListEntry;
 use crate::events::{net, tab_list};
+use classicube_sys::{TabList, TABLIST_MAX_NAMES};
 use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
 
 type EntriesType = HashMap<u8, TabListEntry>;
@@ -74,12 +75,27 @@ impl TabList {
             });
         }
 
-        Self {
+        let mut s = Self {
             entries,
             added,
             changed,
             removed,
             disconnected,
+        };
+
+        s.update_to_real_entries();
+
+        s
+    }
+
+    fn update_to_real_entries(&mut self) {
+        let entries = unsafe { &mut *self.entries.get() };
+        entries.clear();
+
+        for id in 0..TABLIST_MAX_NAMES {
+            if unsafe { TabList.NameOffsets[id as usize] } != 0 {
+                entries.insert(id as u8, TabListEntry::from_id(id as u8));
+            }
         }
     }
 
