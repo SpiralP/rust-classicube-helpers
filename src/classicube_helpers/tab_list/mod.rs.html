@@ -332,11 +332,28 @@
 <span id="332">332</span>
 <span id="333">333</span>
 <span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">entry</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">entry</span>::<span class="ident">TabListEntry</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">events</span>::{<span class="ident">net</span>, <span class="ident">tab_list</span>};
+<span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">TabList</span>, <span class="ident">TABLIST_MAX_NAMES</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell</span>::<span class="ident">UnsafeCell</span>, <span class="ident">collections</span>::<span class="ident">HashMap</span>, <span class="ident">rc</span>::<span class="ident">Rc</span>};
 
 <span class="kw">type</span> <span class="ident">EntriesType</span> <span class="op">=</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">TabListEntry</span><span class="op">&gt;</span>;
@@ -409,12 +426,27 @@
             });
         }
 
-        <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">entries</span>,
             <span class="ident">added</span>,
             <span class="ident">changed</span>,
             <span class="ident">removed</span>,
             <span class="ident">disconnected</span>,
+        };
+
+        <span class="ident">s</span>.<span class="ident">update_to_real_entries</span>();
+
+        <span class="ident">s</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">update_to_real_entries</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get</span>() };
+        <span class="ident">entries</span>.<span class="ident">clear</span>();
+
+        <span class="kw">for</span> <span class="ident">id</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">TABLIST_MAX_NAMES</span> {
+            <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] } <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">TabListEntry</span>::<span class="ident">from_id</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>));
+            }
         }
     }
 
@@ -668,4 +700,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "classicube_helpers";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "classicube_helpers";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
