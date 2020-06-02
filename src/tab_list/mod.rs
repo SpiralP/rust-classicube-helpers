@@ -192,7 +192,7 @@ impl TabList {
 
     pub fn find_entry_by_nick_name(&self, search: &str) -> Option<&TabListEntry> {
         let option = self.get_all().iter().find_map(|(_id, entry)| {
-            // try exact match first
+            // try exact nick_name match first
             // this should match if there are no <Local> or tags on the front
             let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
             if nick_name == search {
@@ -210,10 +210,30 @@ impl TabList {
         if let Some(a) = option {
             Some(a)
         } else {
-            // exact match failed,
-            // match from the right, choose the one with most chars matched
+            let option = self.get_all().iter().find_map(|(_id, entry)| {
+                // try exact real_name match first
+                // this should match if there are no <Local> or tags on the front
+                let real_name = entry.get_real_name()?.replace(" &7(AFK)", "");
+                if real_name == search {
+                    Some(entry)
+                } else {
+                    // compare with colors removed
+                    if remove_color(&real_name) == remove_color(&search) {
+                        Some(entry)
+                    } else {
+                        None
+                    }
+                }
+            });
 
-            self.best_match(search)
+            if let Some(a) = option {
+                Some(a)
+            } else {
+                // exact match failed,
+                // match from the right, choose the one with most chars matched
+
+                self.best_match(search)
+            }
         }
     }
 
@@ -245,6 +265,7 @@ fn test_find_entry_by_nick_name() {
         ("goodlyay", "&a&f�&a Goodly"),
         ("SpiralP", "&u&bs&fp&6i&fr&ba"),
         ("", "&9&9\u{b}&9 &rSp&9&3a&9c&1e"),
+        ("SpiralP2", "&7SpiralP2    &f0"),
     ];
 
     for (i, (real_nick, nick_name)) in pairs.iter().enumerate() {
