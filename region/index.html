@@ -11,7 +11,7 @@ memory, with the same properties.</em></p>
 <p>This crate is <a href="https://crates.io/crates/region">on crates.io</a> and can be
 used by adding <code>region</code> to your dependencies in your project's <code>Cargo.toml</code>.</p>
 <pre><code class="language-toml">[dependencies]
-region = &quot;2.1.2&quot;
+region = &quot;2.2.0&quot;
 </code></pre>
 <p>and this to your crate root:</p>
 
@@ -35,10 +35,10 @@ region = &quot;2.1.2&quot;
 <span class="kw">let</span> <span class="ident">qr</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">query_range</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;
 
 <span class="comment">// VirtualProtect | mprotect</span>
-<span class="ident">region</span>::<span class="ident">protect</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">ReadWriteExecute</span>)<span class="question-mark">?</span>;
+<span class="ident">region</span>::<span class="ident">protect</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
 
 <span class="comment">// ... you can also temporarily change a region&#39;s protection</span>
-<span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">protect_with_handle</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">ReadWriteExecute</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">protect_with_handle</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
 
 <span class="comment">// VirtualLock | mlock</span>
 <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">lock</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;</pre></div>
