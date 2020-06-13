@@ -1,19 +1,9 @@
 use crate::{callback_handler::CallbackHandler, CellGetSet};
 use classicube_sys::*;
-use detour::static_detour;
 use std::{
     cell::{Cell, RefCell},
     rc::{Rc, Weak},
 };
-
-static_detour! {
-  pub static TICK_DETOUR: unsafe extern "C" fn(*mut ScheduledTask);
-}
-
-thread_local!(
-    static OLD_CALLBACK: RefCell<Option<unsafe extern "C" fn(task: *mut ScheduledTask)>> =
-        Default::default();
-);
 
 thread_local!(
     static CALLBACK_REGISTERED: Cell<bool> = Cell::new(false);
@@ -56,32 +46,9 @@ impl TickEventHandler {
         if !CALLBACK_REGISTERED.get() {
             CALLBACK_REGISTERED.set(true);
 
-            // detour for 1 function call then replace the task's callback
-            //
-            // I'm doing this because then we don't have to use a trampoline or have
-            // problems on non-windows
-            fn hooker(task: *mut ScheduledTask) {
-                unsafe {
-                    TICK_DETOUR.disable().unwrap();
-                }
-
-                let task = unsafe { &mut *task };
-
-                OLD_CALLBACK.with(|cell| {
-                    let old_callback = &mut *cell.borrow_mut();
-                    *old_callback = Some(task.Callback.unwrap());
-                });
-
-                task.Callback = Some(TickEventHandler::hook);
-
-                TickEventHandler::hook(task);
-            }
-
             unsafe {
-                TICK_DETOUR
-                    .initialize(Server.Tick.unwrap(), hooker)
-                    .unwrap();
-                TICK_DETOUR.enable().unwrap();
+                // 60 fps
+                ScheduledTask_Add(GAME_NET_TICKS, Some(Self::hook));
             }
         }
     }
@@ -122,15 +89,6 @@ impl TickEventHandler {
     }
 
     extern "C" fn hook(task: *mut ScheduledTask) {
-        OLD_CALLBACK.with(|cell| {
-            let old_callback = &*cell.borrow();
-            let old_callback = old_callback.unwrap();
-            unsafe {
-                // call original task.Callback
-                old_callback(task);
-            }
-        });
-
         TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
             let callback_handlers = callback_handlers.borrow_mut();
             for weak_callback_handler in &*callback_handlers {
