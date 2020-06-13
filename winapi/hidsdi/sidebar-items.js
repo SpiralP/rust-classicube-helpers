@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["HIDD_ATTRIBUTES",""],["HIDD_CONFIGURATION",""]],"type":[["PHIDD_ATTRIBUTES",""],["PHIDD_CONFIGURATION",""]]});

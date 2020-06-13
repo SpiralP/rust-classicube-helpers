@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\git\checkouts\rust-classicube-sys-db50d2c321df658a\6b5742a\src\world.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>world.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../classicube_sys/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\git\checkouts\rust-classicube-sys-db50d2c321df658a\d27050f\src\world.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>world.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../classicube_sys/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -19,31 +19,9 @@
 <span id="19">19</span>
 <span id="20">20</span>
 <span id="21">21</span>
-<span id="22">22</span>
-<span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
-<span id="27">27</span>
-<span id="28">28</span>
-<span id="29">29</span>
-<span id="30">30</span>
-<span id="31">31</span>
-<span id="32">32</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// static CC_INLINE BlockID World_GetBlock(int x, int y, int z) {</span>
-<span class="comment">// 	int i = World_Pack(x, y, z);</span>
-<span class="comment">// 	return (BlockID)((World.Blocks[i] | (World.Blocks2[i] &lt;&lt; 8)) &amp; World.IDMask);</span>
-<span class="comment">// }</span>
-
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bindings</span>::<span class="kw-2">*</span>, <span class="ident">World</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>, <span class="ident">slice</span>};
-
-<span class="comment">// /* Unpacka an index into x,y,z (slow!) */</span>
-<span class="comment">// #define World_Unpack(idx, x, y, z) x = idx % World.Width; z = (idx /</span>
-<span class="comment">// World.Width) % World.Length; y = (idx / World.Width) / World.Length; /* Packs</span>
-<span class="comment">// an x,y,z into a single index */ #define World_Pack(x, y, z) (((y) *</span>
-<span class="comment">// World.Length + (z)) * World.Width + (x))</span>
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">World_Pack</span>(<span class="ident">x</span>: <span class="ident">c_int</span>, <span class="ident">y</span>: <span class="ident">c_int</span>, <span class="ident">z</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
     ((<span class="ident">y</span>) <span class="op">*</span> <span class="kw">unsafe</span> { <span class="ident">World</span>.<span class="ident">Length</span> } <span class="op">+</span> (<span class="ident">z</span>)) <span class="op">*</span> <span class="kw">unsafe</span> { <span class="ident">World</span>.<span class="ident">Width</span> } <span class="op">+</span> (<span class="ident">x</span>)

@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["UsbdPipeTypeBulk",""],["UsbdPipeTypeControl",""],["UsbdPipeTypeInterrupt",""],["UsbdPipeTypeIsochronous",""]],"struct":[["USBD_ISO_PACKET_DESCRIPTOR",""],["USBD_PIPE_TYPE",""]],"type":[["PUSBD_ISO_PACKET_DESCRIPTOR",""],["USBD_STATUS",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"static":[["TICK_DETOUR",""]],"struct":[["TickEvent",""],["TickEventHandler",""]]});
+initSidebarItems({"struct":[["TickEvent",""],["TickEventHandler",""]]});

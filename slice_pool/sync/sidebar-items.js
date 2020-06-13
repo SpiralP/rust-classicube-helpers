@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SliceBox","An allocation in an owned `SlicePool`."],["SlicePool","A thread-safe interface for allocating chunks in an owned slice."]],"trait":[["Sliceable","Interface for any slice compatible with a thread-safe `SlicePool`."]]});
