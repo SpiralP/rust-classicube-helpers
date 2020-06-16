@@ -47,8 +47,8 @@ impl TickEventHandler {
             CALLBACK_REGISTERED.set(true);
 
             unsafe {
-                // 60 fps
-                ScheduledTask_Add(GAME_NET_TICKS, Some(Self::hook));
+                // modify accumulator so that we match frame rate
+                ScheduledTask_Add(0.0, Some(Self::hook));
             }
         }
     }
@@ -89,6 +89,10 @@ impl TickEventHandler {
     }
 
     extern "C" fn hook(task: *mut ScheduledTask) {
+        let task = unsafe { &mut *task };
+        // run once per frame
+        task.accumulator = -0.0001;
+
         TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
             let callback_handlers = callback_handlers.borrow_mut();
             for weak_callback_handler in &*callback_handlers {

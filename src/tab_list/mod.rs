@@ -254,7 +254,7 @@ impl TabList {
     }
 }
 
-#[cfg(not(feature = "ci"))]
+#[ignore]
 #[test]
 fn test_find_entry_by_nick_name() {
     use classicube_sys::*;
@@ -300,6 +300,7 @@ fn test_find_entry_by_nick_name() {
     );
 }
 
+#[ignore]
 #[test]
 fn test_match_names() {
     let search = "NotSpiralP";
