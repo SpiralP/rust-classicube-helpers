@@ -115,6 +115,10 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">callback_handler</span>::<span class="ident">CallbackHandler</span>, <span class="ident">CellGetSet</span>};
 <span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="kw-2">*</span>;
@@ -165,8 +169,8 @@
             <span class="ident">CALLBACK_REGISTERED</span>.<span class="ident">set</span>(<span class="bool-val">true</span>);
 
             <span class="kw">unsafe</span> {
-                <span class="comment">// 60 fps</span>
-                <span class="ident">ScheduledTask_Add</span>(<span class="ident">GAME_NET_TICKS</span>, <span class="prelude-val">Some</span>(<span class="self">Self</span>::<span class="ident">hook</span>));
+                <span class="comment">// modify accumulator so that we match frame rate</span>
+                <span class="ident">ScheduledTask_Add</span>(<span class="number">0.0</span>, <span class="prelude-val">Some</span>(<span class="self">Self</span>::<span class="ident">hook</span>));
             }
         }
     }
@@ -207,6 +211,10 @@
     }
 
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">hook</span>(<span class="ident">task</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ScheduledTask</span>) {
+        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">task</span> };
+        <span class="comment">// run once per frame</span>
+        <span class="ident">task</span>.<span class="ident">accumulator</span> <span class="op">=</span> <span class="op">-</span><span class="number">0.0001</span>;
+
         <span class="ident">TICK_CALLBACK_HANDLERS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">callback_handlers</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">callback_handlers</span> <span class="op">=</span> <span class="ident">callback_handlers</span>.<span class="ident">borrow_mut</span>();
             <span class="kw">for</span> <span class="ident">weak_callback_handler</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">callback_handlers</span> {
