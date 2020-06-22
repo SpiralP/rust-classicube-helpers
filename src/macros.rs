@@ -47,6 +47,19 @@ macro_rules! make_event_handler {
                     }
                 }
 
+                // have to use c_type here because there's no way to use a converted OwnedString
+                // and keep it alive until after Raise() returns
+                pub fn raise(
+                    $($name: $c_type, )*
+                ) {
+                    unsafe {
+                        ::classicube_sys::[<Event_Raise $func_type>](
+                            &mut ::classicube_sys::[<$event_type Events>].$event_name,
+                            $($name, )*
+                        );
+                    }
+                }
+
                 unsafe fn register_listener(&mut self) {
                     if !self.registered {
                         let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
@@ -92,23 +105,6 @@ macro_rules! make_event_handler {
 
                     event_handler.handle_event(event);
                 }
-
-                // fn send_internal(
-                //     &mut self,
-                //     $($arg_name: $arg_type, )*
-                // ) {
-                //     unsafe {
-                //         [<Event_Raise $event_type>](
-                //             &mut [<$event_type Events>].$event_name,
-                //             $($arg_name, )*
-                //         );
-                //     }
-                // }
-
-                // pub fn send(&mut self, event: [<$event_name Event>]) {
-                //     let message = OwnedString::new(event.message);
-                //     let message_type = event.message_type;
-                // }
             }
 
             impl Drop for [<$event_name EventHandler>] {
