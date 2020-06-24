@@ -254,6 +254,7 @@ impl TabList {
     }
 }
 
+#[cfg(all(windows, not(feature = "ci")))]
 #[ignore]
 #[test]
 fn test_find_entry_by_nick_name() {
@@ -300,6 +301,7 @@ fn test_find_entry_by_nick_name() {
     );
 }
 
+#[cfg(all(windows, not(feature = "ci")))]
 #[ignore]
 #[test]
 fn test_match_names() {
