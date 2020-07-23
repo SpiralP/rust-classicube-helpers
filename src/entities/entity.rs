@@ -1,5 +1,5 @@
 use classicube_sys::{Entities, Vec3};
-use std::ffi::CStr;
+use std::{ffi::CStr, os::raw::c_char};
 
 /// 255 is self entity
 pub const ENTITY_SELF_ID: u8 = 255;
@@ -60,7 +60,7 @@ impl Entity {
 
     pub fn get_display_name(self) -> String {
         let entity = unsafe { self.get_entity() };
-        let c_str = unsafe { CStr::from_ptr(&entity.NameRaw as *const i8) };
+        let c_str = unsafe { CStr::from_ptr(&entity.NameRaw as *const c_char) };
         c_str.to_string_lossy().to_string()
     }
 
