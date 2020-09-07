@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src\tab_list\mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../classicube_helpers/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src\tab_list\mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../classicube_helpers/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -382,16 +383,16 @@
 
 <span class="kw">type</span> <span class="ident">EntriesType</span> <span class="op">=</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">TabListEntry</span><span class="op">&gt;</span>;
 
-<span class="doccomment">/// safe access to TabList</span>
+<span class="doccomment">/// safe access to TabList</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TabList</span> {
-    <span class="comment">// we can use UnsafeCell because these simple HashMap tasks</span>
-    <span class="comment">// won&#39;t cause any extra events to be emitted, which would cause</span>
-    <span class="comment">// recursion</span>
-    <span class="comment">//</span>
-    <span class="comment">// the exposed on_* methods should not emit any events or we break</span>
-    <span class="comment">// borrowing rules</span>
-    <span class="ident">entries</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">EntriesType</span><span class="op">&gt;&gt;</span>,
+    <span class="comment">// we can use UnsafeCell because these simple HashMap tasks</span>
+    <span class="comment">// won&#39;t cause any extra events to be emitted, which would cause</span>
+    <span class="comment">// recursion</span>
+    <span class="comment">//</span>
+    <span class="comment">// the exposed on_* methods should not emit any events or we break</span>
+    <span class="comment">// borrowing rules</span>
+    <span class="ident">entries</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">EntriesType</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">added</span>: <span class="ident">tab_list</span>::<span class="ident">AddedEventHandler</span>,
     <span class="ident">changed</span>: <span class="ident">tab_list</span>::<span class="ident">ChangedEventHandler</span>,
     <span class="ident">removed</span>: <span class="ident">tab_list</span>::<span class="ident">RemovedEventHandler</span>,
@@ -399,8 +400,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TabList</span> {
-    <span class="doccomment">/// register event listeners, listeners will unregister on drop</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="doccomment">/// register event listeners, listeners will unregister on drop</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">with_capacity</span>(<span class="number">256</span>);
         <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">UnsafeCell</span>::<span class="ident">new</span>(<span class="ident">entries</span>));
 
@@ -468,7 +469,7 @@
         <span class="ident">entries</span>.<span class="ident">clear</span>();
 
         <span class="kw">for</span> <span class="ident">id</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">TABLIST_MAX_NAMES</span> {
-            <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] } <span class="op">!=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">TabList</span>.<span class="ident">NameOffsets</span>[<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>] } <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">TabListEntry</span>::<span class="ident">from_id</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>));
             }
         }
@@ -506,41 +507,41 @@
         <span class="self">self</span>.<span class="ident">disconnected</span>.<span class="ident">on</span>(<span class="ident">callback</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">best_match</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
-        <span class="comment">// tablist doesn&#39;t include &lt;Local map chat&gt; or [xtitles], so match from right to left</span>
+    <span class="kw">fn</span> <span class="ident">best_match</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+        <span class="comment">// tablist doesn&#39;t include &lt;Local map chat&gt; or [xtitles], so match from right to left</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">positions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">get_all</span>()
             .<span class="ident">iter</span>()
             .<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">nick_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_nick_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
 
-                <span class="comment">// search: &amp;0&lt;Realm 7&amp;0&gt; &amp;dAdo&amp;elf Hit&amp;aler</span>
-                <span class="comment">// entry :               ^</span>
-                <span class="comment">// &amp;3[arsclacxe&amp;3] &amp;aPee&amp;2birb</span>
-                <span class="comment">//                 ^</span>
-                <span class="comment">// &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod&#39;s Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert</span>
-                <span class="comment">//                                     ^</span>
-                <span class="comment">// &amp;c[&amp;4Co&amp;4m&amp;6mmu&amp;4nist&amp;c] TEHNOOBSHOW</span>
-                <span class="comment">//                          ^ (notice the color is at &quot;&amp;c[&quot;)</span>
-                <span class="comment">// &amp;3SpiralP</span>
-                <span class="comment">// ^ (matched by exact)</span>
-                <span class="comment">// &amp;7S0m</span>
-                <span class="comment">// ^ (matched by exact)</span>
+                <span class="comment">// search: &amp;0&lt;Realm 7&amp;0&gt; &amp;dAdo&amp;elf Hit&amp;aler</span>
+                <span class="comment">// entry :               ^</span>
+                <span class="comment">// &amp;3[arsclacxe&amp;3] &amp;aPee&amp;2birb</span>
+                <span class="comment">//                 ^</span>
+                <span class="comment">// &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod&#39;s Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert</span>
+                <span class="comment">//                                     ^</span>
+                <span class="comment">// &amp;c[&amp;4Co&amp;4m&amp;6mmu&amp;4nist&amp;c] TEHNOOBSHOW</span>
+                <span class="comment">//                          ^ (notice the color is at &quot;&amp;c[&quot;)</span>
+                <span class="comment">// &amp;3SpiralP</span>
+                <span class="comment">// ^ (matched by exact)</span>
+                <span class="comment">// &amp;7S0m</span>
+                <span class="comment">// ^ (matched by exact)</span>
 
-                <span class="comment">// fn remove_beginning_color(s: &amp;str) -&gt; &amp;str {</span>
-                <span class="comment">//     if s.len() &gt;= 2 &amp;&amp; s.starts_with(&#39;&amp;&#39;) {</span>
-                <span class="comment">//         let (_color, s) = s.split_at(2);</span>
-                <span class="comment">//         s</span>
-                <span class="comment">//     } else {</span>
-                <span class="comment">//         s</span>
-                <span class="comment">//     }</span>
-                <span class="comment">// }</span>
+                <span class="comment">// fn remove_beginning_color(s: &amp;str) -&gt; &amp;str {</span>
+                <span class="comment">//     if s.len() &gt;= 2 &amp;&amp; s.starts_with(&#39;&amp;&#39;) {</span>
+                <span class="comment">//         let (_color, s) = s.split_at(2);</span>
+                <span class="comment">//         s</span>
+                <span class="comment">//     } else {</span>
+                <span class="comment">//         s</span>
+                <span class="comment">//     }</span>
+                <span class="comment">// }</span>
 
-                <span class="comment">// remove color</span>
+                <span class="comment">// remove color</span>
                 <span class="kw">let</span> <span class="ident">search</span> <span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>);
                 <span class="kw">let</span> <span class="ident">real_nick</span> <span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>);
 
-                <span class="comment">// search in reverse</span>
+                <span class="comment">// search in reverse</span>
                 <span class="kw">let</span> <span class="ident">search</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">search</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
                 <span class="kw">let</span> <span class="ident">real_nick</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">real_nick</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
 
@@ -548,33 +549,33 @@
             })
             .<span class="ident">collect</span>();
 
-        <span class="comment">// searching from the end, right to left</span>
-        <span class="comment">// search = NotSpiralP</span>
-        <span class="comment">// SpiralP     pos = 0</span>
-        <span class="comment">// NotSpiralP  pos = 0</span>
-        <span class="comment">// SpiralP2    not found</span>
+        <span class="comment">// searching from the end, right to left</span>
+        <span class="comment">// search = NotSpiralP</span>
+        <span class="comment">// SpiralP     pos = 0</span>
+        <span class="comment">// NotSpiralP  pos = 0</span>
+        <span class="comment">// SpiralP2    not found</span>
 
-        <span class="comment">// choose smallest find position (most matched from end to start)</span>
-        <span class="comment">// then choose largest name size for equal positions</span>
+        <span class="comment">// choose smallest find position (most matched from end to start)</span>
+        <span class="comment">// then choose largest name size for equal positions</span>
         <span class="ident">positions</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span>(<span class="ident">_entry1</span>, <span class="ident">name1</span>, <span class="ident">pos1</span>), (<span class="ident">_entry2</span>, <span class="ident">name2</span>, <span class="ident">pos2</span>)<span class="op">|</span> {
             <span class="ident">pos1</span>.<span class="ident">partial_cmp</span>(<span class="ident">pos2</span>)
                 .<span class="ident">unwrap</span>()
-                .<span class="ident">then_with</span>(<span class="op">||</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
+                .<span class="ident">then_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
         });
 
         <span class="ident">positions</span>.<span class="ident">first</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">entry</span>, <span class="ident">_name</span>, <span class="ident">_pos</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">entry</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_entry_by_nick_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_entry_by_nick_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">search</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">option</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_all</span>().<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
-            <span class="comment">// try exact nick_name match first</span>
-            <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
+            <span class="comment">// try exact nick_name match first</span>
+            <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
             <span class="kw">let</span> <span class="ident">nick_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_nick_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
-            <span class="kw">if</span> <span class="ident">nick_name</span> <span class="op">==</span> <span class="ident">search</span> {
+            <span class="kw">if</span> <span class="ident">nick_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">search</span> {
                 <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
             } <span class="kw">else</span> {
-                <span class="comment">// compare with colors removed</span>
-                <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>) <span class="op">==</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
+                <span class="comment">// compare with colors removed</span>
+                <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
                 } <span class="kw">else</span> {
                     <span class="prelude-val">None</span>
@@ -586,14 +587,14 @@
             <span class="prelude-val">Some</span>(<span class="ident">a</span>)
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">option</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_all</span>().<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span>(<span class="ident">_id</span>, <span class="ident">entry</span>)<span class="op">|</span> {
-                <span class="comment">// try exact real_name match first</span>
-                <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
+                <span class="comment">// try exact real_name match first</span>
+                <span class="comment">// this should match if there are no &lt;Local&gt; or tags on the front</span>
                 <span class="kw">let</span> <span class="ident">real_name</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">get_real_name</span>()<span class="question-mark">?</span>.<span class="ident">replace</span>(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
-                <span class="kw">if</span> <span class="ident">real_name</span> <span class="op">==</span> <span class="ident">search</span> {
+                <span class="kw">if</span> <span class="ident">real_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">search</span> {
                     <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
                 } <span class="kw">else</span> {
-                    <span class="comment">// compare with colors removed</span>
-                    <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">real_name</span>) <span class="op">==</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
+                    <span class="comment">// compare with colors removed</span>
+                    <span class="kw">if</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">real_name</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">remove_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>) {
                         <span class="prelude-val">Some</span>(<span class="ident">entry</span>)
                     } <span class="kw">else</span> {
                         <span class="prelude-val">None</span>
@@ -604,27 +605,27 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">a</span>) <span class="op">=</span> <span class="ident">option</span> {
                 <span class="prelude-val">Some</span>(<span class="ident">a</span>)
             } <span class="kw">else</span> {
-                <span class="comment">// exact match failed,</span>
-                <span class="comment">// match from the right, choose the one with most chars matched</span>
+                <span class="comment">// exact match failed,</span>
+                <span class="comment">// match from the right, choose the one with most chars matched</span>
 
                 <span class="self">self</span>.<span class="ident">best_match</span>(<span class="ident">search</span>)
             }
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TabListEntry</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">get_all</span>().<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabListEntry</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TabListEntry</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">get_all_mut</span>().<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">EntriesType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">EntriesType</span> {
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get</span>() }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_all_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EntriesType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_all_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EntriesType</span> {
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get</span>() }
     }
 }
@@ -686,8 +687,8 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">positions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">names</span>
         .<span class="ident">iter</span>()
         .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">nick_name</span><span class="op">|</span> {
-            <span class="kw">fn</span> <span class="ident">remove_beginning_color</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
-                <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&gt;=</span> <span class="number">2</span> <span class="op">&amp;&amp;</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&#39;&amp;&#39;</span>) {
+            <span class="kw">fn</span> <span class="ident">remove_beginning_color</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+                <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">2</span> <span class="op">&amp;&amp;</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&#39;&amp;&#39;</span>) {
                     <span class="kw">let</span> (<span class="ident">_color</span>, <span class="ident">s</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">split_at</span>(<span class="number">2</span>);
                     <span class="ident">s</span>
                 } <span class="kw">else</span> {
@@ -698,7 +699,7 @@
             <span class="kw">let</span> <span class="ident">search</span> <span class="op">=</span> <span class="ident">remove_beginning_color</span>(<span class="kw-2">&amp;</span><span class="ident">search</span>);
             <span class="kw">let</span> <span class="ident">real_nick</span> <span class="op">=</span> <span class="ident">remove_beginning_color</span>(<span class="kw-2">&amp;</span><span class="ident">nick_name</span>);
 
-            <span class="comment">// search in reverse</span>
+            <span class="comment">// search in reverse</span>
             <span class="kw">let</span> <span class="ident">search</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">search</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
             <span class="kw">let</span> <span class="ident">real_nick</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">real_nick</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
 
@@ -709,19 +710,19 @@
     <span class="ident">positions</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span>(<span class="ident">name1</span>, <span class="ident">pos1</span>), (<span class="ident">name2</span>, <span class="ident">pos2</span>)<span class="op">|</span> {
         <span class="ident">pos1</span>.<span class="ident">partial_cmp</span>(<span class="ident">pos2</span>)
             .<span class="ident">unwrap</span>()
-            .<span class="ident">then_with</span>(<span class="op">||</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
+            .<span class="ident">then_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">name2</span>.<span class="ident">len</span>().<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">name1</span>.<span class="ident">len</span>()).<span class="ident">unwrap</span>())
     });
     <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:#?}&quot;</span>, <span class="ident">positions</span>);
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_color</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">text</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_color</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">text</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_ampersand</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
     <span class="ident">text</span>.<span class="ident">as_ref</span>()
         .<span class="ident">chars</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;&amp;&#39;</span> {
-                <span class="comment">// we remove all amps but they&#39;re kept in chat if repeated</span>
+            <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;&amp;&#39;</span> {
+                <span class="comment">// we remove all amps but they&#39;re kept in chat if repeated</span>
                 <span class="ident">found_ampersand</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="bool-val">false</span>
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">found_ampersand</span> {
