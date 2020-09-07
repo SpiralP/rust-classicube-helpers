@@ -19,13 +19,15 @@ impl TabListEntry {
     pub fn get_real_name(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
-        if offset != 0 {
-            Some(
-                unsafe { StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 3)) }
-                    .to_string(),
-            )
-        } else {
-            None
+        unsafe {
+            if offset != 0 && TabList._buffer.count != 0 {
+                Some(
+                    StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 3))
+                        .to_string(),
+                )
+            } else {
+                None
+            }
         }
     }
 
@@ -33,26 +35,30 @@ impl TabListEntry {
     pub fn get_nick_name(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
-        if offset != 0 {
-            Some(
-                unsafe { StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 2)) }
-                    .to_string(),
-            )
-        } else {
-            None
+        unsafe {
+            if offset != 0 && TabList._buffer.count != 0 {
+                Some(
+                    StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 2))
+                        .to_string(),
+                )
+            } else {
+                None
+            }
         }
     }
 
     pub fn get_group(self) -> Option<String> {
         let offset = unsafe { TabList.NameOffsets[self.id as usize] };
 
-        if offset != 0 {
-            Some(
-                unsafe { StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 1)) }
-                    .to_string(),
-            )
-        } else {
-            None
+        unsafe {
+            if offset != 0 && TabList._buffer.count != 0 {
+                Some(
+                    StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(offset - 1))
+                        .to_string(),
+                )
+            } else {
+                None
+            }
         }
     }
 
