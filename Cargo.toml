@@ -12,3 +12,9 @@ paste = "1.0.0"
 
 [features]
 ci = []
+
+
+
+# remove when 1.1.9 releases
+[patch."https://github.com/SpiralP/rust-classicube-sys.git"]
+classicube-sys = { git = "https://github.com/SpiralP//rust-classicube-sys", branch = "next" }
