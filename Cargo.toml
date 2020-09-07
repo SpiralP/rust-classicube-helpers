@@ -7,8 +7,8 @@ edition = "2018"
 [dependencies]
 classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
 futures = { version = "0.3.5", optional = true }
-log = "0.4.8"
-paste = "0.1.16"
+log = "0.4.11"
+paste = "1.0.0"
 
 [features]
 ci = []
