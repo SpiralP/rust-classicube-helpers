@@ -73,9 +73,13 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">not_unsafe_ptr_arg_deref</span>)]</span>
+
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">make_event_handler</span>;
-<span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="ident">MsgType</span>;
+<span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">cc_string</span>, <span class="ident">MsgType</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>;
 
 <span class="macro">make_event_handler</span><span class="macro">!</span>(
@@ -95,8 +99,8 @@
         {
             <span class="ident">name</span>: <span class="ident">message</span>,
             <span class="ident">rust_type</span>: <span class="ident">String</span>,
-            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">message</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span><span class="op">|</span> {
+            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span>,
+            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">message</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span><span class="op">|</span> {
                 <span class="kw">unsafe</span> { <span class="ident">message</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() }.<span class="ident">to_string</span>()
             },
         },
@@ -118,8 +122,8 @@
         {
             <span class="ident">name</span>: <span class="ident">message</span>,
             <span class="ident">rust_type</span>: <span class="ident">String</span>,
-            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">message</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span><span class="op">|</span> {
+            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span>,
+            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">message</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span><span class="op">|</span> {
                 <span class="kw">unsafe</span> { <span class="ident">message</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() }.<span class="ident">to_string</span>()
             },
         },

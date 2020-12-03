@@ -42,9 +42,13 @@
 <span id="39">39</span>
 <span id="40">40</span>
 <span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">not_unsafe_ptr_arg_deref</span>)]</span>
+
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">make_event_handler</span>;
-<span class="kw">use</span> <span class="ident">classicube_sys</span>::<span class="ident">Stream</span>;
+<span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">cc_string</span>, <span class="ident">Stream</span>};
 
 <span class="macro">make_event_handler</span><span class="macro">!</span>(
     <span class="doccomment">/// Terrain atlas (terrain.png) is changed</span>
@@ -68,8 +72,8 @@
     <span class="ident">FileChanged</span>,
     <span class="ident">Entry</span>,
     (
-    {
-        <span class="ident">name</span>: <span class="ident">stream</span>,
+        {
+            <span class="ident">name</span>: <span class="ident">stream</span>,
             <span class="ident">rust_type</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Stream</span>,
             <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Stream</span>,
             <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span>,
@@ -77,8 +81,8 @@
         {
             <span class="ident">name</span>: <span class="ident">name</span>,
             <span class="ident">rust_type</span>: <span class="ident">String</span>,
-            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">name</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">classicube_sys</span>::<span class="ident">String</span><span class="op">|</span> {
+            <span class="ident">c_type</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span>,
+            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">name</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">cc_string</span><span class="op">|</span> {
                 <span class="kw">unsafe</span> { <span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() }.<span class="ident">to_string</span>()
             },
         },
