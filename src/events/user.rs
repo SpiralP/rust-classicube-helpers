@@ -31,7 +31,7 @@ make_event_handler!(
 make_event_handler!(
     /// Hack permissions of the player changes
     User,
-    HackPermissionsChanged,
+    HackPermsChanged,
     Void,
     ()
 );
@@ -40,6 +40,14 @@ make_event_handler!(
     /// Held block in hotbar changes
     User,
     HeldBlockChanged,
+    Void,
+    ()
+);
+
+make_event_handler!(
+    /// Hack states changed (e.g. stops flying)
+    User,
+    HacksStateChanged,
     Void,
     ()
 );

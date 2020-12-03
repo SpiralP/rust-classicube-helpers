@@ -1,5 +1,7 @@
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
+
 use crate::make_event_handler;
-use classicube_sys::Stream;
+use classicube_sys::{cc_string, Stream};
 
 make_event_handler!(
     /// Terrain atlas (terrain.png) is changed
@@ -23,8 +25,8 @@ make_event_handler!(
     FileChanged,
     Entry,
     (
-    {
-        name: stream,
+        {
+            name: stream,
             rust_type: *mut Stream,
             c_type: *mut Stream,
             to_rust: |a| a,
@@ -32,8 +34,8 @@ make_event_handler!(
         {
             name: name,
             rust_type: String,
-            c_type: *const classicube_sys::String,
-            to_rust: |name: *const classicube_sys::String| {
+            c_type: *const cc_string,
+            to_rust: |name: *const cc_string| {
                 unsafe { name.as_ref().unwrap() }.to_string()
             },
         },

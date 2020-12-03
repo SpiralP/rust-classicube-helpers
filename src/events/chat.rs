@@ -1,5 +1,7 @@
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
+
 use crate::make_event_handler;
-use classicube_sys::MsgType;
+use classicube_sys::{cc_string, MsgType};
 use std::os::raw::c_int;
 
 make_event_handler!(
@@ -19,8 +21,8 @@ make_event_handler!(
         {
             name: message,
             rust_type: String,
-            c_type: *const classicube_sys::String,
-            to_rust: |message: *const classicube_sys::String| {
+            c_type: *const cc_string,
+            to_rust: |message: *const cc_string| {
                 unsafe { message.as_ref().unwrap() }.to_string()
             },
         },
@@ -42,8 +44,8 @@ make_event_handler!(
         {
             name: message,
             rust_type: String,
-            c_type: *const classicube_sys::String,
-            to_rust: |message: *const classicube_sys::String| {
+            c_type: *const cc_string,
+            to_rust: |message: *const cc_string| {
                 unsafe { message.as_ref().unwrap() }.to_string()
             },
         },
