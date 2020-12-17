@@ -101,7 +101,7 @@ macro_rules! make_event_handler {
                         $($name: ($to_rust)($name), )*
                     };
 
-                    ::log::debug!("{} {:?}", stringify!([<$event_type>]), event);
+                    $crate::tracing::debug!("{} {:?}", stringify!([<$event_type>]), event);
 
                     event_handler.handle_event(event);
                 }
@@ -141,9 +141,9 @@ macro_rules! time {
         let after = ::std::time::Instant::now();
         let diff = after - before;
         if diff > ::std::time::Duration::from_millis($high_millis) {
-            ::log::warn!("{} ({:?})", $title, diff);
+            $crate::tracing::warn!("{} ({:?})", $title, diff);
         } else {
-            ::log::debug!("{} ({:?})", $title, diff);
+            $crate::tracing::debug!("{} ({:?})", $title, diff);
         }
         res
     }};
@@ -157,7 +157,7 @@ macro_rules! time_silent {
         let after = ::std::time::Instant::now();
         let diff = after - before;
         if diff > ::std::time::Duration::from_millis($high_millis) {
-            ::log::warn!("{} ({:?})", $title, diff);
+            $crate::tracing::warn!("{} ({:?})", $title, diff);
         }
         res
     }};

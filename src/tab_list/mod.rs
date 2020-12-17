@@ -37,15 +37,6 @@ impl TabList {
         {
             let entries = entries.clone();
             added.on(move |tab_list::AddedEvent { entry }| {
-                log::debug!(
-                    "TabList AddedEvent {:?} {:?}",
-                    [
-                        entry.get_real_name(),
-                        entry.get_nick_name(),
-                        entry.get_group(),
-                    ],
-                    entry.get_rank(),
-                );
                 let entries = unsafe { &mut *entries.get() };
                 entries.insert(entry.get_id(), *entry);
             });
