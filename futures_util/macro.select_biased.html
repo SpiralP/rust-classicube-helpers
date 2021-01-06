@@ -59,7 +59,7 @@ which return <code>Future</code>s - even if those do not implement <code>Unpin</
 
 <span class="comment">// Calling the following async fn returns a Future which does not</span>
 <span class="comment">// implement Unpin</span>
-<span class="ident">async</span> <span class="kw">fn</span> <span class="ident">async_identity_fn</span>(<span class="ident">arg</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">async_identity_fn</span>(<span class="ident">arg</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
     <span class="ident">arg</span>
 }
 
@@ -81,7 +81,7 @@ on the stack.</p>
 
 <span class="comment">// Calling the following async fn returns a Future which does not</span>
 <span class="comment">// implement Unpin</span>
-<span class="ident">async</span> <span class="kw">fn</span> <span class="ident">async_identity_fn</span>(<span class="ident">arg</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">async_identity_fn</span>(<span class="ident">arg</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
     <span class="ident">arg</span>
 }
 
