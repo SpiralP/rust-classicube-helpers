@@ -5,22 +5,10 @@ make_event_handler!(
     /// Pointer position changed (Arg is delta from last position)
     Pointer,
     Moved,
-    Move,
+    Int,
     (
         {
             name: idx,
-            rust_type: c_int,
-            c_type: c_int,
-            to_rust: |a| a,
-        },
-        {
-            name: x_delta,
-            rust_type: c_int,
-            c_type: c_int,
-            to_rust: |a| a,
-        },
-        {
-            name: y_delta,
             rust_type: c_int,
             c_type: c_int,
             to_rust: |a| a,

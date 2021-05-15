@@ -1,7 +1,7 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 
 use crate::make_event_handler;
-use classicube_sys::{cc_bool, cc_string, Key};
+use classicube_sys::{cc_bool, cc_string, InputButtons};
 use std::os::raw::{c_float, c_int};
 
 make_event_handler!(
@@ -27,9 +27,9 @@ make_event_handler!(
     (
         {
             name: key,
-            rust_type: Key,
+            rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| key as Key,
+            to_rust: |key| key as InputButtons,
         },
         {
             name: repeating,
@@ -48,9 +48,9 @@ make_event_handler!(
     (
         {
             name: key,
-            rust_type: Key,
+            rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| key as Key,
+            to_rust: |key| key as InputButtons,
         },
     )
 );
