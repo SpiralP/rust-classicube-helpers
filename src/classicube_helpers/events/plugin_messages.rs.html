@@ -20,7 +20,11 @@
 <span id="20">20</span>
 <span id="21">21</span>
 <span id="22">22</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::make_event_handler</span>;
+<span id="23">23</span>
+<span id="24">24</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::not_unsafe_ptr_arg_deref</span>)]</span>
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::make_event_handler</span>;
 
 <span class="macro">make_event_handler!</span>(
     <span class="comment">//</span>
