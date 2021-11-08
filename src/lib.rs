@@ -1,7 +1,3 @@
-#![feature(coerce_unsized)]
-#![feature(unsize)]
-#![allow(clippy::redundant_closure_call)]
-
 mod callback_handler;
 pub mod color;
 pub mod entities;

@@ -4,8 +4,7 @@
 use futures::lock::Mutex as FutureMutex;
 use std::{
     cell::RefCell,
-    marker::Unsize,
-    ops::{CoerceUnsized, DerefMut},
+    ops::DerefMut,
     rc::Rc,
     sync::{Arc, Mutex},
 };
@@ -13,9 +12,6 @@ use std::{
 pub struct SyncShared<T: ?Sized> {
     inner: Rc<RefCell<T>>,
 }
-
-// fix for SyncShared<dyn Module>
-impl<T: ?Sized + Unsize<U>, U: ?Sized> CoerceUnsized<SyncShared<U>> for SyncShared<T> {}
 
 impl<T> SyncShared<T> {
     pub fn new(value: T) -> Self {
@@ -194,12 +190,12 @@ fn test_shared() {
         fn unload(&mut self) {}
     }
 
-    let mut list_of_sync_shareds: Vec<Rc<dyn Module>> = Vec::new();
-    let mod_thing: Rc<dyn Module> = Rc::new(ModuleThing {});
+    let mut list_of_sync_shareds: Vec<Rc<Box<dyn Module>>> = Vec::new();
+    let mod_thing: Rc<Box<dyn Module>> = Rc::new(Box::new(ModuleThing {}));
     list_of_sync_shareds.push(mod_thing);
 
-    let mut list_of_sync_shareds: Vec<SyncShared<dyn Module>> = Vec::new();
-    let mod_thing: SyncShared<dyn Module> = SyncShared::new(ModuleThing {});
+    let mut list_of_sync_shareds: Vec<SyncShared<Box<dyn Module>>> = Vec::new();
+    let mod_thing: SyncShared<Box<dyn Module>> = SyncShared::new(Box::new(ModuleThing {}));
     list_of_sync_shareds.push(mod_thing);
 
     for module in list_of_sync_shareds.iter_mut() {
