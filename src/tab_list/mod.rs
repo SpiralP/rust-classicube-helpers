@@ -311,8 +311,8 @@ fn test_match_names() {
                 }
             }
 
-            let search = remove_beginning_color(&search);
-            let real_nick = remove_beginning_color(&nick_name);
+            let search = remove_beginning_color(search);
+            let real_nick = remove_beginning_color(nick_name);
 
             // search in reverse
             let search: String = search.chars().rev().collect();

@@ -40,13 +40,7 @@ impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
     where
         F: FnOnce(&O) -> T,
     {
-        self.with(|cell| {
-            if let Some(inner) = &*cell.borrow() {
-                Some(f(inner))
-            } else {
-                None
-            }
-        })
+        self.with(|cell| cell.borrow().as_ref().map(f))
     }
 
     #[must_use]
@@ -54,13 +48,7 @@ impl<O> OptionWithInner<O> for LocalKey<RefCell<Option<O>>> {
     where
         F: FnOnce(&mut O) -> T,
     {
-        self.with(|cell| {
-            if let Some(inner) = &mut *cell.borrow_mut() {
-                Some(f(inner))
-            } else {
-                None
-            }
-        })
+        self.with(|cell| cell.borrow_mut().as_mut().map(f))
     }
 }
 
@@ -70,11 +58,7 @@ impl<O> OptionWithInner<O> for Mutex<Option<O>> {
     where
         F: FnOnce(&O) -> T,
     {
-        if let Some(inner) = &*self.lock().unwrap() {
-            Some(f(inner))
-        } else {
-            None
-        }
+        self.lock().unwrap().as_ref().map(f)
     }
 
     #[must_use]
@@ -82,11 +66,7 @@ impl<O> OptionWithInner<O> for Mutex<Option<O>> {
     where
         F: FnOnce(&mut O) -> T,
     {
-        if let Some(inner) = &mut *self.lock().unwrap() {
-            Some(f(inner))
-        } else {
-            None
-        }
+        self.lock().unwrap().as_mut().map(f)
     }
 }
 
@@ -96,11 +76,7 @@ impl<O> OptionWithInner<O> for RwLock<Option<O>> {
     where
         F: FnOnce(&O) -> T,
     {
-        if let Some(inner) = &*self.read().unwrap() {
-            Some(f(inner))
-        } else {
-            None
-        }
+        self.read().unwrap().as_ref().map(f)
     }
 
     #[must_use]
@@ -108,10 +84,6 @@ impl<O> OptionWithInner<O> for RwLock<Option<O>> {
     where
         F: FnOnce(&mut O) -> T,
     {
-        if let Some(inner) = &mut *self.write().unwrap() {
-            Some(f(inner))
-        } else {
-            None
-        }
+        self.write().unwrap().as_mut().map(f)
     }
 }
