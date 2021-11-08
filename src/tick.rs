@@ -16,7 +16,7 @@ thread_local!(
 
 #[derive(Debug)]
 pub struct TickEvent {
-    task: *mut ScheduledTask,
+    pub task: *mut ScheduledTask,
 }
 
 pub struct TickEventHandler {
