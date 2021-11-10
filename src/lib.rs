@@ -1,3 +1,4 @@
+pub mod async_manager;
 mod callback_handler;
 pub mod color;
 pub mod entities;

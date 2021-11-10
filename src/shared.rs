@@ -1,6 +1,3 @@
-#![allow(dead_code)]
-
-#[cfg(feature = "futures")]
 use futures::lock::Mutex as FutureMutex;
 use std::{
     cell::RefCell,
@@ -75,12 +72,10 @@ impl<T: ?Sized> Clone for ThreadShared<T> {
     }
 }
 
-#[cfg(feature = "futures")]
 pub struct FutureShared<T: ?Sized> {
     inner: Arc<FutureMutex<T>>,
 }
 
-#[cfg(feature = "futures")]
 impl<T> FutureShared<T> {
     pub fn new(value: T) -> Self {
         Self {
@@ -110,7 +105,6 @@ impl<T> FutureShared<T> {
     }
 }
 
-#[cfg(feature = "futures")]
 impl<T: ?Sized> Clone for FutureShared<T> {
     fn clone(&self) -> FutureShared<T> {
         Self {
@@ -163,7 +157,6 @@ fn test_shared() {
         });
     }
 
-    #[cfg(feature = "futures")]
     futures::executor::block_on(async {
         let mut shared = FutureShared::new(3);
         shared
