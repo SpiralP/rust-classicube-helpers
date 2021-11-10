@@ -1,5 +1,6 @@
 pub mod async_manager;
 mod callback_handler;
+pub mod chat;
 pub mod color;
 pub mod entities;
 pub mod events;
