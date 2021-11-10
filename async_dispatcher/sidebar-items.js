@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Dispatcher","Used to call futures from another thread, getting their output values via `await`."],["DispatcherHandle","Created by calling [`Dispatcher::get_handle`]."],["LocalDispatcherHandle","Created by calling [`Dispatcher::get_handle_local`]."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["time",""],["time",""],["time_silent",""],["time_silent",""]],"mod":[["color",""],["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""]],"trait":[["CellGetSet",""],["OptionWithInner",""]]});
+initSidebarItems({"macro":[["time",""],["time",""],["time_silent",""],["time_silent",""]],"mod":[["async_manager",""],["color",""],["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""]],"trait":[["CellGetSet",""],["OptionWithInner",""]]});
