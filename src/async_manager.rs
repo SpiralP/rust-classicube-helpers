@@ -1,4 +1,4 @@
-use crate::{tick::TickEventHandler, OptionWithInner};
+use crate::{tick::TickEventHandler, WithInner};
 use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
 use futures::{future::Either, prelude::*};
 use futures_timer::Delay;
