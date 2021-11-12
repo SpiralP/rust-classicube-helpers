@@ -1,27 +1,27 @@
 use crate::WithBorrow;
 
-pub trait WithInner<O> {
-    fn with_inner<F, T>(&'static self, f: F) -> Option<T>
+pub trait WithInner<'a, O> {
+    fn with_inner<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T;
 
-    fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
+    fn with_inner_mut<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T;
 }
 
-impl<S, O> WithInner<O> for S
+impl<'a, S, O> WithInner<'a, O> for S
 where
-    S: WithBorrow<Option<O>>,
+    S: WithBorrow<'a, Option<O>>,
 {
-    fn with_inner<F, T>(&'static self, f: F) -> Option<T>
+    fn with_inner<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T,
     {
         self.with_borrow(|o| o.as_ref().map(f))
     }
 
-    fn with_inner_mut<F, T>(&'static self, f: F) -> Option<T>
+    fn with_inner_mut<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T,
     {

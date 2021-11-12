@@ -4,34 +4,38 @@ use std::{
     thread::LocalKey,
 };
 
-pub trait WithBorrow<O> {
-    fn with_borrow<F, T>(&'static self, f: F) -> T
+pub trait WithBorrow<'a, O> {
+    fn with_borrow<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&O) -> T;
 
-    fn with_borrow_mut<F, T>(&'static self, f: F) -> T
+    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&mut O) -> T;
 }
 
-impl<O> WithBorrow<O> for LocalKey<RefCell<O>> {
-    fn with_borrow<F, T>(&'static self, f: F) -> T
+impl<'a, O> WithBorrow<'a, O> for LocalKey<RefCell<O>>
+where
+    'a: 'static,
+{
+    fn with_borrow<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&O) -> T,
     {
         self.with(|cell| f(&cell.borrow()))
     }
 
-    fn with_borrow_mut<F, T>(&'static self, f: F) -> T
+    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&mut O) -> T,
+        'a: 'static,
     {
         self.with(|cell| f(&mut cell.borrow_mut()))
     }
 }
 
-impl<O> WithBorrow<O> for Mutex<O> {
-    fn with_borrow<F, T>(&'static self, f: F) -> T
+impl<'a, O> WithBorrow<'a, O> for Mutex<O> {
+    fn with_borrow<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&O) -> T,
     {
@@ -39,7 +43,7 @@ impl<O> WithBorrow<O> for Mutex<O> {
         f(&*guard)
     }
 
-    fn with_borrow_mut<F, T>(&'static self, f: F) -> T
+    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&mut O) -> T,
     {
@@ -48,8 +52,8 @@ impl<O> WithBorrow<O> for Mutex<O> {
     }
 }
 
-impl<O> WithBorrow<O> for RwLock<O> {
-    fn with_borrow<F, T>(&'static self, f: F) -> T
+impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
+    fn with_borrow<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&O) -> T,
     {
@@ -57,7 +61,7 @@ impl<O> WithBorrow<O> for RwLock<O> {
         f(&*guard)
     }
 
-    fn with_borrow_mut<F, T>(&'static self, f: F) -> T
+    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
     where
         F: FnOnce(&mut O) -> T,
     {
@@ -109,4 +113,17 @@ fn test_with_borrow_static_rwlock() {
         2
     );
     assert_eq!(STATIC_RWLOCK.with_borrow(|o| o + 2), 4);
+}
+
+#[test]
+fn test_with_borrow_non_static_mutex() {
+    let mutex: Mutex<u8> = Default::default();
+    assert_eq!(
+        mutex.with_borrow_mut(|o| {
+            *o += 2;
+            *o
+        }),
+        2
+    );
+    assert_eq!(mutex.with_borrow(|o| o + 2), 4);
 }
