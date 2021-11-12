@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Priority",""]],"struct":[["Callbacks",""],["Screen",""]]});
+initSidebarItems({"enum":[["Priority",""]],"struct":[["OwnedScreen",""]]});
