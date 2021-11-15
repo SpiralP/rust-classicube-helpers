@@ -345,6 +345,22 @@
 <span id="345">345</span>
 <span id="346">346</span>
 <span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">tick::TickEventHandler</span>, <span class="ident">WithInner</span>};
 <span class="kw">use</span> <span class="ident">async_dispatcher</span>::{<span class="ident">Dispatcher</span>, <span class="ident">DispatcherHandle</span>, <span class="ident">LocalDispatcherHandle</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future::Either</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
@@ -583,15 +599,20 @@
         .<span class="ident">unwrap</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">JoinError</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="ident">F::Output</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="ident">R</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">R</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
+    <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">tracing::Span::current</span>();
     <span class="ident">TOKIO_RUNTIME</span>
-        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">rt</span>.<span class="ident">spawn_blocking</span>(<span class="ident">f</span>))
+        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> {
+            <span class="ident">rt</span>.<span class="ident">spawn_blocking</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">_enter</span> <span class="op">=</span> <span class="ident">span</span>.<span class="ident">enter</span>();
+                <span class="ident">f</span>()
+            })
+        })
         .<span class="ident">unwrap</span>()
-        .<span class="ident">in_current_span</span>()
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
@@ -666,23 +687,34 @@
 
     <span class="ident">initialize</span>();
 
-    <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
-        <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+    {
+        <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
+        <span class="kw">fn</span> <span class="ident">test</span>() {
+            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
-            <span class="ident">run_on_main_thread</span>(<span class="kw">async</span> <span class="kw">move</span> {
-                <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+            <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
+                <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
-                <span class="macro">debug!</span>(<span class="string">&quot;HI!&quot;</span>);
-            })
-            .<span class="kw">await</span>;
-        });
+                <span class="ident">run_on_main_thread</span>(<span class="kw">async</span> <span class="kw">move</span> {
+                    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
+                    <span class="macro">debug!</span>(<span class="string">&quot;HI!&quot;</span>);
+                })
+                .<span class="kw">await</span>;
+            });
+        }
+        <span class="ident">test</span>();
     }
 
-    <span class="ident">test</span>();
+    {
+        <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
+        <span class="kw">fn</span> <span class="ident">test</span>() {
+            <span class="ident">spawn_blocking</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">debug!</span>(<span class="string">&quot;OH&quot;</span>);
+            });
+        }
+        <span class="ident">test</span>();
+    }
 
     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">2</span> {
         <span class="macro">debug!</span>(<span class="string">&quot;?&quot;</span>);
