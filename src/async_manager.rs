@@ -13,7 +13,7 @@ use std::{
     time::Duration,
 };
 use tokio::task::{JoinError, JoinHandle};
-use tracing::debug;
+use tracing::{debug, Instrument};
 
 thread_local!(
     static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = Default::default();
@@ -201,9 +201,7 @@ pub fn block_on_local<F>(f: F)
 where
     F: Future<Output = ()> + 'static,
 {
-    use futures::prelude::*;
-
-    let shared = f.shared();
+    let shared = f.in_current_span().shared();
 
     {
         let shared = shared.clone();
@@ -233,7 +231,9 @@ where
     F: Future + Send + 'static,
     F::Output: Send + 'static,
 {
-    TOKIO_RUNTIME.with_inner(|rt| rt.spawn(f)).unwrap()
+    TOKIO_RUNTIME
+        .with_inner(move |rt| rt.spawn(f.in_current_span()))
+        .unwrap()
 }
 
 pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<Result<R, JoinError>>
@@ -241,7 +241,7 @@ where
     F: FnOnce() -> R + Send + 'static,
     R: Send + 'static,
 {
-    spawn(async { tokio::task::spawn_blocking(f).await })
+    spawn(async move { tokio::task::spawn_blocking(f).await }.in_current_span())
 }
 
 pub fn spawn_on_main_thread<F>(f: F)
@@ -253,7 +253,7 @@ where
         handle.as_mut().expect("handle.as_mut()").clone()
     };
 
-    handle.spawn(f);
+    handle.spawn(f.in_current_span());
 }
 
 pub async fn run_on_main_thread<F, O>(f: F) -> O
@@ -266,7 +266,7 @@ where
         handle.as_mut().expect("handle.as_mut()").clone()
     };
 
-    handle.dispatch(f).await
+    handle.dispatch(f.in_current_span()).await
 }
 
 pub fn spawn_local_on_main_thread<F>(f: F)
@@ -277,5 +277,68 @@ where
         .with_inner(Clone::clone)
         .expect("ASYNC_DISPATCHER_LOCAL_HANDLE is None");
 
-    handle.spawn(f);
+    handle.spawn(f.in_current_span());
+}
+
+#[test]
+fn test_async_manager() {
+    fn logger(debug: bool, other_crates: bool) {
+        use std::sync::Once;
+        use tracing_subscriber::{filter::EnvFilter, prelude::*};
+
+        static ONCE: Once = Once::new();
+        ONCE.call_once(move || {
+            let level = if debug { "debug" } else { "info" };
+            let my_crate_name = env!("CARGO_PKG_NAME").replace("-", "_");
+
+            let mut filter = EnvFilter::from_default_env();
+
+            if other_crates {
+                filter = filter.add_directive(level.parse().unwrap());
+            } else {
+                filter =
+                    filter.add_directive(format!("{}={}", my_crate_name, level).parse().unwrap());
+            }
+
+            tracing_subscriber::fmt()
+                .with_env_filter(filter)
+                .with_target(false)
+                .with_thread_ids(false)
+                .with_thread_names(false)
+                .with_ansi(true)
+                .without_time()
+                .finish()
+                .init();
+        });
+    }
+
+    logger(true, true);
+
+    initialize();
+
+    #[tracing::instrument]
+    fn test() {
+        let a = tracing::info_span!("A");
+        let _ = a.enter();
+        spawn(async move {
+            let a = tracing::info_span!("B");
+            let _ = a.enter();
+            run_on_main_thread(async move {
+                let a = tracing::info_span!("C");
+                let _ = a.enter();
+                debug!("HI!");
+            })
+            .await;
+        });
+    }
+
+    test();
+
+    for _ in 0..2 {
+        debug!("?");
+        step();
+        debug!("!");
+    }
+
+    shutdown();
 }
