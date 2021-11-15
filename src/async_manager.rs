@@ -236,15 +236,20 @@ where
         .unwrap()
 }
 
-pub fn spawn_blocking<F, R>(f: F) -> impl Future<Output = Result<R, JoinError>>
+pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<F::Output>
 where
     F: FnOnce() -> R + Send + 'static,
     R: Send + 'static,
 {
+    let span = tracing::Span::current();
     TOKIO_RUNTIME
-        .with_inner(move |rt| rt.spawn_blocking(f))
+        .with_inner(move |rt| {
+            rt.spawn_blocking(move || {
+                let _enter = span.enter();
+                f()
+            })
+        })
         .unwrap()
-        .in_current_span()
 }
 
 pub fn spawn_on_main_thread<F>(f: F)
@@ -319,23 +324,34 @@ fn test_async_manager() {
 
     initialize();
 
-    #[tracing::instrument]
-    fn test() {
-        let a = tracing::info_span!("A");
-        let _ = a.enter();
-        spawn(async move {
-            let a = tracing::info_span!("B");
+    {
+        #[tracing::instrument]
+        fn test() {
+            let a = tracing::info_span!("A");
             let _ = a.enter();
-            run_on_main_thread(async move {
-                let a = tracing::info_span!("C");
+            spawn(async move {
+                let a = tracing::info_span!("B");
                 let _ = a.enter();
-                debug!("HI!");
-            })
-            .await;
-        });
+                run_on_main_thread(async move {
+                    let a = tracing::info_span!("C");
+                    let _ = a.enter();
+                    debug!("HI!");
+                })
+                .await;
+            });
+        }
+        test();
     }
 
-    test();
+    {
+        #[tracing::instrument]
+        fn test() {
+            spawn_blocking(|| {
+                debug!("OH");
+            });
+        }
+        test();
+    }
 
     for _ in 0..2 {
         debug!("?");
