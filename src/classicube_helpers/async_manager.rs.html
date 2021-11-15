@@ -279,6 +279,69 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">tick::TickEventHandler</span>, <span class="ident">WithInner</span>};
 <span class="kw">use</span> <span class="ident">async_dispatcher</span>::{<span class="ident">Dispatcher</span>, <span class="ident">DispatcherHandle</span>, <span class="ident">LocalDispatcherHandle</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future::Either</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
@@ -294,7 +357,7 @@
     <span class="ident">time::Duration</span>,
 };
 <span class="kw">use</span> <span class="ident">tokio::task</span>::{<span class="ident">JoinError</span>, <span class="ident">JoinHandle</span>};
-<span class="kw">use</span> <span class="ident">tracing::debug</span>;
+<span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">debug</span>, <span class="ident">Instrument</span>};
 
 <span class="macro">thread_local!</span>(
     <span class="kw">static</span> <span class="ident">ASYNC_DISPATCHER</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Dispatcher</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
@@ -482,9 +545,7 @@
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">use</span> <span class="ident">futures::prelude</span>::<span class="kw-2">*</span>;
-
-    <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">shared</span>();
+    <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">in_current_span</span>().<span class="ident">shared</span>();
 
     {
         <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">shared</span>.<span class="ident">clone</span>();
@@ -514,7 +575,9 @@
     <span class="ident">F</span>: <span class="ident">Future</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">F::Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="ident">TOKIO_RUNTIME</span>.<span class="ident">with_inner</span>(<span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">rt</span>.<span class="ident">spawn</span>(<span class="ident">f</span>)).<span class="ident">unwrap</span>()
+    <span class="ident">TOKIO_RUNTIME</span>
+        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">rt</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()))
+        .<span class="ident">unwrap</span>()
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">JoinError</span><span class="op">&gt;</span><span class="op">&gt;</span>
@@ -522,7 +585,7 @@
     <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="ident">R</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">R</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="ident">spawn</span>(<span class="kw">async</span> { <span class="ident">tokio::task::spawn_blocking</span>(<span class="ident">f</span>).<span class="kw">await</span> })
+    <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> { <span class="ident">tokio::task::spawn_blocking</span>(<span class="ident">f</span>).<span class="kw">await</span> }.<span class="ident">in_current_span</span>())
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
@@ -534,7 +597,7 @@
         <span class="ident">handle</span>.<span class="ident">as_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;handle.as_mut()&quot;</span>).<span class="ident">clone</span>()
     };
 
-    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>);
+    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>());
 }
 
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">O</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">O</span>
@@ -547,7 +610,7 @@
         <span class="ident">handle</span>.<span class="ident">as_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;handle.as_mut()&quot;</span>).<span class="ident">clone</span>()
     };
 
-    <span class="ident">handle</span>.<span class="ident">dispatch</span>(<span class="ident">f</span>).<span class="kw">await</span>
+    <span class="ident">handle</span>.<span class="ident">dispatch</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()).<span class="kw">await</span>
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_local_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
@@ -558,7 +621,70 @@
         .<span class="ident">with_inner</span>(<span class="ident">Clone::clone</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;ASYNC_DISPATCHER_LOCAL_HANDLE is None&quot;</span>);
 
-    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>);
+    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>());
+}
+
+<span class="attribute">#[<span class="ident">test</span>]</span>
+<span class="kw">fn</span> <span class="ident">test_async_manager</span>() {
+    <span class="kw">fn</span> <span class="ident">logger</span>(<span class="ident">debug</span>: <span class="ident">bool</span>, <span class="ident">other_crates</span>: <span class="ident">bool</span>) {
+        <span class="kw">use</span> <span class="ident">std::sync::Once</span>;
+        <span class="kw">use</span> <span class="ident">tracing_subscriber</span>::{<span class="ident">filter::EnvFilter</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
+
+        <span class="kw">static</span> <span class="ident">ONCE</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+        <span class="ident">ONCE</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">debug</span> { <span class="string">&quot;debug&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;info&quot;</span> };
+            <span class="kw">let</span> <span class="ident">my_crate_name</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>).<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">EnvFilter::from_default_env</span>();
+
+            <span class="kw">if</span> <span class="ident">other_crates</span> {
+                <span class="ident">filter</span> <span class="op">=</span> <span class="ident">filter</span>.<span class="ident">add_directive</span>(<span class="ident">level</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+            } <span class="kw">else</span> {
+                <span class="ident">filter</span> <span class="op">=</span>
+                    <span class="ident">filter</span>.<span class="ident">add_directive</span>(<span class="macro">format!</span>(<span class="string">&quot;{}={}&quot;</span>, <span class="ident">my_crate_name</span>, <span class="ident">level</span>).<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+            }
+
+            <span class="ident">tracing_subscriber::fmt</span>()
+                .<span class="ident">with_env_filter</span>(<span class="ident">filter</span>)
+                .<span class="ident">with_target</span>(<span class="bool-val">false</span>)
+                .<span class="ident">with_thread_ids</span>(<span class="bool-val">false</span>)
+                .<span class="ident">with_thread_names</span>(<span class="bool-val">false</span>)
+                .<span class="ident">with_ansi</span>(<span class="bool-val">true</span>)
+                .<span class="ident">without_time</span>()
+                .<span class="ident">finish</span>()
+                .<span class="ident">init</span>();
+        });
+    }
+
+    <span class="ident">logger</span>(<span class="bool-val">true</span>, <span class="bool-val">true</span>);
+
+    <span class="ident">initialize</span>();
+
+    <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
+        <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
+            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
+            <span class="ident">run_on_main_thread</span>(<span class="kw">async</span> <span class="kw">move</span> {
+                <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+                <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
+                <span class="macro">debug!</span>(<span class="string">&quot;HI!&quot;</span>);
+            })
+            .<span class="kw">await</span>;
+        });
+    }
+
+    <span class="ident">test</span>();
+
+    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">2</span> {
+        <span class="macro">debug!</span>(<span class="string">&quot;?&quot;</span>);
+        <span class="ident">step</span>();
+        <span class="macro">debug!</span>(<span class="string">&quot;!&quot;</span>);
+    }
+
+    <span class="ident">shutdown</span>();
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="classicube_helpers" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
