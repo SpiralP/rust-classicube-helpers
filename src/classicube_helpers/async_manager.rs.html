@@ -342,6 +342,9 @@
 <span id="342">342</span>
 <span id="343">343</span>
 <span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">tick::TickEventHandler</span>, <span class="ident">WithInner</span>};
 <span class="kw">use</span> <span class="ident">async_dispatcher</span>::{<span class="ident">Dispatcher</span>, <span class="ident">DispatcherHandle</span>, <span class="ident">LocalDispatcherHandle</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future::Either</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
@@ -580,12 +583,15 @@
         .<span class="ident">unwrap</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">JoinError</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">JoinError</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="ident">R</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">R</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> { <span class="ident">tokio::task::spawn_blocking</span>(<span class="ident">f</span>).<span class="kw">await</span> }.<span class="ident">in_current_span</span>())
+    <span class="ident">TOKIO_RUNTIME</span>
+        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">rt</span>.<span class="ident">spawn_blocking</span>(<span class="ident">f</span>))
+        .<span class="ident">unwrap</span>()
+        .<span class="ident">in_current_span</span>()
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
@@ -600,17 +606,17 @@
     <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>());
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">O</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">O</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">O</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">F::Output</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">O</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span>,
-    <span class="ident">O</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span>,
+    <span class="ident">F::Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span>,
 {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">ASYNC_DISPATCHER_HANDLE</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="ident">handle</span>.<span class="ident">as_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;handle.as_mut()&quot;</span>).<span class="ident">clone</span>()
     };
 
-    <span class="ident">handle</span>.<span class="ident">dispatch</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()).<span class="kw">await</span>
+    <span class="kw">async</span> <span class="kw">move</span> { <span class="ident">handle</span>.<span class="ident">dispatch</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()).<span class="kw">await</span> }
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_local_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
