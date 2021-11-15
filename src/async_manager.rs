@@ -236,12 +236,15 @@ where
         .unwrap()
 }
 
-pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<Result<R, JoinError>>
+pub fn spawn_blocking<F, R>(f: F) -> impl Future<Output = Result<R, JoinError>>
 where
     F: FnOnce() -> R + Send + 'static,
     R: Send + 'static,
 {
-    spawn(async move { tokio::task::spawn_blocking(f).await }.in_current_span())
+    TOKIO_RUNTIME
+        .with_inner(move |rt| rt.spawn_blocking(f))
+        .unwrap()
+        .in_current_span()
 }
 
 pub fn spawn_on_main_thread<F>(f: F)
@@ -256,17 +259,17 @@ where
     handle.spawn(f.in_current_span());
 }
 
-pub async fn run_on_main_thread<F, O>(f: F) -> O
+pub fn run_on_main_thread<F, O>(f: F) -> impl Future<Output = F::Output>
 where
     F: Future<Output = O> + 'static + Send,
-    O: 'static + Send + std::fmt::Debug,
+    F::Output: Send + 'static + std::fmt::Debug,
 {
     let mut handle = {
         let mut handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
         handle.as_mut().expect("handle.as_mut()").clone()
     };
 
-    handle.dispatch(f.in_current_span()).await
+    async move { handle.dispatch(f.in_current_span()).await }
 }
 
 pub fn spawn_local_on_main_thread<F>(f: F)
