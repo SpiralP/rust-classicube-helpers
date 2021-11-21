@@ -12,7 +12,7 @@ use std::{
     task::{Context, Poll},
     time::Duration,
 };
-use tokio::task::{JoinError, JoinHandle};
+use tokio::task::JoinHandle;
 use tracing::{debug, Instrument};
 
 thread_local!(

@@ -97,6 +97,7 @@ macro_rules! make_event_handler {
                     let event_handler = obj as *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]>;
                     let event_handler = unsafe { &mut *event_handler };
 
+                    #[allow(clippy::redundant_closure_call)]
                     let event = [<$event_name Event>] {
                         $($name: ($to_rust)($name), )*
                     };
