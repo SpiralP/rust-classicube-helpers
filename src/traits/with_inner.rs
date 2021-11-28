@@ -1,10 +1,12 @@
 use crate::WithBorrow;
 
 pub trait WithInner<'a, O> {
+    #[must_use]
     fn with_inner<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&O) -> T;
 
+    #[must_use]
     fn with_inner_mut<F, T>(&'a self, f: F) -> Option<T>
     where
         F: FnOnce(&mut O) -> T;
@@ -84,4 +86,14 @@ fn test_with_inner_static_rwlock() {
         Some(4)
     );
     assert_eq!(STATIC_RWLOCK.with_inner(|o| o + 2), Some(6));
+}
+
+#[test]
+fn test_with_inner_must_use() {
+    thread_local!(
+        static THREAD_LOCAL: std::cell::RefCell<Option<u8>> = Default::default();
+    );
+
+    // make sure this warns!
+    THREAD_LOCAL.with_inner(|o| o + 2);
 }
