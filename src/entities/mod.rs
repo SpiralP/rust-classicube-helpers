@@ -13,7 +13,7 @@ use std::{
 pub struct Entities {
     entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
-    added_callbacks: Rc<RefCell<CallbackHandler<Weak<Entity>>>>,
+    added_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<Entity>)>>>,
     removed_callbacks: Rc<RefCell<CallbackHandler<u8>>>,
 
     #[allow(dead_code)]
@@ -46,7 +46,8 @@ impl Entities {
             let entities = entities.clone();
             let added_callbacks = added_callbacks.clone();
             added_handler.on(move |AddedEvent { id }| {
-                let entity = unsafe { Rc::new(Entity::from_id(*id).expect("Entity::from_id")) };
+                let id = *id;
+                let entity = unsafe { Rc::new(Entity::from_id(id).expect("Entity::from_id")) };
                 let weak = Rc::downgrade(&entity);
 
                 {
@@ -55,7 +56,7 @@ impl Entities {
                 }
 
                 let mut added_callbacks = added_callbacks.borrow_mut();
-                added_callbacks.handle_event(weak);
+                added_callbacks.handle_event((id, weak));
             });
         }
 
@@ -103,7 +104,7 @@ impl Entities {
 
     pub fn on_added<F>(&mut self, callback: F)
     where
-        F: FnMut(&Weak<Entity>),
+        F: FnMut(&(u8, Weak<Entity>)),
         F: 'static,
     {
         let mut added_callbacks = self.added_callbacks.borrow_mut();
@@ -125,9 +126,12 @@ impl Entities {
         Some(Rc::downgrade(entity))
     }
 
-    pub fn get_all(&self) -> Vec<Weak<Entity>> {
+    pub fn get_all(&self) -> Vec<(u8, Weak<Entity>)> {
         let entities = self.entities.borrow();
-        entities.values().map(Rc::downgrade).collect::<Vec<_>>()
+        entities
+            .values()
+            .map(|entity| (entity.get_id(), Rc::downgrade(entity)))
+            .collect::<Vec<_>>()
     }
 }
 
