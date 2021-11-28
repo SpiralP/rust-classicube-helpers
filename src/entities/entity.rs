@@ -56,6 +56,15 @@ impl Entity {
         unsafe { get_eye_y(inner_ptr) }
     }
 
+    pub fn get_model_name_y(&self) -> f32 {
+        let model = unsafe { self.get_model().expect("Entity::get_model") };
+        let get_name_y = model.GetNameY.expect("GetNameY");
+
+        // it most likely doesn't mutate the Entity
+        let inner_ptr = self.inner as *const _ as *mut _;
+        unsafe { get_name_y(inner_ptr) }
+    }
+
     pub fn get_model_scale(&self) -> Vec3 {
         self.inner.ModelScale
     }
