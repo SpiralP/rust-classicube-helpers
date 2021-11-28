@@ -31,7 +31,7 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">entities::Entity</span>, <span class="ident">make_event_handler</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::make_event_handler</span>;
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
 
 <span class="macro">make_event_handler!</span>(
@@ -41,10 +41,10 @@
     <span class="ident">Int</span>,
     (
         {
-            <span class="ident">name</span>: <span class="ident">entity</span>,
-            <span class="ident">rust_type</span>: <span class="ident">Entity</span>,
+            <span class="ident">name</span>: <span class="ident">id</span>,
+            <span class="ident">rust_type</span>: <span class="ident">u8</span>,
             <span class="ident">c_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="ident">Entity::from_id</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>),
+            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>,
         },
     )
 );
@@ -56,10 +56,10 @@
     <span class="ident">Int</span>,
     (
         {
-            <span class="ident">name</span>: <span class="ident">entity</span>,
-            <span class="ident">rust_type</span>: <span class="ident">Entity</span>,
+            <span class="ident">name</span>: <span class="ident">id</span>,
+            <span class="ident">rust_type</span>: <span class="ident">u8</span>,
             <span class="ident">c_type</span>: <span class="ident">c_int</span>,
-            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="ident">Entity::from_id</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>),
+            <span class="ident">to_rust</span>: <span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="ident">id</span> <span class="kw">as</span> <span class="ident">u8</span>,
         },
     )
 );
