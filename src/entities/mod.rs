@@ -14,7 +14,7 @@ pub struct Entities {
     entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
     added_callbacks: Rc<RefCell<CallbackHandler<Weak<Entity>>>>,
-    removed_callbacks: Rc<RefCell<CallbackHandler<Weak<Entity>>>>,
+    removed_callbacks: Rc<RefCell<CallbackHandler<u8>>>,
 
     #[allow(dead_code)]
     added_handler: AddedEventHandler,
@@ -63,16 +63,13 @@ impl Entities {
             let entities = entities.clone();
             let removed_callbacks = removed_callbacks.clone();
             removed_handler.on(move |RemovedEvent { id }| {
-                let entity = unsafe { Rc::new(Entity::from_id(*id).expect("Entity::from_id")) };
-                let weak = Rc::downgrade(&entity);
-
                 {
                     let mut entities = entities.borrow_mut();
-                    entities.remove(&entity.get_id());
+                    entities.remove(id);
                 }
 
                 let mut removed_callbacks = removed_callbacks.borrow_mut();
-                removed_callbacks.handle_event(weak);
+                removed_callbacks.handle_event(*id);
             });
         }
 
@@ -115,7 +112,7 @@ impl Entities {
 
     pub fn on_removed<F>(&mut self, callback: F)
     where
-        F: FnMut(&Weak<Entity>),
+        F: FnMut(&u8),
         F: 'static,
     {
         let mut removed_callbacks = self.removed_callbacks.borrow_mut();
