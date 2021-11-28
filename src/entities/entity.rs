@@ -1,4 +1,4 @@
-use classicube_sys::{Entities, Vec3};
+use classicube_sys::{Entities, Matrix, Vec3};
 use std::{ffi::CStr, os::raw::c_char, ptr::NonNull};
 
 /// 255 is self entity
@@ -27,6 +27,10 @@ impl Entity {
 
     pub fn get_position(&self) -> Vec3 {
         self.inner.Position
+    }
+
+    pub fn get_transform(&self) -> Matrix {
+        self.inner.Transform
     }
 
     pub fn get_head(&self) -> [f32; 2] {
