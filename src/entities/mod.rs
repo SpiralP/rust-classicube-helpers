@@ -1,17 +1,25 @@
 mod entity;
 
 pub use self::entity::{Entity, ENTITY_SELF_ID};
-use crate::events::entity::*;
+use crate::{callback_handler::CallbackHandler, events::entity::*};
 use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
-use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
+use std::{
+    cell::RefCell,
+    collections::HashMap,
+    rc::{Rc, Weak},
+};
 
 /// safe access to entities list and entity events
-#[derive(Default)]
 pub struct Entities {
-    entities: Rc<UnsafeCell<HashMap<u8, Entity>>>,
+    entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
-    added: AddedEventHandler,
-    removed: RemovedEventHandler,
+    added_callbacks: Rc<RefCell<CallbackHandler<Weak<Entity>>>>,
+    removed_callbacks: Rc<RefCell<CallbackHandler<Weak<Entity>>>>,
+
+    #[allow(dead_code)]
+    added_handler: AddedEventHandler,
+    #[allow(dead_code)]
+    removed_handler: RemovedEventHandler,
 }
 
 impl Entities {
@@ -20,33 +28,60 @@ impl Entities {
         let mut entities = HashMap::with_capacity(256);
 
         // add self entity which always exists
-        entities.insert(ENTITY_SELF_ID, Entity::from_id(ENTITY_SELF_ID));
+        unsafe {
+            entities.insert(
+                ENTITY_SELF_ID,
+                Rc::new(Entity::from_id(ENTITY_SELF_ID).expect("Entity::from_id(ENTITY_SELF_ID)")),
+            );
+        }
 
-        let entities = Rc::new(UnsafeCell::new(entities));
+        let entities = Rc::new(RefCell::new(entities));
 
-        let mut added = AddedEventHandler::new();
-        let mut removed = RemovedEventHandler::new();
+        let mut added_handler = AddedEventHandler::new();
+        let mut removed_handler = RemovedEventHandler::new();
+        let added_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
+        let removed_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
 
         {
             let entities = entities.clone();
-            added.on(move |AddedEvent { entity }| {
-                let entities = unsafe { &mut *entities.get() };
-                entities.insert(entity.get_id(), *entity);
+            let added_callbacks = added_callbacks.clone();
+            added_handler.on(move |AddedEvent { id }| {
+                let entity = unsafe { Rc::new(Entity::from_id(*id).expect("Entity::from_id")) };
+                let weak = Rc::downgrade(&entity);
+
+                {
+                    let mut entities = entities.borrow_mut();
+                    entities.insert(entity.get_id(), entity);
+                }
+
+                let mut added_callbacks = added_callbacks.borrow_mut();
+                added_callbacks.handle_event(weak);
             });
         }
 
         {
             let entities = entities.clone();
-            removed.on(move |RemovedEvent { entity }| {
-                let entities = unsafe { &mut *entities.get() };
-                entities.remove(&entity.get_id());
+            let removed_callbacks = removed_callbacks.clone();
+            removed_handler.on(move |RemovedEvent { id }| {
+                let entity = unsafe { Rc::new(Entity::from_id(*id).expect("Entity::from_id")) };
+                let weak = Rc::downgrade(&entity);
+
+                {
+                    let mut entities = entities.borrow_mut();
+                    entities.remove(&entity.get_id());
+                }
+
+                let mut removed_callbacks = removed_callbacks.borrow_mut();
+                removed_callbacks.handle_event(weak);
             });
         }
 
         let mut s = Self {
             entities,
-            added,
-            removed,
+            added_handler,
+            removed_handler,
+            added_callbacks,
+            removed_callbacks,
         };
 
         s.update_to_real_entities();
@@ -55,45 +90,63 @@ impl Entities {
     }
 
     fn update_to_real_entities(&mut self) {
-        let entities = unsafe { &mut *self.entities.get() };
+        let mut entities = self.entities.borrow_mut();
         entities.clear();
 
         for id in 0..ENTITIES_MAX_COUNT {
-            if !unsafe { Entities.List[id as usize] }.is_null() {
-                entities.insert(id as u8, Entity::from_id(id as u8));
+            unsafe {
+                if !Entities.List[id as usize].is_null() {
+                    if let Some(entity) = Entity::from_id(id as u8) {
+                        entities.insert(id as u8, Rc::new(entity));
+                    }
+                }
             }
         }
     }
 
     pub fn on_added<F>(&mut self, callback: F)
     where
-        F: FnMut(&AddedEvent),
+        F: FnMut(&Weak<Entity>),
         F: 'static,
     {
-        self.added.on(callback)
+        let mut added_callbacks = self.added_callbacks.borrow_mut();
+        added_callbacks.on(callback)
     }
 
     pub fn on_removed<F>(&mut self, callback: F)
     where
-        F: FnMut(&RemovedEvent),
+        F: FnMut(&Weak<Entity>),
         F: 'static,
     {
-        self.removed.on(callback)
+        let mut removed_callbacks = self.removed_callbacks.borrow_mut();
+        removed_callbacks.on(callback)
     }
 
-    pub fn get(&self, id: u8) -> Option<&Entity> {
-        self.get_all().get(&id)
+    pub fn get(&self, id: u8) -> Option<Weak<Entity>> {
+        let entities = self.entities.borrow();
+        let entity = entities.get(&id)?;
+        Some(Rc::downgrade(entity))
     }
 
-    pub fn get_mut(&mut self, id: u8) -> Option<&mut Entity> {
-        self.get_all_mut().get_mut(&id)
+    pub fn with_all<R, F>(&self, f: F) -> R
+    where
+        F: FnOnce(&HashMap<u8, Rc<Entity>>) -> R,
+    {
+        let entities = self.entities.borrow();
+        f(&*entities)
     }
 
-    pub fn get_all(&self) -> &HashMap<u8, Entity> {
-        unsafe { &*self.entities.get() }
+    pub fn with_all_mut<R, F>(&self, f: F) -> R
+    where
+        F: FnOnce(&mut HashMap<u8, Rc<Entity>>) -> R,
+    {
+        let mut entities = self.entities.borrow_mut();
+        f(&mut *entities)
     }
+}
 
-    pub fn get_all_mut(&mut self) -> &mut HashMap<u8, Entity> {
-        unsafe { &mut *self.entities.get() }
+impl Default for Entities {
+    fn default() -> Self {
+        Self::new()
     }
 }

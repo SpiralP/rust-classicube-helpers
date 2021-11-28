@@ -1,4 +1,4 @@
-use crate::{entities::Entity, make_event_handler};
+use crate::make_event_handler;
 use std::os::raw::c_int;
 
 make_event_handler!(
@@ -8,10 +8,10 @@ make_event_handler!(
     Int,
     (
         {
-            name: entity,
-            rust_type: Entity,
+            name: id,
+            rust_type: u8,
             c_type: c_int,
-            to_rust: |id| Entity::from_id(id as u8),
+            to_rust: |id| id as u8,
         },
     )
 );
@@ -23,10 +23,10 @@ make_event_handler!(
     Int,
     (
         {
-            name: entity,
-            rust_type: Entity,
+            name: id,
+            rust_type: u8,
             c_type: c_int,
-            to_rust: |id| Entity::from_id(id as u8),
+            to_rust: |id| id as u8,
         },
     )
 );
