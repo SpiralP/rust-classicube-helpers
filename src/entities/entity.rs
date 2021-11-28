@@ -21,6 +21,18 @@ impl Entity {
         Some(Self { id, inner })
     }
 
+    pub fn get_inner(&self) -> &classicube_sys::Entity {
+        self.inner
+    }
+
+    /// # Safety
+    ///
+    /// `Entity` cannot outlive the entity in-game.
+    /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
+    pub fn get_inner_mut(&mut self) -> &mut classicube_sys::Entity {
+        self.inner
+    }
+
     pub fn get_id(&self) -> u8 {
         self.id
     }
