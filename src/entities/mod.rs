@@ -125,20 +125,9 @@ impl Entities {
         Some(Rc::downgrade(entity))
     }
 
-    pub fn with_all<R, F>(&self, f: F) -> R
-    where
-        F: FnOnce(&HashMap<u8, Rc<Entity>>) -> R,
-    {
+    pub fn get_all(&self) -> Vec<Weak<Entity>> {
         let entities = self.entities.borrow();
-        f(&*entities)
-    }
-
-    pub fn with_all_mut<R, F>(&self, f: F) -> R
-    where
-        F: FnOnce(&mut HashMap<u8, Rc<Entity>>) -> R,
-    {
-        let mut entities = self.entities.borrow_mut();
-        f(&mut *entities)
+        entities.values().map(Rc::downgrade).collect::<Vec<_>>()
     }
 }
 
