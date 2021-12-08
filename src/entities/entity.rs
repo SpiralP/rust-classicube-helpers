@@ -13,7 +13,10 @@ pub struct Entity {
 impl Entity {
     /// # Safety
     ///
+    /// `id` must exist.
+    ///
     /// `Entity` cannot outlive the entity in-game.
+    ///
     /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
     pub unsafe fn from_id(id: u8) -> Option<Self> {
         let mut ptr = NonNull::new(Entities.List[id as usize])?;
@@ -28,6 +31,7 @@ impl Entity {
     /// # Safety
     ///
     /// `Entity` cannot outlive the entity in-game.
+    ///
     /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
     pub fn get_inner_mut(&mut self) -> &mut classicube_sys::Entity {
         self.inner

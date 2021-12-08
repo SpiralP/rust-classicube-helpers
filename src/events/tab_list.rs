@@ -1,4 +1,4 @@
-use crate::{make_event_handler, tab_list::TabListEntry};
+use crate::make_event_handler;
 use std::os::raw::c_int;
 
 make_event_handler!(
@@ -8,10 +8,10 @@ make_event_handler!(
     Int,
     (
         {
-            name: entry,
-            rust_type: TabListEntry,
+            name: id,
+            rust_type: u8,
             c_type: c_int,
-            to_rust: |id| TabListEntry::from_id(id as u8),
+            to_rust: |id| id as u8,
         },
     )
 );
@@ -23,10 +23,10 @@ make_event_handler!(
     Int,
     (
         {
-            name: entry,
-            rust_type: TabListEntry,
+            name: id,
+            rust_type: u8,
             c_type: c_int,
-            to_rust: |id| TabListEntry::from_id(id as u8),
+            to_rust: |id| id as u8,
         },
     )
 );

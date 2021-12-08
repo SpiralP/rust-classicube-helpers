@@ -1,77 +1,121 @@
 mod entry;
 
 pub use self::entry::TabListEntry;
-use crate::events::{net, tab_list};
+use crate::{
+    callback_handler::CallbackHandler,
+    events::{net, tab_list},
+};
 use classicube_sys::{TabList, TABLIST_MAX_NAMES};
-use std::{cell::UnsafeCell, collections::HashMap, rc::Rc};
-
-type EntriesType = HashMap<u8, TabListEntry>;
+use std::{
+    cell::RefCell,
+    collections::HashMap,
+    rc::{Rc, Weak},
+};
 
 /// safe access to TabList
 #[derive(Default)]
 pub struct TabList {
-    // we can use UnsafeCell because these simple HashMap tasks
-    // won't cause any extra events to be emitted, which would cause
-    // recursion
-    //
-    // the exposed on_* methods should not emit any events or we break
-    // borrowing rules
-    entries: Rc<UnsafeCell<EntriesType>>,
-    added: tab_list::AddedEventHandler,
-    changed: tab_list::ChangedEventHandler,
-    removed: tab_list::RemovedEventHandler,
-    disconnected: net::DisconnectedEventHandler,
+    entries: Rc<RefCell<HashMap<u8, Rc<TabListEntry>>>>,
+
+    added_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<TabListEntry>)>>>,
+    #[allow(dead_code)]
+    added_handler: tab_list::AddedEventHandler,
+
+    changed_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<TabListEntry>)>>>,
+    #[allow(dead_code)]
+    changed_handler: tab_list::ChangedEventHandler,
+
+    removed_callbacks: Rc<RefCell<CallbackHandler<u8>>>,
+    #[allow(dead_code)]
+    removed_handler: tab_list::RemovedEventHandler,
+
+    disconnected_handler: net::DisconnectedEventHandler,
 }
 
 impl TabList {
     /// register event listeners, listeners will unregister on drop
     pub fn new() -> Self {
         let entries = HashMap::with_capacity(256);
-        let entries = Rc::new(UnsafeCell::new(entries));
+        let entries = Rc::new(RefCell::new(entries));
 
-        let mut added = tab_list::AddedEventHandler::new();
-        let mut changed = tab_list::ChangedEventHandler::new();
-        let mut removed = tab_list::RemovedEventHandler::new();
-        let mut disconnected = net::DisconnectedEventHandler::new();
-
+        let added_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
+        let mut added_handler = tab_list::AddedEventHandler::new();
         {
             let entries = entries.clone();
-            added.on(move |tab_list::AddedEvent { entry }| {
-                let entries = unsafe { &mut *entries.get() };
-                entries.insert(entry.get_id(), *entry);
+            let added_callbacks = added_callbacks.clone();
+            added_handler.on(move |tab_list::AddedEvent { id }| {
+                let id = *id;
+                let entry =
+                    Rc::new(unsafe { TabListEntry::from_id(id) }.expect("TabListEntry::from_id"));
+                let weak = Rc::downgrade(&entry);
+
+                {
+                    let mut entries = entries.borrow_mut();
+                    entries.insert(entry.get_id(), entry);
+                }
+
+                let mut added_callbacks = added_callbacks.borrow_mut();
+                added_callbacks.handle_event((id, weak));
             });
         }
 
+        let changed_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
+        let mut changed_handler = tab_list::ChangedEventHandler::new();
         {
             let entries = entries.clone();
-            changed.on(move |tab_list::ChangedEvent { entry }| {
-                let entries = unsafe { &mut *entries.get() };
-                entries.insert(entry.get_id(), *entry);
+            let changed_callbacks = changed_callbacks.clone();
+            changed_handler.on(move |tab_list::ChangedEvent { id }| {
+                let id = *id;
+
+                let weak = {
+                    let mut entries = entries.borrow_mut();
+                    let entry = entries.entry(id).or_insert_with(|| {
+                        Rc::new(
+                            unsafe { TabListEntry::from_id(id) }.expect("TabListEntry::from_id"),
+                        )
+                    });
+                    Rc::downgrade(entry)
+                };
+
+                let mut changed_callbacks = changed_callbacks.borrow_mut();
+                changed_callbacks.handle_event((id, weak));
             });
         }
 
+        let removed_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
+        let mut removed_handler = tab_list::RemovedEventHandler::new();
         {
             let entries = entries.clone();
-            removed.on(move |tab_list::RemovedEvent { id }| {
-                let entries = unsafe { &mut *entries.get() };
-                entries.remove(id);
+            let removed_callbacks = removed_callbacks.clone();
+            removed_handler.on(move |tab_list::RemovedEvent { id }| {
+                {
+                    let mut entries = entries.borrow_mut();
+                    entries.remove(id);
+                }
+
+                let mut removed_callbacks = removed_callbacks.borrow_mut();
+                removed_callbacks.handle_event(*id);
             });
         }
 
+        let mut disconnected_handler = net::DisconnectedEventHandler::new();
         {
             let entries = entries.clone();
-            disconnected.on(move |_| {
-                let entries = unsafe { &mut *entries.get() };
+            disconnected_handler.on(move |_| {
+                let mut entries = entries.borrow_mut();
                 entries.clear();
             });
         }
 
         let mut s = Self {
             entries,
-            added,
-            changed,
-            removed,
-            disconnected,
+            added_callbacks,
+            added_handler,
+            changed_callbacks,
+            changed_handler,
+            removed_callbacks,
+            removed_handler,
+            disconnected_handler,
         };
 
         s.update_to_real_entries();
@@ -80,38 +124,45 @@ impl TabList {
     }
 
     fn update_to_real_entries(&mut self) {
-        let entries = unsafe { &mut *self.entries.get() };
+        let mut entries = self.entries.borrow_mut();
         entries.clear();
 
         for id in 0..TABLIST_MAX_NAMES {
-            if unsafe { TabList.NameOffsets[id as usize] } != 0 {
-                entries.insert(id as u8, TabListEntry::from_id(id as u8));
+            unsafe {
+                if TabList.NameOffsets[id as usize] != 0 {
+                    if let Some(entry) = TabListEntry::from_id(id as u8) {
+                        entries.insert(id as u8, Rc::new(entry));
+                    }
+                }
             }
         }
     }
 
     pub fn on_added<F>(&mut self, callback: F)
     where
-        F: FnMut(&tab_list::AddedEvent),
+        F: FnMut(&(u8, Weak<TabListEntry>)),
         F: 'static,
     {
-        self.added.on(callback)
+        let mut added_callbacks = self.added_callbacks.borrow_mut();
+        added_callbacks.on(callback)
     }
 
     pub fn on_changed<F>(&mut self, callback: F)
     where
-        F: FnMut(&tab_list::ChangedEvent),
+        F: FnMut(&(u8, Weak<TabListEntry>)),
         F: 'static,
     {
-        self.changed.on(callback)
+        let mut changed_callbacks = self.changed_callbacks.borrow_mut();
+        changed_callbacks.on(callback)
     }
 
     pub fn on_removed<F>(&mut self, callback: F)
     where
-        F: FnMut(&tab_list::RemovedEvent),
+        F: FnMut(&u8),
         F: 'static,
     {
-        self.removed.on(callback)
+        let mut removed_callbacks = self.removed_callbacks.borrow_mut();
+        removed_callbacks.on(callback)
     }
 
     pub fn on_disconnected<F>(&mut self, callback: F)
@@ -119,16 +170,16 @@ impl TabList {
         F: FnMut(&net::DisconnectedEvent),
         F: 'static,
     {
-        self.disconnected.on(callback)
+        self.disconnected_handler.on(callback)
     }
 
-    fn best_match(&self, search: &str) -> Option<&TabListEntry> {
+    fn best_match(&self, search: &str) -> Option<Weak<TabListEntry>> {
         // tablist doesn't include <Local map chat> or [xtitles], so match from right to left
-        let mut positions: Vec<_> = self
-            .get_all()
-            .iter()
-            .filter_map(|(_id, entry)| {
-                let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
+        let entries = self.entries.borrow();
+        let mut positions: Vec<_> = entries
+            .values()
+            .filter_map(|entry| {
+                let nick_name = entry.get_nick_name().replace(" &7(AFK)", "");
 
                 // search: &0<Realm 7&0> &dAdo&elf Hit&aler
                 // entry :               ^
@@ -178,18 +229,21 @@ impl TabList {
                 .then_with(|| name2.len().partial_cmp(&name1.len()).unwrap())
         });
 
-        positions.first().map(|(entry, _name, _pos)| *entry)
+        positions
+            .first()
+            .map(|(entry, _name, _pos)| Rc::downgrade(*entry))
     }
 
-    pub fn find_entry_by_nick_name(&self, search: &str) -> Option<&TabListEntry> {
-        let option = self.get_all().iter().find_map(|(_id, entry)| {
+    pub fn find_entry_by_nick_name(&self, search: &str) -> Option<Weak<TabListEntry>> {
+        let entries = self.entries.borrow();
+        let option = entries.values().find_map(|entry| {
             // try exact nick_name match first
             // this should match if there are no <Local> or tags on the front
-            let nick_name = entry.get_nick_name()?.replace(" &7(AFK)", "");
+            let nick_name = entry.get_nick_name().replace(" &7(AFK)", "");
             if nick_name == search {
                 Some(entry)
             } else {
-                // compare with colors removed
+                // compare with colors removed_handler
                 if remove_color(&nick_name) == remove_color(&search) {
                     Some(entry)
                 } else {
@@ -199,16 +253,16 @@ impl TabList {
         });
 
         if let Some(a) = option {
-            Some(a)
+            Some(Rc::downgrade(a))
         } else {
-            let option = self.get_all().iter().find_map(|(_id, entry)| {
+            let option = entries.values().find_map(|entry| {
                 // try exact real_name match first
                 // this should match if there are no <Local> or tags on the front
-                let real_name = entry.get_real_name()?.replace(" &7(AFK)", "");
+                let real_name = entry.get_real_name().replace(" &7(AFK)", "");
                 if real_name == search {
                     Some(entry)
                 } else {
-                    // compare with colors removed
+                    // compare with colors removed_handler
                     if remove_color(&real_name) == remove_color(&search) {
                         Some(entry)
                     } else {
@@ -218,7 +272,7 @@ impl TabList {
             });
 
             if let Some(a) = option {
-                Some(a)
+                Some(Rc::downgrade(a))
             } else {
                 // exact match failed,
                 // match from the right, choose the one with most chars matched
@@ -228,20 +282,18 @@ impl TabList {
         }
     }
 
-    pub fn get(&self, id: u8) -> Option<&TabListEntry> {
-        self.get_all().get(&id)
+    pub fn get(&self, id: u8) -> Option<Weak<TabListEntry>> {
+        let entries = self.entries.borrow();
+        let entry = entries.get(&id)?;
+        Some(Rc::downgrade(entry))
     }
 
-    pub fn get_mut(&mut self, id: u8) -> Option<&mut TabListEntry> {
-        self.get_all_mut().get_mut(&id)
-    }
-
-    pub fn get_all(&self) -> &EntriesType {
-        unsafe { &*self.entries.get() }
-    }
-
-    pub fn get_all_mut(&mut self) -> &mut EntriesType {
-        unsafe { &mut *self.entries.get() }
+    pub fn get_all(&self) -> Vec<(u8, Weak<TabListEntry>)> {
+        let entries = self.entries.borrow();
+        entries
+            .values()
+            .map(|entry| (entry.get_id(), Rc::downgrade(entry)))
+            .collect::<Vec<_>>()
     }
 }
 

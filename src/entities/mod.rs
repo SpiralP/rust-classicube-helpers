@@ -14,10 +14,10 @@ pub struct Entities {
     entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
     added_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<Entity>)>>>,
-    removed_callbacks: Rc<RefCell<CallbackHandler<u8>>>,
-
     #[allow(dead_code)]
     added_handler: AddedEventHandler,
+
+    removed_callbacks: Rc<RefCell<CallbackHandler<u8>>>,
     #[allow(dead_code)]
     removed_handler: RemovedEventHandler,
 }
@@ -37,17 +37,14 @@ impl Entities {
 
         let entities = Rc::new(RefCell::new(entities));
 
-        let mut added_handler = AddedEventHandler::new();
-        let mut removed_handler = RemovedEventHandler::new();
         let added_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
-        let removed_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
-
+        let mut added_handler = AddedEventHandler::new();
         {
             let entities = entities.clone();
             let added_callbacks = added_callbacks.clone();
             added_handler.on(move |AddedEvent { id }| {
                 let id = *id;
-                let entity = unsafe { Rc::new(Entity::from_id(id).expect("Entity::from_id")) };
+                let entity = Rc::new(unsafe { Entity::from_id(id) }.expect("Entity::from_id"));
                 let weak = Rc::downgrade(&entity);
 
                 {
@@ -60,6 +57,8 @@ impl Entities {
             });
         }
 
+        let removed_callbacks = Rc::new(RefCell::new(CallbackHandler::new()));
+        let mut removed_handler = RemovedEventHandler::new();
         {
             let entities = entities.clone();
             let removed_callbacks = removed_callbacks.clone();
@@ -76,10 +75,10 @@ impl Entities {
 
         let mut s = Self {
             entities,
-            added_handler,
-            removed_handler,
             added_callbacks,
+            added_handler,
             removed_callbacks,
+            removed_handler,
         };
 
         s.update_to_real_entities();
