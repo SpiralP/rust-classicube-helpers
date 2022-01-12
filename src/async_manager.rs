@@ -297,7 +297,7 @@ fn test_async_manager() {
         static ONCE: Once = Once::new();
         ONCE.call_once(move || {
             let level = if debug { "debug" } else { "info" };
-            let my_crate_name = env!("CARGO_PKG_NAME").replace("-", "_");
+            let my_crate_name = env!("CARGO_PKG_NAME").replace('-', "_");
 
             let mut filter = EnvFilter::from_default_env();
 
