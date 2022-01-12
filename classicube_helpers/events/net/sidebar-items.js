@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ConnectedEvent",""],["ConnectedEventHandler","Connection to a server was established."],["DisconnectedEvent",""],["DisconnectedEventHandler","Connection to the server was lost."]]});
+initSidebarItems({"struct":[["ConnectedEvent",""],["ConnectedEventHandler","Connection to a server was established."],["DisconnectedEvent",""],["DisconnectedEventHandler","Connection to the server was lost."],["PluginMessageReceivedEvent",""],["PluginMessageReceivedEventHandler","Connection to the server was lost."]]});

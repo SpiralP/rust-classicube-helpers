@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["block",""],["chat",""],["entity",""],["gfx",""],["input",""],["net",""],["plugin_messages",""],["pointer",""],["tab_list",""],["texture",""],["user",""],["window",""],["world",""]]});
+initSidebarItems({"mod":[["block",""],["chat",""],["entity",""],["gfx",""],["input",""],["net",""],["pointer",""],["tab_list",""],["texture",""],["user",""],["window",""],["world",""]]});
