@@ -290,26 +290,15 @@ where
 
 #[test]
 fn test_async_manager() {
-    fn logger(debug: bool, other_crates: bool) {
+    fn logger(debug: bool) {
         use std::sync::Once;
-        use tracing_subscriber::{filter::EnvFilter, prelude::*};
+        use tracing::Level;
+        use tracing_subscriber::prelude::*;
 
         static ONCE: Once = Once::new();
         ONCE.call_once(move || {
-            let level = if debug { "debug" } else { "info" };
-            let my_crate_name = env!("CARGO_PKG_NAME").replace('-', "_");
-
-            let mut filter = EnvFilter::from_default_env();
-
-            if other_crates {
-                filter = filter.add_directive(level.parse().unwrap());
-            } else {
-                filter =
-                    filter.add_directive(format!("{}={}", my_crate_name, level).parse().unwrap());
-            }
-
             tracing_subscriber::fmt()
-                .with_env_filter(filter)
+                .with_max_level(if debug { Level::DEBUG } else { Level::INFO })
                 .with_target(false)
                 .with_thread_ids(false)
                 .with_thread_names(false)
@@ -320,7 +309,7 @@ fn test_async_manager() {
         });
     }
 
-    logger(true, true);
+    logger(true);
 
     initialize();
 

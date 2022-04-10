@@ -1,3 +1,5 @@
+#![feature(local_key_cell_methods)]
+
 pub mod async_manager;
 mod callback_handler;
 pub mod chat;

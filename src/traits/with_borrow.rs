@@ -1,69 +1,45 @@
-use std::{
-    cell::RefCell,
-    sync::{Mutex, RwLock},
-    thread::LocalKey,
-};
+use std::sync::{Mutex, RwLock};
 
-pub trait WithBorrow<'a, O> {
-    fn with_borrow<F, T>(&'a self, f: F) -> T
+pub trait WithBorrow<O> {
+    fn with_borrow<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&O) -> T;
+        F: FnOnce(&O) -> R;
 
-    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
+    fn with_borrow_mut<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&mut O) -> T;
+        F: FnOnce(&mut O) -> R;
 }
 
-impl<'a, O> WithBorrow<'a, O> for LocalKey<RefCell<O>>
-where
-    'a: 'static,
-{
-    fn with_borrow<F, T>(&'a self, f: F) -> T
+impl<O> WithBorrow<O> for Mutex<O> {
+    fn with_borrow<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&O) -> T,
-    {
-        self.with(|cell| f(&cell.borrow()))
-    }
-
-    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
-    where
-        F: FnOnce(&mut O) -> T,
-        'a: 'static,
-    {
-        self.with(|cell| f(&mut cell.borrow_mut()))
-    }
-}
-
-impl<'a, O> WithBorrow<'a, O> for Mutex<O> {
-    fn with_borrow<F, T>(&'a self, f: F) -> T
-    where
-        F: FnOnce(&O) -> T,
+        F: FnOnce(&O) -> R,
     {
         let guard = self.lock().unwrap();
         f(&*guard)
     }
 
-    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
+    fn with_borrow_mut<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&mut O) -> T,
+        F: FnOnce(&mut O) -> R,
     {
         let mut guard = self.lock().unwrap();
         f(&mut *guard)
     }
 }
 
-impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
-    fn with_borrow<F, T>(&'a self, f: F) -> T
+impl<O> WithBorrow<O> for RwLock<O> {
+    fn with_borrow<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&O) -> T,
+        F: FnOnce(&O) -> R,
     {
         let guard = self.read().unwrap();
         f(&*guard)
     }
 
-    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
+    fn with_borrow_mut<F, R>(&self, f: F) -> R
     where
-        F: FnOnce(&mut O) -> T,
+        F: FnOnce(&mut O) -> R,
     {
         let mut guard = self.write().unwrap();
         f(&mut *guard)
@@ -73,7 +49,7 @@ impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
 #[test]
 fn test_with_borrow_thread_local() {
     thread_local!(
-        static THREAD_LOCAL: RefCell<u8> = Default::default();
+        static THREAD_LOCAL: std::cell::RefCell<u8> = Default::default();
     );
     assert_eq!(
         THREAD_LOCAL.with_borrow_mut(|o| {

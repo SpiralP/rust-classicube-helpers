@@ -11,8 +11,6 @@ pub fn print<S: Into<String>>(s: S) {
 
     #[cfg(not(test))]
     {
-        use crate::traits::CellGetSet;
-
         let s = if s.len() > 255 {
             let mut s = s;
             s.truncate(255);

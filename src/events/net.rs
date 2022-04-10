@@ -1,3 +1,5 @@
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
+
 use crate::make_event_handler;
 
 make_event_handler!(
@@ -29,6 +31,7 @@ make_event_handler!(
             to_rust: |a| a,
         },
         {
+
             name: data,
             rust_type: Vec<u8>,
             c_type: *mut u8,

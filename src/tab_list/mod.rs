@@ -236,39 +236,25 @@ impl TabList {
 
     pub fn find_entry_by_nick_name(&self, search: &str) -> Option<Weak<TabListEntry>> {
         let entries = self.entries.borrow();
-        let option = entries.values().find_map(|entry| {
+        let option = entries.values().find(|entry| {
             // try exact nick_name match first
             // this should match if there are no <Local> or tags on the front
             let nick_name = entry.get_nick_name().replace(" &7(AFK)", "");
-            if nick_name == search {
-                Some(entry)
-            } else {
-                // compare with colors removed_handler
-                if remove_color(&nick_name) == remove_color(&search) {
-                    Some(entry)
-                } else {
-                    None
-                }
-            }
+            nick_name == search ||
+                // compare with colors removed
+                remove_color(&nick_name) == remove_color(&search)
         });
 
         if let Some(a) = option {
             Some(Rc::downgrade(a))
         } else {
-            let option = entries.values().find_map(|entry| {
+            let option = entries.values().find(|entry| {
                 // try exact real_name match first
                 // this should match if there are no <Local> or tags on the front
                 let real_name = entry.get_real_name().replace(" &7(AFK)", "");
-                if real_name == search {
-                    Some(entry)
-                } else {
-                    // compare with colors removed_handler
-                    if remove_color(&real_name) == remove_color(&search) {
-                        Some(entry)
-                    } else {
-                        None
-                    }
-                }
+                real_name == search ||
+                    // compare with colors removed
+                    remove_color(&real_name) == remove_color(&search)
             });
 
             if let Some(a) = option {
