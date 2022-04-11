@@ -1,16 +1,39 @@
-use std::sync::{Mutex, RwLock};
+use std::{
+    cell::RefCell,
+    sync::{Mutex, RwLock},
+    thread::LocalKey,
+};
 
-pub trait WithBorrow<O> {
-    fn with_borrow<F, R>(&self, f: F) -> R
+pub trait WithBorrow<'a, O> {
+    fn with_borrow<F, R>(&'a self, f: F) -> R
     where
         F: FnOnce(&O) -> R;
 
-    fn with_borrow_mut<F, R>(&self, f: F) -> R
+    fn with_borrow_mut<F, R>(&'a self, f: F) -> R
     where
         F: FnOnce(&mut O) -> R;
 }
 
-impl<O> WithBorrow<O> for Mutex<O> {
+impl<'a, O> WithBorrow<'a, O> for LocalKey<RefCell<O>>
+where
+    'a: 'static,
+{
+    fn with_borrow<F, T>(&'a self, f: F) -> T
+    where
+        F: FnOnce(&O) -> T,
+    {
+        self.with(|cell| f(&cell.borrow()))
+    }
+
+    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
+    where
+        F: FnOnce(&mut O) -> T,
+    {
+        self.with(|cell| f(&mut cell.borrow_mut()))
+    }
+}
+
+impl<'a, O> WithBorrow<'a, O> for Mutex<O> {
     fn with_borrow<F, R>(&self, f: F) -> R
     where
         F: FnOnce(&O) -> R,
@@ -28,7 +51,7 @@ impl<O> WithBorrow<O> for Mutex<O> {
     }
 }
 
-impl<O> WithBorrow<O> for RwLock<O> {
+impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
     fn with_borrow<F, R>(&self, f: F) -> R
     where
         F: FnOnce(&O) -> R,

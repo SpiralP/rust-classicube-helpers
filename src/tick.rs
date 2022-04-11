@@ -1,4 +1,4 @@
-use crate::callback_handler::CallbackHandler;
+use crate::{callback_handler::CallbackHandler, CellGetSet};
 use classicube_sys::*;
 use std::{
     cell::{Cell, RefCell},

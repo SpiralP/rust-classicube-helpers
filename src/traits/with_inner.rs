@@ -1,5 +1,3 @@
-use std::{cell::RefCell, thread::LocalKey};
-
 use crate::WithBorrow;
 
 pub trait WithInner<O> {
@@ -14,34 +12,18 @@ pub trait WithInner<O> {
         F: FnOnce(&mut O) -> R;
 }
 
-impl<S, O> WithInner<O> for S
+impl<'a, S, O> WithInner<O> for S
 where
-    S: WithBorrow<Option<O>>,
+    S: WithBorrow<'a, Option<O>>,
 {
-    fn with_inner<F, R>(&self, f: F) -> Option<R>
+    fn with_inner<F, R>(&'a self, f: F) -> Option<R>
     where
         F: FnOnce(&O) -> R,
     {
         self.with_borrow(|o| o.as_ref().map(f))
     }
 
-    fn with_inner_mut<F, R>(&self, f: F) -> Option<R>
-    where
-        F: FnOnce(&mut O) -> R,
-    {
-        self.with_borrow_mut(|o| o.as_mut().map(f))
-    }
-}
-
-impl<O> WithInner<O> for LocalKey<RefCell<Option<O>>> {
-    fn with_inner<F, R>(&'static self, f: F) -> Option<R>
-    where
-        F: FnOnce(&O) -> R,
-    {
-        self.with_borrow(|o| o.as_ref().map(f))
-    }
-
-    fn with_inner_mut<F, R>(&'static self, f: F) -> Option<R>
+    fn with_inner_mut<F, R>(&'a self, f: F) -> Option<R>
     where
         F: FnOnce(&mut O) -> R,
     {
@@ -51,6 +33,7 @@ impl<O> WithInner<O> for LocalKey<RefCell<Option<O>>> {
 
 #[test]
 fn test_with_inner_thread_local() {
+    use std::cell::RefCell;
     thread_local!(
         static THREAD_LOCAL: RefCell<Option<u8>> = Default::default();
     );
