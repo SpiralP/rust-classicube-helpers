@@ -27,11 +27,14 @@ jobs:
           scoop install llvm
           echo "LIBCLANG_PATH=$HOME\scoop\apps\llvm\current\bin" >> $env:GITHUB_ENV
 
-      - name: Install nightly
+      - name: Install rust stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1.1
 
       - name: Build
         uses: actions-rs/cargo@v1
@@ -40,12 +43,14 @@ jobs:
 
       - name: Build docs
         uses: actions-rs/cargo@v1
+        if: github.ref == 'refs/heads/master'
         with:
           command: doc
           args: --all-features
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/doc
@@ -68,10 +73,10 @@ jobs:
           sudo apt-get -y install clang llvm
           sudo apt-get -y install mesa-common-dev libopenal-dev libcurl4-openssl-dev libgl1-mesa-dev
 
-      - name: Install nightly
+      - name: Install rust stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
 
       - name: Build
@@ -96,10 +101,10 @@ jobs:
           brew install llvm
           echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
 
-      - name: Install nightly
+      - name: Install rust stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
 
       - name: Build
