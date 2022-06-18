@@ -62,7 +62,7 @@ impl Entity {
         self.inner.Velocity
     }
 
-    unsafe fn get_model(&self) -> Option<&classicube_sys::Model> {
+    pub unsafe fn get_model(&self) -> Option<&classicube_sys::Model> {
         let mut model = NonNull::new(self.inner.Model)?;
         Some(model.as_mut())
     }
