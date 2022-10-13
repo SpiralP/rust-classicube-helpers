@@ -1,9 +1,9 @@
 use crate::make_event_handler;
 
 make_event_handler!(
-    /// Window contents invalidated, should be redrawn
+    /// Window contents invalidated and will need to be redrawn
     Window,
-    Redraw,
+    RedrawNeeded,
     Void,
     ()
 );
@@ -33,7 +33,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// WindowState of the window changed
+    /// State of the window changed (e.g. minimised, fullscreen)
     Window,
     StateChanged,
     Void,
@@ -44,6 +44,22 @@ make_event_handler!(
     /// Window has been created, Window_Handle is valid now.
     Window,
     Created,
+    Void,
+    ()
+);
+
+make_event_handler!(
+    /// Inactive/background state of the window changed
+    Window,
+    InactiveChanged,
+    Void,
+    ()
+);
+
+make_event_handler!(
+    /// Window contents should be redrawn (as they are about to be displayed)
+    Window,
+    Redrawing,
     Void,
     ()
 );
