@@ -14,18 +14,15 @@ pub trait WithBorrow<'a, O> {
         F: FnOnce(&mut O) -> R;
 }
 
-impl<'a, O> WithBorrow<'a, O> for LocalKey<RefCell<O>>
-where
-    'a: 'static,
-{
-    fn with_borrow<F, T>(&'a self, f: F) -> T
+impl<O> WithBorrow<'static, O> for LocalKey<RefCell<O>> {
+    fn with_borrow<F, T>(&'static self, f: F) -> T
     where
         F: FnOnce(&O) -> T,
     {
         self.with(|cell| f(&cell.borrow()))
     }
 
-    fn with_borrow_mut<F, T>(&'a self, f: F) -> T
+    fn with_borrow_mut<F, T>(&'static self, f: F) -> T
     where
         F: FnOnce(&mut O) -> T,
     {

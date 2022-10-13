@@ -1,15 +1,17 @@
 mod entry;
 
-pub use self::entry::TabListEntry;
-use crate::{
-    callback_handler::CallbackHandler,
-    events::{net, tab_list},
-};
-use classicube_sys::{TabList, TABLIST_MAX_NAMES};
 use std::{
     cell::RefCell,
     collections::HashMap,
     rc::{Rc, Weak},
+};
+
+use classicube_sys::{TabList, TABLIST_MAX_NAMES};
+
+pub use self::entry::TabListEntry;
+use crate::{
+    callback_handler::CallbackHandler,
+    events::{net, tab_list},
 };
 
 /// safe access to TabList
@@ -204,7 +206,7 @@ impl TabList {
                 // }
 
                 // remove color
-                let search = remove_color(&search);
+                let search = remove_color(search);
                 let real_nick = remove_color(&nick_name);
 
                 // search in reverse
@@ -242,7 +244,7 @@ impl TabList {
             let nick_name = entry.get_nick_name().replace(" &7(AFK)", "");
             nick_name == search ||
                 // compare with colors removed
-                remove_color(&nick_name) == remove_color(&search)
+                remove_color(&nick_name) == remove_color(search)
         });
 
         if let Some(a) = option {
@@ -254,7 +256,7 @@ impl TabList {
                 let real_name = entry.get_real_name().replace(" &7(AFK)", "");
                 real_name == search ||
                     // compare with colors removed
-                    remove_color(&real_name) == remove_color(&search)
+                    remove_color(&real_name) == remove_color(search)
             });
 
             if let Some(a) = option {
