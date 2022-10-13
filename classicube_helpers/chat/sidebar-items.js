@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["print",""],["send",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["print",""],["send",""]]};

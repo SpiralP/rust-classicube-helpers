@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TickEvent",""],["TickEventHandler",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["TickEvent",""],["TickEventHandler",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["LibraryLoader",""],["SystemServices",""],["WindowsProgramming",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["IO",""],["LibraryLoader",""],["Pipes",""],["SystemServices",""],["WindowsProgramming",""]]};

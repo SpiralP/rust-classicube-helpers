@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FutureShared",""],["SyncShared",""],["ThreadShared",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["FutureShared",""],["SyncShared",""],["ThreadShared",""]]};

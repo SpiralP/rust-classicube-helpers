@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["CancelIo",""],["CancelIoEx",""],["CancelSynchronousIo",""],["CreateIoCompletionPort",""],["DeviceIoControl",""],["GetOverlappedResult",""],["GetOverlappedResultEx",""],["GetQueuedCompletionStatus",""],["GetQueuedCompletionStatusEx",""],["PostQueuedCompletionStatus",""]]});

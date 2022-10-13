@@ -1,109 +1,104 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tracing-attributes-0.1.20\src\lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../tracing_attributes/index.html"><div class="logo-container"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../tracing_attributes/index.html"><div class="logo-container">
-                    <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../tracing_attributes/index.html">
-                        <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tracing-attributes-0.1.23\src\lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../tracing_attributes/index.html"><div class="logo-container"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../tracing_attributes/index.html"><div class="logo-container">
+                    <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../tracing_attributes/index.html">
+                        <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -618,6 +613,70 @@
 <span id="611">611</span>
 <span id="612">612</span>
 <span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A procedural macro attribute for instrumenting functions with [`tracing`].</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`tracing`] is a framework for instrumenting Rust programs to collect</span>
@@ -636,7 +695,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```toml</span>
 <span class="doccomment">//! [dependencies]</span>
-<span class="doccomment">//! tracing-attributes = &quot;0.1.20&quot;</span>
+<span class="doccomment">//! tracing-attributes = &quot;0.1.23&quot;</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The [`#[instrument]`][instrument] attribute can now be added to a function</span>
@@ -656,7 +715,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`tracing`]: https://crates.io/crates/tracing</span>
 <span class="doccomment">//! [span]: https://docs.rs/tracing/latest/tracing/span/index.html</span>
-<span class="doccomment">//! [instrument]: attr.instrument.html</span>
+<span class="doccomment">//! [instrument]: macro@self::instrument</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Supported Rust Versions</span>
 <span class="doccomment">//!</span>
@@ -672,7 +731,7 @@
 <span class="doccomment">//! supported compiler version is not considered a semver breaking change as</span>
 <span class="doccomment">//! long as doing so complies with this policy.</span>
 <span class="doccomment">//!</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/tracing-attributes/0.1.20&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/tracing-attributes/0.1.23&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(
     <span class="ident">html_logo_url</span> <span class="op">=</span> <span class="string">&quot;https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png&quot;</span>,
     <span class="ident">issue_tracker_base_url</span> <span class="op">=</span> <span class="string">&quot;https://github.com/tokio-rs/tracing/issues/&quot;</span>
@@ -706,14 +765,14 @@
 <span class="kw">use</span> <span class="ident">proc_macro2::TokenStream</span>;
 <span class="kw">use</span> <span class="ident">quote::ToTokens</span>;
 <span class="kw">use</span> <span class="ident">syn::parse</span>::{<span class="ident">Parse</span>, <span class="ident">ParseStream</span>};
-<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">Attribute</span>, <span class="ident">Block</span>, <span class="ident">ItemFn</span>, <span class="ident">Signature</span>, <span class="ident">Visibility</span>};
+<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">Attribute</span>, <span class="ident">ItemFn</span>, <span class="ident">Signature</span>, <span class="ident">Visibility</span>};
 
 <span class="kw">mod</span> <span class="ident">attr</span>;
 <span class="kw">mod</span> <span class="ident">expand</span>;
 <span class="doccomment">/// Instruments a function to create and enter a `tracing` [span] every time</span>
 <span class="doccomment">/// the function is called.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Unless overriden, a span with `info` level will be generated.</span>
+<span class="doccomment">/// Unless overriden, a span with the [`INFO`] [level] will be generated.</span>
 <span class="doccomment">/// The generated span&#39;s name will be the name of the function.</span>
 <span class="doccomment">/// By default, all arguments to the function are included as fields on the</span>
 <span class="doccomment">/// span. Arguments that are `tracing` [primitive types] implementing the</span>
@@ -965,6 +1024,47 @@
 <span class="doccomment">///     // ...</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
+<span class="doccomment">/// Overriding the generated span&#39;s parent:</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use tracing_attributes::instrument;</span>
+<span class="doccomment">/// #[instrument(parent = None)]</span>
+<span class="doccomment">/// pub fn my_function() {</span>
+<span class="doccomment">///     // ...</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use tracing_attributes::instrument;</span>
+<span class="doccomment">/// // A struct which owns a span handle.</span>
+<span class="doccomment">/// struct MyStruct</span>
+<span class="doccomment">/// {</span>
+<span class="doccomment">///     span: tracing::Span</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// impl MyStruct</span>
+<span class="doccomment">/// {</span>
+<span class="doccomment">///     // Use the struct&#39;s `span` field as the parent span</span>
+<span class="doccomment">///     #[instrument(parent = &amp;self.span, skip(self))]</span>
+<span class="doccomment">///     fn my_method(&amp;self) {}</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Specifying [`follows_from`] relationships:</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use tracing_attributes::instrument;</span>
+<span class="doccomment">/// #[instrument(follows_from = causes)]</span>
+<span class="doccomment">/// pub fn my_function(causes: &amp;[tracing::Id]) {</span>
+<span class="doccomment">///     // ...</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Any expression of type `impl IntoIterator&lt;Item = impl Into&lt;Option&lt;Id&gt;&gt;&gt;`</span>
+<span class="doccomment">/// may be provided to `follows_from`; e.g.:</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use tracing_attributes::instrument;</span>
+<span class="doccomment">/// #[instrument(follows_from = [cause])]</span>
+<span class="doccomment">/// pub fn my_function(cause: &amp;tracing::span::EnteredSpan) {</span>
+<span class="doccomment">///     // ...</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// To skip recording an argument, pass the argument&#39;s name to the `skip`:</span>
 <span class="doccomment">///</span>
@@ -999,7 +1099,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// The return value event will have the same level as the span generated by `#[instrument]`.</span>
-<span class="doccomment">/// By default, this will be `TRACE`, but if the level is overridden, the event will be at the same</span>
+<span class="doccomment">/// By default, this will be [`INFO`], but if the level is overridden, the event will be at the same</span>
 <span class="doccomment">/// level.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// **Note**:  if the function returns a `Result&lt;T, E&gt;`, `ret` will record returned values if and</span>
@@ -1039,6 +1139,9 @@
 <span class="doccomment">///     Ok(())</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If a `target` is specified, both the `ret` and `err` arguments will emit outputs to</span>
+<span class="doccomment">/// the declared target (or the default channel if `target` is not specified).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The `ret` and `err` arguments can be combined in order to record an event if a</span>
 <span class="doccomment">/// function returns [`Result::Ok`] or [`Result::Err`]:</span>
@@ -1121,7 +1224,9 @@
 <span class="doccomment">/// [`INFO`]: https://docs.rs/tracing/latest/tracing/struct.Level.html#associatedconstant.INFO</span>
 <span class="doccomment">/// [empty field]: https://docs.rs/tracing/latest/tracing/field/struct.Empty.html</span>
 <span class="doccomment">/// [field syntax]: https://docs.rs/tracing/latest/tracing/#recording-fields</span>
-<span class="doccomment">/// [`fmt::Debug`]: https://doc.rust-lang.org/std/fmt/trait.Debug.html</span>
+<span class="doccomment">/// [`follows_from`]: https://docs.rs/tracing/latest/tracing/struct.Span.html#method.follows_from</span>
+<span class="doccomment">/// [`tracing`]: https://github.com/tokio-rs/tracing</span>
+<span class="doccomment">/// [`fmt::Debug`]: std::fmt::Debug</span>
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">instrument</span>(
     <span class="ident">args</span>: <span class="ident">proc_macro::TokenStream</span>,
@@ -1161,11 +1266,13 @@
     <span class="comment">// check for async_trait-like patterns in the block, and instrument</span>
     <span class="comment">// the future instead of the wrapper</span>
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">async_like</span>) <span class="op">=</span> <span class="ident">expand::AsyncInfo::from_fn</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>) {
-        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">async_like</span>.<span class="ident">gen_async</span>(<span class="ident">args</span>, <span class="ident">instrumented_function_name</span>.<span class="ident">as_str</span>()));
+        <span class="kw">return</span> <span class="ident">async_like</span>.<span class="ident">gen_async</span>(<span class="ident">args</span>, <span class="ident">instrumented_function_name</span>.<span class="ident">as_str</span>());
     }
 
+    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">MaybeItemFn::from</span>(<span class="ident">input</span>);
+
     <span class="prelude-val">Ok</span>(<span class="ident">expand::gen_function</span>(
-        (<span class="kw-2">&amp;</span><span class="ident">input</span>).<span class="ident">into</span>(),
+        <span class="ident">input</span>.<span class="ident">as_ref</span>(),
         <span class="ident">args</span>,
         <span class="ident">instrumented_function_name</span>.<span class="ident">as_str</span>(),
         <span class="prelude-val">None</span>,
@@ -1177,7 +1284,8 @@
 <span class="doccomment">/// which&#39;s block is just a `TokenStream` (it may contain invalid code).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">struct</span> <span class="ident">MaybeItemFn</span> {
-    <span class="ident">attrs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
+    <span class="ident">outer_attrs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
+    <span class="ident">inner_attrs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
     <span class="ident">vis</span>: <span class="ident">Visibility</span>,
     <span class="ident">sig</span>: <span class="ident">Signature</span>,
     <span class="ident">block</span>: <span class="ident">TokenStream</span>,
@@ -1186,7 +1294,8 @@
 <span class="kw">impl</span> <span class="ident">MaybeItemFn</span> {
     <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MaybeItemFnRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">TokenStream</span><span class="op">&gt;</span> {
         <span class="ident">MaybeItemFnRef</span> {
-            <span class="ident">attrs</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">attrs</span>,
+            <span class="ident">outer_attrs</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">outer_attrs</span>,
+            <span class="ident">inner_attrs</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner_attrs</span>,
             <span class="ident">vis</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">vis</span>,
             <span class="ident">sig</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sig</span>,
             <span class="ident">block</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">block</span>,
@@ -1198,12 +1307,14 @@
 <span class="doccomment">/// (just like `ItemFn`, but skips parsing the body).</span>
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">MaybeItemFn</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">call</span>(<span class="ident">syn::Attribute::parse_outer</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">outer_attrs</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">call</span>(<span class="ident">Attribute::parse_outer</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">vis</span>: <span class="ident">Visibility</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">sig</span>: <span class="ident">Signature</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">inner_attrs</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">call</span>(<span class="ident">Attribute::parse_inner</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">block</span>: <span class="ident">TokenStream</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">attrs</span>,
+            <span class="ident">outer_attrs</span>,
+            <span class="ident">inner_attrs</span>,
             <span class="ident">vis</span>,
             <span class="ident">sig</span>,
             <span class="ident">block</span>,
@@ -1211,26 +1322,37 @@
     }
 }
 
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ItemFn</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MaybeItemFn</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(
+        <span class="ident">ItemFn</span> {
+            <span class="ident">attrs</span>,
+            <span class="ident">vis</span>,
+            <span class="ident">sig</span>,
+            <span class="ident">block</span>,
+        }: <span class="ident">ItemFn</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> (<span class="ident">outer_attrs</span>, <span class="ident">inner_attrs</span>) <span class="op">=</span> <span class="ident">attrs</span>
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">partition</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">style</span> <span class="op">==</span> <span class="ident">syn::AttrStyle::Outer</span>);
+        <span class="self">Self</span> {
+            <span class="ident">outer_attrs</span>,
+            <span class="ident">inner_attrs</span>,
+            <span class="ident">vis</span>,
+            <span class="ident">sig</span>,
+            <span class="ident">block</span>: <span class="ident">block</span>.<span class="ident">to_token_stream</span>(),
+        }
+    }
+}
+
 <span class="doccomment">/// A generic reference type for `MaybeItemFn`,</span>
 <span class="doccomment">/// that takes a generic block type `B` that implements `ToTokens` (eg. `TokenStream`, `Block`).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">struct</span> <span class="ident">MaybeItemFnRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">B</span>: <span class="ident">ToTokens</span><span class="op">&gt;</span> {
-    <span class="ident">attrs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
+    <span class="ident">outer_attrs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
+    <span class="ident">inner_attrs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>,
     <span class="ident">vis</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Visibility</span>,
     <span class="ident">sig</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Signature</span>,
     <span class="ident">block</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">B</span>,
 }
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ItemFn</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MaybeItemFnRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">ItemFn</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">MaybeItemFnRef</span> {
-            <span class="ident">attrs</span>: <span class="kw-2">&amp;</span><span class="ident">val</span>.<span class="ident">attrs</span>,
-            <span class="ident">vis</span>: <span class="kw-2">&amp;</span><span class="ident">val</span>.<span class="ident">vis</span>,
-            <span class="ident">sig</span>: <span class="kw-2">&amp;</span><span class="ident">val</span>.<span class="ident">sig</span>,
-            <span class="ident">block</span>: <span class="kw-2">&amp;</span><span class="ident">val</span>.<span class="ident">block</span>,
-        }
-    }
-}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tracing_attributes" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tracing_attributes" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>

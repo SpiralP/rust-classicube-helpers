@@ -1,109 +1,104 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tracing-core-0.1.25\src\dispatcher.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dispatcher.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../tracing_core/index.html"><div class="logo-container"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../tracing_core/index.html"><div class="logo-container">
-                    <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../tracing_core/index.html">
-                        <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tracing-core-0.1.30\src\dispatcher.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dispatcher.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../tracing_core/index.html"><div class="logo-container"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../tracing_core/index.html"><div class="logo-container">
+                    <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../tracing_core/index.html">
+                        <img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -910,6 +905,109 @@
 <span id="903">903</span>
 <span id="904">904</span>
 <span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Dispatches trace events to [`Subscriber`]s.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The _dispatcher_ is the component of the tracing system which is responsible</span>
@@ -1035,11 +1133,6 @@
 <span class="doccomment">//! currently default `Dispatch`. This is used primarily by `tracing`</span>
 <span class="doccomment">//! instrumentation.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [`Subscriber`]: struct.Subscriber.html</span>
-<span class="doccomment">//! [`with_default`]: fn.with_default.html</span>
-<span class="doccomment">//! [`set_global_default`]: fn.set_global_default.html</span>
-<span class="doccomment">//! [`get_default`]: fn.get_default.html</span>
-<span class="doccomment">//! [`Dispatch`]: struct.Dispatch.html</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">callsite</span>, <span class="ident">span</span>,
     <span class="ident">subscriber</span>::{<span class="self">self</span>, <span class="ident">NoSubscriber</span>, <span class="ident">Subscriber</span>},
@@ -1061,12 +1154,46 @@
     <span class="ident">error</span>,
 };
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">alloc::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Weak</span>};
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">core::ops::Deref</span>;
+
 <span class="doccomment">/// `Dispatch` trace data to a [`Subscriber`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Subscriber`]: trait.Subscriber.html</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Dispatch</span> {
     <span class="ident">subscriber</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// `WeakDispatch` is a version of [`Dispatch`] that holds a non-owning reference</span>
+<span class="doccomment">/// to a [`Subscriber`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The Subscriber` may be accessed by calling [`WeakDispatch::upgrade`],</span>
+<span class="doccomment">/// which returns an `Option&lt;Dispatch&gt;`. If all [`Dispatch`] clones that point</span>
+<span class="doccomment">/// at the `Subscriber` have been dropped, [`WeakDispatch::upgrade`] will return</span>
+<span class="doccomment">/// `None`. Otherwise, it will return `Some(Dispatch)`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// A `WeakDispatch` may be created from a [`Dispatch`] by calling the</span>
+<span class="doccomment">/// [`Dispatch::downgrade`] method. The primary use for creating a</span>
+<span class="doccomment">/// [`WeakDispatch`] is to allow a Subscriber` to hold a cyclical reference to</span>
+<span class="doccomment">/// itself without creating a memory leak. See [here] for details.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This type is analogous to the [`std::sync::Weak`] type, but for a</span>
+<span class="doccomment">/// [`Dispatch`] rather than an [`Arc`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Arc`]: std::sync::Arc</span>
+<span class="doccomment">/// [here]: Subscriber#avoiding-memory-leaks</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WeakDispatch</span> {
+    <span class="ident">subscriber</span>: <span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
+<span class="kw">enum</span> <span class="ident">Kind</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">Global</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> (<span class="kw">dyn</span> <span class="ident">Collect</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>)),
+    <span class="ident">Scoped</span>(<span class="ident">T</span>),
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
@@ -1125,10 +1252,10 @@
 <span class="doccomment">///     &lt;code&gt;set_global_default&lt;/code&gt;&lt;/a&gt; instead.</span>
 <span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [span]: ../span/index.html</span>
-<span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-<span class="doccomment">/// [`Event`]: ../event/struct.Event.html</span>
-<span class="doccomment">/// [`set_global_default`]: ../fn.set_global_default.html</span>
+<span class="doccomment">/// [span]: super::span</span>
+<span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+<span class="doccomment">/// [`Event`]: super::event::Event</span>
+<span class="doccomment">/// [`set_global_default`]: super::set_global_default</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_default</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">dispatcher</span>: <span class="kw-2">&amp;</span><span class="ident">Dispatch</span>, <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() -&gt; <span class="ident">T</span>) -&gt; <span class="ident">T</span> {
@@ -1149,7 +1276,7 @@
 <span class="doccomment">///     &lt;code&gt;set_global_default&lt;/code&gt;&lt;/a&gt; instead.</span>
 <span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`set_global_default`]: ../fn.set_global_default.html</span>
+<span class="doccomment">/// [`set_global_default`]: super::set_global_default</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;Dropping the guard unregisters the dispatcher.&quot;</span>]</span>
@@ -1173,9 +1300,9 @@
 <span class="doccomment">///     executables that depend on the library try to set the default later.</span>
 <span class="doccomment">/// &lt;/pre&gt;&lt;/div&gt;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [span]: ../span/index.html</span>
-<span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-<span class="doccomment">/// [`Event`]: ../event/struct.Event.html</span>
+<span class="doccomment">/// [span]: super::span</span>
+<span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+<span class="doccomment">/// [`Event`]: super::event::Event</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_global_default</span>(<span class="ident">dispatcher</span>: <span class="ident">Dispatch</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetGlobalDefaultError</span><span class="op">&gt;</span> {
     <span class="comment">// if `compare_exchange` returns Result::Ok(_), then `new` has been set and</span>
     <span class="comment">// `current`—now the prior value—has been returned in the `Ok()` branch.</span>
@@ -1210,14 +1337,21 @@
 }
 
 <span class="doccomment">/// Returned if setting the global dispatcher fails.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetGlobalDefaultError</span> {
     <span class="ident">_no_construct</span>: (),
 }
 
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SetGlobalDefaultError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;SetGlobalDefaultError&quot;</span>)
+            .<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::MESSAGE</span>)
+            .<span class="ident">finish</span>()
+    }
+}
+
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SetGlobalDefaultError</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">pad</span>(<span class="string">&quot;a global default trace dispatcher has already been set&quot;</span>)
+        <span class="ident">f</span>.<span class="ident">pad</span>(<span class="ident"><span class="self">Self</span>::MESSAGE</span>)
     }
 }
 
@@ -1225,13 +1359,17 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)))]</span>
 <span class="kw">impl</span> <span class="ident">error::Error</span> <span class="kw">for</span> <span class="ident">SetGlobalDefaultError</span> {}
 
+<span class="kw">impl</span> <span class="ident">SetGlobalDefaultError</span> {
+    <span class="kw">const</span> <span class="ident">MESSAGE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;a global default trace dispatcher has already been set&quot;</span>;
+}
+
 <span class="doccomment">/// Executes a closure with a reference to this thread&#39;s current [dispatcher].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note that calls to `get_default` should not be nested; if this function is</span>
 <span class="doccomment">/// called while inside of another `get_default`, that closure will be provided</span>
 <span class="doccomment">/// with `Dispatch::none` rather than the previously set dispatcher.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [dispatcher]: ../dispatcher/struct.Dispatch.html</span>
+<span class="doccomment">/// [dispatcher]: super::dispatcher::Dispatch</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_default</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">T</span>
 <span class="kw">where</span>
@@ -1254,7 +1392,7 @@
 <span class="doccomment">/// called while inside of another `get_default`, that closure will be provided</span>
 <span class="doccomment">/// with `Dispatch::none` rather than the previously set dispatcher.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [dispatcher]: ../dispatcher/struct.Dispatch.html</span>
+<span class="doccomment">/// [dispatcher]: super::dispatcher::Dispatch</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
@@ -1269,7 +1407,7 @@
 
 <span class="doccomment">/// Executes a closure with a reference to the current [dispatcher].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [dispatcher]: ../dispatcher/struct.Dispatch.html</span>
+<span class="doccomment">/// [dispatcher]: super::dispatcher::Dispatch</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_current</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">Dispatch</span>) -&gt; <span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -1279,7 +1417,7 @@
 
 <span class="doccomment">/// Executes a closure with a reference to the current [dispatcher].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [dispatcher]: ../dispatcher/struct.Dispatch.html</span>
+<span class="doccomment">/// [dispatcher]: super::dispatcher::Dispatch</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_default</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">T</span>
 <span class="kw">where</span>
@@ -1305,6 +1443,7 @@
     }
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Registrar</span>(<span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">Dispatch</span> {
@@ -1318,7 +1457,7 @@
 
     <span class="doccomment">/// Returns a `Dispatch` that forwards to the given [`Subscriber`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">subscriber</span>: <span class="ident">S</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -1330,18 +1469,45 @@
         <span class="ident">me</span>
     }
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">registrar</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Registrar</span> {
         <span class="ident">Registrar</span>(<span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subscriber</span>))
     }
 
-    <span class="doccomment">/// Registers a new callsite with this subscriber, returning whether or not</span>
-    <span class="doccomment">/// the subscriber is interested in being notified about the callsite.</span>
+    <span class="doccomment">/// Creates a [`WeakDispatch`] from this `Dispatch`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// A [`WeakDispatch`] is similar to a [`Dispatch`], but it does not prevent</span>
+    <span class="doccomment">/// the underlying [`Subscriber`] from being dropped. Instead, it only permits</span>
+    <span class="doccomment">/// access while other references to the `Subscriber` exist. This is equivalent</span>
+    <span class="doccomment">/// to the standard library&#39;s [`Arc::downgrade`] method, but for `Dispatch`</span>
+    <span class="doccomment">/// rather than `Arc`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The primary use for creating a [`WeakDispatch`] is to allow a `Subscriber`</span>
+    <span class="doccomment">/// to hold a cyclical reference to itself without creating a memory leak.</span>
+    <span class="doccomment">/// See [here] for details.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`Arc::downgrade`]: std::sync::Arc::downgrade</span>
+    <span class="doccomment">/// [here]: Subscriber#avoiding-memory-leaks</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">WeakDispatch</span> {
+        <span class="ident">WeakDispatch</span> {
+            <span class="ident">subscriber</span>: <span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subscriber</span>),
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>))]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">subscriber</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>) {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subscriber</span>
+    }
+
+    <span class="doccomment">/// Registers a new callsite with this collector, returning whether or not</span>
+    <span class="doccomment">/// the collector is interested in being notified about the callsite.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This calls the [`register_callsite`] function on the [`Subscriber`]</span>
     <span class="doccomment">/// that this `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`register_callsite`]: ../subscriber/trait.Subscriber.html#method.register_callsite</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`register_callsite`]: super::subscriber::Subscriber::register_callsite</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_callsite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">metadata</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Metadata</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>) -&gt; <span class="ident">subscriber::Interest</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">register_callsite</span>(<span class="ident">metadata</span>)
@@ -1354,9 +1520,9 @@
     <span class="doccomment">/// This calls the [`max_level_hint`] function on the [`Subscriber`]</span>
     <span class="doccomment">/// that this `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [level]: ../struct.Level.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`register_callsite`]: ../subscriber/trait.Subscriber.html#method.max_level_hint</span>
+    <span class="doccomment">/// [level]: super::Level</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`register_callsite`]: super::subscriber::Subscriber::max_level_hint</span>
     <span class="comment">// TODO(eliza): consider making this a public API?</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">max_level_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LevelFilter</span><span class="op">&gt;</span> {
@@ -1369,9 +1535,9 @@
     <span class="doccomment">/// This calls the [`new_span`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [ID]: ../span/struct.Id.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`new_span`]: ../subscriber/trait.Subscriber.html#method.new_span</span>
+    <span class="doccomment">/// [ID]: super::span::Id</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`new_span`]: super::subscriber::Subscriber::new_span</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">span</span>: <span class="kw-2">&amp;</span><span class="ident">span::Attributes</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">span::Id</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">new_span</span>(<span class="ident">span</span>)
@@ -1382,8 +1548,8 @@
     <span class="doccomment">/// This calls the [`record`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`record`]: ../subscriber/trait.Subscriber.html#method.record</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`record`]: super::subscriber::Subscriber::record</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">record</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">span</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>, <span class="ident">values</span>: <span class="kw-2">&amp;</span><span class="ident">span::Record</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">record</span>(<span class="ident">span</span>, <span class="ident">values</span>)
@@ -1395,8 +1561,8 @@
     <span class="doccomment">/// This calls the [`record_follows_from`] function on the [`Subscriber`]</span>
     <span class="doccomment">/// that this `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`record_follows_from`]: ../subscriber/trait.Subscriber.html#method.record_follows_from</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`record_follows_from`]: super::subscriber::Subscriber::record_follows_from</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">record_follows_from</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">span</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>, <span class="ident">follows</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>) {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">record_follows_from</span>(<span class="ident">span</span>, <span class="ident">follows</span>)
@@ -1408,9 +1574,9 @@
     <span class="doccomment">/// This calls the [`enabled`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [metadata]: ../metadata/struct.Metadata.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`enabled`]: ../subscriber/trait.Subscriber.html#method.enabled</span>
+    <span class="doccomment">/// [metadata]: super::metadata::Metadata</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`enabled`]: super::subscriber::Subscriber::enabled</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">metadata</span>: <span class="kw-2">&amp;</span><span class="ident">Metadata</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">enabled</span>(<span class="ident">metadata</span>)
@@ -1421,12 +1587,14 @@
     <span class="doccomment">/// This calls the [`event`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Event`]: ../event/struct.Event.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`event`]: ../subscriber/trait.Subscriber.html#method.event</span>
+    <span class="doccomment">/// [`Event`]: super::event::Event</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`event`]: super::subscriber::Subscriber::event</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">event</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">event</span>(<span class="ident">event</span>)
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">event_enabled</span>(<span class="ident">event</span>) {
+            <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">event</span>(<span class="ident">event</span>);
+        }
     }
 
     <span class="doccomment">/// Records that a span has been can_enter.</span>
@@ -1434,8 +1602,8 @@
     <span class="doccomment">/// This calls the [`enter`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`enter`]: ../subscriber/trait.Subscriber.html#method.enter</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`enter`]: super::subscriber::Subscriber::enter</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">span</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>) {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">enter</span>(<span class="ident">span</span>);
     }
@@ -1445,8 +1613,8 @@
     <span class="doccomment">/// This calls the [`exit`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`exit`]: ../subscriber/trait.Subscriber.html#method.exit</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`exit`]: super::subscriber::Subscriber::exit</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">span</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>) {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">exit</span>(<span class="ident">span</span>);
     }
@@ -1461,10 +1629,10 @@
     <span class="doccomment">/// This calls the [`clone_span`] function on the `Subscriber` that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [span ID]: ../span/struct.Id.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`clone_span`]: ../subscriber/trait.Subscriber.html#method.clone_span</span>
-    <span class="doccomment">/// [`new_span`]: ../subscriber/trait.Subscriber.html#method.new_span</span>
+    <span class="doccomment">/// [span ID]: super::span::Id</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`clone_span`]: super::subscriber::Subscriber::clone_span</span>
+    <span class="doccomment">/// [`new_span`]: super::subscriber::Subscriber::new_span</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">span::Id</span>) -&gt; <span class="ident">span::Id</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">clone_span</span>(<span class="ident">id</span>)
@@ -1487,11 +1655,11 @@
     <span class="doccomment">///     instead of this method.</span>
     <span class="doccomment">/// &lt;/pre&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [span ID]: ../span/struct.Id.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`drop_span`]: ../subscriber/trait.Subscriber.html#method.drop_span</span>
-    <span class="doccomment">/// [`new_span`]: ../subscriber/trait.Subscriber.html#method.new_span</span>
-    <span class="doccomment">/// [`try_close`]: #method.try_close</span>
+    <span class="doccomment">/// [span ID]: super::span::Id</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`drop_span`]: super::subscriber::Subscriber::drop_span</span>
+    <span class="doccomment">/// [`new_span`]: super::subscriber::Subscriber::new_span</span>
+    <span class="doccomment">/// [`try_close`]: Entered::try_close()</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.1.2&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `Dispatch::try_close` instead&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drop_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">span::Id</span>) {
@@ -1510,10 +1678,10 @@
     <span class="doccomment">/// This calls the [`try_close`] function on the [`Subscriber`] that this</span>
     <span class="doccomment">///  `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [span ID]: ../span/struct.Id.html</span>
-    <span class="doccomment">/// [`Subscriber`]: ../subscriber/trait.Subscriber.html</span>
-    <span class="doccomment">/// [`try_close`]: ../subscriber/trait.Subscriber.html#method.try_close</span>
-    <span class="doccomment">/// [`new_span`]: ../subscriber/trait.Subscriber.html#method.new_span</span>
+    <span class="doccomment">/// [span ID]: super::span::Id</span>
+    <span class="doccomment">/// [`Subscriber`]: super::subscriber::Subscriber</span>
+    <span class="doccomment">/// [`try_close`]: super::subscriber::Subscriber::try_close</span>
+    <span class="doccomment">/// [`new_span`]: super::subscriber::Subscriber::new_span</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">span::Id</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">try_close</span>(<span class="ident">id</span>)
     }
@@ -1523,7 +1691,7 @@
     <span class="doccomment">/// This calls the [`current`] function on the `Subscriber` that this</span>
     <span class="doccomment">/// `Dispatch` forwards to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`current`]: ../subscriber/trait.Subscriber.html#method.current</span>
+    <span class="doccomment">/// [`current`]: super::subscriber::Subscriber::current_span</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">span::Current</span> {
         <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">current_span</span>()
@@ -1533,14 +1701,14 @@
     <span class="doccomment">/// `T`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span><span class="op">&gt;</span><span class="ident">::is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">subscriber</span>)
+        <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span><span class="op">&gt;</span><span class="ident">::is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subscriber</span>)
     }
 
     <span class="doccomment">/// Returns some reference to the `Subscriber` this `Dispatch` forwards to</span>
     <span class="doccomment">/// if it is of type `T`, or `None` if it isn&#39;t.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast_ref</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span><span class="op">&gt;</span><span class="ident">::downcast_ref</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">subscriber</span>)
+        <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Subscriber</span><span class="op">&gt;</span><span class="ident">::downcast_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subscriber</span>)
     }
 }
 
@@ -1569,14 +1737,47 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Registrar</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_register</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">metadata</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Metadata</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">subscriber::Interest</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">upgrade</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">register_callsite</span>(<span class="ident">metadata</span>))
-    }
+<span class="comment">// === impl WeakDispatch ===</span>
 
+<span class="kw">impl</span> <span class="ident">WeakDispatch</span> {
+    <span class="doccomment">/// Attempts to upgrade this `WeakDispatch` to a [`Dispatch`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` if the referenced `Dispatch` has already been dropped.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use tracing_core::subscriber::NoSubscriber;</span>
+    <span class="doccomment">/// # use tracing_core::dispatcher::Dispatch;</span>
+    <span class="doccomment">/// let strong = Dispatch::new(NoSubscriber::default());</span>
+    <span class="doccomment">/// let weak = strong.downgrade();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // The strong here keeps it alive, so we can still access the object.</span>
+    <span class="doccomment">/// assert!(weak.upgrade().is_some());</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// drop(strong); // But not any more.</span>
+    <span class="doccomment">/// assert!(weak.upgrade().is_none());</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">upgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Dispatch</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">subscriber</span>
+            .<span class="ident">upgrade</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">subscriber</span><span class="op">|</span> <span class="ident">Dispatch</span> { <span class="ident">subscriber</span> })
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">WeakDispatch</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tuple</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;WeakDispatch&quot;</span>);
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">subscriber</span>.<span class="ident">upgrade</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">subscriber</span>) =&gt; <span class="ident">tuple</span>.<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;Some({:p})&quot;</span>, <span class="ident">subscriber</span>)),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">tuple</span>.<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;None&quot;</span>)),
+        };
+        <span class="ident">tuple</span>.<span class="ident">finish</span>()
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">Registrar</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">upgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Dispatch</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">upgrade</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">subscriber</span><span class="op">|</span> <span class="ident">Dispatch</span> { <span class="ident">subscriber</span> })
     }
@@ -1816,5 +2017,4 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tracing_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tracing_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["ENTITY_SELF_ID","255 is self entity"]],"struct":[["Entities","safe access to entities list and entity events"],["Entity",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["ENTITY_SELF_ID","255 is self entity"]],"struct":[["Entities","safe access to entities list and entity events"],["Entity",""]]};

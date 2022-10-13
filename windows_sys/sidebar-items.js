@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["Win32",""],["core",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["Win32",""],["core",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["block",""],["chat",""],["entity",""],["gfx",""],["input",""],["net",""],["pointer",""],["tab_list",""],["texture",""],["user",""],["window",""],["world",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["block",""],["chat",""],["entity",""],["gfx",""],["input",""],["net",""],["pointer",""],["tab_list",""],["texture",""],["user",""],["window",""],["world",""]]};

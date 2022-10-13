@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NamedPipe","Non-blocking windows named pipe."]]});
+window.SIDEBAR_ITEMS = {"struct":[["NamedPipe","Non-blocking windows named pipe."]]};
