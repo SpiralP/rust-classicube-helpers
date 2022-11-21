@@ -7,6 +7,7 @@ use std::{
 };
 
 use classicube_sys::{TabList, TABLIST_MAX_NAMES};
+use tracing::warn;
 
 pub use self::entry::TabListEntry;
 use crate::{
@@ -47,13 +48,18 @@ impl TabList {
             let added_callbacks = added_callbacks.clone();
             added_handler.on(move |tab_list::AddedEvent { id }| {
                 let id = *id;
-                let entry =
-                    Rc::new(unsafe { TabListEntry::from_id(id) }.expect("TabListEntry::from_id"));
+                let entry = Rc::new(match unsafe { TabListEntry::from_id(id) } {
+                    None => {
+                        warn!(?id, "AddedEvent TabListEntry::from_id returned None");
+                        return;
+                    }
+                    Some(entry) => entry,
+                });
                 let weak = Rc::downgrade(&entry);
 
                 {
                     let mut entries = entries.borrow_mut();
-                    entries.insert(entry.get_id(), entry);
+                    entries.insert(id, entry);
                 }
 
                 let mut added_callbacks = added_callbacks.borrow_mut();
@@ -69,15 +75,18 @@ impl TabList {
             changed_handler.on(move |tab_list::ChangedEvent { id }| {
                 let id = *id;
 
-                let weak = {
-                    let mut entries = entries.borrow_mut();
-                    let entry = entries.entry(id).or_insert_with(|| {
-                        Rc::new(
-                            unsafe { TabListEntry::from_id(id) }.expect("TabListEntry::from_id"),
-                        )
+                let entry = Rc::new(match unsafe { TabListEntry::from_id(id) } {
+                    None => {
+                        warn!(?id, "ChangedEvent TabListEntry::from_id returned None");
+                        return;
+                    }
+                            Some(entry) => entry,
                     });
-                    Rc::downgrade(entry)
-                };
+                let weak = Rc::downgrade(&entry);
+                {
+                    let mut entries = entries.borrow_mut();
+                    entries.entry(id).or_insert(entry);
+                }
 
                 let mut changed_callbacks = changed_callbacks.borrow_mut();
                 changed_callbacks.handle_event((id, weak));

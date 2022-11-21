@@ -1,12 +1,18 @@
 mod entity;
 
-pub use self::entity::{Entity, ENTITY_SELF_ID};
-use crate::{callback_handler::CallbackHandler, events::entity::*};
-use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
 use std::{
     cell::RefCell,
     collections::HashMap,
     rc::{Rc, Weak},
+};
+
+use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
+use tracing::warn;
+
+pub use self::entity::{Entity, ENTITY_SELF_ID};
+use crate::{
+    callback_handler::CallbackHandler,
+    events::entity::{AddedEvent, AddedEventHandler, RemovedEvent, RemovedEventHandler},
 };
 
 /// safe access to entities list and entity events
@@ -44,12 +50,18 @@ impl Entities {
             let added_callbacks = added_callbacks.clone();
             added_handler.on(move |AddedEvent { id }| {
                 let id = *id;
-                let entity = Rc::new(unsafe { Entity::from_id(id) }.expect("Entity::from_id"));
+                let entity = Rc::new(match unsafe { Entity::from_id(id) } {
+                    None => {
+                        warn!(?id, "AddedEvent Entity::from_id returned None");
+                        return;
+                    }
+                    Some(entity) => entity,
+                });
                 let weak = Rc::downgrade(&entity);
 
                 {
                     let mut entities = entities.borrow_mut();
-                    entities.insert(entity.get_id(), entity);
+                    entities.insert(id, entity);
                 }
 
                 let mut added_callbacks = added_callbacks.borrow_mut();
