@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\socket2-0.4.7\src\sys\windows.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>windows.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../socket2/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../socket2/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../socket2/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\socket2-0.4.7\src\sys\windows.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>windows.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../socket2/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../socket2/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../socket2/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -847,854 +847,854 @@
 <span id="847">847</span>
 <span id="848">848</span>
 <span id="849">849</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright 2015 The Rust Project Developers.</span>
-<span class="comment">//</span>
-<span class="comment">// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
-<span class="comment">// https://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or https://opensource.org/licenses/MIT&gt;, at your</span>
-<span class="comment">// option. This file may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms.</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright 2015 The Rust Project Developers.
+//
+// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+// https://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or https://opensource.org/licenses/MIT&gt;, at your
+// option. This file may not be copied, modified, or distributed
+// except according to those terms.
 
-<span class="kw">use</span> <span class="ident">std::cmp::min</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">IoSlice</span>};
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>::{<span class="self">self</span>, <span class="ident">size_of</span>, <span class="ident">MaybeUninit</span>};
-<span class="kw">use</span> <span class="ident">std::net</span>::{<span class="self">self</span>, <span class="ident">Ipv4Addr</span>, <span class="ident">Ipv6Addr</span>, <span class="ident">Shutdown</span>};
-<span class="kw">use</span> <span class="ident">std::os::windows::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::sync::Once</span>;
-<span class="kw">use</span> <span class="ident">std::time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ptr</span>, <span class="ident">slice</span>};
+</span><span class="kw">use </span>std::cmp::min;
+<span class="kw">use </span>std::io::{<span class="self">self</span>, IoSlice};
+<span class="kw">use </span>std::marker::PhantomData;
+<span class="kw">use </span>std::mem::{<span class="self">self</span>, size_of, MaybeUninit};
+<span class="kw">use </span>std::net::{<span class="self">self</span>, Ipv4Addr, Ipv6Addr, Shutdown};
+<span class="kw">use </span>std::os::windows::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::sync::Once;
+<span class="kw">use </span>std::time::{Duration, Instant};
+<span class="kw">use </span>std::{ptr, slice};
 
-<span class="kw">use</span> <span class="ident">winapi::ctypes::c_long</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::in6addr</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::inaddr</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::minwindef::DWORD</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::minwindef::ULONG</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::mstcpip</span>::{<span class="ident">tcp_keepalive</span>, <span class="ident">SIO_KEEPALIVE_VALS</span>};
-<span class="kw">use</span> <span class="ident">winapi::shared::ntdef::HANDLE</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>;
-<span class="kw">use</span> <span class="ident">winapi::shared::ws2def::WSABUF</span>;
-<span class="kw">use</span> <span class="ident">winapi::um::handleapi::SetHandleInformation</span>;
-<span class="kw">use</span> <span class="ident">winapi::um::processthreadsapi::GetCurrentProcessId</span>;
-<span class="kw">use</span> <span class="ident">winapi::um::winbase</span>::{<span class="self">self</span>, <span class="ident">INFINITE</span>};
-<span class="kw">use</span> <span class="ident">winapi::um::winsock2</span>::{
-    <span class="self">self</span> <span class="kw">as</span> <span class="ident">sock</span>, <span class="ident">u_long</span>, <span class="ident">POLLERR</span>, <span class="ident">POLLHUP</span>, <span class="ident">POLLRDNORM</span>, <span class="ident">POLLWRNORM</span>, <span class="ident">SD_BOTH</span>, <span class="ident">SD_RECEIVE</span>, <span class="ident">SD_SEND</span>,
-    <span class="ident">WSAPOLLFD</span>,
+<span class="kw">use </span>winapi::ctypes::c_long;
+<span class="kw">use </span>winapi::shared::in6addr::<span class="kw-2">*</span>;
+<span class="kw">use </span>winapi::shared::inaddr::<span class="kw-2">*</span>;
+<span class="kw">use </span>winapi::shared::minwindef::DWORD;
+<span class="kw">use </span>winapi::shared::minwindef::ULONG;
+<span class="kw">use </span>winapi::shared::mstcpip::{tcp_keepalive, SIO_KEEPALIVE_VALS};
+<span class="kw">use </span>winapi::shared::ntdef::HANDLE;
+<span class="kw">use </span>winapi::shared::ws2def;
+<span class="kw">use </span>winapi::shared::ws2def::WSABUF;
+<span class="kw">use </span>winapi::um::handleapi::SetHandleInformation;
+<span class="kw">use </span>winapi::um::processthreadsapi::GetCurrentProcessId;
+<span class="kw">use </span>winapi::um::winbase::{<span class="self">self</span>, INFINITE};
+<span class="kw">use </span>winapi::um::winsock2::{
+    <span class="self">self </span><span class="kw">as </span>sock, u_long, POLLERR, POLLHUP, POLLRDNORM, POLLWRNORM, SD_BOTH, SD_RECEIVE, SD_SEND,
+    WSAPOLLFD,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">RecvFlags</span>, <span class="ident">SockAddr</span>, <span class="ident">TcpKeepalive</span>, <span class="ident">Type</span>};
+<span class="kw">use crate</span>::{RecvFlags, SockAddr, TcpKeepalive, Type};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::ctypes::c_int</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::ctypes::c_int;
 
-<span class="doccomment">/// Fake MSG_TRUNC flag for the [`RecvFlags`] struct.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The flag is enabled when a `WSARecv[From]` call returns `WSAEMSGSIZE`. The</span>
-<span class="doccomment">/// value of the flag is defined by us.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">MSG_TRUNC</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x01</span>;
+<span class="doccomment">/// Fake MSG_TRUNC flag for the [`RecvFlags`] struct.
+///
+/// The flag is enabled when a `WSARecv[From]` call returns `WSAEMSGSIZE`. The
+/// value of the flag is defined by us.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>MSG_TRUNC: c_int = <span class="number">0x01</span>;
 
-<span class="comment">// Used in `Domain`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>::{<span class="ident">AF_INET</span>, <span class="ident">AF_INET6</span>};
-<span class="comment">// Used in `Type`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>::{<span class="ident">SOCK_DGRAM</span>, <span class="ident">SOCK_STREAM</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>::{<span class="ident">SOCK_RAW</span>, <span class="ident">SOCK_SEQPACKET</span>};
-<span class="comment">// Used in `Protocol`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IPPROTO_ICMP</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">winapi::shared::ws2def::IPPROTO_ICMP</span> <span class="kw">as</span> <span class="ident">c_int</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IPPROTO_ICMPV6</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">winapi::shared::ws2def::IPPROTO_ICMPV6</span> <span class="kw">as</span> <span class="ident">c_int</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IPPROTO_TCP</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">winapi::shared::ws2def::IPPROTO_TCP</span> <span class="kw">as</span> <span class="ident">c_int</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IPPROTO_UDP</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">winapi::shared::ws2def::IPPROTO_UDP</span> <span class="kw">as</span> <span class="ident">c_int</span>;
-<span class="comment">// Used in `SockAddr`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>::{
-    <span class="ident">ADDRESS_FAMILY</span> <span class="kw">as</span> <span class="ident">sa_family_t</span>, <span class="ident">SOCKADDR</span> <span class="kw">as</span> <span class="ident">sockaddr</span>, <span class="ident">SOCKADDR_IN</span> <span class="kw">as</span> <span class="ident">sockaddr_in</span>,
-    <span class="ident">SOCKADDR_STORAGE</span> <span class="kw">as</span> <span class="ident">sockaddr_storage</span>,
+<span class="comment">// Used in `Domain`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2def::{AF_INET, AF_INET6};
+<span class="comment">// Used in `Type`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2def::{SOCK_DGRAM, SOCK_STREAM};
+<span class="attribute">#[cfg(feature = <span class="string">&quot;all&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2def::{SOCK_RAW, SOCK_SEQPACKET};
+<span class="comment">// Used in `Protocol`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>IPPROTO_ICMP: c_int = winapi::shared::ws2def::IPPROTO_ICMP <span class="kw">as </span>c_int;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>IPPROTO_ICMPV6: c_int = winapi::shared::ws2def::IPPROTO_ICMPV6 <span class="kw">as </span>c_int;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>IPPROTO_TCP: c_int = winapi::shared::ws2def::IPPROTO_TCP <span class="kw">as </span>c_int;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>IPPROTO_UDP: c_int = winapi::shared::ws2def::IPPROTO_UDP <span class="kw">as </span>c_int;
+<span class="comment">// Used in `SockAddr`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2def::{
+    ADDRESS_FAMILY <span class="kw">as </span>sa_family_t, SOCKADDR <span class="kw">as </span>sockaddr, SOCKADDR_IN <span class="kw">as </span>sockaddr_in,
+    SOCKADDR_STORAGE <span class="kw">as </span>sockaddr_storage,
 };
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2ipdef::SOCKADDR_IN6_LH</span> <span class="kw">as</span> <span class="ident">sockaddr_in6</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::um::ws2tcpip::socklen_t</span>;
-<span class="comment">// Used in `Socket`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2def</span>::{
-    <span class="ident">IPPROTO_IP</span>, <span class="ident">SOL_SOCKET</span>, <span class="ident">SO_BROADCAST</span>, <span class="ident">SO_ERROR</span>, <span class="ident">SO_KEEPALIVE</span>, <span class="ident">SO_LINGER</span>, <span class="ident">SO_OOBINLINE</span>,
-    <span class="ident">SO_RCVBUF</span>, <span class="ident">SO_RCVTIMEO</span>, <span class="ident">SO_REUSEADDR</span>, <span class="ident">SO_SNDBUF</span>, <span class="ident">SO_SNDTIMEO</span>, <span class="ident">SO_TYPE</span>, <span class="ident">TCP_NODELAY</span>,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2ipdef::SOCKADDR_IN6_LH <span class="kw">as </span>sockaddr_in6;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::um::ws2tcpip::socklen_t;
+<span class="comment">// Used in `Socket`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2def::{
+    IPPROTO_IP, SOL_SOCKET, SO_BROADCAST, SO_ERROR, SO_KEEPALIVE, SO_LINGER, SO_OOBINLINE,
+    SO_RCVBUF, SO_RCVTIMEO, SO_REUSEADDR, SO_SNDBUF, SO_SNDTIMEO, SO_TYPE, TCP_NODELAY,
 };
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2ipdef::IP_HDRINCL</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::shared::ws2ipdef</span>::{
-    <span class="ident">IPV6_ADD_MEMBERSHIP</span>, <span class="ident">IPV6_DROP_MEMBERSHIP</span>, <span class="ident">IPV6_MREQ</span> <span class="kw">as</span> <span class="ident">Ipv6Mreq</span>, <span class="ident">IPV6_MULTICAST_HOPS</span>,
-    <span class="ident">IPV6_MULTICAST_IF</span>, <span class="ident">IPV6_MULTICAST_LOOP</span>, <span class="ident">IPV6_UNICAST_HOPS</span>, <span class="ident">IPV6_V6ONLY</span>, <span class="ident">IP_ADD_MEMBERSHIP</span>,
-    <span class="ident">IP_ADD_SOURCE_MEMBERSHIP</span>, <span class="ident">IP_DROP_MEMBERSHIP</span>, <span class="ident">IP_DROP_SOURCE_MEMBERSHIP</span>, <span class="ident">IP_MREQ</span> <span class="kw">as</span> <span class="ident">IpMreq</span>,
-    <span class="ident">IP_MREQ_SOURCE</span> <span class="kw">as</span> <span class="ident">IpMreqSource</span>, <span class="ident">IP_MULTICAST_IF</span>, <span class="ident">IP_MULTICAST_LOOP</span>, <span class="ident">IP_MULTICAST_TTL</span>, <span class="ident">IP_TOS</span>,
-    <span class="ident">IP_TTL</span>,
+<span class="attribute">#[cfg(feature = <span class="string">&quot;all&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2ipdef::IP_HDRINCL;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::shared::ws2ipdef::{
+    IPV6_ADD_MEMBERSHIP, IPV6_DROP_MEMBERSHIP, IPV6_MREQ <span class="kw">as </span>Ipv6Mreq, IPV6_MULTICAST_HOPS,
+    IPV6_MULTICAST_IF, IPV6_MULTICAST_LOOP, IPV6_UNICAST_HOPS, IPV6_V6ONLY, IP_ADD_MEMBERSHIP,
+    IP_ADD_SOURCE_MEMBERSHIP, IP_DROP_MEMBERSHIP, IP_DROP_SOURCE_MEMBERSHIP, IP_MREQ <span class="kw">as </span>IpMreq,
+    IP_MREQ_SOURCE <span class="kw">as </span>IpMreqSource, IP_MULTICAST_IF, IP_MULTICAST_LOOP, IP_MULTICAST_TTL, IP_TOS,
+    IP_TTL,
 };
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">winapi::um::winsock2</span>::{<span class="ident">linger</span>, <span class="ident">MSG_OOB</span>, <span class="ident">MSG_PEEK</span>};
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IPPROTO_IPV6</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">winapi::shared::ws2def::IPPROTO_IPV6</span> <span class="kw">as</span> <span class="ident">c_int</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>winapi::um::winsock2::{linger, MSG_OOB, MSG_PEEK};
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>IPPROTO_IPV6: c_int = winapi::shared::ws2def::IPPROTO_IPV6 <span class="kw">as </span>c_int;
 
-<span class="doccomment">/// Type used in set/getsockopt to retrieve the `TCP_NODELAY` option.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// NOTE: &lt;https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-getsockopt&gt;</span>
-<span class="doccomment">/// documents that options such as `TCP_NODELAY` and `SO_KEEPALIVE` expect a</span>
-<span class="doccomment">/// `BOOL` (alias for `c_int`, 4 bytes), however in practice this turns out to</span>
-<span class="doccomment">/// be false (or misleading) as a `BOOLEAN` (`c_uchar`, 1 byte) is returned by</span>
-<span class="doccomment">/// `getsockopt`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Bool</span> <span class="op">=</span> <span class="ident">winapi::shared::ntdef::BOOLEAN</span>;
+<span class="doccomment">/// Type used in set/getsockopt to retrieve the `TCP_NODELAY` option.
+///
+/// NOTE: &lt;https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-getsockopt&gt;
+/// documents that options such as `TCP_NODELAY` and `SO_KEEPALIVE` expect a
+/// `BOOL` (alias for `c_int`, 4 bytes), however in practice this turns out to
+/// be false (or misleading) as a `BOOLEAN` (`c_uchar`, 1 byte) is returned by
+/// `getsockopt`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Bool = winapi::shared::ntdef::BOOLEAN;
 
-<span class="doccomment">/// Maximum size of a buffer passed to system call like `recv` and `send`.</span>
-<span class="kw">const</span> <span class="ident">MAX_BUF_LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span><span class="ident">::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+<span class="doccomment">/// Maximum size of a buffer passed to system call like `recv` and `send`.
+</span><span class="kw">const </span>MAX_BUF_LEN: usize = &lt;c_int&gt;::max_value() <span class="kw">as </span>usize;
 
-<span class="doccomment">/// Helper macro to execute a system call that returns an `io::Result`.</span>
-<span class="macro">macro_rules!</span> <span class="ident">syscall</span> {
-    (<span class="macro-nonterminal">$</span><span class="kw">fn</span>: <span class="macro-nonterminal">ident</span> ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>: <span class="ident">expr</span>),<span class="op">*</span> $(,)<span class="op">*</span> ), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err_test</span>: <span class="ident">path</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err_value</span>: <span class="ident">expr</span>) =&gt; {{
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_unsafe</span>)]</span>
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">sock</span>::<span class="macro-nonterminal">$</span><span class="kw">fn</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>, )<span class="kw-2">*</span>) };
-        <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err_test</span>(<span class="kw-2">&amp;</span><span class="ident">res</span>, <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">err_value</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">res</span>)
+<span class="doccomment">/// Helper macro to execute a system call that returns an `io::Result`.
+</span><span class="macro">macro_rules! </span>syscall {
+    (<span class="macro-nonterminal">$</span><span class="kw">fn</span>: <span class="macro-nonterminal">ident </span>( $(<span class="macro-nonterminal">$arg</span>: expr),* $(,)* ), <span class="macro-nonterminal">$err_test</span>: path, <span class="macro-nonterminal">$err_value</span>: expr) =&gt; {{
+        <span class="attribute">#[allow(unused_unsafe)]
+        </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{ sock::<span class="macro-nonterminal">$</span><span class="kw">fn</span>($(<span class="macro-nonterminal">$arg</span>, )<span class="kw-2">*</span>) };
+        <span class="kw">if </span><span class="macro-nonterminal">$err_test</span>(<span class="kw-2">&amp;</span>res, <span class="kw-2">&amp;</span><span class="macro-nonterminal">$err_value</span>) {
+            <span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(res)
         }
     }};
 }
 
 <span class="macro">impl_debug!</span>(
-    <span class="ident"><span class="kw">crate</span>::Domain</span>,
-    <span class="ident">ws2def::AF_INET</span>,
-    <span class="ident">ws2def::AF_INET6</span>,
-    <span class="ident">ws2def::AF_UNIX</span>,
-    <span class="ident">ws2def::AF_UNSPEC</span>, <span class="comment">// = 0.</span>
-);
+    <span class="kw">crate</span>::Domain,
+    ws2def::AF_INET,
+    ws2def::AF_INET6,
+    ws2def::AF_UNIX,
+    ws2def::AF_UNSPEC, <span class="comment">// = 0.
+</span>);
 
-<span class="doccomment">/// Windows only API.</span>
-<span class="kw">impl</span> <span class="ident">Type</span> {
-    <span class="doccomment">/// Our custom flag to set `WSA_FLAG_NO_HANDLE_INHERIT` on socket creation.</span>
-    <span class="doccomment">/// Trying to mimic `Type::cloexec` on windows.</span>
-    <span class="kw">const</span> <span class="ident">NO_INHERIT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> ((<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>) <span class="op">-</span> <span class="number">1</span>); <span class="comment">// Last bit.</span>
+<span class="doccomment">/// Windows only API.
+</span><span class="kw">impl </span>Type {
+    <span class="doccomment">/// Our custom flag to set `WSA_FLAG_NO_HANDLE_INHERIT` on socket creation.
+    /// Trying to mimic `Type::cloexec` on windows.
+    </span><span class="kw">const </span>NO_INHERIT: c_int = <span class="number">1 </span>&lt;&lt; ((size_of::&lt;c_int&gt;() * <span class="number">8</span>) - <span class="number">1</span>); <span class="comment">// Last bit.
 
-    <span class="doccomment">/// Set `WSA_FLAG_NO_HANDLE_INHERIT` on the socket.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>))))]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">no_inherit</span>(<span class="self">self</span>) -&gt; <span class="ident">Type</span> {
-        <span class="self">self</span>.<span class="ident">_no_inherit</span>()
+    </span><span class="doccomment">/// Set `WSA_FLAG_NO_HANDLE_INHERIT` on the socket.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;all&quot;</span>)]
+    #[cfg_attr(docsrs, doc(cfg(all(windows, feature = <span class="string">&quot;all&quot;</span>))))]
+    </span><span class="kw">pub const fn </span>no_inherit(<span class="self">self</span>) -&gt; Type {
+        <span class="self">self</span>._no_inherit()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">_no_inherit</span>(<span class="self">self</span>) -&gt; <span class="ident">Type</span> {
-        <span class="ident">Type</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">|</span> <span class="ident">Type::NO_INHERIT</span>)
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>_no_inherit(<span class="self">self</span>) -&gt; Type {
+        Type(<span class="self">self</span>.<span class="number">0 </span>| Type::NO_INHERIT)
     }
 }
 
 <span class="macro">impl_debug!</span>(
-    <span class="ident"><span class="kw">crate</span>::Type</span>,
-    <span class="ident">ws2def::SOCK_STREAM</span>,
-    <span class="ident">ws2def::SOCK_DGRAM</span>,
-    <span class="ident">ws2def::SOCK_RAW</span>,
-    <span class="ident">ws2def::SOCK_RDM</span>,
-    <span class="ident">ws2def::SOCK_SEQPACKET</span>,
+    <span class="kw">crate</span>::Type,
+    ws2def::SOCK_STREAM,
+    ws2def::SOCK_DGRAM,
+    ws2def::SOCK_RAW,
+    ws2def::SOCK_RDM,
+    ws2def::SOCK_SEQPACKET,
 );
 
 <span class="macro">impl_debug!</span>(
-    <span class="ident"><span class="kw">crate</span>::Protocol</span>,
-    <span class="ident"><span class="self">self</span>::IPPROTO_ICMP</span>,
-    <span class="ident"><span class="self">self</span>::IPPROTO_ICMPV6</span>,
-    <span class="ident"><span class="self">self</span>::IPPROTO_TCP</span>,
-    <span class="ident"><span class="self">self</span>::IPPROTO_UDP</span>,
+    <span class="kw">crate</span>::Protocol,
+    <span class="self">self</span>::IPPROTO_ICMP,
+    <span class="self">self</span>::IPPROTO_ICMPV6,
+    <span class="self">self</span>::IPPROTO_TCP,
+    <span class="self">self</span>::IPPROTO_UDP,
 );
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">RecvFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RecvFlags&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;is_truncated&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">is_truncated</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>RecvFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;RecvFlags&quot;</span>)
+            .field(<span class="string">&quot;is_truncated&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_truncated())
+            .finish()
     }
 }
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">vec</span>: <span class="ident">WSABUF</span>,
-    <span class="ident">_lifetime</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+<span class="attribute">#[repr(transparent)]
+</span><span class="kw">pub struct </span>MaybeUninitSlice&lt;<span class="lifetime">&#39;a</span>&gt; {
+    vec: WSABUF,
+    _lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[MaybeUninit&lt;u8&gt;]&gt;,
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {}
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Send <span class="kw">for </span>MaybeUninitSlice&lt;<span class="lifetime">&#39;a</span>&gt; {}
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {}
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Sync <span class="kw">for </span>MaybeUninitSlice&lt;<span class="lifetime">&#39;a</span>&gt; {}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) -&gt; <span class="ident">MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="macro">assert!</span>(<span class="ident">buf</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">ULONG::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>);
-        <span class="ident">MaybeUninitSlice</span> {
-            <span class="ident">vec</span>: <span class="ident">WSABUF</span> {
-                <span class="ident">len</span>: <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">ULONG</span>,
-                <span class="ident">buf</span>: <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; MaybeUninitSlice&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new(buf: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[MaybeUninit&lt;u8&gt;]) -&gt; MaybeUninitSlice&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="macro">assert!</span>(buf.len() &lt;= ULONG::MAX <span class="kw">as </span>usize);
+        MaybeUninitSlice {
+            vec: WSABUF {
+                len: buf.len() <span class="kw">as </span>ULONG,
+                buf: buf.as_mut_ptr().cast(),
             },
-            <span class="ident">_lifetime</span>: <span class="ident">PhantomData</span>,
+            _lifetime: PhantomData,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>] {
-        <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">buf</span>.<span class="ident">cast</span>(), <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>) }
+    <span class="kw">pub fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[MaybeUninit&lt;u8&gt;] {
+        <span class="kw">unsafe </span>{ slice::from_raw_parts(<span class="self">self</span>.vec.buf.cast(), <span class="self">self</span>.vec.len <span class="kw">as </span>usize) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>] {
-        <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">buf</span>.<span class="ident">cast</span>(), <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>) }
+    <span class="kw">pub fn </span>as_mut_slice(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[MaybeUninit&lt;u8&gt;] {
+        <span class="kw">unsafe </span>{ slice::from_raw_parts_mut(<span class="self">self</span>.vec.buf.cast(), <span class="self">self</span>.vec.len <span class="kw">as </span>usize) }
     }
 }
 
-<span class="kw">fn</span> <span class="ident">init</span>() {
-    <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+<span class="kw">fn </span>init() {
+    <span class="kw">static </span>INIT: Once = Once::new();
 
-    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="comment">// Initialize winsock through the standard library by just creating a</span>
-        <span class="comment">// dummy socket. Whether this is successful or not we drop the result as</span>
-        <span class="comment">// libstd will be sure to have initialized winsock.</span>
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">net::UdpSocket::bind</span>(<span class="string">&quot;127.0.0.1:34254&quot;</span>);
+    INIT.call_once(|| {
+        <span class="comment">// Initialize winsock through the standard library by just creating a
+        // dummy socket. Whether this is successful or not we drop the result as
+        // libstd will be sure to have initialized winsock.
+        </span><span class="kw">let _ </span>= net::UdpSocket::bind(<span class="string">&quot;127.0.0.1:34254&quot;</span>);
     });
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Socket</span> <span class="op">=</span> <span class="ident">sock::SOCKET</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Socket = sock::SOCKET;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">socket_from_raw</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>) -&gt; <span class="ident"><span class="kw">crate</span>::socket::Inner</span> {
-    <span class="ident"><span class="kw">crate</span>::socket::Inner::from_raw_socket</span>(<span class="ident">socket</span> <span class="kw">as</span> <span class="ident">RawSocket</span>)
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>socket_from_raw(socket: Socket) -&gt; <span class="kw">crate</span>::socket::Inner {
+    <span class="kw">crate</span>::socket::Inner::from_raw_socket(socket <span class="kw">as </span>RawSocket)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">socket_as_raw</span>(<span class="ident">socket</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::socket::Inner</span>) -&gt; <span class="ident">Socket</span> {
-    <span class="ident">socket</span>.<span class="ident">as_raw_socket</span>() <span class="kw">as</span> <span class="ident">Socket</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>socket_as_raw(socket: <span class="kw-2">&amp;</span><span class="kw">crate</span>::socket::Inner) -&gt; Socket {
+    socket.as_raw_socket() <span class="kw">as </span>Socket
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">socket_into_raw</span>(<span class="ident">socket</span>: <span class="ident"><span class="kw">crate</span>::socket::Inner</span>) -&gt; <span class="ident">Socket</span> {
-    <span class="ident">socket</span>.<span class="ident">into_raw_socket</span>() <span class="kw">as</span> <span class="ident">Socket</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>socket_into_raw(socket: <span class="kw">crate</span>::socket::Inner) -&gt; Socket {
+    socket.into_raw_socket() <span class="kw">as </span>Socket
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">socket</span>(<span class="ident">family</span>: <span class="ident">c_int</span>, <span class="kw-2">mut</span> <span class="ident">ty</span>: <span class="ident">c_int</span>, <span class="ident">protocol</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Socket</span><span class="op">&gt;</span> {
-    <span class="ident">init</span>();
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>socket(family: c_int, <span class="kw-2">mut </span>ty: c_int, protocol: c_int) -&gt; io::Result&lt;Socket&gt; {
+    init();
 
-    <span class="comment">// Check if we set our custom flag.</span>
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">ty</span> <span class="op">&amp;</span> <span class="ident">Type::NO_INHERIT</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="ident">ty</span> <span class="op">=</span> <span class="ident">ty</span> <span class="op">&amp;</span> <span class="op">!</span><span class="ident">Type::NO_INHERIT</span>;
-        <span class="ident">sock::WSA_FLAG_NO_HANDLE_INHERIT</span>
-    } <span class="kw">else</span> {
-        <span class="number">0</span>
-    };
+    <span class="comment">// Check if we set our custom flag.
+    </span><span class="kw">let </span>flags = <span class="kw">if </span>ty &amp; Type::NO_INHERIT != <span class="number">0 </span>{
+        ty = ty &amp; !Type::NO_INHERIT;
+        sock::WSA_FLAG_NO_HANDLE_INHERIT
+    } <span class="kw">else </span>{
+        <span class="number">0
+    </span>};
 
     <span class="macro">syscall!</span>(
-        <span class="ident">WSASocketW</span>(
-            <span class="ident">family</span>,
-            <span class="ident">ty</span>,
-            <span class="ident">protocol</span>,
-            <span class="ident">ptr::null_mut</span>(),
+        WSASocketW(
+            family,
+            ty,
+            protocol,
+            ptr::null_mut(),
             <span class="number">0</span>,
-            <span class="ident">sock::WSA_FLAG_OVERLAPPED</span> <span class="op">|</span> <span class="ident">flags</span>,
+            sock::WSA_FLAG_OVERLAPPED | flags,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::INVALID_SOCKET</span>
+        PartialEq::eq,
+        sock::INVALID_SOCKET
     )
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">bind</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SockAddr</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="macro">syscall!</span>(<span class="ident">bind</span>(<span class="ident">socket</span>, <span class="ident">addr</span>.<span class="ident">as_ptr</span>(), <span class="ident">addr</span>.<span class="ident">len</span>()), <span class="ident">PartialEq::ne</span>, <span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>bind(socket: Socket, addr: <span class="kw-2">&amp;</span>SockAddr) -&gt; io::Result&lt;()&gt; {
+    <span class="macro">syscall!</span>(bind(socket, addr.as_ptr(), addr.len()), PartialEq::ne, <span class="number">0</span>).map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">connect</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SockAddr</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="macro">syscall!</span>(<span class="ident">connect</span>(<span class="ident">socket</span>, <span class="ident">addr</span>.<span class="ident">as_ptr</span>(), <span class="ident">addr</span>.<span class="ident">len</span>()), <span class="ident">PartialEq::ne</span>, <span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>connect(socket: Socket, addr: <span class="kw-2">&amp;</span>SockAddr) -&gt; io::Result&lt;()&gt; {
+    <span class="macro">syscall!</span>(connect(socket, addr.as_ptr(), addr.len()), PartialEq::ne, <span class="number">0</span>).map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">poll_connect</span>(<span class="ident">socket</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::Socket</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>poll_connect(socket: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Socket, timeout: Duration) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span>start = Instant::now();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fd_array</span> <span class="op">=</span> <span class="ident">WSAPOLLFD</span> {
-        <span class="ident">fd</span>: <span class="ident">socket</span>.<span class="ident">as_raw</span>(),
-        <span class="ident">events</span>: <span class="ident">POLLRDNORM</span> <span class="op">|</span> <span class="ident">POLLWRNORM</span>,
-        <span class="ident">revents</span>: <span class="number">0</span>,
+    <span class="kw">let </span><span class="kw-2">mut </span>fd_array = WSAPOLLFD {
+        fd: socket.as_raw(),
+        events: POLLRDNORM | POLLWRNORM,
+        revents: <span class="number">0</span>,
     };
 
-    <span class="kw">loop</span> {
-        <span class="kw">let</span> <span class="ident">elapsed</span> <span class="op">=</span> <span class="ident">start</span>.<span class="ident">elapsed</span>();
-        <span class="kw">if</span> <span class="ident">elapsed</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">timeout</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::ErrorKind::TimedOut</span>.<span class="ident">into</span>());
+    <span class="kw">loop </span>{
+        <span class="kw">let </span>elapsed = start.elapsed();
+        <span class="kw">if </span>elapsed &gt;= timeout {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::ErrorKind::TimedOut.into());
         }
 
-        <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> (<span class="ident">timeout</span> <span class="op">-</span> <span class="ident">elapsed</span>).<span class="ident">as_millis</span>();
-        <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="ident">clamp</span>(<span class="ident">timeout</span>, <span class="number">1</span>, <span class="ident">c_int::max_value</span>() <span class="kw">as</span> <span class="ident">u128</span>) <span class="kw">as</span> <span class="ident">c_int</span>;
+        <span class="kw">let </span>timeout = (timeout - elapsed).as_millis();
+        <span class="kw">let </span>timeout = clamp(timeout, <span class="number">1</span>, c_int::max_value() <span class="kw">as </span>u128) <span class="kw">as </span>c_int;
 
-        <span class="kw">match</span> <span class="macro">syscall!</span>(
-            <span class="ident">WSAPoll</span>(<span class="kw-2">&amp;mut</span> <span class="ident">fd_array</span>, <span class="number">1</span>, <span class="ident">timeout</span>),
-            <span class="ident">PartialEq::eq</span>,
-            <span class="ident">sock::SOCKET_ERROR</span>
+        <span class="kw">match </span><span class="macro">syscall!</span>(
+            WSAPoll(<span class="kw-2">&amp;mut </span>fd_array, <span class="number">1</span>, timeout),
+            PartialEq::eq,
+            sock::SOCKET_ERROR
         ) {
-            <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::ErrorKind::TimedOut</span>.<span class="ident">into</span>()),
+            <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(io::ErrorKind::TimedOut.into()),
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                <span class="comment">// Error or hang up indicates an error (or failure to connect).</span>
-                <span class="kw">if</span> (<span class="ident">fd_array</span>.<span class="ident">revents</span> <span class="op">&amp;</span> <span class="ident">POLLERR</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> (<span class="ident">fd_array</span>.<span class="ident">revents</span> <span class="op">&amp;</span> <span class="ident">POLLHUP</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                    <span class="kw">match</span> <span class="ident">socket</span>.<span class="ident">take_error</span>() {
-                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">err</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                <span class="comment">// Error or hang up indicates an error (or failure to connect).
+                </span><span class="kw">if </span>(fd_array.revents &amp; POLLERR) != <span class="number">0 </span>|| (fd_array.revents &amp; POLLHUP) != <span class="number">0 </span>{
+                    <span class="kw">match </span>socket.take_error() {
+                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(err)) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
                         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-                            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                                <span class="ident">io::ErrorKind::Other</span>,
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                                io::ErrorKind::Other,
                                 <span class="string">&quot;no error set after POLLHUP&quot;</span>,
                             ))
                         }
-                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                        <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
                     }
                 }
-                <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
-            <span class="comment">// Got interrupted, try again.</span>
-            <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">io::ErrorKind::Interrupted</span> =&gt; <span class="kw">continue</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+            <span class="comment">// Got interrupted, try again.
+            </span><span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.kind() == io::ErrorKind::Interrupted =&gt; <span class="kw">continue</span>,
+            <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
         }
     }
 }
 
-<span class="comment">// TODO: use clamp from std lib, stable since 1.50.</span>
-<span class="kw">fn</span> <span class="ident">clamp</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="ident">T</span>, <span class="ident">min</span>: <span class="ident">T</span>, <span class="ident">max</span>: <span class="ident">T</span>) -&gt; <span class="ident">T</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Ord</span>,
+<span class="comment">// TODO: use clamp from std lib, stable since 1.50.
+</span><span class="kw">fn </span>clamp&lt;T&gt;(value: T, min: T, max: T) -&gt; T
+<span class="kw">where
+    </span>T: Ord,
 {
-    <span class="kw">if</span> <span class="ident">value</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">min</span> {
-        <span class="ident">min</span>
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">value</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">max</span> {
-        <span class="ident">max</span>
-    } <span class="kw">else</span> {
-        <span class="ident">value</span>
+    <span class="kw">if </span>value &lt;= min {
+        min
+    } <span class="kw">else if </span>value &gt;= max {
+        max
+    } <span class="kw">else </span>{
+        value
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">listen</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">backlog</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="macro">syscall!</span>(<span class="ident">listen</span>(<span class="ident">socket</span>, <span class="ident">backlog</span>), <span class="ident">PartialEq::ne</span>, <span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>listen(socket: Socket, backlog: c_int) -&gt; io::Result&lt;()&gt; {
+    <span class="macro">syscall!</span>(listen(socket, backlog), PartialEq::ne, <span class="number">0</span>).map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">accept</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="ident">SockAddr</span>)<span class="op">&gt;</span> {
-    <span class="comment">// Safety: `accept` initialises the `SockAddr` for us.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">SockAddr::init</span>(<span class="op">|</span><span class="ident">storage</span>, <span class="ident">len</span><span class="op">|</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>accept(socket: Socket) -&gt; io::Result&lt;(Socket, SockAddr)&gt; {
+    <span class="comment">// Safety: `accept` initialises the `SockAddr` for us.
+    </span><span class="kw">unsafe </span>{
+        SockAddr::init(|storage, len| {
             <span class="macro">syscall!</span>(
-                <span class="ident">accept</span>(<span class="ident">socket</span>, <span class="ident">storage</span>.<span class="ident">cast</span>(), <span class="ident">len</span>),
-                <span class="ident">PartialEq::eq</span>,
-                <span class="ident">sock::INVALID_SOCKET</span>
+                accept(socket, storage.cast(), len),
+                PartialEq::eq,
+                sock::INVALID_SOCKET
             )
         })
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">getsockname</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SockAddr</span><span class="op">&gt;</span> {
-    <span class="comment">// Safety: `getsockname` initialises the `SockAddr` for us.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">SockAddr::init</span>(<span class="op">|</span><span class="ident">storage</span>, <span class="ident">len</span><span class="op">|</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>getsockname(socket: Socket) -&gt; io::Result&lt;SockAddr&gt; {
+    <span class="comment">// Safety: `getsockname` initialises the `SockAddr` for us.
+    </span><span class="kw">unsafe </span>{
+        SockAddr::init(|storage, len| {
             <span class="macro">syscall!</span>(
-                <span class="ident">getsockname</span>(<span class="ident">socket</span>, <span class="ident">storage</span>.<span class="ident">cast</span>(), <span class="ident">len</span>),
-                <span class="ident">PartialEq::eq</span>,
-                <span class="ident">sock::SOCKET_ERROR</span>
+                getsockname(socket, storage.cast(), len),
+                PartialEq::eq,
+                sock::SOCKET_ERROR
             )
         })
     }
-    .<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">addr</span>)<span class="op">|</span> <span class="ident">addr</span>)
+    .map(|(<span class="kw">_</span>, addr)| addr)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">getpeername</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SockAddr</span><span class="op">&gt;</span> {
-    <span class="comment">// Safety: `getpeername` initialises the `SockAddr` for us.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">SockAddr::init</span>(<span class="op">|</span><span class="ident">storage</span>, <span class="ident">len</span><span class="op">|</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>getpeername(socket: Socket) -&gt; io::Result&lt;SockAddr&gt; {
+    <span class="comment">// Safety: `getpeername` initialises the `SockAddr` for us.
+    </span><span class="kw">unsafe </span>{
+        SockAddr::init(|storage, len| {
             <span class="macro">syscall!</span>(
-                <span class="ident">getpeername</span>(<span class="ident">socket</span>, <span class="ident">storage</span>.<span class="ident">cast</span>(), <span class="ident">len</span>),
-                <span class="ident">PartialEq::eq</span>,
-                <span class="ident">sock::SOCKET_ERROR</span>
+                getpeername(socket, storage.cast(), len),
+                PartialEq::eq,
+                sock::SOCKET_ERROR
             )
         })
     }
-    .<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">addr</span>)<span class="op">|</span> <span class="ident">addr</span>)
+    .map(|(<span class="kw">_</span>, addr)| addr)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Socket</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">sock::WSAPROTOCOL_INFOW</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>try_clone(socket: Socket) -&gt; io::Result&lt;Socket&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>info: MaybeUninit&lt;sock::WSAPROTOCOL_INFOW&gt; = MaybeUninit::uninit();
     <span class="macro">syscall!</span>(
-        <span class="ident">WSADuplicateSocketW</span>(<span class="ident">socket</span>, <span class="ident">GetCurrentProcessId</span>(), <span class="ident">info</span>.<span class="ident">as_mut_ptr</span>()),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        WSADuplicateSocketW(socket, GetCurrentProcessId(), info.as_mut_ptr()),
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )<span class="question-mark">?</span>;
-    <span class="comment">// Safety: `WSADuplicateSocketW` intialised `info` for us.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">info</span>.<span class="ident">assume_init</span>() };
+    <span class="comment">// Safety: `WSADuplicateSocketW` intialised `info` for us.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>info = <span class="kw">unsafe </span>{ info.assume_init() };
 
     <span class="macro">syscall!</span>(
-        <span class="ident">WSASocketW</span>(
-            <span class="ident">info</span>.<span class="ident">iAddressFamily</span>,
-            <span class="ident">info</span>.<span class="ident">iSocketType</span>,
-            <span class="ident">info</span>.<span class="ident">iProtocol</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">info</span>,
+        WSASocketW(
+            info.iAddressFamily,
+            info.iSocketType,
+            info.iProtocol,
+            <span class="kw-2">&amp;mut </span>info,
             <span class="number">0</span>,
-            <span class="ident">sock::WSA_FLAG_OVERLAPPED</span> <span class="op">|</span> <span class="ident">sock::WSA_FLAG_NO_HANDLE_INHERIT</span>,
+            sock::WSA_FLAG_OVERLAPPED | sock::WSA_FLAG_NO_HANDLE_INHERIT,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::INVALID_SOCKET</span>
+        PartialEq::eq,
+        sock::INVALID_SOCKET
     )
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nonblocking</span> <span class="op">=</span> <span class="ident">nonblocking</span> <span class="kw">as</span> <span class="ident">u_long</span>;
-    <span class="ident">ioctlsocket</span>(<span class="ident">socket</span>, <span class="ident">sock::FIONBIO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">nonblocking</span>)
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>set_nonblocking(socket: Socket, nonblocking: bool) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>nonblocking = nonblocking <span class="kw">as </span>u_long;
+    ioctlsocket(socket, sock::FIONBIO, <span class="kw-2">&amp;mut </span>nonblocking)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">shutdown</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">how</span>: <span class="ident">Shutdown</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">how</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">how</span> {
-        <span class="ident">Shutdown::Write</span> =&gt; <span class="ident">SD_SEND</span>,
-        <span class="ident">Shutdown::Read</span> =&gt; <span class="ident">SD_RECEIVE</span>,
-        <span class="ident">Shutdown::Both</span> =&gt; <span class="ident">SD_BOTH</span>,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>shutdown(socket: Socket, how: Shutdown) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span>how = <span class="kw">match </span>how {
+        Shutdown::Write =&gt; SD_SEND,
+        Shutdown::Read =&gt; SD_RECEIVE,
+        Shutdown::Both =&gt; SD_BOTH,
     };
-    <span class="macro">syscall!</span>(<span class="ident">shutdown</span>(<span class="ident">socket</span>, <span class="ident">how</span>), <span class="ident">PartialEq::eq</span>, <span class="ident">sock::SOCKET_ERROR</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+    <span class="macro">syscall!</span>(shutdown(socket, how), PartialEq::eq, sock::SOCKET_ERROR).map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">recv</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>], <span class="ident">flags</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">syscall!</span>(
-        <span class="ident">recv</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-            <span class="ident">min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">MAX_BUF_LEN</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
-            <span class="ident">flags</span>,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>recv(socket: Socket, buf: <span class="kw-2">&amp;mut </span>[MaybeUninit&lt;u8&gt;], flags: c_int) -&gt; io::Result&lt;usize&gt; {
+    <span class="kw">let </span>res = <span class="macro">syscall!</span>(
+        recv(
+            socket,
+            buf.as_mut_ptr().cast(),
+            min(buf.len(), MAX_BUF_LEN) <span class="kw">as </span>c_int,
+            flags,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     );
-    <span class="kw">match</span> <span class="ident">res</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">n</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">usize</span>),
-        <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAESHUTDOWN</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+    <span class="kw">match </span>res {
+        <span class="prelude-val">Ok</span>(n) =&gt; <span class="prelude-val">Ok</span>(n <span class="kw">as </span>usize),
+        <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAESHUTDOWN <span class="kw">as </span>i32) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
+        <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">recv_vectored</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">bufs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident"><span class="kw">crate</span>::MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">RecvFlags</span>)<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nread</span> <span class="op">=</span> <span class="number">0</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span> <span class="kw">as</span> <span class="ident">DWORD</span>;
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">syscall!</span>(
-        <span class="ident">WSARecv</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">bufs</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-            <span class="ident">min</span>(<span class="ident">bufs</span>.<span class="ident">len</span>(), <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">DWORD</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">nread</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">flags</span>,
-            <span class="ident">ptr::null_mut</span>(),
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>recv_vectored(
+    socket: Socket,
+    bufs: <span class="kw-2">&amp;mut </span>[<span class="kw">crate</span>::MaybeUninitSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+    flags: c_int,
+) -&gt; io::Result&lt;(usize, RecvFlags)&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>nread = <span class="number">0</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>flags = flags <span class="kw">as </span>DWORD;
+    <span class="kw">let </span>res = <span class="macro">syscall!</span>(
+        WSARecv(
+            socket,
+            bufs.as_mut_ptr().cast(),
+            min(bufs.len(), DWORD::max_value() <span class="kw">as </span>usize) <span class="kw">as </span>DWORD,
+            <span class="kw-2">&amp;mut </span>nread,
+            <span class="kw-2">&amp;mut </span>flags,
+            ptr::null_mut(),
             <span class="prelude-val">None</span>,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     );
-    <span class="kw">match</span> <span class="ident">res</span> {
-        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="ident">nread</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">RecvFlags</span>(<span class="number">0</span>))),
-        <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAESHUTDOWN</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; {
-            <span class="prelude-val">Ok</span>((<span class="number">0</span>, <span class="ident">RecvFlags</span>(<span class="number">0</span>)))
+    <span class="kw">match </span>res {
+        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>((nread <span class="kw">as </span>usize, RecvFlags(<span class="number">0</span>))),
+        <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAESHUTDOWN <span class="kw">as </span>i32) =&gt; {
+            <span class="prelude-val">Ok</span>((<span class="number">0</span>, RecvFlags(<span class="number">0</span>)))
         }
-        <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAEMSGSIZE</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; {
-            <span class="prelude-val">Ok</span>((<span class="ident">nread</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">RecvFlags</span>(<span class="ident">MSG_TRUNC</span>)))
+        <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAEMSGSIZE <span class="kw">as </span>i32) =&gt; {
+            <span class="prelude-val">Ok</span>((nread <span class="kw">as </span>usize, RecvFlags(MSG_TRUNC)))
         }
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">recv_from</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>],
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">SockAddr</span>)<span class="op">&gt;</span> {
-    <span class="comment">// Safety: `recvfrom` initialises the `SockAddr` for us.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">SockAddr::init</span>(<span class="op">|</span><span class="ident">storage</span>, <span class="ident">addrlen</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">syscall!</span>(
-                <span class="ident">recvfrom</span>(
-                    <span class="ident">socket</span>,
-                    <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-                    <span class="ident">min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">MAX_BUF_LEN</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
-                    <span class="ident">flags</span>,
-                    <span class="ident">storage</span>.<span class="ident">cast</span>(),
-                    <span class="ident">addrlen</span>,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>recv_from(
+    socket: Socket,
+    buf: <span class="kw-2">&amp;mut </span>[MaybeUninit&lt;u8&gt;],
+    flags: c_int,
+) -&gt; io::Result&lt;(usize, SockAddr)&gt; {
+    <span class="comment">// Safety: `recvfrom` initialises the `SockAddr` for us.
+    </span><span class="kw">unsafe </span>{
+        SockAddr::init(|storage, addrlen| {
+            <span class="kw">let </span>res = <span class="macro">syscall!</span>(
+                recvfrom(
+                    socket,
+                    buf.as_mut_ptr().cast(),
+                    min(buf.len(), MAX_BUF_LEN) <span class="kw">as </span>c_int,
+                    flags,
+                    storage.cast(),
+                    addrlen,
                 ),
-                <span class="ident">PartialEq::eq</span>,
-                <span class="ident">sock::SOCKET_ERROR</span>
+                PartialEq::eq,
+                sock::SOCKET_ERROR
             );
-            <span class="kw">match</span> <span class="ident">res</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">n</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">usize</span>),
-                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAESHUTDOWN</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+            <span class="kw">match </span>res {
+                <span class="prelude-val">Ok</span>(n) =&gt; <span class="prelude-val">Ok</span>(n <span class="kw">as </span>usize),
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAESHUTDOWN <span class="kw">as </span>i32) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
+                <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
             }
         })
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">recv_from_vectored</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">bufs</span>: <span class="kw-2">&amp;mut</span> [<span class="ident"><span class="kw">crate</span>::MaybeUninitSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">RecvFlags</span>, <span class="ident">SockAddr</span>)<span class="op">&gt;</span> {
-    <span class="comment">// Safety: `recvfrom` initialises the `SockAddr` for us.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">SockAddr::init</span>(<span class="op">|</span><span class="ident">storage</span>, <span class="ident">addrlen</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nread</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span> <span class="kw">as</span> <span class="ident">DWORD</span>;
-            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">syscall!</span>(
-                <span class="ident">WSARecvFrom</span>(
-                    <span class="ident">socket</span>,
-                    <span class="ident">bufs</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-                    <span class="ident">min</span>(<span class="ident">bufs</span>.<span class="ident">len</span>(), <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">DWORD</span>,
-                    <span class="kw-2">&amp;mut</span> <span class="ident">nread</span>,
-                    <span class="kw-2">&amp;mut</span> <span class="ident">flags</span>,
-                    <span class="ident">storage</span>.<span class="ident">cast</span>(),
-                    <span class="ident">addrlen</span>,
-                    <span class="ident">ptr::null_mut</span>(),
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>recv_from_vectored(
+    socket: Socket,
+    bufs: <span class="kw-2">&amp;mut </span>[<span class="kw">crate</span>::MaybeUninitSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+    flags: c_int,
+) -&gt; io::Result&lt;(usize, RecvFlags, SockAddr)&gt; {
+    <span class="comment">// Safety: `recvfrom` initialises the `SockAddr` for us.
+    </span><span class="kw">unsafe </span>{
+        SockAddr::init(|storage, addrlen| {
+            <span class="kw">let </span><span class="kw-2">mut </span>nread = <span class="number">0</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>flags = flags <span class="kw">as </span>DWORD;
+            <span class="kw">let </span>res = <span class="macro">syscall!</span>(
+                WSARecvFrom(
+                    socket,
+                    bufs.as_mut_ptr().cast(),
+                    min(bufs.len(), DWORD::max_value() <span class="kw">as </span>usize) <span class="kw">as </span>DWORD,
+                    <span class="kw-2">&amp;mut </span>nread,
+                    <span class="kw-2">&amp;mut </span>flags,
+                    storage.cast(),
+                    addrlen,
+                    ptr::null_mut(),
                     <span class="prelude-val">None</span>,
                 ),
-                <span class="ident">PartialEq::eq</span>,
-                <span class="ident">sock::SOCKET_ERROR</span>
+                PartialEq::eq,
+                sock::SOCKET_ERROR
             );
-            <span class="kw">match</span> <span class="ident">res</span> {
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="ident">nread</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">RecvFlags</span>(<span class="number">0</span>))),
-                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAESHUTDOWN</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; {
-                    <span class="prelude-val">Ok</span>((<span class="ident">nread</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">RecvFlags</span>(<span class="number">0</span>)))
+            <span class="kw">match </span>res {
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>((nread <span class="kw">as </span>usize, RecvFlags(<span class="number">0</span>))),
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAESHUTDOWN <span class="kw">as </span>i32) =&gt; {
+                    <span class="prelude-val">Ok</span>((nread <span class="kw">as </span>usize, RecvFlags(<span class="number">0</span>)))
                 }
-                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">sock::WSAEMSGSIZE</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; {
-                    <span class="prelude-val">Ok</span>((<span class="ident">nread</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">RecvFlags</span>(<span class="ident">MSG_TRUNC</span>)))
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>err) <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(sock::WSAEMSGSIZE <span class="kw">as </span>i32) =&gt; {
+                    <span class="prelude-val">Ok</span>((nread <span class="kw">as </span>usize, RecvFlags(MSG_TRUNC)))
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
             }
         })
     }
-    .<span class="ident">map</span>(<span class="op">|</span>((<span class="ident">n</span>, <span class="ident">recv_flags</span>), <span class="ident">addr</span>)<span class="op">|</span> (<span class="ident">n</span>, <span class="ident">recv_flags</span>, <span class="ident">addr</span>))
+    .map(|((n, recv_flags), addr)| (n, recv_flags, addr))
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">send</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>send(socket: Socket, buf: <span class="kw-2">&amp;</span>[u8], flags: c_int) -&gt; io::Result&lt;usize&gt; {
     <span class="macro">syscall!</span>(
-        <span class="ident">send</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">buf</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
-            <span class="ident">min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">MAX_BUF_LEN</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
-            <span class="ident">flags</span>,
+        send(
+            socket,
+            buf.as_ptr().cast(),
+            min(buf.len(), MAX_BUF_LEN) <span class="kw">as </span>c_int,
+            flags,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">n</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    .map(|n| n <span class="kw">as </span>usize)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">send_vectored</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nsent</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>send_vectored(
+    socket: Socket,
+    bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+    flags: c_int,
+) -&gt; io::Result&lt;usize&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>nsent = <span class="number">0</span>;
     <span class="macro">syscall!</span>(
-        <span class="ident">WSASend</span>(
-            <span class="ident">socket</span>,
-            <span class="comment">// FIXME: From the `WSASend` docs [1]:</span>
-            <span class="comment">// &gt; For a Winsock application, once the WSASend function is called,</span>
-            <span class="comment">// &gt; the system owns these buffers and the application may not</span>
-            <span class="comment">// &gt; access them.</span>
-            <span class="comment">//</span>
-            <span class="comment">// So what we&#39;re doing is actually UB as `bufs` needs to be `&amp;mut</span>
-            <span class="comment">// [IoSlice&lt;&#39;_&gt;]`.</span>
-            <span class="comment">//</span>
-            <span class="comment">// Tracking issue: https://github.com/rust-lang/socket2-rs/issues/129.</span>
-            <span class="comment">//</span>
-            <span class="comment">// NOTE: `send_to_vectored` has the same problem.</span>
-            <span class="comment">//</span>
-            <span class="comment">// [1] https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasend</span>
-            <span class="ident">bufs</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">min</span>(<span class="ident">bufs</span>.<span class="ident">len</span>(), <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">DWORD</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">nsent</span>,
-            <span class="ident">flags</span> <span class="kw">as</span> <span class="ident">DWORD</span>,
-            <span class="ident">std::ptr::null_mut</span>(),
+        WSASend(
+            socket,
+            <span class="comment">// FIXME: From the `WSASend` docs [1]:
+            // &gt; For a Winsock application, once the WSASend function is called,
+            // &gt; the system owns these buffers and the application may not
+            // &gt; access them.
+            //
+            // So what we&#39;re doing is actually UB as `bufs` needs to be `&amp;mut
+            // [IoSlice&lt;&#39;_&gt;]`.
+            //
+            // Tracking issue: https://github.com/rust-lang/socket2-rs/issues/129.
+            //
+            // NOTE: `send_to_vectored` has the same problem.
+            //
+            // [1] https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasend
+            </span>bufs.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            min(bufs.len(), DWORD::max_value() <span class="kw">as </span>usize) <span class="kw">as </span>DWORD,
+            <span class="kw-2">&amp;mut </span>nsent,
+            flags <span class="kw">as </span>DWORD,
+            std::ptr::null_mut(),
             <span class="prelude-val">None</span>,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">nsent</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    .map(|<span class="kw">_</span>| nsent <span class="kw">as </span>usize)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">send_to</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-    <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SockAddr</span>,
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>send_to(
+    socket: Socket,
+    buf: <span class="kw-2">&amp;</span>[u8],
+    addr: <span class="kw-2">&amp;</span>SockAddr,
+    flags: c_int,
+) -&gt; io::Result&lt;usize&gt; {
     <span class="macro">syscall!</span>(
-        <span class="ident">sendto</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">buf</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
-            <span class="ident">min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">MAX_BUF_LEN</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
-            <span class="ident">flags</span>,
-            <span class="ident">addr</span>.<span class="ident">as_ptr</span>(),
-            <span class="ident">addr</span>.<span class="ident">len</span>(),
+        sendto(
+            socket,
+            buf.as_ptr().cast(),
+            min(buf.len(), MAX_BUF_LEN) <span class="kw">as </span>c_int,
+            flags,
+            addr.as_ptr(),
+            addr.len(),
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">n</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    .map(|n| n <span class="kw">as </span>usize)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">send_to_vectored</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
-    <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SockAddr</span>,
-    <span class="ident">flags</span>: <span class="ident">c_int</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nsent</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>send_to_vectored(
+    socket: Socket,
+    bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+    addr: <span class="kw-2">&amp;</span>SockAddr,
+    flags: c_int,
+) -&gt; io::Result&lt;usize&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>nsent = <span class="number">0</span>;
     <span class="macro">syscall!</span>(
-        <span class="ident">WSASendTo</span>(
-            <span class="ident">socket</span>,
-            <span class="comment">// FIXME: Same problem as in `send_vectored`.</span>
-            <span class="ident">bufs</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">bufs</span>.<span class="ident">len</span>().<span class="ident">min</span>(<span class="ident">DWORD::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">DWORD</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">nsent</span>,
-            <span class="ident">flags</span> <span class="kw">as</span> <span class="ident">DWORD</span>,
-            <span class="ident">addr</span>.<span class="ident">as_ptr</span>(),
-            <span class="ident">addr</span>.<span class="ident">len</span>(),
-            <span class="ident">ptr::null_mut</span>(),
+        WSASendTo(
+            socket,
+            <span class="comment">// FIXME: Same problem as in `send_vectored`.
+            </span>bufs.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            bufs.len().min(DWORD::MAX <span class="kw">as </span>usize) <span class="kw">as </span>DWORD,
+            <span class="kw-2">&amp;mut </span>nsent,
+            flags <span class="kw">as </span>DWORD,
+            addr.as_ptr(),
+            addr.len(),
+            ptr::null_mut(),
             <span class="prelude-val">None</span>,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">nsent</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    .map(|<span class="kw">_</span>| nsent <span class="kw">as </span>usize)
 }
 
-<span class="doccomment">/// Wrapper around `getsockopt` to deal with platform specific timeouts.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">timeout_opt</span>(<span class="ident">fd</span>: <span class="ident">Socket</span>, <span class="ident">lvl</span>: <span class="ident">c_int</span>, <span class="ident">name</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> { <span class="ident">getsockopt</span>(<span class="ident">fd</span>, <span class="ident">lvl</span>, <span class="ident">name</span>).<span class="ident">map</span>(<span class="ident">from_ms</span>) }
+<span class="doccomment">/// Wrapper around `getsockopt` to deal with platform specific timeouts.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>timeout_opt(fd: Socket, lvl: c_int, name: c_int) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;Duration&gt;&gt; {
+    <span class="kw">unsafe </span>{ getsockopt(fd, lvl, name).map(from_ms) }
 }
 
-<span class="kw">fn</span> <span class="ident">from_ms</span>(<span class="ident">duration</span>: <span class="ident">DWORD</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">duration</span> <span class="op">==</span> <span class="number">0</span> {
-        <span class="prelude-val">None</span>
-    } <span class="kw">else</span> {
-        <span class="kw">let</span> <span class="ident">secs</span> <span class="op">=</span> <span class="ident">duration</span> <span class="op">/</span> <span class="number">1000</span>;
-        <span class="kw">let</span> <span class="ident">nsec</span> <span class="op">=</span> (<span class="ident">duration</span> <span class="op">%</span> <span class="number">1000</span>) <span class="op">*</span> <span class="number">1000000</span>;
-        <span class="prelude-val">Some</span>(<span class="ident">Duration::new</span>(<span class="ident">secs</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">nsec</span> <span class="kw">as</span> <span class="ident">u32</span>))
+<span class="kw">fn </span>from_ms(duration: DWORD) -&gt; <span class="prelude-ty">Option</span>&lt;Duration&gt; {
+    <span class="kw">if </span>duration == <span class="number">0 </span>{
+        <span class="prelude-val">None
+    </span>} <span class="kw">else </span>{
+        <span class="kw">let </span>secs = duration / <span class="number">1000</span>;
+        <span class="kw">let </span>nsec = (duration % <span class="number">1000</span>) * <span class="number">1000000</span>;
+        <span class="prelude-val">Some</span>(Duration::new(secs <span class="kw">as </span>u64, nsec <span class="kw">as </span>u32))
     }
 }
 
-<span class="doccomment">/// Wrapper around `setsockopt` to deal with platform specific timeouts.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_timeout_opt</span>(
-    <span class="ident">fd</span>: <span class="ident">Socket</span>,
-    <span class="ident">level</span>: <span class="ident">c_int</span>,
-    <span class="ident">optname</span>: <span class="ident">c_int</span>,
-    <span class="ident">duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="ident">into_ms</span>(<span class="ident">duration</span>);
-    <span class="kw">unsafe</span> { <span class="ident">setsockopt</span>(<span class="ident">fd</span>, <span class="ident">level</span>, <span class="ident">optname</span>, <span class="ident">duration</span>) }
+<span class="doccomment">/// Wrapper around `setsockopt` to deal with platform specific timeouts.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>set_timeout_opt(
+    fd: Socket,
+    level: c_int,
+    optname: c_int,
+    duration: <span class="prelude-ty">Option</span>&lt;Duration&gt;,
+) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span>duration = into_ms(duration);
+    <span class="kw">unsafe </span>{ setsockopt(fd, level, optname, duration) }
 }
 
-<span class="kw">fn</span> <span class="ident">into_ms</span>(<span class="ident">duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) -&gt; <span class="ident">DWORD</span> {
-    <span class="comment">// Note that a duration is a (u64, u32) (seconds, nanoseconds) pair, and the</span>
-    <span class="comment">// timeouts in windows APIs are typically u32 milliseconds. To translate, we</span>
-    <span class="comment">// have two pieces to take care of:</span>
-    <span class="comment">//</span>
-    <span class="comment">// * Nanosecond precision is rounded up</span>
-    <span class="comment">// * Greater than u32::MAX milliseconds (50 days) is rounded up to</span>
-    <span class="comment">//   INFINITE (never time out).</span>
-    <span class="ident">duration</span>
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">duration</span><span class="op">|</span> <span class="ident">min</span>(<span class="ident">duration</span>.<span class="ident">as_millis</span>(), <span class="ident">INFINITE</span> <span class="kw">as</span> <span class="ident">u128</span>) <span class="kw">as</span> <span class="ident">DWORD</span>)
-        .<span class="ident">unwrap_or</span>(<span class="number">0</span>)
+<span class="kw">fn </span>into_ms(duration: <span class="prelude-ty">Option</span>&lt;Duration&gt;) -&gt; DWORD {
+    <span class="comment">// Note that a duration is a (u64, u32) (seconds, nanoseconds) pair, and the
+    // timeouts in windows APIs are typically u32 milliseconds. To translate, we
+    // have two pieces to take care of:
+    //
+    // * Nanosecond precision is rounded up
+    // * Greater than u32::MAX milliseconds (50 days) is rounded up to
+    //   INFINITE (never time out).
+    </span>duration
+        .map(|duration| min(duration.as_millis(), INFINITE <span class="kw">as </span>u128) <span class="kw">as </span>DWORD)
+        .unwrap_or(<span class="number">0</span>)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_tcp_keepalive</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">keepalive</span>: <span class="kw-2">&amp;</span><span class="ident">TcpKeepalive</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">keepalive</span> <span class="op">=</span> <span class="ident">tcp_keepalive</span> {
-        <span class="ident">onoff</span>: <span class="number">1</span>,
-        <span class="ident">keepalivetime</span>: <span class="ident">into_ms</span>(<span class="ident">keepalive</span>.<span class="ident">time</span>),
-        <span class="ident">keepaliveinterval</span>: <span class="ident">into_ms</span>(<span class="ident">keepalive</span>.<span class="ident">interval</span>),
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>set_tcp_keepalive(socket: Socket, keepalive: <span class="kw-2">&amp;</span>TcpKeepalive) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>keepalive = tcp_keepalive {
+        onoff: <span class="number">1</span>,
+        keepalivetime: into_ms(keepalive.time),
+        keepaliveinterval: into_ms(keepalive.interval),
     };
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="number">0</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>out = <span class="number">0</span>;
     <span class="macro">syscall!</span>(
-        <span class="ident">WSAIoctl</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">SIO_KEEPALIVE_VALS</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">keepalive</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">tcp_keepalive</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">ptr::null_mut</span>(),
+        WSAIoctl(
+            socket,
+            SIO_KEEPALIVE_VALS,
+            <span class="kw-2">&amp;mut </span>keepalive <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            size_of::&lt;tcp_keepalive&gt;() <span class="kw">as _</span>,
+            ptr::null_mut(),
             <span class="number">0</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">out</span>,
-            <span class="ident">ptr::null_mut</span>(),
+            <span class="kw-2">&amp;mut </span>out,
+            ptr::null_mut(),
             <span class="prelude-val">None</span>,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+    .map(|<span class="kw">_</span>| ())
 }
 
-<span class="doccomment">/// Caller must ensure `T` is the correct type for `level` and `optname`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">getsockopt</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">level</span>: <span class="ident">c_int</span>, <span class="ident">optname</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">optval</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">optlen</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">c_int</span>;
+<span class="doccomment">/// Caller must ensure `T` is the correct type for `level` and `optname`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>getsockopt&lt;T&gt;(socket: Socket, level: c_int, optname: c_int) -&gt; io::Result&lt;T&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>optval: MaybeUninit&lt;T&gt; = MaybeUninit::uninit();
+    <span class="kw">let </span><span class="kw-2">mut </span>optlen = mem::size_of::&lt;T&gt;() <span class="kw">as </span>c_int;
     <span class="macro">syscall!</span>(
-        <span class="ident">getsockopt</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">level</span>,
-            <span class="ident">optname</span>,
-            <span class="ident">optval</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-            <span class="kw-2">&amp;mut</span> <span class="ident">optlen</span>,
+        getsockopt(
+            socket,
+            level,
+            optname,
+            optval.as_mut_ptr().cast(),
+            <span class="kw-2">&amp;mut </span>optlen,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-        <span class="macro">debug_assert_eq!</span>(<span class="ident">optlen</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
-        <span class="comment">// Safety: `getsockopt` initialised `optval` for us.</span>
-        <span class="ident">optval</span>.<span class="ident">assume_init</span>()
+    .map(|<span class="kw">_</span>| {
+        <span class="macro">debug_assert_eq!</span>(optlen <span class="kw">as </span>usize, mem::size_of::&lt;T&gt;());
+        <span class="comment">// Safety: `getsockopt` initialised `optval` for us.
+        </span>optval.assume_init()
     })
 }
 
-<span class="doccomment">/// Caller must ensure `T` is the correct type for `level` and `optname`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">setsockopt</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-    <span class="ident">socket</span>: <span class="ident">Socket</span>,
-    <span class="ident">level</span>: <span class="ident">c_int</span>,
-    <span class="ident">optname</span>: <span class="ident">c_int</span>,
-    <span class="ident">optval</span>: <span class="ident">T</span>,
-) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="doccomment">/// Caller must ensure `T` is the correct type for `level` and `optname`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>setsockopt&lt;T&gt;(
+    socket: Socket,
+    level: c_int,
+    optname: c_int,
+    optval: T,
+) -&gt; io::Result&lt;()&gt; {
     <span class="macro">syscall!</span>(
-        <span class="ident">setsockopt</span>(
-            <span class="ident">socket</span>,
-            <span class="ident">level</span>,
-            <span class="ident">optname</span>,
-            (<span class="kw-2">&amp;</span><span class="ident">optval</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">T</span>).<span class="ident">cast</span>(),
-            <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">c_int</span>,
+        setsockopt(
+            socket,
+            level,
+            optname,
+            (<span class="kw-2">&amp;</span>optval <span class="kw">as </span><span class="kw-2">*const </span>T).cast(),
+            mem::size_of::&lt;T&gt;() <span class="kw">as </span>c_int,
         ),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+    .map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">fn</span> <span class="ident">ioctlsocket</span>(<span class="ident">socket</span>: <span class="ident">Socket</span>, <span class="ident">cmd</span>: <span class="ident">c_long</span>, <span class="ident">payload</span>: <span class="kw-2">&amp;mut</span> <span class="ident">u_long</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">fn </span>ioctlsocket(socket: Socket, cmd: c_long, payload: <span class="kw-2">&amp;mut </span>u_long) -&gt; io::Result&lt;()&gt; {
     <span class="macro">syscall!</span>(
-        <span class="ident">ioctlsocket</span>(<span class="ident">socket</span>, <span class="ident">cmd</span>, <span class="ident">payload</span>),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">sock::SOCKET_ERROR</span>
+        ioctlsocket(socket, cmd, payload),
+        PartialEq::eq,
+        sock::SOCKET_ERROR
     )
-    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+    .map(|<span class="kw">_</span>| ())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_in_addr</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">Ipv4Addr</span>) -&gt; <span class="ident">IN_ADDR</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_un</span>: <span class="ident">in_addr_S_un</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
-    <span class="comment">// `S_un` is stored as BE on all machines, and the array is in BE order. So</span>
-    <span class="comment">// the native endian conversion method is used so that it&#39;s never swapped.</span>
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">s_un</span>.<span class="ident">S_addr_mut</span>()) <span class="op">=</span> <span class="ident">u32::from_ne_bytes</span>(<span class="ident">addr</span>.<span class="ident">octets</span>()) };
-    <span class="ident">IN_ADDR</span> { <span class="ident">S_un</span>: <span class="ident">s_un</span> }
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_in_addr(addr: <span class="kw-2">&amp;</span>Ipv4Addr) -&gt; IN_ADDR {
+    <span class="kw">let </span><span class="kw-2">mut </span>s_un: in_addr_S_un = <span class="kw">unsafe </span>{ mem::zeroed() };
+    <span class="comment">// `S_un` is stored as BE on all machines, and the array is in BE order. So
+    // the native endian conversion method is used so that it&#39;s never swapped.
+    </span><span class="kw">unsafe </span>{ <span class="kw-2">*</span>(s_un.S_addr_mut()) = u32::from_ne_bytes(addr.octets()) };
+    IN_ADDR { S_un: s_un }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_in_addr</span>(<span class="ident">in_addr</span>: <span class="ident">IN_ADDR</span>) -&gt; <span class="ident">Ipv4Addr</span> {
-    <span class="ident">Ipv4Addr::from</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">in_addr</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() }.<span class="ident">to_ne_bytes</span>())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_in_addr(in_addr: IN_ADDR) -&gt; Ipv4Addr {
+    Ipv4Addr::from(<span class="kw">unsafe </span>{ <span class="kw-2">*</span>in_addr.S_un.S_addr() }.to_ne_bytes())
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_in6_addr</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">Ipv6Addr</span>) -&gt; <span class="ident">in6_addr</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret_addr</span>: <span class="ident">in6_addr_u</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">ret_addr</span>.<span class="ident">Byte_mut</span>()) <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">octets</span>() };
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span>: <span class="ident">in6_addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
-    <span class="ident">ret</span>.<span class="ident">u</span> <span class="op">=</span> <span class="ident">ret_addr</span>;
-    <span class="ident">ret</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_in6_addr(addr: <span class="kw-2">&amp;</span>Ipv6Addr) -&gt; in6_addr {
+    <span class="kw">let </span><span class="kw-2">mut </span>ret_addr: in6_addr_u = <span class="kw">unsafe </span>{ mem::zeroed() };
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>(ret_addr.Byte_mut()) = addr.octets() };
+    <span class="kw">let </span><span class="kw-2">mut </span>ret: in6_addr = <span class="kw">unsafe </span>{ mem::zeroed() };
+    ret.u = ret_addr;
+    ret
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_in6_addr</span>(<span class="ident">addr</span>: <span class="ident">in6_addr</span>) -&gt; <span class="ident">Ipv6Addr</span> {
-    <span class="ident">Ipv6Addr::from</span>(<span class="kw-2">*</span><span class="kw">unsafe</span> { <span class="ident">addr</span>.<span class="ident">u</span>.<span class="ident">Byte</span>() })
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_in6_addr(addr: in6_addr) -&gt; Ipv6Addr {
+    Ipv6Addr::from(<span class="kw-2">*</span><span class="kw">unsafe </span>{ addr.u.Byte() })
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_mreqn</span>(
-    <span class="ident">multiaddr</span>: <span class="kw-2">&amp;</span><span class="ident">Ipv4Addr</span>,
-    <span class="ident">interface</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::socket::InterfaceIndexOrAddress</span>,
-) -&gt; <span class="ident">IpMreq</span> {
-    <span class="ident">IpMreq</span> {
-        <span class="ident">imr_multiaddr</span>: <span class="ident">to_in_addr</span>(<span class="ident">multiaddr</span>),
-        <span class="comment">// Per https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-ip_mreq#members:</span>
-        <span class="comment">//</span>
-        <span class="comment">// imr_interface</span>
-        <span class="comment">//</span>
-        <span class="comment">// The local IPv4 address of the interface or the interface index on</span>
-        <span class="comment">// which the multicast group should be joined or dropped. This value is</span>
-        <span class="comment">// in network byte order. If this member specifies an IPv4 address of</span>
-        <span class="comment">// 0.0.0.0, the default IPv4 multicast interface is used.</span>
-        <span class="comment">//</span>
-        <span class="comment">// To use an interface index of 1 would be the same as an IP address of</span>
-        <span class="comment">// 0.0.0.1.</span>
-        <span class="ident">imr_interface</span>: <span class="kw">match</span> <span class="ident">interface</span> {
-            <span class="ident"><span class="kw">crate</span>::socket::InterfaceIndexOrAddress::Index</span>(<span class="ident">interface</span>) =&gt; {
-                <span class="ident">to_in_addr</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="ident">interface</span>).<span class="ident">into</span>())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_mreqn(
+    multiaddr: <span class="kw-2">&amp;</span>Ipv4Addr,
+    interface: <span class="kw-2">&amp;</span><span class="kw">crate</span>::socket::InterfaceIndexOrAddress,
+) -&gt; IpMreq {
+    IpMreq {
+        imr_multiaddr: to_in_addr(multiaddr),
+        <span class="comment">// Per https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-ip_mreq#members:
+        //
+        // imr_interface
+        //
+        // The local IPv4 address of the interface or the interface index on
+        // which the multicast group should be joined or dropped. This value is
+        // in network byte order. If this member specifies an IPv4 address of
+        // 0.0.0.0, the default IPv4 multicast interface is used.
+        //
+        // To use an interface index of 1 would be the same as an IP address of
+        // 0.0.0.1.
+        </span>imr_interface: <span class="kw">match </span>interface {
+            <span class="kw">crate</span>::socket::InterfaceIndexOrAddress::Index(interface) =&gt; {
+                to_in_addr(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>interface).into())
             }
-            <span class="ident"><span class="kw">crate</span>::socket::InterfaceIndexOrAddress::Address</span>(<span class="ident">interface</span>) =&gt; <span class="ident">to_in_addr</span>(<span class="ident">interface</span>),
+            <span class="kw">crate</span>::socket::InterfaceIndexOrAddress::Address(interface) =&gt; to_in_addr(interface),
         },
     }
 }
 
-<span class="doccomment">/// Windows only API.</span>
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::Socket</span> {
-    <span class="doccomment">/// Sets `HANDLE_FLAG_INHERIT` using `SetHandleInformation`.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>))))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_no_inherit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">no_inherit</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">_set_no_inherit</span>(<span class="ident">no_inherit</span>)
+<span class="doccomment">/// Windows only API.
+</span><span class="kw">impl </span><span class="kw">crate</span>::Socket {
+    <span class="doccomment">/// Sets `HANDLE_FLAG_INHERIT` using `SetHandleInformation`.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;all&quot;</span>)]
+    #[cfg_attr(docsrs, doc(cfg(all(windows, feature = <span class="string">&quot;all&quot;</span>))))]
+    </span><span class="kw">pub fn </span>set_no_inherit(<span class="kw-2">&amp;</span><span class="self">self</span>, no_inherit: bool) -&gt; io::Result&lt;()&gt; {
+        <span class="self">self</span>._set_no_inherit(no_inherit)
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">_set_no_inherit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">no_inherit</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="comment">// NOTE: can&#39;t use `syscall!` because it expects the function in the</span>
-        <span class="comment">// `sock::` path.</span>
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">SetHandleInformation</span>(
-                <span class="self">self</span>.<span class="ident">as_raw</span>() <span class="kw">as</span> <span class="ident">HANDLE</span>,
-                <span class="ident">winbase::HANDLE_FLAG_INHERIT</span>,
-                <span class="op">!</span><span class="ident">no_inherit</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>_set_no_inherit(<span class="kw-2">&amp;</span><span class="self">self</span>, no_inherit: bool) -&gt; io::Result&lt;()&gt; {
+        <span class="comment">// NOTE: can&#39;t use `syscall!` because it expects the function in the
+        // `sock::` path.
+        </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{
+            SetHandleInformation(
+                <span class="self">self</span>.as_raw() <span class="kw">as </span>HANDLE,
+                winbase::HANDLE_FLAG_INHERIT,
+                !no_inherit <span class="kw">as _</span>,
             )
         };
-        <span class="kw">if</span> <span class="ident">res</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="comment">// Zero means error.</span>
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
+        <span class="kw">if </span>res == <span class="number">0 </span>{
+            <span class="comment">// Zero means error.
+            </span><span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(())
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AsRawSocket</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::Socket</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_socket</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RawSocket</span> {
-        <span class="self">self</span>.<span class="ident">as_raw</span>() <span class="kw">as</span> <span class="ident">RawSocket</span>
+<span class="kw">impl </span>AsRawSocket <span class="kw">for </span><span class="kw">crate</span>::Socket {
+    <span class="kw">fn </span>as_raw_socket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RawSocket {
+        <span class="self">self</span>.as_raw() <span class="kw">as </span>RawSocket
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IntoRawSocket</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::Socket</span> {
-    <span class="kw">fn</span> <span class="ident">into_raw_socket</span>(<span class="self">self</span>) -&gt; <span class="ident">RawSocket</span> {
-        <span class="self">self</span>.<span class="ident">into_raw</span>() <span class="kw">as</span> <span class="ident">RawSocket</span>
+<span class="kw">impl </span>IntoRawSocket <span class="kw">for </span><span class="kw">crate</span>::Socket {
+    <span class="kw">fn </span>into_raw_socket(<span class="self">self</span>) -&gt; RawSocket {
+        <span class="self">self</span>.into_raw() <span class="kw">as </span>RawSocket
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FromRawSocket</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::Socket</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_socket</span>(<span class="ident">socket</span>: <span class="ident">RawSocket</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Socket</span> {
-        <span class="ident"><span class="kw">crate</span>::Socket::from_raw</span>(<span class="ident">socket</span> <span class="kw">as</span> <span class="ident">Socket</span>)
+<span class="kw">impl </span>FromRawSocket <span class="kw">for </span><span class="kw">crate</span>::Socket {
+    <span class="kw">unsafe fn </span>from_raw_socket(socket: RawSocket) -&gt; <span class="kw">crate</span>::Socket {
+        <span class="kw">crate</span>::Socket::from_raw(socket <span class="kw">as </span>Socket)
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">in_addr_convertion</span>() {
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="ident">Ipv4Addr::new</span>(<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
-    <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">to_in_addr</span>(<span class="kw-2">&amp;</span><span class="ident">ip</span>);
-    <span class="macro">assert_eq!</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">raw</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() }, <span class="number">127</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">from_in_addr</span>(<span class="ident">raw</span>), <span class="ident">ip</span>);
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>in_addr_convertion() {
+    <span class="kw">let </span>ip = Ipv4Addr::new(<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
+    <span class="kw">let </span>raw = to_in_addr(<span class="kw-2">&amp;</span>ip);
+    <span class="macro">assert_eq!</span>(<span class="kw">unsafe </span>{ <span class="kw-2">*</span>raw.S_un.S_addr() }, <span class="number">127 </span>&lt;&lt; <span class="number">0 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">24</span>);
+    <span class="macro">assert_eq!</span>(from_in_addr(raw), ip);
 
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="ident">Ipv4Addr::new</span>(<span class="number">127</span>, <span class="number">34</span>, <span class="number">4</span>, <span class="number">12</span>);
-    <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">to_in_addr</span>(<span class="kw-2">&amp;</span><span class="ident">ip</span>);
+    <span class="kw">let </span>ip = Ipv4Addr::new(<span class="number">127</span>, <span class="number">34</span>, <span class="number">4</span>, <span class="number">12</span>);
+    <span class="kw">let </span>raw = to_in_addr(<span class="kw-2">&amp;</span>ip);
     <span class="macro">assert_eq!</span>(
-        <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">raw</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() },
-        <span class="number">127</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">34</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span> <span class="op">|</span> <span class="number">4</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span> <span class="op">|</span> <span class="number">12</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>
-    );
-    <span class="macro">assert_eq!</span>(<span class="ident">from_in_addr</span>(<span class="ident">raw</span>), <span class="ident">ip</span>);
+        <span class="kw">unsafe </span>{ <span class="kw-2">*</span>raw.S_un.S_addr() },
+        <span class="number">127 </span>&lt;&lt; <span class="number">0 </span>| <span class="number">34 </span>&lt;&lt; <span class="number">8 </span>| <span class="number">4 </span>&lt;&lt; <span class="number">16 </span>| <span class="number">12 </span>&lt;&lt; <span class="number">24
+    </span>);
+    <span class="macro">assert_eq!</span>(from_in_addr(raw), ip);
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">in6_addr_convertion</span>() {
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="ident">Ipv6Addr::new</span>(<span class="number">0x2000</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);
-    <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">to_in6_addr</span>(<span class="kw-2">&amp;</span><span class="ident">ip</span>);
-    <span class="kw">let</span> <span class="ident">want</span> <span class="op">=</span> [
-        <span class="number">0x2000u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">1u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">2u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">3u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">4u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">5u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">6u16</span>.<span class="ident">to_be</span>(),
-        <span class="number">7u16</span>.<span class="ident">to_be</span>(),
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>in6_addr_convertion() {
+    <span class="kw">let </span>ip = Ipv6Addr::new(<span class="number">0x2000</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);
+    <span class="kw">let </span>raw = to_in6_addr(<span class="kw-2">&amp;</span>ip);
+    <span class="kw">let </span>want = [
+        <span class="number">0x2000u16</span>.to_be(),
+        <span class="number">1u16</span>.to_be(),
+        <span class="number">2u16</span>.to_be(),
+        <span class="number">3u16</span>.to_be(),
+        <span class="number">4u16</span>.to_be(),
+        <span class="number">5u16</span>.to_be(),
+        <span class="number">6u16</span>.to_be(),
+        <span class="number">7u16</span>.to_be(),
     ];
-    <span class="macro">assert_eq!</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">raw</span>.<span class="ident">u</span>.<span class="ident">Word</span>() }, <span class="ident">want</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">from_in6_addr</span>(<span class="ident">raw</span>), <span class="ident">ip</span>);
+    <span class="macro">assert_eq!</span>(<span class="kw">unsafe </span>{ <span class="kw-2">*</span>raw.u.Word() }, want);
+    <span class="macro">assert_eq!</span>(from_in6_addr(raw), ip);
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="socket2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="socket2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

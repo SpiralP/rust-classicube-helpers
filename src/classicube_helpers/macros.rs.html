@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\macros.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../classicube_helpers/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\macros.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../classicube_helpers/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -163,170 +163,170 @@
 <span id="163">163</span>
 <span id="164">164</span>
 <span id="165">165</span>
-</pre><pre class="rust"><code><span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">make_event_handler</span> {
+</pre><pre class="rust"><code><span class="attribute">#[doc(hidden)]
+#[macro_export]
+</span><span class="macro">macro_rules! </span>make_event_handler {
     (
-        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span>:<span class="ident">ident</span>,
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>:<span class="ident">ident</span>,
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func_type</span>:<span class="ident">ident</span>,
+        $(<span class="attribute">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)*
+        <span class="macro-nonterminal">$event_type</span>:ident,
+        <span class="macro-nonterminal">$event_name</span>:ident,
+        <span class="macro-nonterminal">$func_type</span>:ident,
         (
             $( {
-                <span class="ident">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,
-                <span class="ident">rust_type</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rust_type</span>:<span class="ident">ty</span>,
-                <span class="ident">c_type</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">c_type</span>:<span class="ident">ty</span>,
-                <span class="ident">to_rust</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to_rust</span>:<span class="ident">expr</span>,
-            }, )<span class="op">*</span>
+                name: <span class="macro-nonterminal">$name</span>:ident,
+                rust_type: <span class="macro-nonterminal">$rust_type</span>:ty,
+                c_type: <span class="macro-nonterminal">$c_type</span>:ty,
+                to_rust: <span class="macro-nonterminal">$to_rust</span>:expr,
+            }, )*
         )
     ) =&gt; {
-        <span class="macro">paste::item!</span> {
-            <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-            <span class="kw">pub</span> <span class="kw">struct</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>] {
-                $(<span class="kw">pub</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rust_type</span>, )<span class="op">*</span>
+        <span class="macro">paste::item! </span>{
+            <span class="attribute">#[derive(Debug)]
+            </span><span class="kw">pub struct </span>[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;] {
+                $(<span class="kw">pub </span><span class="macro-nonterminal">$name</span>: <span class="macro-nonterminal">$rust_type</span>, )*
             }
 
-            $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>]</span>)<span class="op">*</span>
-            <span class="kw">pub</span> <span class="kw">struct</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">EventHandler</span><span class="op">&gt;</span>] {
-                <span class="ident">registered</span>: <span class="ident">bool</span>,
-                <span class="ident">callback_handler</span>: <span class="ident">::std::pin::Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::callback_handler::CallbackHandler</span><span class="op">&lt;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            $(<span class="attribute">#[<span class="macro-nonterminal">$attr</span>]</span>)*
+            <span class="kw">pub struct </span>[&lt;<span class="macro-nonterminal">$event_name </span>EventHandler&gt;] {
+                registered: bool,
+                callback_handler: ::std::pin::Pin&lt;Box&lt;<span class="macro-nonterminal">$crate::callback_handler::CallbackHandler</span>&lt;[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;]&gt;&gt;&gt;,
             }
 
-            <span class="kw">impl</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">EventHandler</span><span class="op">&gt;</span>] {
-                <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-                    <span class="self">Self</span> {
-                        <span class="ident">registered</span>: <span class="bool-val">false</span>,
-                        <span class="ident">callback_handler</span>: <span class="ident">Box::pin</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::callback_handler::CallbackHandler::new</span>()),
+            <span class="kw">impl </span>[&lt;<span class="macro-nonterminal">$event_name </span>EventHandler&gt;] {
+                <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+                    <span class="self">Self </span>{
+                        registered: <span class="bool-val">false</span>,
+                        callback_handler: Box::pin(<span class="macro-nonterminal">$crate::callback_handler::CallbackHandler::new</span>()),
                     }
                 }
 
-                <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">callback</span>: <span class="ident">F</span>)
-                <span class="kw">where</span>
-                    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]),
-                    <span class="ident">F</span>: <span class="lifetime">&#39;static</span>,
+                <span class="kw">pub fn </span>on&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F)
+                <span class="kw">where
+                    </span>F: FnMut(<span class="kw-2">&amp;</span>[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;]),
+                    F: <span class="lifetime">&#39;static</span>,
                 {
-                    <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">on</span>(<span class="ident">callback</span>);
+                    <span class="self">self</span>.callback_handler.on(callback);
 
-                    <span class="kw">unsafe</span> {
-                        <span class="self">self</span>.<span class="ident">register_listener</span>();
+                    <span class="kw">unsafe </span>{
+                        <span class="self">self</span>.register_listener();
                     }
                 }
 
-                <span class="comment">// have to use c_type here because there&#39;s no way to use a converted OwnedString</span>
-                <span class="comment">// and keep it alive until after Raise() returns</span>
-                <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raise</span>(
-                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">c_type</span>, )<span class="op">*</span>
+                <span class="comment">// have to use c_type here because there&#39;s no way to use a converted OwnedString
+                // and keep it alive until after Raise() returns
+                </span><span class="kw">pub fn </span>raise(
+                    $(<span class="macro-nonterminal">$name</span>: <span class="macro-nonterminal">$c_type</span>, )*
                 ) {
-                    <span class="kw">unsafe</span> {
-                        <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="ident">Event_Raise</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func_type</span><span class="op">&gt;</span>](
-                            <span class="kw-2">&amp;mut</span> <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span> <span class="ident">Events</span><span class="op">&gt;</span>].<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>,
-                            $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, )<span class="op">*</span>
+                    <span class="kw">unsafe </span>{
+                        ::classicube_sys::[&lt;Event_Raise <span class="macro-nonterminal">$func_type</span>&gt;](
+                            <span class="kw-2">&amp;mut </span>::classicube_sys::[&lt;<span class="macro-nonterminal">$event_type </span>Events&gt;].<span class="macro-nonterminal">$event_name</span>,
+                            $(<span class="macro-nonterminal">$name</span>, )*
                         );
                     }
                 }
 
-                <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">register_listener</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-                    <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">registered</span> {
-                        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::callback_handler::CallbackHandler</span><span class="op">&lt;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]<span class="op">&gt;</span> <span class="op">=</span>
-                            <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">as_mut</span>().<span class="ident">get_unchecked_mut</span>();
+                <span class="kw">unsafe fn </span>register_listener(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                    <span class="kw">if </span>!<span class="self">self</span>.registered {
+                        <span class="kw">let </span>ptr: <span class="kw-2">*mut </span><span class="macro-nonterminal">$crate::callback_handler::CallbackHandler</span>&lt;[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;]&gt; =
+                            <span class="self">self</span>.callback_handler.as_mut().get_unchecked_mut();
 
-                        <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="ident">Event_Register</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func_type</span><span class="op">&gt;</span>](
-                            <span class="kw-2">&amp;mut</span> <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span> <span class="ident">Events</span><span class="op">&gt;</span>].<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>,
-                            <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">::std::os::raw::c_void</span>,
-                            <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::callback</span>),
+                        ::classicube_sys::[&lt;Event_Register <span class="macro-nonterminal">$func_type</span>&gt;](
+                            <span class="kw-2">&amp;mut </span>::classicube_sys::[&lt;<span class="macro-nonterminal">$event_type </span>Events&gt;].<span class="macro-nonterminal">$event_name</span>,
+                            ptr <span class="kw">as </span><span class="kw-2">*mut </span>::std::os::raw::c_void,
+                            <span class="prelude-val">Some</span>(<span class="self">Self</span>::callback),
                         );
 
-                        <span class="self">self</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                        <span class="self">self</span>.registered = <span class="bool-val">true</span>;
                     }
                 }
 
-                <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">unregister_listener</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-                    <span class="kw">if</span> <span class="self">self</span>.<span class="ident">registered</span> {
-                        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::callback_handler::CallbackHandler</span><span class="op">&lt;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]<span class="op">&gt;</span> <span class="op">=</span>
-                            <span class="self">self</span>.<span class="ident">callback_handler</span>.<span class="ident">as_mut</span>().<span class="ident">get_unchecked_mut</span>();
+                <span class="kw">unsafe fn </span>unregister_listener(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                    <span class="kw">if </span><span class="self">self</span>.registered {
+                        <span class="kw">let </span>ptr: <span class="kw-2">*mut </span><span class="macro-nonterminal">$crate::callback_handler::CallbackHandler</span>&lt;[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;]&gt; =
+                            <span class="self">self</span>.callback_handler.as_mut().get_unchecked_mut();
 
-                        <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="ident">Event_Unregister</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func_type</span><span class="op">&gt;</span>](
-                            <span class="kw-2">&amp;mut</span> <span class="ident">::classicube_sys</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span> <span class="ident">Events</span><span class="op">&gt;</span>].<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>,
-                            <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">::std::os::raw::c_void</span>,
-                            <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::callback</span>),
+                        ::classicube_sys::[&lt;Event_Unregister <span class="macro-nonterminal">$func_type</span>&gt;](
+                            <span class="kw-2">&amp;mut </span>::classicube_sys::[&lt;<span class="macro-nonterminal">$event_type </span>Events&gt;].<span class="macro-nonterminal">$event_name</span>,
+                            ptr <span class="kw">as </span><span class="kw-2">*mut </span>::std::os::raw::c_void,
+                            <span class="prelude-val">Some</span>(<span class="self">Self</span>::callback),
                         );
 
-                        <span class="self">self</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                        <span class="self">self</span>.registered = <span class="bool-val">false</span>;
                     }
                 }
 
-                <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">callback</span>(
-                    <span class="ident">obj</span>: <span class="kw-2">*mut</span> <span class="ident">::std::os::raw::c_void</span>,
-                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">c_type</span>, )<span class="op">*</span>
+                <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>callback(
+                    obj: <span class="kw-2">*mut </span>::std::os::raw::c_void,
+                    $(<span class="macro-nonterminal">$name</span>: <span class="macro-nonterminal">$c_type</span>, )*
                 ) {
-                    <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::callback_handler::CallbackHandler</span><span class="op">&lt;</span>[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>]<span class="op">&gt;</span>;
-                    <span class="kw">let</span> <span class="ident">event_handler</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">event_handler</span> };
+                    <span class="kw">let </span>event_handler = obj <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$crate::callback_handler::CallbackHandler</span>&lt;[&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;]&gt;;
+                    <span class="kw">let </span>event_handler = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>event_handler };
 
-                    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::redundant_closure_call</span>)]</span>
-                    <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">Event</span><span class="op">&gt;</span>] {
-                        $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">to_rust</span>)(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>), )<span class="op">*</span>
+                    <span class="attribute">#[allow(clippy::redundant_closure_call)]
+                    </span><span class="kw">let </span>event = [&lt;<span class="macro-nonterminal">$event_name </span>Event&gt;] {
+                        $(<span class="macro-nonterminal">$name</span>: (<span class="macro-nonterminal">$to_rust</span>)(<span class="macro-nonterminal">$name</span>), )*
                     };
 
-                    <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::debug!</span>(<span class="string">&quot;{} {:?}&quot;</span>, <span class="macro">stringify!</span>([<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_type</span><span class="op">&gt;</span>]), <span class="ident">event</span>);
+                    <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::debug!</span>(<span class="string">&quot;{} {:?}&quot;</span>, <span class="macro">stringify!</span>([&lt;<span class="macro-nonterminal">$event_type</span>&gt;]), event);
 
-                    <span class="ident">event_handler</span>.<span class="ident">handle_event</span>(<span class="ident">event</span>);
+                    event_handler.handle_event(event);
                 }
             }
 
-            <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">EventHandler</span><span class="op">&gt;</span>] {
-                <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-                    <span class="kw">unsafe</span> {
-                        <span class="self">self</span>.<span class="ident">unregister_listener</span>();
+            <span class="kw">impl </span>Drop <span class="kw">for </span>[&lt;<span class="macro-nonterminal">$event_name </span>EventHandler&gt;] {
+                <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                    <span class="kw">unsafe </span>{
+                        <span class="self">self</span>.unregister_listener();
                     }
                 }
             }
 
-            <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> <span class="ident">EventHandler</span><span class="op">&gt;</span>] {
-                <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-                    <span class="ident"><span class="self">Self</span>::new</span>()
+            <span class="kw">impl </span>Default <span class="kw">for </span>[&lt;<span class="macro-nonterminal">$event_name </span>EventHandler&gt;] {
+                <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+                    <span class="self">Self</span>::new()
                 }
             }
         }
     };
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">time</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>:<span class="ident">tt</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>:<span class="ident">block</span>) =&gt; {{
-        <span class="kw">let</span> <span class="ident">before</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>;
-        <span class="kw">let</span> <span class="ident">after</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">diff</span> <span class="op">=</span> <span class="ident">after</span> <span class="op">-</span> <span class="ident">before</span>;
-        <span class="macro">debug!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>, <span class="ident">diff</span>);
-        <span class="ident">res</span>
+<span class="attribute">#[macro_export]
+</span><span class="macro">macro_rules! </span>time {
+    (<span class="macro-nonterminal">$title</span>:tt, <span class="macro-nonterminal">$block</span>:block) =&gt; {{
+        <span class="kw">let </span>before = ::std::time::Instant::now();
+        <span class="kw">let </span>res = <span class="macro-nonterminal">$block</span>;
+        <span class="kw">let </span>after = ::std::time::Instant::now();
+        <span class="kw">let </span>diff = after - before;
+        <span class="macro">debug!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$title</span>, diff);
+        res
     }};
 
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">high_millis</span>:<span class="ident">tt</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>:<span class="ident">block</span>) =&gt; {{
-        <span class="kw">let</span> <span class="ident">before</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>;
-        <span class="kw">let</span> <span class="ident">after</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">diff</span> <span class="op">=</span> <span class="ident">after</span> <span class="op">-</span> <span class="ident">before</span>;
-        <span class="kw">if</span> <span class="ident">diff</span> <span class="op">&gt;</span> <span class="ident">::std::time::Duration::from_millis</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">high_millis</span>) {
-            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::warn!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>, <span class="ident">diff</span>);
-        } <span class="kw">else</span> {
-            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::debug!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>, <span class="ident">diff</span>);
+    (<span class="macro-nonterminal">$title</span>:expr, <span class="macro-nonterminal">$high_millis</span>:tt, <span class="macro-nonterminal">$block</span>:block) =&gt; {{
+        <span class="kw">let </span>before = ::std::time::Instant::now();
+        <span class="kw">let </span>res = <span class="macro-nonterminal">$block</span>;
+        <span class="kw">let </span>after = ::std::time::Instant::now();
+        <span class="kw">let </span>diff = after - before;
+        <span class="kw">if </span>diff &gt; ::std::time::Duration::from_millis(<span class="macro-nonterminal">$high_millis</span>) {
+            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::warn!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$title</span>, diff);
+        } <span class="kw">else </span>{
+            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::debug!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$title</span>, diff);
         }
-        <span class="ident">res</span>
+        res
     }};
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">time_silent</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">high_millis</span>:<span class="ident">tt</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>:<span class="ident">block</span>) =&gt; {{
-        <span class="kw">let</span> <span class="ident">before</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">block</span>;
-        <span class="kw">let</span> <span class="ident">after</span> <span class="op">=</span> <span class="ident">::std::time::Instant::now</span>();
-        <span class="kw">let</span> <span class="ident">diff</span> <span class="op">=</span> <span class="ident">after</span> <span class="op">-</span> <span class="ident">before</span>;
-        <span class="kw">if</span> <span class="ident">diff</span> <span class="op">&gt;</span> <span class="ident">::std::time::Duration::from_millis</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">high_millis</span>) {
-            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::warn!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">title</span>, <span class="ident">diff</span>);
+<span class="attribute">#[macro_export]
+</span><span class="macro">macro_rules! </span>time_silent {
+    (<span class="macro-nonterminal">$title</span>:expr, <span class="macro-nonterminal">$high_millis</span>:tt, <span class="macro-nonterminal">$block</span>:block) =&gt; {{
+        <span class="kw">let </span>before = ::std::time::Instant::now();
+        <span class="kw">let </span>res = <span class="macro-nonterminal">$block</span>;
+        <span class="kw">let </span>after = ::std::time::Instant::now();
+        <span class="kw">let </span>diff = after - before;
+        <span class="kw">if </span>diff &gt; ::std::time::Duration::from_millis(<span class="macro-nonterminal">$high_millis</span>) {
+            <span class="macro-nonterminal">$</span><span class="macro">crate::tracing::warn!</span>(<span class="string">&quot;{} ({:?})&quot;</span>, <span class="macro-nonterminal">$title</span>, diff);
         }
-        <span class="ident">res</span>
+        res
     }};
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

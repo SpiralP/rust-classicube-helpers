@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.4\src\sys\windows\event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.5\src\sys\windows\event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -159,166 +159,166 @@
 <span id="159">159</span>
 <span id="160">160</span>
 <span id="161">161</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::afd</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::iocp::CompletionStatus</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Token</span>;
+<span class="kw">use </span><span class="kw">super</span>::afd;
+<span class="kw">use </span><span class="kw">super</span>::iocp::CompletionStatus;
+<span class="kw">use </span><span class="kw">crate</span>::Token;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Event</span> {
-    <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">u64</span>,
+<span class="attribute">#[derive(Clone)]
+</span><span class="kw">pub struct </span>Event {
+    <span class="kw">pub </span>flags: u32,
+    <span class="kw">pub </span>data: u64,
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">token</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">Token</span> {
-    <span class="ident">Token</span>(<span class="ident">event</span>.<span class="ident">data</span> <span class="kw">as</span> <span class="ident">usize</span>)
+<span class="kw">pub fn </span>token(event: <span class="kw-2">&amp;</span>Event) -&gt; Token {
+    Token(event.data <span class="kw">as </span>usize)
 }
 
-<span class="kw">impl</span> <span class="ident">Event</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">token</span>: <span class="ident">Token</span>) -&gt; <span class="ident">Event</span> {
-        <span class="ident">Event</span> {
-            <span class="ident">flags</span>: <span class="number">0</span>,
-            <span class="ident">data</span>: <span class="ident">usize::from</span>(<span class="ident">token</span>) <span class="kw">as</span> <span class="ident">u64</span>,
+<span class="kw">impl </span>Event {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new(token: Token) -&gt; Event {
+        Event {
+            flags: <span class="number">0</span>,
+            data: usize::from(token) <span class="kw">as </span>u64,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">set_readable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">afd::POLL_RECEIVE</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>set_readable(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.flags |= afd::POLL_RECEIVE
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;os-ext&quot;</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">set_writable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">afd::POLL_SEND</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;os-ext&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>set_writable(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.flags |= afd::POLL_SEND;
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">from_completion_status</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">CompletionStatus</span>) -&gt; <span class="ident">Event</span> {
-        <span class="ident">Event</span> {
-            <span class="ident">flags</span>: <span class="ident">status</span>.<span class="ident">bytes_transferred</span>(),
-            <span class="ident">data</span>: <span class="ident">status</span>.<span class="ident">token</span>() <span class="kw">as</span> <span class="ident">u64</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>from_completion_status(status: <span class="kw-2">&amp;</span>CompletionStatus) -&gt; Event {
+        Event {
+            flags: status.bytes_transferred(),
+            data: status.token() <span class="kw">as </span>u64,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">to_completion_status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">CompletionStatus</span> {
-        <span class="ident">CompletionStatus::new</span>(<span class="self">self</span>.<span class="ident">flags</span>, <span class="self">self</span>.<span class="ident">data</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">std::ptr::null_mut</span>())
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>to_completion_status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; CompletionStatus {
+        CompletionStatus::new(<span class="self">self</span>.flags, <span class="self">self</span>.data <span class="kw">as </span>usize, std::ptr::null_mut())
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">READABLE_FLAGS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">afd::POLL_RECEIVE</span>
-    <span class="op">|</span> <span class="ident">afd::POLL_DISCONNECT</span>
-    <span class="op">|</span> <span class="ident">afd::POLL_ACCEPT</span>
-    <span class="op">|</span> <span class="ident">afd::POLL_ABORT</span>
-    <span class="op">|</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">WRITABLE_FLAGS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">afd::POLL_SEND</span> <span class="op">|</span> <span class="ident">afd::POLL_ABORT</span> <span class="op">|</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ERROR_FLAGS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">READ_CLOSED_FLAGS</span>: <span class="ident">u32</span> <span class="op">=</span>
-    <span class="ident">afd::POLL_DISCONNECT</span> <span class="op">|</span> <span class="ident">afd::POLL_ABORT</span> <span class="op">|</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">WRITE_CLOSED_FLAGS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">afd::POLL_ABORT</span> <span class="op">|</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>READABLE_FLAGS: u32 = afd::POLL_RECEIVE
+    | afd::POLL_DISCONNECT
+    | afd::POLL_ACCEPT
+    | afd::POLL_ABORT
+    | afd::POLL_CONNECT_FAIL;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>WRITABLE_FLAGS: u32 = afd::POLL_SEND | afd::POLL_ABORT | afd::POLL_CONNECT_FAIL;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>ERROR_FLAGS: u32 = afd::POLL_CONNECT_FAIL;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>READ_CLOSED_FLAGS: u32 =
+    afd::POLL_DISCONNECT | afd::POLL_ABORT | afd::POLL_CONNECT_FAIL;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>WRITE_CLOSED_FLAGS: u32 = afd::POLL_ABORT | afd::POLL_CONNECT_FAIL;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_readable</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">READABLE_FLAGS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_readable(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; READABLE_FLAGS != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_writable</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">WRITABLE_FLAGS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_writable(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; WRITABLE_FLAGS != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_error</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">ERROR_FLAGS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_error(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; ERROR_FLAGS != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_read_closed</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">READ_CLOSED_FLAGS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_read_closed(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; READ_CLOSED_FLAGS != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_write_closed</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">WRITE_CLOSED_FLAGS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_write_closed(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; WRITE_CLOSED_FLAGS != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_priority</span>(<span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">event</span>.<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">afd::POLL_RECEIVE_EXPEDITED</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-}
+<span class="kw">pub fn </span>is_priority(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    event.flags &amp; afd::POLL_RECEIVE_EXPEDITED != <span class="number">0
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_aio</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="comment">// Not supported.</span>
-    <span class="bool-val">false</span>
-}
+<span class="kw">pub fn </span>is_aio(<span class="kw">_</span>: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    <span class="comment">// Not supported.
+    </span><span class="bool-val">false
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_lio</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-    <span class="comment">// Not supported.</span>
-    <span class="bool-val">false</span>
-}
+<span class="kw">pub fn </span>is_lio(<span class="kw">_</span>: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+    <span class="comment">// Not supported.
+    </span><span class="bool-val">false
+</span>}
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_details</span>(<span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">Event</span>) -&gt; <span class="ident">fmt::Result</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::trivially_copy_pass_by_ref</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">check_flags</span>(<span class="ident">got</span>: <span class="kw-2">&amp;</span><span class="ident">u32</span>, <span class="ident">want</span>: <span class="kw-2">&amp;</span><span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
-        (<span class="ident">got</span> <span class="op">&amp;</span> <span class="ident">want</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-    }
+<span class="kw">pub fn </span>debug_details(f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;, event: <span class="kw-2">&amp;</span>Event) -&gt; fmt::Result {
+    <span class="attribute">#[allow(clippy::trivially_copy_pass_by_ref)]
+    </span><span class="kw">fn </span>check_flags(got: <span class="kw-2">&amp;</span>u32, want: <span class="kw-2">&amp;</span>u32) -&gt; bool {
+        (got &amp; want) != <span class="number">0
+    </span>}
     <span class="macro">debug_detail!</span>(
-        <span class="ident">FlagsDetails</span>(<span class="ident">u32</span>),
-        <span class="ident">check_flags</span>,
-        <span class="ident">afd::POLL_RECEIVE</span>,
-        <span class="ident">afd::POLL_RECEIVE_EXPEDITED</span>,
-        <span class="ident">afd::POLL_SEND</span>,
-        <span class="ident">afd::POLL_DISCONNECT</span>,
-        <span class="ident">afd::POLL_ABORT</span>,
-        <span class="ident">afd::POLL_LOCAL_CLOSE</span>,
-        <span class="ident">afd::POLL_CONNECT</span>,
-        <span class="ident">afd::POLL_ACCEPT</span>,
-        <span class="ident">afd::POLL_CONNECT_FAIL</span>,
+        FlagsDetails(u32),
+        check_flags,
+        afd::POLL_RECEIVE,
+        afd::POLL_RECEIVE_EXPEDITED,
+        afd::POLL_SEND,
+        afd::POLL_DISCONNECT,
+        afd::POLL_ABORT,
+        afd::POLL_LOCAL_CLOSE,
+        afd::POLL_CONNECT,
+        afd::POLL_ACCEPT,
+        afd::POLL_CONNECT_FAIL,
     );
 
-    <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;event&quot;</span>)
-        .<span class="ident">field</span>(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">FlagsDetails</span>(<span class="ident">event</span>.<span class="ident">flags</span>))
-        .<span class="ident">field</span>(<span class="string">&quot;data&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">event</span>.<span class="ident">data</span>)
-        .<span class="ident">finish</span>()
+    f.debug_struct(<span class="string">&quot;event&quot;</span>)
+        .field(<span class="string">&quot;flags&quot;</span>, <span class="kw-2">&amp;</span>FlagsDetails(event.flags))
+        .field(<span class="string">&quot;data&quot;</span>, <span class="kw-2">&amp;</span>event.data)
+        .finish()
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Events</span> {
-    <span class="doccomment">/// Raw I/O event completions are filled in here by the call to `get_many`</span>
-    <span class="doccomment">/// on the completion port above. These are then processed to run callbacks</span>
-    <span class="doccomment">/// which figure out what to do after the event is done.</span>
-    <span class="kw">pub</span> <span class="ident">statuses</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">CompletionStatus</span>]<span class="op">&gt;</span>,
+<span class="kw">pub struct </span>Events {
+    <span class="doccomment">/// Raw I/O event completions are filled in here by the call to `get_many`
+    /// on the completion port above. These are then processed to run callbacks
+    /// which figure out what to do after the event is done.
+    </span><span class="kw">pub </span>statuses: Box&lt;[CompletionStatus]&gt;,
 
-    <span class="doccomment">/// Literal events returned by `get` to the upwards `EventLoop`. This file</span>
-    <span class="doccomment">/// doesn&#39;t really modify this (except for the waker), instead almost all</span>
-    <span class="doccomment">/// events are filled in by the `ReadinessQueue` from the `poll` module.</span>
-    <span class="kw">pub</span> <span class="ident">events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Literal events returned by `get` to the upwards `EventLoop`. This file
+    /// doesn&#39;t really modify this (except for the waker), instead almost all
+    /// events are filled in by the `ReadinessQueue` from the `poll` module.
+    </span><span class="kw">pub </span>events: Vec&lt;Event&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Events</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">cap</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Events</span> {
-        <span class="comment">// Note that it&#39;s possible for the output `events` to grow beyond the</span>
-        <span class="comment">// capacity as it can also include deferred events, but that&#39;s certainly</span>
-        <span class="comment">// not the end of the world!</span>
-        <span class="ident">Events</span> {
-            <span class="ident">statuses</span>: <span class="macro">vec!</span>[<span class="ident">CompletionStatus::zero</span>(); <span class="ident">cap</span>].<span class="ident">into_boxed_slice</span>(),
-            <span class="ident">events</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">cap</span>),
+<span class="kw">impl </span>Events {
+    <span class="kw">pub fn </span>with_capacity(cap: usize) -&gt; Events {
+        <span class="comment">// Note that it&#39;s possible for the output `events` to grow beyond the
+        // capacity as it can also include deferred events, but that&#39;s certainly
+        // not the end of the world!
+        </span>Events {
+            statuses: <span class="macro">vec!</span>[CompletionStatus::zero(); cap].into_boxed_slice(),
+            events: Vec::with_capacity(cap),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.events.is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">capacity</span>()
+    <span class="kw">pub fn </span>capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.events.capacity()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">len</span>()
+    <span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.events.len()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Event</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">get</span>(<span class="ident">idx</span>)
+    <span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, idx: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Event&gt; {
+        <span class="self">self</span>.events.get(idx)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">clear</span>();
-        <span class="kw">for</span> <span class="ident">status</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">statuses</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> <span class="ident">CompletionStatus::zero</span>();
+    <span class="kw">pub fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.events.clear();
+        <span class="kw">for </span>status <span class="kw">in </span><span class="self">self</span>.statuses.iter_mut() {
+            <span class="kw-2">*</span>status = CompletionStatus::zero();
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

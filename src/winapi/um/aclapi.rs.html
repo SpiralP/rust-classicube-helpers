@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\aclapi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>aclapi.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\aclapi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>aclapi.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -360,367 +360,367 @@
 <span id="360">360</span>
 <span id="361">361</span>
 <span id="362">362</span>
-</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
-<span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
-<span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms.</span>
-<span class="kw">use</span> <span class="ident">shared::guiddef::GUID</span>;
-<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">BOOL</span>, <span class="ident">DWORD</span>, <span class="ident">PULONG</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>};
-<span class="kw">use</span> <span class="ident">um::accctrl</span>::{
-    <span class="ident">ACCESS_MODE</span>, <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span>, <span class="ident">PEXPLICIT_ACCESS_A</span>, <span class="ident">PEXPLICIT_ACCESS_W</span>,
-    <span class="ident">PFN_OBJECT_MGR_FUNCTS</span>, <span class="ident">PINHERITED_FROMA</span>, <span class="ident">PINHERITED_FROMW</span>, <span class="ident">POBJECTS_AND_NAME_A</span>,
-    <span class="ident">POBJECTS_AND_NAME_W</span>, <span class="ident">POBJECTS_AND_SID</span>, <span class="ident">PPROG_INVOKE_SETTING</span>, <span class="ident">PROG_INVOKE_SETTING</span>, <span class="ident">PTRUSTEE_A</span>,
-    <span class="ident">PTRUSTEE_W</span>, <span class="ident">SE_OBJECT_TYPE</span>, <span class="ident">TRUSTEE_FORM</span>, <span class="ident">TRUSTEE_TYPE</span>
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0
+// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.
+// All files in the project carrying such notice may not be copied, modified, or distributed
+// except according to those terms.
+</span><span class="kw">use </span>shared::guiddef::GUID;
+<span class="kw">use </span>shared::minwindef::{BOOL, DWORD, PULONG, ULONG, USHORT};
+<span class="kw">use </span>um::accctrl::{
+    ACCESS_MODE, MULTIPLE_TRUSTEE_OPERATION, PEXPLICIT_ACCESS_A, PEXPLICIT_ACCESS_W,
+    PFN_OBJECT_MGR_FUNCTS, PINHERITED_FROMA, PINHERITED_FROMW, POBJECTS_AND_NAME_A,
+    POBJECTS_AND_NAME_W, POBJECTS_AND_SID, PPROG_INVOKE_SETTING, PROG_INVOKE_SETTING, PTRUSTEE_A,
+    PTRUSTEE_W, SE_OBJECT_TYPE, TRUSTEE_FORM, TRUSTEE_TYPE
 };
-<span class="kw">use</span> <span class="ident">um::winnt</span>::{
-    <span class="ident">HANDLE</span>, <span class="ident">LPCSTR</span>, <span class="ident">LPCWSTR</span>, <span class="ident">LPSTR</span>, <span class="ident">LPWSTR</span>, <span class="ident">PACCESS_MASK</span>, <span class="ident">PACL</span>, <span class="ident">PGENERIC_MAPPING</span>,
-    <span class="ident">PSECURITY_DESCRIPTOR</span>, <span class="ident">PSID</span>, <span class="ident">PVOID</span>, <span class="ident">SECURITY_INFORMATION</span>
+<span class="kw">use </span>um::winnt::{
+    HANDLE, LPCSTR, LPCWSTR, LPSTR, LPWSTR, PACCESS_MASK, PACL, PGENERIC_MAPPING,
+    PSECURITY_DESCRIPTOR, PSID, PVOID, SECURITY_INFORMATION
 };
-<span class="macro">FN!</span>{<span class="ident">cdecl</span> <span class="ident">FN_PROGRESS</span>(
-    <span class="ident">pObjectName</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">Status</span>: <span class="ident">DWORD</span>,
-    <span class="ident">pInvokeSetting</span>: <span class="ident">PPROG_INVOKE_SETTING</span>,
-    <span class="ident">Args</span>: <span class="ident">PVOID</span>,
-    <span class="ident">SecuritySet</span>: <span class="ident">BOOL</span>,
+<span class="macro">FN!</span>{cdecl FN_PROGRESS(
+    pObjectName: LPWSTR,
+    Status: DWORD,
+    pInvokeSetting: PPROG_INVOKE_SETTING,
+    Args: PVOID,
+    SecuritySet: BOOL,
 ) -&gt; ()}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetEntriesInAclA</span>(
-        <span class="ident">cCountOfExplicitEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfExplicitEntries</span>: <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">OldAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">NewAcl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetEntriesInAclW</span>(
-        <span class="ident">cCountOfExplicitEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfExplicitEntries</span>: <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">OldAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">NewAcl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetExplicitEntriesFromAclA</span>(
-        <span class="ident">pacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pcCountOfExplicitEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">pListOfExplicitEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_A</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetExplicitEntriesFromAclW</span>(
-        <span class="ident">pacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pcCountOfExplicitEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">pListOfExplicitEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_W</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetEffectiveRightsFromAclA</span>(
-        <span class="ident">pacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pAccessRight</span>: <span class="ident">PACCESS_MASK</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetEffectiveRightsFromAclW</span>(
-        <span class="ident">pacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pAccessRight</span>: <span class="ident">PACCESS_MASK</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAuditedPermissionsFromAclA</span>(
-        <span class="ident">pAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pSuccessfulAuditedRights</span>: <span class="ident">PACCESS_MASK</span>,
-        <span class="ident">pFailedAuditRights</span>: <span class="ident">PACCESS_MASK</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAuditedPermissionsFromAclW</span>(
-        <span class="ident">pAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pSuccessfulAuditedRights</span>: <span class="ident">PACCESS_MASK</span>,
-        <span class="ident">pFailedAuditRights</span>: <span class="ident">PACCESS_MASK</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetNamedSecurityInfoA</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPCSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">ppsidOwner</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppsidGroup</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppDacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSecurityDescriptor</span>: <span class="kw-2">*mut</span> <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetNamedSecurityInfoW</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPCWSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">ppsidOwner</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppsidGroup</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppDacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSecurityDescriptor</span>: <span class="kw-2">*mut</span> <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetSecurityInfo</span>(
-        <span class="ident">handle</span>: <span class="ident">HANDLE</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">ppsidOwner</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppsidGroup</span>: <span class="kw-2">*mut</span> <span class="ident">PSID</span>,
-        <span class="ident">ppDacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSacl</span>: <span class="kw-2">*mut</span> <span class="ident">PACL</span>,
-        <span class="ident">ppSecurityDescriptor</span>: <span class="kw-2">*mut</span> <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetNamedSecurityInfoA</span>(
-        <span class="ident">pObjectame</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">psidOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">psidGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetNamedSecurityInfoW</span>(
-        <span class="ident">pObjectame</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">psidOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">psidGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetSecurityInfo</span>(
-        <span class="ident">handle</span>: <span class="ident">HANDLE</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">psidOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">psidGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetInheritanceSourceA</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">Container</span>: <span class="ident">BOOL</span>,
-        <span class="ident">pObjectClassGuids</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">GuidCount</span>: <span class="ident">DWORD</span>,
-        <span class="ident">pAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pfnArray</span>: <span class="ident">PFN_OBJECT_MGR_FUNCTS</span>,
-        <span class="ident">pGenericMapping</span>: <span class="ident">PGENERIC_MAPPING</span>,
-        <span class="ident">pInheritArray</span>: <span class="ident">PINHERITED_FROMA</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetInheritanceSourceW</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">Container</span>: <span class="ident">BOOL</span>,
-        <span class="ident">pObjectClassGuids</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">GuidCount</span>: <span class="ident">DWORD</span>,
-        <span class="ident">pAcl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pfnArray</span>: <span class="ident">PFN_OBJECT_MGR_FUNCTS</span>,
-        <span class="ident">pGenericMapping</span>: <span class="ident">PGENERIC_MAPPING</span>,
-        <span class="ident">pInheritArray</span>: <span class="ident">PINHERITED_FROMW</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeInheritedFromArray</span>(
-        <span class="ident">pInheritArray</span>: <span class="ident">PINHERITED_FROMW</span>,
-        <span class="ident">AceCnt</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pfnArray</span>: <span class="ident">PFN_OBJECT_MGR_FUNCTS</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">TreeResetNamedSecurityInfoA</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">pOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">KeepExplicit</span>: <span class="ident">BOOL</span>,
-        <span class="ident">fnProgress</span>: <span class="ident">FN_PROGRESS</span>,
-        <span class="ident">ProgressInvokeSetting</span>: <span class="ident">PROG_INVOKE_SETTING</span>,
-        <span class="ident">Args</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">TreeResetNamedSecurityInfoW</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">pOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">KeepExplicit</span>: <span class="ident">BOOL</span>,
-        <span class="ident">fnProgress</span>: <span class="ident">FN_PROGRESS</span>,
-        <span class="ident">ProgressInvokeSetting</span>: <span class="ident">PROG_INVOKE_SETTING</span>,
-        <span class="ident">Args</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">TreeSetNamedSecurityInfoA</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">pOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">dwAction</span>: <span class="ident">DWORD</span>,
-        <span class="ident">fnProgress</span>: <span class="ident">FN_PROGRESS</span>,
-        <span class="ident">ProgressInvokeSetting</span>: <span class="ident">PROG_INVOKE_SETTING</span>,
-        <span class="ident">Args</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">TreeSetNamedSecurityInfoW</span>(
-        <span class="ident">pObjectName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">SecurityInfo</span>: <span class="ident">SECURITY_INFORMATION</span>,
-        <span class="ident">pOwner</span>: <span class="ident">PSID</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PSID</span>,
-        <span class="ident">pDacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">pSacl</span>: <span class="ident">PACL</span>,
-        <span class="ident">dwAction</span>: <span class="ident">DWORD</span>,
-        <span class="ident">fnProgress</span>: <span class="ident">FN_PROGRESS</span>,
-        <span class="ident">ProgressInvokeSetting</span>: <span class="ident">PROG_INVOKE_SETTING</span>,
-        <span class="ident">Args</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildSecurityDescriptorA</span>(
-        <span class="ident">pOwner</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">cCountOfAccessEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfAccessEntries</span>: <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">cCountOfAuditEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfAuditEntries</span>: <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">pOldSD</span>: <span class="ident">PSECURITY_DESCRIPTOR</span>,
-        <span class="ident">pSizeNewSD</span>: <span class="ident">PULONG</span>,
-        <span class="ident">pNewSD</span>: <span class="kw-2">*mut</span> <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildSecurityDescriptorW</span>(
-        <span class="ident">pOwner</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pGroup</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">cCountOfAccessEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfAccessEntries</span>: <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">cCountOfAuditEntries</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pListOfAuditEntries</span>: <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">pOldSD</span>: <span class="ident">PSECURITY_DESCRIPTOR</span>,
-        <span class="ident">pSizeNewSD</span>: <span class="ident">PULONG</span>,
-        <span class="ident">pNewSD</span>: <span class="kw-2">*mut</span> <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">LookupSecurityDescriptorPartsA</span>(
-        <span class="ident">ppOwner</span>: <span class="kw-2">*mut</span> <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">ppGroup</span>: <span class="kw-2">*mut</span> <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pcCountOfAccessEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">ppListOfAccessEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">pcCountOfAuditEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">ppListOfAuditEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">pSD</span>: <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">LookupSecurityDescriptorPartsW</span>(
-        <span class="ident">ppOwner</span>: <span class="kw-2">*mut</span> <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">ppGroup</span>: <span class="kw-2">*mut</span> <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pcCountOfAccessEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">ppListOfAccessEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">pcCountOfAuditEntries</span>: <span class="ident">PULONG</span>,
-        <span class="ident">ppListOfAuditEntries</span>: <span class="kw-2">*mut</span> <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">pSD</span>: <span class="ident">PSECURITY_DESCRIPTOR</span>,
-    ) -&gt; <span class="ident">DWORD</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildExplicitAccessWithNameA</span>(
-        <span class="ident">pExplicitAccess</span>: <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">pTrusteeName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">AccessPermissions</span>: <span class="ident">DWORD</span>,
-        <span class="ident">AccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-        <span class="ident">Inheritance</span>: <span class="ident">DWORD</span>,
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>SetEntriesInAclA(
+        cCountOfExplicitEntries: ULONG,
+        pListOfExplicitEntries: PEXPLICIT_ACCESS_A,
+        OldAcl: PACL,
+        NewAcl: <span class="kw-2">*mut </span>PACL,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>SetEntriesInAclW(
+        cCountOfExplicitEntries: ULONG,
+        pListOfExplicitEntries: PEXPLICIT_ACCESS_W,
+        OldAcl: PACL,
+        NewAcl: <span class="kw-2">*mut </span>PACL,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetExplicitEntriesFromAclA(
+        pacl: PACL,
+        pcCountOfExplicitEntries: PULONG,
+        pListOfExplicitEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_A,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetExplicitEntriesFromAclW(
+        pacl: PACL,
+        pcCountOfExplicitEntries: PULONG,
+        pListOfExplicitEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_W,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetEffectiveRightsFromAclA(
+        pacl: PACL,
+        pTrustee: PTRUSTEE_A,
+        pAccessRight: PACCESS_MASK,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetEffectiveRightsFromAclW(
+        pacl: PACL,
+        pTrustee: PTRUSTEE_W,
+        pAccessRight: PACCESS_MASK,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetAuditedPermissionsFromAclA(
+        pAcl: PACL,
+        pTrustee: PTRUSTEE_A,
+        pSuccessfulAuditedRights: PACCESS_MASK,
+        pFailedAuditRights: PACCESS_MASK,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetAuditedPermissionsFromAclW(
+        pAcl: PACL,
+        pTrustee: PTRUSTEE_W,
+        pSuccessfulAuditedRights: PACCESS_MASK,
+        pFailedAuditRights: PACCESS_MASK,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetNamedSecurityInfoA(
+        pObjectName: LPCSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        ppsidOwner: <span class="kw-2">*mut </span>PSID,
+        ppsidGroup: <span class="kw-2">*mut </span>PSID,
+        ppDacl: <span class="kw-2">*mut </span>PACL,
+        ppSacl: <span class="kw-2">*mut </span>PACL,
+        ppSecurityDescriptor: <span class="kw-2">*mut </span>PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetNamedSecurityInfoW(
+        pObjectName: LPCWSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        ppsidOwner: <span class="kw-2">*mut </span>PSID,
+        ppsidGroup: <span class="kw-2">*mut </span>PSID,
+        ppDacl: <span class="kw-2">*mut </span>PACL,
+        ppSacl: <span class="kw-2">*mut </span>PACL,
+        ppSecurityDescriptor: <span class="kw-2">*mut </span>PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetSecurityInfo(
+        handle: HANDLE,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        ppsidOwner: <span class="kw-2">*mut </span>PSID,
+        ppsidGroup: <span class="kw-2">*mut </span>PSID,
+        ppDacl: <span class="kw-2">*mut </span>PACL,
+        ppSacl: <span class="kw-2">*mut </span>PACL,
+        ppSecurityDescriptor: <span class="kw-2">*mut </span>PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>SetNamedSecurityInfoA(
+        pObjectame: LPSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        psidOwner: PSID,
+        psidGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>SetNamedSecurityInfoW(
+        pObjectame: LPWSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        psidOwner: PSID,
+        psidGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>SetSecurityInfo(
+        handle: HANDLE,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        psidOwner: PSID,
+        psidGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetInheritanceSourceA(
+        pObjectName: LPSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        Container: BOOL,
+        pObjectClassGuids: <span class="kw-2">*mut *mut </span>GUID,
+        GuidCount: DWORD,
+        pAcl: PACL,
+        pfnArray: PFN_OBJECT_MGR_FUNCTS,
+        pGenericMapping: PGENERIC_MAPPING,
+        pInheritArray: PINHERITED_FROMA,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>GetInheritanceSourceW(
+        pObjectName: LPWSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        Container: BOOL,
+        pObjectClassGuids: <span class="kw-2">*mut *mut </span>GUID,
+        GuidCount: DWORD,
+        pAcl: PACL,
+        pfnArray: PFN_OBJECT_MGR_FUNCTS,
+        pGenericMapping: PGENERIC_MAPPING,
+        pInheritArray: PINHERITED_FROMW,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>FreeInheritedFromArray(
+        pInheritArray: PINHERITED_FROMW,
+        AceCnt: USHORT,
+        pfnArray: PFN_OBJECT_MGR_FUNCTS,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>TreeResetNamedSecurityInfoA(
+        pObjectName: LPSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        pOwner: PSID,
+        pGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+        KeepExplicit: BOOL,
+        fnProgress: FN_PROGRESS,
+        ProgressInvokeSetting: PROG_INVOKE_SETTING,
+        Args: PVOID,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>TreeResetNamedSecurityInfoW(
+        pObjectName: LPWSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        pOwner: PSID,
+        pGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+        KeepExplicit: BOOL,
+        fnProgress: FN_PROGRESS,
+        ProgressInvokeSetting: PROG_INVOKE_SETTING,
+        Args: PVOID,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>TreeSetNamedSecurityInfoA(
+        pObjectName: LPSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        pOwner: PSID,
+        pGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+        dwAction: DWORD,
+        fnProgress: FN_PROGRESS,
+        ProgressInvokeSetting: PROG_INVOKE_SETTING,
+        Args: PVOID,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>TreeSetNamedSecurityInfoW(
+        pObjectName: LPWSTR,
+        ObjectType: SE_OBJECT_TYPE,
+        SecurityInfo: SECURITY_INFORMATION,
+        pOwner: PSID,
+        pGroup: PSID,
+        pDacl: PACL,
+        pSacl: PACL,
+        dwAction: DWORD,
+        fnProgress: FN_PROGRESS,
+        ProgressInvokeSetting: PROG_INVOKE_SETTING,
+        Args: PVOID,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>BuildSecurityDescriptorA(
+        pOwner: PTRUSTEE_A,
+        pGroup: PTRUSTEE_A,
+        cCountOfAccessEntries: ULONG,
+        pListOfAccessEntries: PEXPLICIT_ACCESS_A,
+        cCountOfAuditEntries: ULONG,
+        pListOfAuditEntries: PEXPLICIT_ACCESS_A,
+        pOldSD: PSECURITY_DESCRIPTOR,
+        pSizeNewSD: PULONG,
+        pNewSD: <span class="kw-2">*mut </span>PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>BuildSecurityDescriptorW(
+        pOwner: PTRUSTEE_W,
+        pGroup: PTRUSTEE_W,
+        cCountOfAccessEntries: ULONG,
+        pListOfAccessEntries: PEXPLICIT_ACCESS_W,
+        cCountOfAuditEntries: ULONG,
+        pListOfAuditEntries: PEXPLICIT_ACCESS_W,
+        pOldSD: PSECURITY_DESCRIPTOR,
+        pSizeNewSD: PULONG,
+        pNewSD: <span class="kw-2">*mut </span>PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>LookupSecurityDescriptorPartsA(
+        ppOwner: <span class="kw-2">*mut </span>PTRUSTEE_A,
+        ppGroup: <span class="kw-2">*mut </span>PTRUSTEE_A,
+        pcCountOfAccessEntries: PULONG,
+        ppListOfAccessEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_A,
+        pcCountOfAuditEntries: PULONG,
+        ppListOfAuditEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_A,
+        pSD: PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>LookupSecurityDescriptorPartsW(
+        ppOwner: <span class="kw-2">*mut </span>PTRUSTEE_W,
+        ppGroup: <span class="kw-2">*mut </span>PTRUSTEE_W,
+        pcCountOfAccessEntries: PULONG,
+        ppListOfAccessEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_W,
+        pcCountOfAuditEntries: PULONG,
+        ppListOfAuditEntries: <span class="kw-2">*mut </span>PEXPLICIT_ACCESS_W,
+        pSD: PSECURITY_DESCRIPTOR,
+    ) -&gt; DWORD;
+    <span class="kw">pub fn </span>BuildExplicitAccessWithNameA(
+        pExplicitAccess: PEXPLICIT_ACCESS_A,
+        pTrusteeName: LPSTR,
+        AccessPermissions: DWORD,
+        AccessMode: ACCESS_MODE,
+        Inheritance: DWORD,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildExplicitAccessWithNameW</span>(
-        <span class="ident">pExplicitAccess</span>: <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">pTrusteeName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">AccessPermissions</span>: <span class="ident">DWORD</span>,
-        <span class="ident">AccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-        <span class="ident">Inheritance</span>: <span class="ident">DWORD</span>,
+    <span class="kw">pub fn </span>BuildExplicitAccessWithNameW(
+        pExplicitAccess: PEXPLICIT_ACCESS_W,
+        pTrusteeName: LPWSTR,
+        AccessPermissions: DWORD,
+        AccessMode: ACCESS_MODE,
+        Inheritance: DWORD,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildImpersonateExplicitAccessWithNameA</span>(
-        <span class="ident">pExplicitAccess</span>: <span class="ident">PEXPLICIT_ACCESS_A</span>,
-        <span class="ident">pTrusteeName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">AccessPermissions</span>: <span class="ident">DWORD</span>,
-        <span class="ident">AccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-        <span class="ident">Inheritance</span>: <span class="ident">DWORD</span>,
+    <span class="kw">pub fn </span>BuildImpersonateExplicitAccessWithNameA(
+        pExplicitAccess: PEXPLICIT_ACCESS_A,
+        pTrusteeName: LPSTR,
+        pTrustee: PTRUSTEE_A,
+        AccessPermissions: DWORD,
+        AccessMode: ACCESS_MODE,
+        Inheritance: DWORD,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildImpersonateExplicitAccessWithNameW</span>(
-        <span class="ident">pExplicitAccess</span>: <span class="ident">PEXPLICIT_ACCESS_W</span>,
-        <span class="ident">pTrusteeName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">AccessPermissions</span>: <span class="ident">DWORD</span>,
-        <span class="ident">AccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-        <span class="ident">Inheritance</span>: <span class="ident">DWORD</span>,
+    <span class="kw">pub fn </span>BuildImpersonateExplicitAccessWithNameW(
+        pExplicitAccess: PEXPLICIT_ACCESS_W,
+        pTrusteeName: LPWSTR,
+        pTrustee: PTRUSTEE_W,
+        AccessPermissions: DWORD,
+        AccessMode: ACCESS_MODE,
+        Inheritance: DWORD,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithNameA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pName</span>: <span class="ident">LPSTR</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithNameA(
+        pTrustee: PTRUSTEE_A,
+        pName: LPSTR,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithNameW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pName</span>: <span class="ident">LPWSTR</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithNameW(
+        pTrustee: PTRUSTEE_W,
+        pName: LPWSTR,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildImpersonateTrusteeA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pImpersonateTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
+    <span class="kw">pub fn </span>BuildImpersonateTrusteeA(
+        pTrustee: PTRUSTEE_A,
+        pImpersonateTrustee: PTRUSTEE_A,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildImpersonateTrusteeW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pImpersonateTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
+    <span class="kw">pub fn </span>BuildImpersonateTrusteeW(
+        pTrustee: PTRUSTEE_W,
+        pImpersonateTrustee: PTRUSTEE_W,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithSidA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pSid</span>: <span class="ident">PSID</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithSidA(
+        pTrustee: PTRUSTEE_A,
+        pSid: PSID,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithSidW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pSid</span>: <span class="ident">PSID</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithSidW(
+        pTrustee: PTRUSTEE_W,
+        pSid: PSID,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithObjectsAndSidA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pObjSid</span>: <span class="ident">POBJECTS_AND_SID</span>,
-        <span class="ident">pObjectGuid</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">pInheritedObjectGuid</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">pSid</span>: <span class="ident">PSID</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithObjectsAndSidA(
+        pTrustee: PTRUSTEE_A,
+        pObjSid: POBJECTS_AND_SID,
+        pObjectGuid: <span class="kw-2">*mut </span>GUID,
+        pInheritedObjectGuid: <span class="kw-2">*mut </span>GUID,
+        pSid: PSID,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithObjectsAndSidW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pObjSid</span>: <span class="ident">POBJECTS_AND_SID</span>,
-        <span class="ident">pObjectGuid</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">pInheritedObjectGuid</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
-        <span class="ident">pSid</span>: <span class="ident">PSID</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithObjectsAndSidW(
+        pTrustee: PTRUSTEE_W,
+        pObjSid: POBJECTS_AND_SID,
+        pObjectGuid: <span class="kw-2">*mut </span>GUID,
+        pInheritedObjectGuid: <span class="kw-2">*mut </span>GUID,
+        pSid: PSID,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithObjectsAndNameA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-        <span class="ident">pObjName</span>: <span class="ident">POBJECTS_AND_NAME_A</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">ObjectTypeName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">InheritedObjectTypeName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">Name</span>: <span class="ident">LPSTR</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithObjectsAndNameA(
+        pTrustee: PTRUSTEE_A,
+        pObjName: POBJECTS_AND_NAME_A,
+        ObjectType: SE_OBJECT_TYPE,
+        ObjectTypeName: LPSTR,
+        InheritedObjectTypeName: LPSTR,
+        Name: LPSTR,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">BuildTrusteeWithObjectsAndNameW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-        <span class="ident">pObjName</span>: <span class="ident">POBJECTS_AND_NAME_W</span>,
-        <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-        <span class="ident">ObjectTypeName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">InheritedObjectTypeName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">Name</span>: <span class="ident">LPWSTR</span>,
+    <span class="kw">pub fn </span>BuildTrusteeWithObjectsAndNameW(
+        pTrustee: PTRUSTEE_W,
+        pObjName: POBJECTS_AND_NAME_W,
+        ObjectType: SE_OBJECT_TYPE,
+        ObjectTypeName: LPWSTR,
+        InheritedObjectTypeName: LPWSTR,
+        Name: LPWSTR,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeNameA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-    ) -&gt; <span class="ident">LPSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeNameW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-    ) -&gt; <span class="ident">LPWSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeTypeA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-    ) -&gt; <span class="ident">TRUSTEE_TYPE</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeTypeW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-    ) -&gt; <span class="ident">TRUSTEE_TYPE</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeFormA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-    ) -&gt; <span class="ident">TRUSTEE_FORM</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetTrusteeFormW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-    ) -&gt; <span class="ident">TRUSTEE_FORM</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetMultipleTrusteeOperationA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-    ) -&gt; <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetMultipleTrusteeOperationW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-    ) -&gt; <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetMultipleTrusteeA</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_A</span>,
-    ) -&gt; <span class="ident">PTRUSTEE_A</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetMultipleTrusteeW</span>(
-        <span class="ident">pTrustee</span>: <span class="ident">PTRUSTEE_W</span>,
-    ) -&gt; <span class="ident">PTRUSTEE_W</span>;
+    <span class="kw">pub fn </span>GetTrusteeNameA(
+        pTrustee: PTRUSTEE_A,
+    ) -&gt; LPSTR;
+    <span class="kw">pub fn </span>GetTrusteeNameW(
+        pTrustee: PTRUSTEE_W,
+    ) -&gt; LPWSTR;
+    <span class="kw">pub fn </span>GetTrusteeTypeA(
+        pTrustee: PTRUSTEE_A,
+    ) -&gt; TRUSTEE_TYPE;
+    <span class="kw">pub fn </span>GetTrusteeTypeW(
+        pTrustee: PTRUSTEE_W,
+    ) -&gt; TRUSTEE_TYPE;
+    <span class="kw">pub fn </span>GetTrusteeFormA(
+        pTrustee: PTRUSTEE_A,
+    ) -&gt; TRUSTEE_FORM;
+    <span class="kw">pub fn </span>GetTrusteeFormW(
+        pTrustee: PTRUSTEE_W,
+    ) -&gt; TRUSTEE_FORM;
+    <span class="kw">pub fn </span>GetMultipleTrusteeOperationA(
+        pTrustee: PTRUSTEE_A,
+    ) -&gt; MULTIPLE_TRUSTEE_OPERATION;
+    <span class="kw">pub fn </span>GetMultipleTrusteeOperationW(
+        pTrustee: PTRUSTEE_W,
+    ) -&gt; MULTIPLE_TRUSTEE_OPERATION;
+    <span class="kw">pub fn </span>GetMultipleTrusteeA(
+        pTrustee: PTRUSTEE_A,
+    ) -&gt; PTRUSTEE_A;
+    <span class="kw">pub fn </span>GetMultipleTrusteeW(
+        pTrustee: PTRUSTEE_W,
+    ) -&gt; PTRUSTEE_W;
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

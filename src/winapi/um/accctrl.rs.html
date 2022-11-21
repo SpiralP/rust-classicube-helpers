@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\accctrl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>accctrl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\accctrl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>accctrl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -369,376 +369,376 @@
 <span id="369">369</span>
 <span id="370">370</span>
 <span id="371">371</span>
-</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
-<span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
-<span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms.</span>
-<span class="kw">use</span> <span class="ident">shared::guiddef::GUID</span>;
-<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">DWORD</span>, <span class="ident">ULONG</span>};
-<span class="kw">use</span> <span class="ident">um::winbase::LocalFree</span>;
-<span class="kw">use</span> <span class="ident">um::winnt</span>::{<span class="ident">HANDLE</span>, <span class="ident">LONG</span>, <span class="ident">LPSTR</span>, <span class="ident">LPWSTR</span>, <span class="ident">PVOID</span>, <span class="ident">SID</span>};
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">AccFree</span>(<span class="ident">p</span>: <span class="ident">PVOID</span>) -&gt; <span class="ident">PVOID</span> {
-    <span class="ident">LocalFree</span>(<span class="ident">p</span>)
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0
+// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.
+// All files in the project carrying such notice may not be copied, modified, or distributed
+// except according to those terms.
+</span><span class="kw">use </span>shared::guiddef::GUID;
+<span class="kw">use </span>shared::minwindef::{DWORD, ULONG};
+<span class="kw">use </span>um::winbase::LocalFree;
+<span class="kw">use </span>um::winnt::{HANDLE, LONG, LPSTR, LPWSTR, PVOID, SID};
+<span class="attribute">#[inline]
+</span><span class="kw">pub unsafe fn </span>AccFree(p: PVOID) -&gt; PVOID {
+    LocalFree(p)
 }
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SE_OBJECT_TYPE</span> {
-    <span class="ident">SE_UNKNOWN_OBJECT_TYPE</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">SE_FILE_OBJECT</span>,
-    <span class="ident">SE_SERVICE</span>,
-    <span class="ident">SE_PRINTER</span>,
-    <span class="ident">SE_REGISTRY_KEY</span>,
-    <span class="ident">SE_LMSHARE</span>,
-    <span class="ident">SE_KERNEL_OBJECT</span>,
-    <span class="ident">SE_WINDOW_OBJECT</span>,
-    <span class="ident">SE_DS_OBJECT</span>,
-    <span class="ident">SE_DS_OBJECT_ALL</span>,
-    <span class="ident">SE_PROVIDER_DEFINED_OBJECT</span>,
-    <span class="ident">SE_WMIGUID_OBJECT</span>,
-    <span class="ident">SE_REGISTRY_WOW64_32KEY</span>,
-    <span class="ident">SE_REGISTRY_WOW64_64KEY</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>SE_OBJECT_TYPE {
+    SE_UNKNOWN_OBJECT_TYPE = <span class="number">0</span>,
+    SE_FILE_OBJECT,
+    SE_SERVICE,
+    SE_PRINTER,
+    SE_REGISTRY_KEY,
+    SE_LMSHARE,
+    SE_KERNEL_OBJECT,
+    SE_WINDOW_OBJECT,
+    SE_DS_OBJECT,
+    SE_DS_OBJECT_ALL,
+    SE_PROVIDER_DEFINED_OBJECT,
+    SE_WMIGUID_OBJECT,
+    SE_REGISTRY_WOW64_32KEY,
+    SE_REGISTRY_WOW64_64KEY,
 }}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">TRUSTEE_TYPE</span> {
-    <span class="ident">TRUSTEE_IS_UNKNOWN</span>,
-    <span class="ident">TRUSTEE_IS_USER</span>,
-    <span class="ident">TRUSTEE_IS_GROUP</span>,
-    <span class="ident">TRUSTEE_IS_DOMAIN</span>,
-    <span class="ident">TRUSTEE_IS_ALIAS</span>,
-    <span class="ident">TRUSTEE_IS_WELL_KNOWN_GROUP</span>,
-    <span class="ident">TRUSTEE_IS_DELETED</span>,
-    <span class="ident">TRUSTEE_IS_INVALID</span>,
-    <span class="ident">TRUSTEE_IS_COMPUTER</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>TRUSTEE_TYPE {
+    TRUSTEE_IS_UNKNOWN,
+    TRUSTEE_IS_USER,
+    TRUSTEE_IS_GROUP,
+    TRUSTEE_IS_DOMAIN,
+    TRUSTEE_IS_ALIAS,
+    TRUSTEE_IS_WELL_KNOWN_GROUP,
+    TRUSTEE_IS_DELETED,
+    TRUSTEE_IS_INVALID,
+    TRUSTEE_IS_COMPUTER,
 }}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">TRUSTEE_FORM</span> {
-    <span class="ident">TRUSTEE_IS_SID</span>,
-    <span class="ident">TRUSTEE_IS_NAME</span>,
-    <span class="ident">TRUSTEE_BAD_FORM</span>,
-    <span class="ident">TRUSTEE_IS_OBJECTS_AND_SID</span>,
-    <span class="ident">TRUSTEE_IS_OBJECTS_AND_NAME</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>TRUSTEE_FORM {
+    TRUSTEE_IS_SID,
+    TRUSTEE_IS_NAME,
+    TRUSTEE_BAD_FORM,
+    TRUSTEE_IS_OBJECTS_AND_SID,
+    TRUSTEE_IS_OBJECTS_AND_NAME,
 }}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span> {
-    <span class="ident">NO_MULTIPLE_TRUSTEE</span>,
-    <span class="ident">TRUSTEE_IS_IMPERSONATE</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>MULTIPLE_TRUSTEE_OPERATION {
+    NO_MULTIPLE_TRUSTEE,
+    TRUSTEE_IS_IMPERSONATE,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">OBJECTS_AND_SID</span> {
-    <span class="ident">ObjectsPresent</span>: <span class="ident">DWORD</span>,
-    <span class="ident">ObjectTypeGuid</span>: <span class="ident">GUID</span>,
-    <span class="ident">InheritedObjectTypeGuid</span>: <span class="ident">GUID</span>,
-    <span class="ident">pSid</span>: <span class="kw-2">*mut</span> <span class="ident">SID</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>OBJECTS_AND_SID {
+    ObjectsPresent: DWORD,
+    ObjectTypeGuid: GUID,
+    InheritedObjectTypeGuid: GUID,
+    pSid: <span class="kw-2">*mut </span>SID,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">POBJECTS_AND_SID</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">OBJECTS_AND_SID</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">OBJECTS_AND_NAME_A</span> {
-    <span class="ident">ObjectsPresent</span>: <span class="ident">DWORD</span>,
-    <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-    <span class="ident">ObjectTypeName</span>: <span class="ident">LPSTR</span>,
-    <span class="ident">InheritedObjectTypeName</span>: <span class="ident">LPSTR</span>,
-    <span class="ident">ptstrName</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>POBJECTS_AND_SID = <span class="kw-2">*mut </span>OBJECTS_AND_SID;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>OBJECTS_AND_NAME_A {
+    ObjectsPresent: DWORD,
+    ObjectType: SE_OBJECT_TYPE,
+    ObjectTypeName: LPSTR,
+    InheritedObjectTypeName: LPSTR,
+    ptstrName: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">POBJECTS_AND_NAME_A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">OBJECTS_AND_NAME_A</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">OBJECTS_AND_NAME_W</span> {
-    <span class="ident">ObjectsPresent</span>: <span class="ident">DWORD</span>,
-    <span class="ident">ObjectType</span>: <span class="ident">SE_OBJECT_TYPE</span>,
-    <span class="ident">ObjectTypeName</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">InheritedObjectTypeName</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">ptstrName</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>POBJECTS_AND_NAME_A = <span class="kw-2">*mut </span>OBJECTS_AND_NAME_A;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>OBJECTS_AND_NAME_W {
+    ObjectsPresent: DWORD,
+    ObjectType: SE_OBJECT_TYPE,
+    ObjectTypeName: LPWSTR,
+    InheritedObjectTypeName: LPWSTR,
+    ptstrName: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">POBJECTS_AND_NAME_W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">OBJECTS_AND_NAME_W</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TRUSTEE_A</span> {
-    <span class="ident">pMultipleTrustee</span>: <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_A</span>,
-    <span class="ident">MultipleTrusteeOperation</span>: <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span>,
-    <span class="ident">TrusteeForm</span>: <span class="ident">TRUSTEE_FORM</span>,
-    <span class="ident">TrusteeType</span>: <span class="ident">TRUSTEE_TYPE</span>,
-    <span class="ident">ptstrName</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>POBJECTS_AND_NAME_W = <span class="kw-2">*mut </span>OBJECTS_AND_NAME_W;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TRUSTEE_A {
+    pMultipleTrustee: <span class="kw-2">*mut </span>TRUSTEE_A,
+    MultipleTrusteeOperation: MULTIPLE_TRUSTEE_OPERATION,
+    TrusteeForm: TRUSTEE_FORM,
+    TrusteeType: TRUSTEE_TYPE,
+    ptstrName: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEE_A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TRUSTEEA</span> <span class="op">=</span> <span class="ident">TRUSTEE_A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEEA</span> <span class="op">=</span> <span class="ident">PTRUSTEE_A</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TRUSTEE_W</span> {
-    <span class="ident">pMultipleTrustee</span>: <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_W</span>,
-    <span class="ident">MultipleTrusteeOperation</span>: <span class="ident">MULTIPLE_TRUSTEE_OPERATION</span>,
-    <span class="ident">TrusteeForm</span>: <span class="ident">TRUSTEE_FORM</span>,
-    <span class="ident">TrusteeType</span>: <span class="ident">TRUSTEE_TYPE</span>,
-    <span class="ident">ptstrName</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>PTRUSTEE_A = <span class="kw-2">*mut </span>TRUSTEE_A;
+<span class="kw">pub type </span>TRUSTEEA = TRUSTEE_A;
+<span class="kw">pub type </span>PTRUSTEEA = PTRUSTEE_A;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TRUSTEE_W {
+    pMultipleTrustee: <span class="kw-2">*mut </span>TRUSTEE_W,
+    MultipleTrusteeOperation: MULTIPLE_TRUSTEE_OPERATION,
+    TrusteeForm: TRUSTEE_FORM,
+    TrusteeType: TRUSTEE_TYPE,
+    ptstrName: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEE_W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TRUSTEEW</span> <span class="op">=</span> <span class="ident">TRUSTEE_W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEEW</span> <span class="op">=</span> <span class="ident">PTRUSTEE_W</span>;
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">ACCESS_MODE</span> {
-    <span class="ident">NOT_USED_ACCESS</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">GRANT_ACCESS</span>,
-    <span class="ident">SET_ACCESS</span>,
-    <span class="ident">DENY_ACCESS</span>,
-    <span class="ident">REVOKE_ACCESS</span>,
-    <span class="ident">SET_AUDIT_SUCCESS</span>,
-    <span class="ident">SET_AUDIT_FAILURE</span>,
+<span class="kw">pub type </span>PTRUSTEE_W = <span class="kw-2">*mut </span>TRUSTEE_W;
+<span class="kw">pub type </span>TRUSTEEW = TRUSTEE_W;
+<span class="kw">pub type </span>PTRUSTEEW = PTRUSTEE_W;
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>ACCESS_MODE {
+    NOT_USED_ACCESS = <span class="number">0</span>,
+    GRANT_ACCESS,
+    SET_ACCESS,
+    DENY_ACCESS,
+    REVOKE_ACCESS,
+    SET_AUDIT_SUCCESS,
+    SET_AUDIT_FAILURE,
 }}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_INHERITANCE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x0</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SUB_OBJECTS_ONLY_INHERIT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SUB_CONTAINERS_ONLY_INHERIT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SUB_CONTAINERS_AND_OBJECTS_INHERIT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INHERIT_NO_PROPAGATE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INHERIT_ONLY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INHERITED_ACCESS_ENTRY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INHERITED_PARENT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x10000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INHERITED_GRANDPARENT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x20000000</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">EXPLICIT_ACCESS_A</span> {
-    <span class="ident">grfAccessPermissions</span>: <span class="ident">DWORD</span>,
-    <span class="ident">grfAccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-    <span class="ident">grfInheritance</span>: <span class="ident">DWORD</span>,
-    <span class="ident">Trustee</span>: <span class="ident">TRUSTEE_A</span>,
+<span class="kw">pub const </span>NO_INHERITANCE: DWORD = <span class="number">0x0</span>;
+<span class="kw">pub const </span>SUB_OBJECTS_ONLY_INHERIT: DWORD = <span class="number">0x1</span>;
+<span class="kw">pub const </span>SUB_CONTAINERS_ONLY_INHERIT: DWORD = <span class="number">0x2</span>;
+<span class="kw">pub const </span>SUB_CONTAINERS_AND_OBJECTS_INHERIT: DWORD = <span class="number">0x3</span>;
+<span class="kw">pub const </span>INHERIT_NO_PROPAGATE: DWORD = <span class="number">0x4</span>;
+<span class="kw">pub const </span>INHERIT_ONLY: DWORD = <span class="number">0x8</span>;
+<span class="kw">pub const </span>INHERITED_ACCESS_ENTRY: DWORD = <span class="number">0x10</span>;
+<span class="kw">pub const </span>INHERITED_PARENT: DWORD = <span class="number">0x10000000</span>;
+<span class="kw">pub const </span>INHERITED_GRANDPARENT: DWORD = <span class="number">0x20000000</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>EXPLICIT_ACCESS_A {
+    grfAccessPermissions: DWORD,
+    grfAccessMode: ACCESS_MODE,
+    grfInheritance: DWORD,
+    Trustee: TRUSTEE_A,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PEXPLICIT_ACCESS_A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">EXPLICIT_ACCESS_A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">EXPLICIT_ACCESSA</span> <span class="op">=</span> <span class="ident">EXPLICIT_ACCESS_A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PEXPLICIT_ACCESSA</span> <span class="op">=</span> <span class="ident">PEXPLICIT_ACCESS_A</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">EXPLICIT_ACCESS_W</span> {
-    <span class="ident">grfAccessPermissions</span>: <span class="ident">DWORD</span>,
-    <span class="ident">grfAccessMode</span>: <span class="ident">ACCESS_MODE</span>,
-    <span class="ident">grfInheritance</span>: <span class="ident">DWORD</span>,
-    <span class="ident">Trustee</span>: <span class="ident">TRUSTEE_W</span>,
+<span class="kw">pub type </span>PEXPLICIT_ACCESS_A = <span class="kw-2">*mut </span>EXPLICIT_ACCESS_A;
+<span class="kw">pub type </span>EXPLICIT_ACCESSA = EXPLICIT_ACCESS_A;
+<span class="kw">pub type </span>PEXPLICIT_ACCESSA = PEXPLICIT_ACCESS_A;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>EXPLICIT_ACCESS_W {
+    grfAccessPermissions: DWORD,
+    grfAccessMode: ACCESS_MODE,
+    grfInheritance: DWORD,
+    Trustee: TRUSTEE_W,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PEXPLICIT_ACCESS_W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">EXPLICIT_ACCESS_W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">EXPLICIT_ACCESSW</span> <span class="op">=</span> <span class="ident">EXPLICIT_ACCESS_W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PEXPLICIT_ACCESSW</span> <span class="op">=</span> <span class="ident">PEXPLICIT_ACCESS_W</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACCCTRL_DEFAULT_PROVIDER</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Windows NT Access Provider&quot;</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ACCESS_RIGHTS</span> <span class="op">=</span> <span class="ident">ULONG</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACCESS_RIGHTS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACCESS_RIGHTS</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">INHERIT_FLAGS</span> <span class="op">=</span> <span class="ident">ULONG</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINHERIT_FLAGS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INHERIT_FLAGS</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_ENTRYA</span> {
-    <span class="ident">Trustee</span>: <span class="ident">TRUSTEE_A</span>,
-    <span class="ident">fAccessFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">Access</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">ProvSpecificAccess</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">Inheritance</span>: <span class="ident">INHERIT_FLAGS</span>,
-    <span class="ident">lpInheritProperty</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>PEXPLICIT_ACCESS_W = <span class="kw-2">*mut </span>EXPLICIT_ACCESS_W;
+<span class="kw">pub type </span>EXPLICIT_ACCESSW = EXPLICIT_ACCESS_W;
+<span class="kw">pub type </span>PEXPLICIT_ACCESSW = PEXPLICIT_ACCESS_W;
+<span class="kw">pub const </span>ACCCTRL_DEFAULT_PROVIDER: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;Windows NT Access Provider&quot;</span>;
+<span class="kw">pub type </span>ACCESS_RIGHTS = ULONG;
+<span class="kw">pub type </span>PACCESS_RIGHTS = <span class="kw-2">*mut </span>ACCESS_RIGHTS;
+<span class="kw">pub type </span>INHERIT_FLAGS = ULONG;
+<span class="kw">pub type </span>PINHERIT_FLAGS = <span class="kw-2">*mut </span>INHERIT_FLAGS;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_ENTRYA {
+    Trustee: TRUSTEE_A,
+    fAccessFlags: ULONG,
+    Access: ACCESS_RIGHTS,
+    ProvSpecificAccess: ACCESS_RIGHTS,
+    Inheritance: INHERIT_FLAGS,
+    lpInheritProperty: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_ENTRYA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRYA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_ENTRYW</span> {
-    <span class="ident">Trustee</span>: <span class="ident">TRUSTEE_W</span>,
-    <span class="ident">fAccessFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">Access</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">ProvSpecificAccess</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">Inheritance</span>: <span class="ident">INHERIT_FLAGS</span>,
-    <span class="ident">lpInheritProperty</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_ENTRYA = <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRYA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_ENTRYW {
+    Trustee: TRUSTEE_W,
+    fAccessFlags: ULONG,
+    Access: ACCESS_RIGHTS,
+    ProvSpecificAccess: ACCESS_RIGHTS,
+    Inheritance: INHERIT_FLAGS,
+    lpInheritProperty: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_ENTRYW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRYW</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_ENTRY_LISTA</span> {
-    <span class="ident">cEntries</span>: <span class="ident">ULONG</span>,
-    <span class="ident">pAccessList</span>: <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRYA</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_ENTRYW = <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRYW;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_ENTRY_LISTA {
+    cEntries: ULONG,
+    pAccessList: <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRYA,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_ENTRY_LISTA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRY_LISTA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_ENTRY_LISTW</span> {
-    <span class="ident">cEntries</span>: <span class="ident">ULONG</span>,
-    <span class="ident">pAccessList</span>: <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRYW</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_ENTRY_LISTA = <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRY_LISTA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_ENTRY_LISTW {
+    cEntries: ULONG,
+    pAccessList: <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRYW,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_ENTRY_LISTW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_ENTRY_LISTW</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_PROPERTY_ENTRYA</span> {
-    <span class="ident">lpProperty</span>: <span class="ident">LPSTR</span>,
-    <span class="ident">pAccessEntryList</span>: <span class="ident">PACTRL_ACCESS_ENTRY_LISTA</span>,
-    <span class="ident">fListFlags</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_ENTRY_LISTW = <span class="kw-2">*mut </span>ACTRL_ACCESS_ENTRY_LISTW;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_PROPERTY_ENTRYA {
+    lpProperty: LPSTR,
+    pAccessEntryList: PACTRL_ACCESS_ENTRY_LISTA,
+    fListFlags: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_PROPERTY_ENTRYA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_PROPERTY_ENTRYA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_PROPERTY_ENTRYW</span> {
-    <span class="ident">lpProperty</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">pAccessEntryList</span>: <span class="ident">PACTRL_ACCESS_ENTRY_LISTW</span>,
-    <span class="ident">fListFlags</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PACTRL_PROPERTY_ENTRYA = <span class="kw-2">*mut </span>ACTRL_PROPERTY_ENTRYA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_PROPERTY_ENTRYW {
+    lpProperty: LPWSTR,
+    pAccessEntryList: PACTRL_ACCESS_ENTRY_LISTW,
+    fListFlags: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_PROPERTY_ENTRYW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_PROPERTY_ENTRYW</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESSA</span> {
-    <span class="ident">cEntries</span>: <span class="ident">ULONG</span>,
-    <span class="ident">pPropertyAccessList</span>: <span class="ident">PACTRL_PROPERTY_ENTRYA</span>,
+<span class="kw">pub type </span>PACTRL_PROPERTY_ENTRYW = <span class="kw-2">*mut </span>ACTRL_PROPERTY_ENTRYW;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESSA {
+    cEntries: ULONG,
+    pPropertyAccessList: PACTRL_PROPERTY_ENTRYA,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESSA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESSA</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ACTRL_AUDITA</span> <span class="op">=</span> <span class="ident">ACTRL_ACCESSA</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_AUDITA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_AUDITA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESSW</span> {
-    <span class="ident">cEntries</span>: <span class="ident">ULONG</span>,
-    <span class="ident">pPropertyAccessList</span>: <span class="ident">PACTRL_PROPERTY_ENTRYW</span>,
+<span class="kw">pub type </span>PACTRL_ACCESSA = <span class="kw-2">*mut </span>ACTRL_ACCESSA;
+<span class="kw">pub type </span>ACTRL_AUDITA = ACTRL_ACCESSA;
+<span class="kw">pub type </span>PACTRL_AUDITA = <span class="kw-2">*mut </span>ACTRL_AUDITA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESSW {
+    cEntries: ULONG,
+    pPropertyAccessList: PACTRL_PROPERTY_ENTRYW,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESSW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESSW</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ACTRL_AUDITW</span> <span class="op">=</span> <span class="ident">ACTRL_ACCESSW</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_AUDITW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_AUDITW</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_ALLOWED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_READ</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_WRITE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_EXPLICIT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_READ_WRITE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">TRUSTEE_ACCESS_READ</span> <span class="op">|</span> <span class="ident">TRUSTEE_ACCESS_WRITE</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRUSTEE_ACCESS_ALL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0xFFFFFFFF</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TRUSTEE_ACCESSA</span> {
-    <span class="ident">lpProperty</span>: <span class="ident">LPSTR</span>,
-    <span class="ident">Access</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">fAccessFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">fReturnedAccess</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PACTRL_ACCESSW = <span class="kw-2">*mut </span>ACTRL_ACCESSW;
+<span class="kw">pub type </span>ACTRL_AUDITW = ACTRL_ACCESSW;
+<span class="kw">pub type </span>PACTRL_AUDITW = <span class="kw-2">*mut </span>ACTRL_AUDITW;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_ALLOWED: ULONG = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_READ: ULONG = <span class="number">0x00000002</span>;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_WRITE: ULONG = <span class="number">0x00000004</span>;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_EXPLICIT: ULONG = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_READ_WRITE: ULONG = TRUSTEE_ACCESS_READ | TRUSTEE_ACCESS_WRITE;
+<span class="kw">pub const </span>TRUSTEE_ACCESS_ALL: ULONG = <span class="number">0xFFFFFFFF</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TRUSTEE_ACCESSA {
+    lpProperty: LPSTR,
+    Access: ACCESS_RIGHTS,
+    fAccessFlags: ULONG,
+    fReturnedAccess: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEE_ACCESSA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_ACCESSA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TRUSTEE_ACCESSW</span> {
-    <span class="ident">lpProperty</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">Access</span>: <span class="ident">ACCESS_RIGHTS</span>,
-    <span class="ident">fAccessFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">fReturnedAccess</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PTRUSTEE_ACCESSA = <span class="kw-2">*mut </span>TRUSTEE_ACCESSA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TRUSTEE_ACCESSW {
+    lpProperty: LPWSTR,
+    Access: ACCESS_RIGHTS,
+    fAccessFlags: ULONG,
+    fReturnedAccess: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRUSTEE_ACCESSW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TRUSTEE_ACCESSW</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_RESERVED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_1</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_2</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_3</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_4</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_5</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000010</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_6</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000020</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_7</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000040</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_8</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000080</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_9</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000100</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_10</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000200</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_11</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000400</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_12</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000800</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_13</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00001000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_14</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00002000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_15</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00004000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_16</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00008000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_17</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00010000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_18</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00020000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_19</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00040000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PERM_20</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00080000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_ACCESS_ALLOWED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_ACCESS_DENIED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_AUDIT_SUCCESS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_AUDIT_FAILURE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_ACCESS_PROTECTED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SYSTEM_ACCESS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x04000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DELETE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x08000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_READ_CONTROL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x10000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_CHANGE_ACCESS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x20000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_CHANGE_OWNER</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x40000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SYNCHRONIZE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x80000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_STD_RIGHTS_ALL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0xf8000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_STD_RIGHT_REQUIRED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_STD_RIGHTS_ALL</span> <span class="op">&amp;</span> <span class="op">!</span><span class="ident">ACTRL_SYNCHRONIZE</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_OPEN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_RESERVED</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_CREATE_CHILD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_DELETE_CHILD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_LIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_SELF</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_READ_PROP</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_WRITE_PROP</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_DELETE_TREE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_LIST_OBJECT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DS_CONTROL_ACCESS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_READ</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_WRITE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_APPEND</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_READ_PROP</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_WRITE_PROP</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_EXECUTE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_READ_ATTRIB</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_WRITE_ATTRIB</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_FILE_CREATE_PIPE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DIR_LIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DIR_CREATE_OBJECT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DIR_CREATE_CHILD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DIR_DELETE_CHILD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_DIR_TRAVERSE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_TERMINATE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_THREAD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_VM</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_VM_READ</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_VM_WRITE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_DUP_HANDLE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_PROCESS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_SET_INFO</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_GET_INFO</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_CONTROL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_ALERT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_11</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_GET_CONTEXT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_12</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_SET_CONTEXT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_13</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_TOKEN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_14</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_IMPERSONATE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_15</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_KERNEL_DIMPERSONATE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PRINT_SADMIN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PRINT_SLIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PRINT_PADMIN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PRINT_PUSE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_PRINT_JADMIN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_GET_INFO</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_SET_INFO</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_STATUS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_LIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_START</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_STOP</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_PAUSE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_INTERROGATE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_SVC_UCONTROL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_QUERY</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_SET</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_CREATE_CHILD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_LIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_NOTIFY</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_REG_LINK</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_CLIPBRD</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_GLOBAL_ATOMS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_CREATE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_LIST_DESK</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_LIST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_READ_ATTRIBS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_WRITE_ATTRIBS</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_SCREEN</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_WIN_EXIT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">ACTRL_PERM_9</span>;
-<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">ACTRL_OVERLAPPED_u</span> {
-    [<span class="ident">u32</span>; <span class="number">1</span>] [<span class="ident">u64</span>; <span class="number">1</span>],
-    <span class="ident">Provider</span> <span class="ident">Provider_mut</span>: <span class="ident">PVOID</span>,
-    <span class="ident">Reserved1</span> <span class="ident">Reserved1_mut</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PTRUSTEE_ACCESSW = <span class="kw-2">*mut </span>TRUSTEE_ACCESSW;
+<span class="kw">pub const </span>ACTRL_RESERVED: ULONG = <span class="number">0x00000000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_1: ULONG = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>ACTRL_PERM_2: ULONG = <span class="number">0x00000002</span>;
+<span class="kw">pub const </span>ACTRL_PERM_3: ULONG = <span class="number">0x00000004</span>;
+<span class="kw">pub const </span>ACTRL_PERM_4: ULONG = <span class="number">0x00000008</span>;
+<span class="kw">pub const </span>ACTRL_PERM_5: ULONG = <span class="number">0x00000010</span>;
+<span class="kw">pub const </span>ACTRL_PERM_6: ULONG = <span class="number">0x00000020</span>;
+<span class="kw">pub const </span>ACTRL_PERM_7: ULONG = <span class="number">0x00000040</span>;
+<span class="kw">pub const </span>ACTRL_PERM_8: ULONG = <span class="number">0x00000080</span>;
+<span class="kw">pub const </span>ACTRL_PERM_9: ULONG = <span class="number">0x00000100</span>;
+<span class="kw">pub const </span>ACTRL_PERM_10: ULONG = <span class="number">0x00000200</span>;
+<span class="kw">pub const </span>ACTRL_PERM_11: ULONG = <span class="number">0x00000400</span>;
+<span class="kw">pub const </span>ACTRL_PERM_12: ULONG = <span class="number">0x00000800</span>;
+<span class="kw">pub const </span>ACTRL_PERM_13: ULONG = <span class="number">0x00001000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_14: ULONG = <span class="number">0x00002000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_15: ULONG = <span class="number">0x00004000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_16: ULONG = <span class="number">0x00008000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_17: ULONG = <span class="number">0x00010000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_18: ULONG = <span class="number">0x00020000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_19: ULONG = <span class="number">0x00040000</span>;
+<span class="kw">pub const </span>ACTRL_PERM_20: ULONG = <span class="number">0x00080000</span>;
+<span class="kw">pub const </span>ACTRL_ACCESS_ALLOWED: ULONG = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>ACTRL_ACCESS_DENIED: ULONG = <span class="number">0x00000002</span>;
+<span class="kw">pub const </span>ACTRL_AUDIT_SUCCESS: ULONG = <span class="number">0x00000004</span>;
+<span class="kw">pub const </span>ACTRL_AUDIT_FAILURE: ULONG = <span class="number">0x00000008</span>;
+<span class="kw">pub const </span>ACTRL_ACCESS_PROTECTED: ULONG = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>ACTRL_SYSTEM_ACCESS: ULONG = <span class="number">0x04000000</span>;
+<span class="kw">pub const </span>ACTRL_DELETE: ULONG = <span class="number">0x08000000</span>;
+<span class="kw">pub const </span>ACTRL_READ_CONTROL: ULONG = <span class="number">0x10000000</span>;
+<span class="kw">pub const </span>ACTRL_CHANGE_ACCESS: ULONG = <span class="number">0x20000000</span>;
+<span class="kw">pub const </span>ACTRL_CHANGE_OWNER: ULONG = <span class="number">0x40000000</span>;
+<span class="kw">pub const </span>ACTRL_SYNCHRONIZE: ULONG = <span class="number">0x80000000</span>;
+<span class="kw">pub const </span>ACTRL_STD_RIGHTS_ALL: ULONG = <span class="number">0xf8000000</span>;
+<span class="kw">pub const </span>ACTRL_STD_RIGHT_REQUIRED: ULONG = ACTRL_STD_RIGHTS_ALL &amp; !ACTRL_SYNCHRONIZE;
+<span class="kw">pub const </span>ACTRL_DS_OPEN: ULONG = ACTRL_RESERVED;
+<span class="kw">pub const </span>ACTRL_DS_CREATE_CHILD: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_DS_DELETE_CHILD: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_DS_LIST: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_DS_SELF: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_DS_READ_PROP: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_DS_WRITE_PROP: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_DS_DELETE_TREE: ULONG = ACTRL_PERM_7;
+<span class="kw">pub const </span>ACTRL_DS_LIST_OBJECT: ULONG = ACTRL_PERM_8;
+<span class="kw">pub const </span>ACTRL_DS_CONTROL_ACCESS: ULONG = ACTRL_PERM_9;
+<span class="kw">pub const </span>ACTRL_FILE_READ: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_FILE_WRITE: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_FILE_APPEND: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_FILE_READ_PROP: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_FILE_WRITE_PROP: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_FILE_EXECUTE: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_FILE_READ_ATTRIB: ULONG = ACTRL_PERM_8;
+<span class="kw">pub const </span>ACTRL_FILE_WRITE_ATTRIB: ULONG = ACTRL_PERM_9;
+<span class="kw">pub const </span>ACTRL_FILE_CREATE_PIPE: ULONG = ACTRL_PERM_10;
+<span class="kw">pub const </span>ACTRL_DIR_LIST: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_DIR_CREATE_OBJECT: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_DIR_CREATE_CHILD: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_DIR_DELETE_CHILD: ULONG = ACTRL_PERM_7;
+<span class="kw">pub const </span>ACTRL_DIR_TRAVERSE: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_KERNEL_TERMINATE: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_KERNEL_THREAD: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_KERNEL_VM: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_KERNEL_VM_READ: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_KERNEL_VM_WRITE: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_KERNEL_DUP_HANDLE: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_KERNEL_PROCESS: ULONG = ACTRL_PERM_7;
+<span class="kw">pub const </span>ACTRL_KERNEL_SET_INFO: ULONG = ACTRL_PERM_8;
+<span class="kw">pub const </span>ACTRL_KERNEL_GET_INFO: ULONG = ACTRL_PERM_9;
+<span class="kw">pub const </span>ACTRL_KERNEL_CONTROL: ULONG = ACTRL_PERM_10;
+<span class="kw">pub const </span>ACTRL_KERNEL_ALERT: ULONG = ACTRL_PERM_11;
+<span class="kw">pub const </span>ACTRL_KERNEL_GET_CONTEXT: ULONG = ACTRL_PERM_12;
+<span class="kw">pub const </span>ACTRL_KERNEL_SET_CONTEXT: ULONG = ACTRL_PERM_13;
+<span class="kw">pub const </span>ACTRL_KERNEL_TOKEN: ULONG = ACTRL_PERM_14;
+<span class="kw">pub const </span>ACTRL_KERNEL_IMPERSONATE: ULONG = ACTRL_PERM_15;
+<span class="kw">pub const </span>ACTRL_KERNEL_DIMPERSONATE: ULONG = ACTRL_PERM_16;
+<span class="kw">pub const </span>ACTRL_PRINT_SADMIN: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_PRINT_SLIST: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_PRINT_PADMIN: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_PRINT_PUSE: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_PRINT_JADMIN: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_SVC_GET_INFO: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_SVC_SET_INFO: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_SVC_STATUS: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_SVC_LIST: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_SVC_START: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_SVC_STOP: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_SVC_PAUSE: ULONG = ACTRL_PERM_7;
+<span class="kw">pub const </span>ACTRL_SVC_INTERROGATE: ULONG = ACTRL_PERM_8;
+<span class="kw">pub const </span>ACTRL_SVC_UCONTROL: ULONG = ACTRL_PERM_9;
+<span class="kw">pub const </span>ACTRL_REG_QUERY: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_REG_SET: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_REG_CREATE_CHILD: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_REG_LIST: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_REG_NOTIFY: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_REG_LINK: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_WIN_CLIPBRD: ULONG = ACTRL_PERM_1;
+<span class="kw">pub const </span>ACTRL_WIN_GLOBAL_ATOMS: ULONG = ACTRL_PERM_2;
+<span class="kw">pub const </span>ACTRL_WIN_CREATE: ULONG = ACTRL_PERM_3;
+<span class="kw">pub const </span>ACTRL_WIN_LIST_DESK: ULONG = ACTRL_PERM_4;
+<span class="kw">pub const </span>ACTRL_WIN_LIST: ULONG = ACTRL_PERM_5;
+<span class="kw">pub const </span>ACTRL_WIN_READ_ATTRIBS: ULONG = ACTRL_PERM_6;
+<span class="kw">pub const </span>ACTRL_WIN_WRITE_ATTRIBS: ULONG = ACTRL_PERM_7;
+<span class="kw">pub const </span>ACTRL_WIN_SCREEN: ULONG = ACTRL_PERM_8;
+<span class="kw">pub const </span>ACTRL_WIN_EXIT: ULONG = ACTRL_PERM_9;
+<span class="macro">UNION!</span>{<span class="kw">union </span>ACTRL_OVERLAPPED_u {
+    [u32; <span class="number">1</span>] [u64; <span class="number">1</span>],
+    Provider Provider_mut: PVOID,
+    Reserved1 Reserved1_mut: ULONG,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_OVERLAPPED</span> {
-    <span class="ident">u</span>: <span class="ident">ACTRL_OVERLAPPED_u</span>,
-    <span class="ident">Reserved2</span>: <span class="ident">ULONG</span>,
-    <span class="ident">hEvent</span>: <span class="ident">HANDLE</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_OVERLAPPED {
+    u: ACTRL_OVERLAPPED_u,
+    Reserved2: ULONG,
+    hEvent: HANDLE,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_OVERLAPPED</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_OVERLAPPED</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_INFOA</span> {
-    <span class="ident">fAccessPermission</span>: <span class="ident">ULONG</span>,
-    <span class="ident">lpAccessPermissionName</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>PACTRL_OVERLAPPED = <span class="kw-2">*mut </span>ACTRL_OVERLAPPED;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_INFOA {
+    fAccessPermission: ULONG,
+    lpAccessPermissionName: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_INFOA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_INFOA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_ACCESS_INFOW</span> {
-    <span class="ident">fAccessPermission</span>: <span class="ident">ULONG</span>,
-    <span class="ident">lpAccessPermissionName</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_INFOA = <span class="kw-2">*mut </span>ACTRL_ACCESS_INFOA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_ACCESS_INFOW {
+    fAccessPermission: ULONG,
+    lpAccessPermissionName: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_ACCESS_INFOW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_ACCESS_INFOW</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_CONTROL_INFOA</span> {
-    <span class="ident">lpControlId</span>: <span class="ident">LPSTR</span>,
-    <span class="ident">lpControlName</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>PACTRL_ACCESS_INFOW = <span class="kw-2">*mut </span>ACTRL_ACCESS_INFOW;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_CONTROL_INFOA {
+    lpControlId: LPSTR,
+    lpControlName: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_CONTROL_INFOA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_CONTROL_INFOA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ACTRL_CONTROL_INFOW</span> {
-    <span class="ident">lpControlId</span>: <span class="ident">LPWSTR</span>,
-    <span class="ident">lpControlName</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>PACTRL_CONTROL_INFOA = <span class="kw-2">*mut </span>ACTRL_CONTROL_INFOA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ACTRL_CONTROL_INFOW {
+    lpControlId: LPWSTR,
+    lpControlName: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PACTRL_CONTROL_INFOW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ACTRL_CONTROL_INFOW</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_ACCESS_NO_OPTIONS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ACTRL_ACCESS_SUPPORTS_OBJECT_ENTRIES</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TREE_SEC_INFO_SET</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TREE_SEC_INFO_RESET</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TREE_SEC_INFO_RESET_KEEP_EXPLICIT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000003</span>;
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">PROG_INVOKE_SETTING</span> {
-    <span class="ident">ProgressInvokeNever</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">ProgressInvokeEveryObject</span>,
-    <span class="ident">ProgressInvokeOnError</span>,
-    <span class="ident">ProgressCancelOperation</span>,
-    <span class="ident">ProgressRetryOperation</span>,
-    <span class="ident">ProgressInvokePrePostError</span>,
+<span class="kw">pub type </span>PACTRL_CONTROL_INFOW = <span class="kw-2">*mut </span>ACTRL_CONTROL_INFOW;
+<span class="kw">pub const </span>ACTRL_ACCESS_NO_OPTIONS: DWORD = <span class="number">0x00000000</span>;
+<span class="kw">pub const </span>ACTRL_ACCESS_SUPPORTS_OBJECT_ENTRIES: DWORD = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>TREE_SEC_INFO_SET: DWORD = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>TREE_SEC_INFO_RESET: DWORD = <span class="number">0x00000002</span>;
+<span class="kw">pub const </span>TREE_SEC_INFO_RESET_KEEP_EXPLICIT: DWORD = <span class="number">0x00000003</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>PROG_INVOKE_SETTING {
+    ProgressInvokeNever = <span class="number">1</span>,
+    ProgressInvokeEveryObject,
+    ProgressInvokeOnError,
+    ProgressCancelOperation,
+    ProgressRetryOperation,
+    ProgressInvokePrePostError,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PPROG_INVOKE_SETTING</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">PROG_INVOKE_SETTING</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">FN_OBJECT_MGR_FUNCTS</span> {
-    <span class="ident">Placeholder</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PPROG_INVOKE_SETTING = <span class="kw-2">*mut </span>PROG_INVOKE_SETTING;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>FN_OBJECT_MGR_FUNCTS {
+    Placeholder: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PFN_OBJECT_MGR_FUNCTS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">FN_OBJECT_MGR_FUNCTS</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INHERITED_FROMA</span> {
-    <span class="ident">GenerationGap</span>: <span class="ident">LONG</span>,
-    <span class="ident">AncestorName</span>: <span class="ident">LPSTR</span>,
+<span class="kw">pub type </span>PFN_OBJECT_MGR_FUNCTS = <span class="kw-2">*mut </span>FN_OBJECT_MGR_FUNCTS;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INHERITED_FROMA {
+    GenerationGap: LONG,
+    AncestorName: LPSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINHERITED_FROMA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INHERITED_FROMA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INHERITED_FROMW</span> {
-    <span class="ident">GenerationGap</span>: <span class="ident">LONG</span>,
-    <span class="ident">AncestorName</span>: <span class="ident">LPWSTR</span>,
+<span class="kw">pub type </span>PINHERITED_FROMA = <span class="kw-2">*mut </span>INHERITED_FROMA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INHERITED_FROMW {
+    GenerationGap: LONG,
+    AncestorName: LPWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINHERITED_FROMW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INHERITED_FROMW</span>;
+<span class="kw">pub type </span>PINHERITED_FROMW = <span class="kw-2">*mut </span>INHERITED_FROMW;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

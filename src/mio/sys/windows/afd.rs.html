@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.4\src\sys\windows\afd.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>afd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.5\src\sys\windows\afd.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>afd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -253,260 +253,260 @@
 <span id="253">253</span>
 <span id="254">254</span>
 <span id="255">255</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::ffi::c_void</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::fs::File</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
-<span class="kw">use</span> <span class="ident">std::os::windows::io::AsRawHandle</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::ffi::c_void;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::fs::File;
+<span class="kw">use </span>std::io;
+<span class="kw">use </span>std::mem::size_of;
+<span class="kw">use </span>std::os::windows::io::AsRawHandle;
 
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::Foundation</span>::{
-    <span class="ident">RtlNtStatusToDosError</span>, <span class="ident">HANDLE</span>, <span class="ident">NTSTATUS</span>, <span class="ident">STATUS_NOT_FOUND</span>, <span class="ident">STATUS_PENDING</span>, <span class="ident">STATUS_SUCCESS</span>,
+<span class="kw">use </span>windows_sys::Win32::Foundation::{
+    RtlNtStatusToDosError, HANDLE, NTSTATUS, STATUS_NOT_FOUND, STATUS_PENDING, STATUS_SUCCESS,
 };
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::System::WindowsProgramming</span>::{
-    <span class="ident">NtDeviceIoControlFile</span>, <span class="ident">IO_STATUS_BLOCK</span>, <span class="ident">IO_STATUS_BLOCK_0</span>,
+<span class="kw">use </span>windows_sys::Win32::System::WindowsProgramming::{
+    NtDeviceIoControlFile, IO_STATUS_BLOCK, IO_STATUS_BLOCK_0,
 };
 
-<span class="kw">const</span> <span class="ident">IOCTL_AFD_POLL</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x00012024</span>;
+<span class="kw">const </span>IOCTL_AFD_POLL: u32 = <span class="number">0x00012024</span>;
 
-<span class="attribute">#[<span class="ident">link</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;ntdll&quot;</span>)]</span>
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="doccomment">/// See &lt;https://processhacker.sourceforge.io/doc/ntioapi_8h.html#a0d4d550cad4d62d75b76961e25f6550c&gt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is an undocumented API and as such not part of &lt;https://github.com/microsoft/win32metadata&gt;</span>
-    <span class="doccomment">/// from which `windows-sys` is generated, and also unlikely to be added, so</span>
-    <span class="doccomment">/// we manually declare it here</span>
-    <span class="kw">fn</span> <span class="ident">NtCancelIoFileEx</span>(
-        <span class="ident">FileHandle</span>: <span class="ident">HANDLE</span>,
-        <span class="ident">IoRequestToCancel</span>: <span class="kw-2">*mut</span> <span class="ident">IO_STATUS_BLOCK</span>,
-        <span class="ident">IoStatusBlock</span>: <span class="kw-2">*mut</span> <span class="ident">IO_STATUS_BLOCK</span>,
-    ) -&gt; <span class="ident">NTSTATUS</span>;
+<span class="attribute">#[link(name = <span class="string">&quot;ntdll&quot;</span>)]
+</span><span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="doccomment">/// See &lt;https://processhacker.sourceforge.io/doc/ntioapi_8h.html#a0d4d550cad4d62d75b76961e25f6550c&gt;
+    ///
+    /// This is an undocumented API and as such not part of &lt;https://github.com/microsoft/win32metadata&gt;
+    /// from which `windows-sys` is generated, and also unlikely to be added, so
+    /// we manually declare it here
+    </span><span class="kw">fn </span>NtCancelIoFileEx(
+        FileHandle: HANDLE,
+        IoRequestToCancel: <span class="kw-2">*mut </span>IO_STATUS_BLOCK,
+        IoStatusBlock: <span class="kw-2">*mut </span>IO_STATUS_BLOCK,
+    ) -&gt; NTSTATUS;
 }
-<span class="doccomment">/// Winsock2 AFD driver instance.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// All operations are unsafe due to IO_STATUS_BLOCK parameter are being used by Afd driver during STATUS_PENDING before I/O Completion Port returns its result.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Afd</span> {
-    <span class="ident">fd</span>: <span class="ident">File</span>,
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AfdPollHandleInfo</span> {
-    <span class="kw">pub</span> <span class="ident">handle</span>: <span class="ident">HANDLE</span>,
-    <span class="kw">pub</span> <span class="ident">events</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">NTSTATUS</span>,
+<span class="doccomment">/// Winsock2 AFD driver instance.
+///
+/// All operations are unsafe due to IO_STATUS_BLOCK parameter are being used by Afd driver during STATUS_PENDING before I/O Completion Port returns its result.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Afd {
+    fd: File,
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">AfdPollHandleInfo</span> {}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AfdPollInfo</span> {
-    <span class="kw">pub</span> <span class="ident">timeout</span>: <span class="ident">i64</span>,
-    <span class="comment">// Can have only value 1.</span>
-    <span class="kw">pub</span> <span class="ident">number_of_handles</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">exclusive</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">handles</span>: [<span class="ident">AfdPollHandleInfo</span>; <span class="number">1</span>],
+<span class="attribute">#[repr(C)]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>AfdPollHandleInfo {
+    <span class="kw">pub </span>handle: HANDLE,
+    <span class="kw">pub </span>events: u32,
+    <span class="kw">pub </span>status: NTSTATUS,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">AfdPollInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;AfdPollInfo&quot;</span>).<span class="ident">finish</span>()
+<span class="kw">unsafe impl </span>Send <span class="kw">for </span>AfdPollHandleInfo {}
+
+<span class="attribute">#[repr(C)]
+</span><span class="kw">pub struct </span>AfdPollInfo {
+    <span class="kw">pub </span>timeout: i64,
+    <span class="comment">// Can have only value 1.
+    </span><span class="kw">pub </span>number_of_handles: u32,
+    <span class="kw">pub </span>exclusive: u32,
+    <span class="kw">pub </span>handles: [AfdPollHandleInfo; <span class="number">1</span>],
+}
+
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>AfdPollInfo {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;AfdPollInfo&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Afd</span> {
-    <span class="doccomment">/// Poll `Afd` instance with `AfdPollInfo`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe due to memory of `IO_STATUS_BLOCK` still being used by `Afd` instance while `Ok(false)` (`STATUS_PENDING`).</span>
-    <span class="doccomment">/// `iosb` needs to be untouched after the call while operation is in effective at ALL TIME except for `cancel` method.</span>
-    <span class="doccomment">/// So be careful not to `poll` twice while polling.</span>
-    <span class="doccomment">/// User should deallocate there overlapped value when error to prevent memory leak.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">poll</span>(
+<span class="kw">impl </span>Afd {
+    <span class="doccomment">/// Poll `Afd` instance with `AfdPollInfo`.
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe due to memory of `IO_STATUS_BLOCK` still being used by `Afd` instance while `Ok(false)` (`STATUS_PENDING`).
+    /// `iosb` needs to be untouched after the call while operation is in effective at ALL TIME except for `cancel` method.
+    /// So be careful not to `poll` twice while polling.
+    /// User should deallocate there overlapped value when error to prevent memory leak.
+    </span><span class="kw">pub unsafe fn </span>poll(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">info</span>: <span class="kw-2">&amp;mut</span> <span class="ident">AfdPollInfo</span>,
-        <span class="ident">iosb</span>: <span class="kw-2">*mut</span> <span class="ident">IO_STATUS_BLOCK</span>,
-        <span class="ident">overlapped</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">info_ptr</span> <span class="op">=</span> <span class="ident">info</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>;
-        (<span class="kw-2">*</span><span class="ident">iosb</span>).<span class="ident">Anonymous</span>.<span class="ident">Status</span> <span class="op">=</span> <span class="ident">STATUS_PENDING</span>;
-        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">NtDeviceIoControlFile</span>(
-            <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">as_raw_handle</span>() <span class="kw">as</span> <span class="ident">HANDLE</span>,
+        info: <span class="kw-2">&amp;mut </span>AfdPollInfo,
+        iosb: <span class="kw-2">*mut </span>IO_STATUS_BLOCK,
+        overlapped: <span class="kw-2">*mut </span>c_void,
+    ) -&gt; io::Result&lt;bool&gt; {
+        <span class="kw">let </span>info_ptr = info <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>c_void;
+        (<span class="kw-2">*</span>iosb).Anonymous.Status = STATUS_PENDING;
+        <span class="kw">let </span>status = NtDeviceIoControlFile(
+            <span class="self">self</span>.fd.as_raw_handle() <span class="kw">as </span>HANDLE,
             <span class="number">0</span>,
             <span class="prelude-val">None</span>,
-            <span class="ident">overlapped</span>,
-            <span class="ident">iosb</span>,
-            <span class="ident">IOCTL_AFD_POLL</span>,
-            <span class="ident">info_ptr</span>,
-            <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">AfdPollInfo</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">info_ptr</span>,
-            <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">AfdPollInfo</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+            overlapped,
+            iosb,
+            IOCTL_AFD_POLL,
+            info_ptr,
+            size_of::&lt;AfdPollInfo&gt;() <span class="kw">as </span>u32,
+            info_ptr,
+            size_of::&lt;AfdPollInfo&gt;() <span class="kw">as </span>u32,
         );
-        <span class="kw">match</span> <span class="ident">status</span> {
-            <span class="ident">STATUS_SUCCESS</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="ident">STATUS_PENDING</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::from_raw_os_error</span>(
-                <span class="ident">RtlNtStatusToDosError</span>(<span class="ident">status</span>) <span class="kw">as</span> <span class="ident">i32</span>
+        <span class="kw">match </span>status {
+            STATUS_SUCCESS =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            STATUS_PENDING =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(io::Error::from_raw_os_error(
+                RtlNtStatusToDosError(status) <span class="kw">as </span>i32
             )),
         }
     }
 
-    <span class="doccomment">/// Cancel previous polled request of `Afd`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// iosb needs to be used by `poll` first for valid `cancel`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe due to memory of `IO_STATUS_BLOCK` still being used by `Afd` instance while `Ok(false)` (`STATUS_PENDING`).</span>
-    <span class="doccomment">/// Use it only with request is still being polled so that you have valid `IO_STATUS_BLOCK` to use.</span>
-    <span class="doccomment">/// User should NOT deallocate there overlapped value after the `cancel` to prevent double free.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cancel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">iosb</span>: <span class="kw-2">*mut</span> <span class="ident">IO_STATUS_BLOCK</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">iosb</span>).<span class="ident">Anonymous</span>.<span class="ident">Status</span> <span class="op">!</span><span class="op">=</span> <span class="ident">STATUS_PENDING</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+    <span class="doccomment">/// Cancel previous polled request of `Afd`.
+    ///
+    /// iosb needs to be used by `poll` first for valid `cancel`.
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe due to memory of `IO_STATUS_BLOCK` still being used by `Afd` instance while `Ok(false)` (`STATUS_PENDING`).
+    /// Use it only with request is still being polled so that you have valid `IO_STATUS_BLOCK` to use.
+    /// User should NOT deallocate there overlapped value after the `cancel` to prevent double free.
+    </span><span class="kw">pub unsafe fn </span>cancel(<span class="kw-2">&amp;</span><span class="self">self</span>, iosb: <span class="kw-2">*mut </span>IO_STATUS_BLOCK) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">if </span>(<span class="kw-2">*</span>iosb).Anonymous.Status != STATUS_PENDING {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cancel_iosb</span> <span class="op">=</span> <span class="ident">IO_STATUS_BLOCK</span> {
-            <span class="ident">Anonymous</span>: <span class="ident">IO_STATUS_BLOCK_0</span> { <span class="ident">Status</span>: <span class="number">0</span> },
-            <span class="ident">Information</span>: <span class="number">0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>cancel_iosb = IO_STATUS_BLOCK {
+            Anonymous: IO_STATUS_BLOCK_0 { Status: <span class="number">0 </span>},
+            Information: <span class="number">0</span>,
         };
-        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">NtCancelIoFileEx</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">as_raw_handle</span>() <span class="kw">as</span> <span class="ident">HANDLE</span>, <span class="ident">iosb</span>, <span class="kw-2">&amp;mut</span> <span class="ident">cancel_iosb</span>);
-        <span class="kw">if</span> <span class="ident">status</span> <span class="op">==</span> <span class="ident">STATUS_SUCCESS</span> <span class="op">|</span><span class="op">|</span> <span class="ident">status</span> <span class="op">==</span> <span class="ident">STATUS_NOT_FOUND</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+        <span class="kw">let </span>status = NtCancelIoFileEx(<span class="self">self</span>.fd.as_raw_handle() <span class="kw">as </span>HANDLE, iosb, <span class="kw-2">&amp;mut </span>cancel_iosb);
+        <span class="kw">if </span>status == STATUS_SUCCESS || status == STATUS_NOT_FOUND {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
-        <span class="prelude-val">Err</span>(<span class="ident">io::Error::from_raw_os_error</span>(
-            <span class="ident">RtlNtStatusToDosError</span>(<span class="ident">status</span>) <span class="kw">as</span> <span class="ident">i32</span>
+        <span class="prelude-val">Err</span>(io::Error::from_raw_os_error(
+            RtlNtStatusToDosError(status) <span class="kw">as </span>i32
         ))
     }
 }
 
-<span class="macro">cfg_io_source!</span> {
-    <span class="kw">use</span> <span class="ident">std::mem::zeroed</span>;
-    <span class="kw">use</span> <span class="ident">std::os::windows::io</span>::{<span class="ident">FromRawHandle</span>, <span class="ident">RawHandle</span>};
-    <span class="kw">use</span> <span class="ident">std::ptr::null_mut</span>;
-    <span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
+<span class="macro">cfg_io_source! </span>{
+    <span class="kw">use </span>std::mem::zeroed;
+    <span class="kw">use </span>std::os::windows::io::{FromRawHandle, RawHandle};
+    <span class="kw">use </span>std::ptr::null_mut;
+    <span class="kw">use </span>std::sync::atomic::{AtomicUsize, Ordering};
 
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::iocp::CompletionPort</span>;
-    <span class="kw">use</span> <span class="ident">windows_sys::Win32</span>::{
-        <span class="ident">Foundation</span>::{<span class="ident">UNICODE_STRING</span>, <span class="ident">INVALID_HANDLE_VALUE</span>},
-        <span class="ident">System::WindowsProgramming</span>::{
-            <span class="ident">OBJECT_ATTRIBUTES</span>, <span class="ident">FILE_SKIP_SET_EVENT_ON_HANDLE</span>,
+    <span class="kw">use </span><span class="kw">super</span>::iocp::CompletionPort;
+    <span class="kw">use </span>windows_sys::Win32::{
+        Foundation::{UNICODE_STRING, INVALID_HANDLE_VALUE},
+        System::WindowsProgramming::{
+            OBJECT_ATTRIBUTES, FILE_SKIP_SET_EVENT_ON_HANDLE,
         },
-        <span class="ident">Storage::FileSystem</span>::{<span class="ident">FILE_OPEN</span>, <span class="ident">NtCreateFile</span>, <span class="ident">SetFileCompletionNotificationModes</span>, <span class="ident">SYNCHRONIZE</span>, <span class="ident">FILE_SHARE_READ</span>, <span class="ident">FILE_SHARE_WRITE</span>},
+        Storage::FileSystem::{FILE_OPEN, NtCreateFile, SetFileCompletionNotificationModes, SYNCHRONIZE, FILE_SHARE_READ, FILE_SHARE_WRITE},
     };
 
-    <span class="kw">const</span> <span class="ident">AFD_HELPER_ATTRIBUTES</span>: <span class="ident">OBJECT_ATTRIBUTES</span> <span class="op">=</span> <span class="ident">OBJECT_ATTRIBUTES</span> {
-        <span class="ident">Length</span>: <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">OBJECT_ATTRIBUTES</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
-        <span class="ident">RootDirectory</span>: <span class="number">0</span>,
-        <span class="ident">ObjectName</span>: <span class="kw-2">&amp;</span><span class="ident">AFD_OBJ_NAME</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-        <span class="ident">Attributes</span>: <span class="number">0</span>,
-        <span class="ident">SecurityDescriptor</span>: <span class="ident">null_mut</span>(),
-        <span class="ident">SecurityQualityOfService</span>: <span class="ident">null_mut</span>(),
+    <span class="kw">const </span>AFD_HELPER_ATTRIBUTES: OBJECT_ATTRIBUTES = OBJECT_ATTRIBUTES {
+        Length: size_of::&lt;OBJECT_ATTRIBUTES&gt;() <span class="kw">as </span>u32,
+        RootDirectory: <span class="number">0</span>,
+        ObjectName: <span class="kw-2">&amp;</span>AFD_OBJ_NAME <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+        Attributes: <span class="number">0</span>,
+        SecurityDescriptor: null_mut(),
+        SecurityQualityOfService: null_mut(),
     };
 
-    <span class="kw">const</span> <span class="ident">AFD_OBJ_NAME</span>: <span class="ident">UNICODE_STRING</span> <span class="op">=</span> <span class="ident">UNICODE_STRING</span> {
-        <span class="ident">Length</span>: (<span class="ident">AFD_HELPER_NAME</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>()) <span class="kw">as</span> <span class="ident">u16</span>,
-        <span class="ident">MaximumLength</span>: (<span class="ident">AFD_HELPER_NAME</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>()) <span class="kw">as</span> <span class="ident">u16</span>,
-        <span class="ident">Buffer</span>: <span class="ident">AFD_HELPER_NAME</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+    <span class="kw">const </span>AFD_OBJ_NAME: UNICODE_STRING = UNICODE_STRING {
+        Length: (AFD_HELPER_NAME.len() * size_of::&lt;u16&gt;()) <span class="kw">as </span>u16,
+        MaximumLength: (AFD_HELPER_NAME.len() * size_of::&lt;u16&gt;()) <span class="kw">as </span>u16,
+        Buffer: AFD_HELPER_NAME.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
     };
 
-    <span class="kw">const</span> <span class="ident">AFD_HELPER_NAME</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[
-        <span class="string">&#39;\\&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;D&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;e&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;v&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;i&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;c&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;e&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;\\&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;A&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;f&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;d&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;\\&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;M&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;i&#39;</span> <span class="kw">as</span> <span class="kw">_</span>,
-        <span class="string">&#39;o&#39;</span> <span class="kw">as</span> <span class="kw">_</span>
-    ];
+    <span class="kw">const </span>AFD_HELPER_NAME: <span class="kw-2">&amp;</span>[u16] = <span class="kw-2">&amp;</span>[
+        <span class="string">&#39;\\&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;D&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;e&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;v&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;i&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;c&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;e&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;\\&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;A&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;f&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;d&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;\\&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;M&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;i&#39; </span><span class="kw">as _</span>,
+        <span class="string">&#39;o&#39; </span><span class="kw">as _
+    </span>];
 
-    <span class="kw">static</span> <span class="ident">NEXT_TOKEN</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
+    <span class="kw">static </span>NEXT_TOKEN: AtomicUsize = AtomicUsize::new(<span class="number">0</span>);
 
-    <span class="kw">impl</span> <span class="ident">AfdPollInfo</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zeroed</span>() -&gt; <span class="ident">AfdPollInfo</span> {
-            <span class="kw">unsafe</span> { <span class="ident">zeroed</span>() }
+    <span class="kw">impl </span>AfdPollInfo {
+        <span class="kw">pub fn </span>zeroed() -&gt; AfdPollInfo {
+            <span class="kw">unsafe </span>{ zeroed() }
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">Afd</span> {
-        <span class="doccomment">/// Create new Afd instance.</span>
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">cp</span>: <span class="kw-2">&amp;</span><span class="ident">CompletionPort</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">afd_helper_handle</span>: <span class="ident">HANDLE</span> <span class="op">=</span> <span class="ident">INVALID_HANDLE_VALUE</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iosb</span> <span class="op">=</span> <span class="ident">IO_STATUS_BLOCK</span> {
-                <span class="ident">Anonymous</span>: <span class="ident">IO_STATUS_BLOCK_0</span> { <span class="ident">Status</span>: <span class="number">0</span> },
-                <span class="ident">Information</span>: <span class="number">0</span>,
+    <span class="kw">impl </span>Afd {
+        <span class="doccomment">/// Create new Afd instance.
+        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(cp: <span class="kw-2">&amp;</span>CompletionPort) -&gt; io::Result&lt;Afd&gt; {
+            <span class="kw">let </span><span class="kw-2">mut </span>afd_helper_handle: HANDLE = INVALID_HANDLE_VALUE;
+            <span class="kw">let </span><span class="kw-2">mut </span>iosb = IO_STATUS_BLOCK {
+                Anonymous: IO_STATUS_BLOCK_0 { Status: <span class="number">0 </span>},
+                Information: <span class="number">0</span>,
             };
 
-            <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">NtCreateFile</span>(
-                    <span class="kw-2">&amp;mut</span> <span class="ident">afd_helper_handle</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                    <span class="ident">SYNCHRONIZE</span>,
-                    <span class="kw-2">&amp;</span><span class="ident">AFD_HELPER_ATTRIBUTES</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                    <span class="kw-2">&amp;mut</span> <span class="ident">iosb</span>,
-                    <span class="ident">null_mut</span>(),
+            <span class="kw">unsafe </span>{
+                <span class="kw">let </span>status = NtCreateFile(
+                    <span class="kw-2">&amp;mut </span>afd_helper_handle <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                    SYNCHRONIZE,
+                    <span class="kw-2">&amp;</span>AFD_HELPER_ATTRIBUTES <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                    <span class="kw-2">&amp;mut </span>iosb,
+                    null_mut(),
                     <span class="number">0</span>,
-                    <span class="ident">FILE_SHARE_READ</span> <span class="op">|</span> <span class="ident">FILE_SHARE_WRITE</span>,
-                    <span class="ident">FILE_OPEN</span>,
+                    FILE_SHARE_READ | FILE_SHARE_WRITE,
+                    FILE_OPEN,
                     <span class="number">0</span>,
-                    <span class="ident">null_mut</span>(),
+                    null_mut(),
                     <span class="number">0</span>,
                 );
-                <span class="kw">if</span> <span class="ident">status</span> <span class="op">!</span><span class="op">=</span> <span class="ident">STATUS_SUCCESS</span> {
-                    <span class="kw">let</span> <span class="ident">raw_err</span> <span class="op">=</span> <span class="ident">io::Error::from_raw_os_error</span>(
-                        <span class="ident">RtlNtStatusToDosError</span>(<span class="ident">status</span>) <span class="kw">as</span> <span class="ident">i32</span>
+                <span class="kw">if </span>status != STATUS_SUCCESS {
+                    <span class="kw">let </span>raw_err = io::Error::from_raw_os_error(
+                        RtlNtStatusToDosError(status) <span class="kw">as </span>i32
                     );
-                    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;Failed to open \\Device\\Afd\\Mio: {}&quot;</span>, <span class="ident">raw_err</span>);
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">raw_err</span>.<span class="ident">kind</span>(), <span class="ident">msg</span>));
+                    <span class="kw">let </span>msg = <span class="macro">format!</span>(<span class="string">&quot;Failed to open \\Device\\Afd\\Mio: {}&quot;</span>, raw_err);
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(raw_err.kind(), msg));
                 }
-                <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">File::from_raw_handle</span>(<span class="ident">afd_helper_handle</span> <span class="kw">as</span> <span class="ident">RawHandle</span>);
-                <span class="comment">// Increment by 2 to reserve space for other types of handles.</span>
-                <span class="comment">// Non-AFD types (currently only NamedPipe), use odd numbered</span>
-                <span class="comment">// tokens. This allows the selector to differentate between them</span>
-                <span class="comment">// and dispatch events accordingly.</span>
-                <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">NEXT_TOKEN</span>.<span class="ident">fetch_add</span>(<span class="number">2</span>, <span class="ident">Ordering::Relaxed</span>) <span class="op">+</span> <span class="number">2</span>;
-                <span class="kw">let</span> <span class="ident">afd</span> <span class="op">=</span> <span class="ident">Afd</span> { <span class="ident">fd</span> };
-                <span class="ident">cp</span>.<span class="ident">add_handle</span>(<span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">afd</span>.<span class="ident">fd</span>)<span class="question-mark">?</span>;
-                <span class="kw">match</span> <span class="ident">SetFileCompletionNotificationModes</span>(
-                    <span class="ident">afd_helper_handle</span>,
-                    <span class="ident">FILE_SKIP_SET_EVENT_ON_HANDLE</span> <span class="kw">as</span> <span class="ident">u8</span> <span class="comment">// This is just 2, so fits in u8</span>
-                ) {
-                    <span class="number">0</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-                    <span class="kw">_</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">afd</span>),
+                <span class="kw">let </span>fd = File::from_raw_handle(afd_helper_handle <span class="kw">as </span>RawHandle);
+                <span class="comment">// Increment by 2 to reserve space for other types of handles.
+                // Non-AFD types (currently only NamedPipe), use odd numbered
+                // tokens. This allows the selector to differentate between them
+                // and dispatch events accordingly.
+                </span><span class="kw">let </span>token = NEXT_TOKEN.fetch_add(<span class="number">2</span>, Ordering::Relaxed) + <span class="number">2</span>;
+                <span class="kw">let </span>afd = Afd { fd };
+                cp.add_handle(token, <span class="kw-2">&amp;</span>afd.fd)<span class="question-mark">?</span>;
+                <span class="kw">match </span>SetFileCompletionNotificationModes(
+                    afd_helper_handle,
+                    FILE_SKIP_SET_EVENT_ON_HANDLE <span class="kw">as </span>u8 <span class="comment">// This is just 2, so fits in u8
+                </span>) {
+                    <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>(io::Error::last_os_error()),
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(afd),
                 }
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_RECEIVE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0000_0001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_RECEIVE_EXPEDITED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0000_0010</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_SEND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0000_0100</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_DISCONNECT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0000_1000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_ABORT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0001_0000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_LOCAL_CLOSE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0010_0000</span>;
-<span class="comment">// Not used as it indicated in each event where a connection is connected, not</span>
-<span class="comment">// just the first time a connection is established.</span>
-<span class="comment">// Also see https://github.com/piscisaureus/wepoll/commit/8b7b340610f88af3d83f40fb728e7b850b090ece.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_CONNECT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_0100_0000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_ACCEPT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b0_1000_0000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">POLL_CONNECT_FAIL</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0b1_0000_0000</span>;
+<span class="kw">pub const </span>POLL_RECEIVE: u32 = <span class="number">0b0_0000_0001</span>;
+<span class="kw">pub const </span>POLL_RECEIVE_EXPEDITED: u32 = <span class="number">0b0_0000_0010</span>;
+<span class="kw">pub const </span>POLL_SEND: u32 = <span class="number">0b0_0000_0100</span>;
+<span class="kw">pub const </span>POLL_DISCONNECT: u32 = <span class="number">0b0_0000_1000</span>;
+<span class="kw">pub const </span>POLL_ABORT: u32 = <span class="number">0b0_0001_0000</span>;
+<span class="kw">pub const </span>POLL_LOCAL_CLOSE: u32 = <span class="number">0b0_0010_0000</span>;
+<span class="comment">// Not used as it indicated in each event where a connection is connected, not
+// just the first time a connection is established.
+// Also see https://github.com/piscisaureus/wepoll/commit/8b7b340610f88af3d83f40fb728e7b850b090ece.
+</span><span class="kw">pub const </span>POLL_CONNECT: u32 = <span class="number">0b0_0100_0000</span>;
+<span class="kw">pub const </span>POLL_ACCEPT: u32 = <span class="number">0b0_1000_0000</span>;
+<span class="kw">pub const </span>POLL_CONNECT_FAIL: u32 = <span class="number">0b1_0000_0000</span>;
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KNOWN_EVENTS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">POLL_RECEIVE</span>
-    <span class="op">|</span> <span class="ident">POLL_RECEIVE_EXPEDITED</span>
-    <span class="op">|</span> <span class="ident">POLL_SEND</span>
-    <span class="op">|</span> <span class="ident">POLL_DISCONNECT</span>
-    <span class="op">|</span> <span class="ident">POLL_ABORT</span>
-    <span class="op">|</span> <span class="ident">POLL_LOCAL_CLOSE</span>
-    <span class="op">|</span> <span class="ident">POLL_ACCEPT</span>
-    <span class="op">|</span> <span class="ident">POLL_CONNECT_FAIL</span>;
+<span class="kw">pub const </span>KNOWN_EVENTS: u32 = POLL_RECEIVE
+    | POLL_RECEIVE_EXPEDITED
+    | POLL_SEND
+    | POLL_DISCONNECT
+    | POLL_ABORT
+    | POLL_LOCAL_CLOSE
+    | POLL_ACCEPT
+    | POLL_CONNECT_FAIL;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

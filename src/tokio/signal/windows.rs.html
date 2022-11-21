@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tokio-1.21.2\src\signal\windows.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>windows.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tokio-1.22.0\src\signal\windows.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>windows.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -515,522 +515,522 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Windows-specific types for signal handling.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! This module is only defined on Windows and allows receiving &quot;ctrl-c&quot;,</span>
-<span class="doccomment">//! &quot;ctrl-break&quot;, &quot;ctrl-logoff&quot;, &quot;ctrl-shutdown&quot;, and &quot;ctrl-close&quot;</span>
-<span class="doccomment">//! notifications. These events are listened for via the `SetConsoleCtrlHandler`</span>
-<span class="doccomment">//! function which receives the corresponding winapi event type.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Windows-specific types for signal handling.
+//!
+//! This module is only defined on Windows and allows receiving &quot;ctrl-c&quot;,
+//! &quot;ctrl-break&quot;, &quot;ctrl-logoff&quot;, &quot;ctrl-shutdown&quot;, and &quot;ctrl-close&quot;
+//! notifications. These events are listened for via the `SetConsoleCtrlHandler`
+//! function which receives the corresponding winapi event type.
 
-<span class="attribute">#![<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">windows</span>, <span class="ident">docsrs</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;signal&quot;</span>))))]</span>
+</span><span class="attribute">#![cfg(any(windows, docsrs))]
+#![cfg_attr(docsrs, doc(cfg(all(windows, feature = <span class="string">&quot;signal&quot;</span>))))]
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::signal::RxFuture</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
+</span><span class="kw">use </span><span class="kw">crate</span>::signal::RxFuture;
+<span class="kw">use </span>std::io;
+<span class="kw">use </span>std::task::{Context, Poll};
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">docsrs</span>))]</span>
-<span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;windows/sys.rs&quot;</span>]</span>
-<span class="kw">mod</span> <span class="ident">imp</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">docsrs</span>))]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::imp</span>::{<span class="ident">OsExtraData</span>, <span class="ident">OsStorage</span>};
+<span class="attribute">#[cfg(not(docsrs))]
+#[path = <span class="string">&quot;windows/sys.rs&quot;</span>]
+</span><span class="kw">mod </span>imp;
+<span class="attribute">#[cfg(not(docsrs))]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span><span class="self">self</span>::imp::{OsExtraData, OsStorage};
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">docsrs</span>)]</span>
-<span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;windows/stub.rs&quot;</span>]</span>
-<span class="kw">mod</span> <span class="ident">imp</span>;
+<span class="attribute">#[cfg(docsrs)]
+#[path = <span class="string">&quot;windows/stub.rs&quot;</span>]
+</span><span class="kw">mod </span>imp;
 
-<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-c&quot; notifications sent to the</span>
-<span class="doccomment">/// process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use tokio::signal::windows::ctrl_c;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">///     // An infinite stream of CTRL-C events.</span>
-<span class="doccomment">///     let mut stream = ctrl_c()?;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // Print whenever a CTRL-C event is received.</span>
-<span class="doccomment">///     for countdown in (0..3).rev() {</span>
-<span class="doccomment">///         stream.recv().await;</span>
-<span class="doccomment">///         println!(&quot;got CTRL-C. {} more to exit&quot;, countdown);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ctrl_c</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">CtrlC</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">CtrlC</span> {
-        <span class="ident">inner</span>: <span class="ident"><span class="self">self</span>::imp::ctrl_c</span>()<span class="question-mark">?</span>,
+<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-c&quot; notifications sent to the
+/// process.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use tokio::signal::windows::ctrl_c;
+///
+/// #[tokio::main]
+/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+///     // An infinite stream of CTRL-C events.
+///     let mut stream = ctrl_c()?;
+///
+///     // Print whenever a CTRL-C event is received.
+///     for countdown in (0..3).rev() {
+///         stream.recv().await;
+///         println!(&quot;got CTRL-C. {} more to exit&quot;, countdown);
+///     }
+///
+///     Ok(())
+/// }
+/// ```
+</span><span class="kw">pub fn </span>ctrl_c() -&gt; io::Result&lt;CtrlC&gt; {
+    <span class="prelude-val">Ok</span>(CtrlC {
+        inner: <span class="self">self</span>::imp::ctrl_c()<span class="question-mark">?</span>,
     })
 }
 
-<span class="doccomment">/// Represents a stream which receives &quot;ctrl-c&quot; notifications sent to the process</span>
-<span class="doccomment">/// via `SetConsoleCtrlHandler`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A notification to this process notifies *all* streams listening for</span>
-<span class="doccomment">/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed</span>
-<span class="doccomment">/// quickly enough. This means that if two notifications are received back-to-back,</span>
-<span class="doccomment">/// then the stream may only receive one item about the two notifications.</span>
-<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;streams do nothing unless polled&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CtrlC</span> {
-    <span class="ident">inner</span>: <span class="ident">RxFuture</span>,
+<span class="doccomment">/// Represents a stream which receives &quot;ctrl-c&quot; notifications sent to the process
+/// via `SetConsoleCtrlHandler`.
+///
+/// A notification to this process notifies *all* streams listening for
+/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed
+/// quickly enough. This means that if two notifications are received back-to-back,
+/// then the stream may only receive one item about the two notifications.
+</span><span class="attribute">#[must_use = <span class="string">&quot;streams do nothing unless polled&quot;</span>]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>CtrlC {
+    inner: RxFuture,
 }
 
-<span class="kw">impl</span> <span class="ident">CtrlC</span> {
-    <span class="doccomment">/// Receives the next signal notification event.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use tokio::signal::windows::ctrl_c;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[tokio::main]</span>
-    <span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">///     // An infinite stream of CTRL-C events.</span>
-    <span class="doccomment">///     let mut stream = ctrl_c()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Print whenever a CTRL-C event is received.</span>
-    <span class="doccomment">///     for countdown in (0..3).rev() {</span>
-    <span class="doccomment">///         stream.recv().await;</span>
-    <span class="doccomment">///         println!(&quot;got CTRL-C. {} more to exit&quot;, countdown);</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">recv</span>().<span class="kw">await</span>
-    }
+<span class="kw">impl </span>CtrlC {
+    <span class="doccomment">/// Receives the next signal notification event.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use tokio::signal::windows::ctrl_c;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    ///     // An infinite stream of CTRL-C events.
+    ///     let mut stream = ctrl_c()?;
+    ///
+    ///     // Print whenever a CTRL-C event is received.
+    ///     for countdown in (0..3).rev() {
+    ///         stream.recv().await;
+    ///         println!(&quot;got CTRL-C. {} more to exit&quot;, countdown);
+    ///     }
+    ///
+    ///     Ok(())
+    /// }
+    /// ```
+    </span><span class="kw">pub async fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="self">self</span>.inner.recv().<span class="kw">await
+    </span>}
 
-    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an</span>
-    <span class="doccomment">/// `async` context.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Polling from a manually implemented future</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use std::pin::Pin;</span>
-    <span class="doccomment">/// use std::future::Future;</span>
-    <span class="doccomment">/// use std::task::{Context, Poll};</span>
-    <span class="doccomment">/// use tokio::signal::windows::CtrlC;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// struct MyFuture {</span>
-    <span class="doccomment">///     ctrl_c: CtrlC,</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// impl Future for MyFuture {</span>
-    <span class="doccomment">///     type Output = Option&lt;()&gt;;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {</span>
-    <span class="doccomment">///         println!(&quot;polling MyFuture&quot;);</span>
-    <span class="doccomment">///         self.ctrl_c.poll_recv(cx)</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">poll_recv</span>(<span class="ident">cx</span>)
-    }
-}
-
-<span class="doccomment">/// Represents a stream which receives &quot;ctrl-break&quot; notifications sent to the process</span>
-<span class="doccomment">/// via `SetConsoleCtrlHandler`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A notification to this process notifies *all* streams listening for</span>
-<span class="doccomment">/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed</span>
-<span class="doccomment">/// quickly enough. This means that if two notifications are received back-to-back,</span>
-<span class="doccomment">/// then the stream may only receive one item about the two notifications.</span>
-<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;streams do nothing unless polled&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CtrlBreak</span> {
-    <span class="ident">inner</span>: <span class="ident">RxFuture</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">CtrlBreak</span> {
-    <span class="doccomment">/// Receives the next signal notification event.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use tokio::signal::windows::ctrl_break;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[tokio::main]</span>
-    <span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">///     // An infinite stream of CTRL-BREAK events.</span>
-    <span class="doccomment">///     let mut stream = ctrl_break()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Print whenever a CTRL-BREAK event is received.</span>
-    <span class="doccomment">///     loop {</span>
-    <span class="doccomment">///         stream.recv().await;</span>
-    <span class="doccomment">///         println!(&quot;got signal CTRL-BREAK&quot;);</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">recv</span>().<span class="kw">await</span>
-    }
-
-    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an</span>
-    <span class="doccomment">/// `async` context.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Polling from a manually implemented future</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use std::pin::Pin;</span>
-    <span class="doccomment">/// use std::future::Future;</span>
-    <span class="doccomment">/// use std::task::{Context, Poll};</span>
-    <span class="doccomment">/// use tokio::signal::windows::CtrlBreak;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// struct MyFuture {</span>
-    <span class="doccomment">///     ctrl_break: CtrlBreak,</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// impl Future for MyFuture {</span>
-    <span class="doccomment">///     type Output = Option&lt;()&gt;;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {</span>
-    <span class="doccomment">///         println!(&quot;polling MyFuture&quot;);</span>
-    <span class="doccomment">///         self.ctrl_break.poll_recv(cx)</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">poll_recv</span>(<span class="ident">cx</span>)
+    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an
+    /// `async` context.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// Polling from a manually implemented future
+    ///
+    /// ```rust,no_run
+    /// use std::pin::Pin;
+    /// use std::future::Future;
+    /// use std::task::{Context, Poll};
+    /// use tokio::signal::windows::CtrlC;
+    ///
+    /// struct MyFuture {
+    ///     ctrl_c: CtrlC,
+    /// }
+    ///
+    /// impl Future for MyFuture {
+    ///     type Output = Option&lt;()&gt;;
+    ///
+    ///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {
+    ///         println!(&quot;polling MyFuture&quot;);
+    ///         self.ctrl_c.poll_recv(cx)
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>poll_recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt; {
+        <span class="self">self</span>.inner.poll_recv(cx)
     }
 }
 
-<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-break&quot; notifications sent to the</span>
-<span class="doccomment">/// process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use tokio::signal::windows::ctrl_break;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">///     // An infinite stream of CTRL-BREAK events.</span>
-<span class="doccomment">///     let mut stream = ctrl_break()?;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // Print whenever a CTRL-BREAK event is received.</span>
-<span class="doccomment">///     loop {</span>
-<span class="doccomment">///         stream.recv().await;</span>
-<span class="doccomment">///         println!(&quot;got signal CTRL-BREAK&quot;);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ctrl_break</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">CtrlBreak</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">CtrlBreak</span> {
-        <span class="ident">inner</span>: <span class="ident"><span class="self">self</span>::imp::ctrl_break</span>()<span class="question-mark">?</span>,
+<span class="doccomment">/// Represents a stream which receives &quot;ctrl-break&quot; notifications sent to the process
+/// via `SetConsoleCtrlHandler`.
+///
+/// A notification to this process notifies *all* streams listening for
+/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed
+/// quickly enough. This means that if two notifications are received back-to-back,
+/// then the stream may only receive one item about the two notifications.
+</span><span class="attribute">#[must_use = <span class="string">&quot;streams do nothing unless polled&quot;</span>]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>CtrlBreak {
+    inner: RxFuture,
+}
+
+<span class="kw">impl </span>CtrlBreak {
+    <span class="doccomment">/// Receives the next signal notification event.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use tokio::signal::windows::ctrl_break;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    ///     // An infinite stream of CTRL-BREAK events.
+    ///     let mut stream = ctrl_break()?;
+    ///
+    ///     // Print whenever a CTRL-BREAK event is received.
+    ///     loop {
+    ///         stream.recv().await;
+    ///         println!(&quot;got signal CTRL-BREAK&quot;);
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub async fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="self">self</span>.inner.recv().<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an
+    /// `async` context.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// Polling from a manually implemented future
+    ///
+    /// ```rust,no_run
+    /// use std::pin::Pin;
+    /// use std::future::Future;
+    /// use std::task::{Context, Poll};
+    /// use tokio::signal::windows::CtrlBreak;
+    ///
+    /// struct MyFuture {
+    ///     ctrl_break: CtrlBreak,
+    /// }
+    ///
+    /// impl Future for MyFuture {
+    ///     type Output = Option&lt;()&gt;;
+    ///
+    ///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {
+    ///         println!(&quot;polling MyFuture&quot;);
+    ///         self.ctrl_break.poll_recv(cx)
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>poll_recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt; {
+        <span class="self">self</span>.inner.poll_recv(cx)
+    }
+}
+
+<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-break&quot; notifications sent to the
+/// process.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use tokio::signal::windows::ctrl_break;
+///
+/// #[tokio::main]
+/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+///     // An infinite stream of CTRL-BREAK events.
+///     let mut stream = ctrl_break()?;
+///
+///     // Print whenever a CTRL-BREAK event is received.
+///     loop {
+///         stream.recv().await;
+///         println!(&quot;got signal CTRL-BREAK&quot;);
+///     }
+/// }
+/// ```
+</span><span class="kw">pub fn </span>ctrl_break() -&gt; io::Result&lt;CtrlBreak&gt; {
+    <span class="prelude-val">Ok</span>(CtrlBreak {
+        inner: <span class="self">self</span>::imp::ctrl_break()<span class="question-mark">?</span>,
     })
 }
 
-<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-close&quot; notifications sent to the</span>
-<span class="doccomment">/// process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use tokio::signal::windows::ctrl_close;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">///     // An infinite stream of CTRL-CLOSE events.</span>
-<span class="doccomment">///     let mut stream = ctrl_close()?;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // Print whenever a CTRL-CLOSE event is received.</span>
-<span class="doccomment">///     for countdown in (0..3).rev() {</span>
-<span class="doccomment">///         stream.recv().await;</span>
-<span class="doccomment">///         println!(&quot;got CTRL-CLOSE. {} more to exit&quot;, countdown);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ctrl_close</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">CtrlClose</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">CtrlClose</span> {
-        <span class="ident">inner</span>: <span class="ident"><span class="self">self</span>::imp::ctrl_close</span>()<span class="question-mark">?</span>,
+<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-close&quot; notifications sent to the
+/// process.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use tokio::signal::windows::ctrl_close;
+///
+/// #[tokio::main]
+/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+///     // An infinite stream of CTRL-CLOSE events.
+///     let mut stream = ctrl_close()?;
+///
+///     // Print whenever a CTRL-CLOSE event is received.
+///     for countdown in (0..3).rev() {
+///         stream.recv().await;
+///         println!(&quot;got CTRL-CLOSE. {} more to exit&quot;, countdown);
+///     }
+///
+///     Ok(())
+/// }
+/// ```
+</span><span class="kw">pub fn </span>ctrl_close() -&gt; io::Result&lt;CtrlClose&gt; {
+    <span class="prelude-val">Ok</span>(CtrlClose {
+        inner: <span class="self">self</span>::imp::ctrl_close()<span class="question-mark">?</span>,
     })
 }
 
-<span class="doccomment">/// Represents a stream which receives &quot;ctrl-close&quot; notitifications sent to the process</span>
-<span class="doccomment">/// via &#39;SetConsoleCtrlHandler&#39;.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A notification to this process notifies *all* streams listening for</span>
-<span class="doccomment">/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed</span>
-<span class="doccomment">/// quickly enough. This means that if two notifications are received back-to-back,</span>
-<span class="doccomment">/// then the stream may only receive one item about the two notifications.</span>
-<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;streams do nothing unless polled&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CtrlClose</span> {
-    <span class="ident">inner</span>: <span class="ident">RxFuture</span>,
+<span class="doccomment">/// Represents a stream which receives &quot;ctrl-close&quot; notitifications sent to the process
+/// via &#39;SetConsoleCtrlHandler&#39;.
+///
+/// A notification to this process notifies *all* streams listening for
+/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed
+/// quickly enough. This means that if two notifications are received back-to-back,
+/// then the stream may only receive one item about the two notifications.
+</span><span class="attribute">#[must_use = <span class="string">&quot;streams do nothing unless polled&quot;</span>]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>CtrlClose {
+    inner: RxFuture,
 }
 
-<span class="kw">impl</span> <span class="ident">CtrlClose</span> {
-    <span class="doccomment">/// Receives the next signal notification event.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use tokio::signal::windows::ctrl_close;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[tokio::main]</span>
-    <span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">///     // An infinite stream of CTRL-CLOSE events.</span>
-    <span class="doccomment">///     let mut stream = ctrl_close()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Print whenever a CTRL-CLOSE event is received.</span>
-    <span class="doccomment">///     stream.recv().await;</span>
-    <span class="doccomment">///     println!(&quot;got CTRL-CLOSE. Cleaning up before exiting&quot;);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">recv</span>().<span class="kw">await</span>
-    }
+<span class="kw">impl </span>CtrlClose {
+    <span class="doccomment">/// Receives the next signal notification event.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use tokio::signal::windows::ctrl_close;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    ///     // An infinite stream of CTRL-CLOSE events.
+    ///     let mut stream = ctrl_close()?;
+    ///
+    ///     // Print whenever a CTRL-CLOSE event is received.
+    ///     stream.recv().await;
+    ///     println!(&quot;got CTRL-CLOSE. Cleaning up before exiting&quot;);
+    ///
+    ///     Ok(())
+    /// }
+    /// ```
+    </span><span class="kw">pub async fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="self">self</span>.inner.recv().<span class="kw">await
+    </span>}
 
-    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an</span>
-    <span class="doccomment">/// `async` context.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Polling from a manually implemented future</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use std::pin::Pin;</span>
-    <span class="doccomment">/// use std::future::Future;</span>
-    <span class="doccomment">/// use std::task::{Context, Poll};</span>
-    <span class="doccomment">/// use tokio::signal::windows::CtrlClose;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// struct MyFuture {</span>
-    <span class="doccomment">///     ctrl_close: CtrlClose,</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// impl Future for MyFuture {</span>
-    <span class="doccomment">///     type Output = Option&lt;()&gt;;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {</span>
-    <span class="doccomment">///         println!(&quot;polling MyFuture&quot;);</span>
-    <span class="doccomment">///         self.ctrl_close.poll_recv(cx)</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">poll_recv</span>(<span class="ident">cx</span>)
+    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an
+    /// `async` context.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// Polling from a manually implemented future
+    ///
+    /// ```rust,no_run
+    /// use std::pin::Pin;
+    /// use std::future::Future;
+    /// use std::task::{Context, Poll};
+    /// use tokio::signal::windows::CtrlClose;
+    ///
+    /// struct MyFuture {
+    ///     ctrl_close: CtrlClose,
+    /// }
+    ///
+    /// impl Future for MyFuture {
+    ///     type Output = Option&lt;()&gt;;
+    ///
+    ///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {
+    ///         println!(&quot;polling MyFuture&quot;);
+    ///         self.ctrl_close.poll_recv(cx)
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>poll_recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt; {
+        <span class="self">self</span>.inner.poll_recv(cx)
     }
 }
 
-<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-shutdown&quot; notifications sent to the</span>
-<span class="doccomment">/// process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use tokio::signal::windows::ctrl_shutdown;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">///     // An infinite stream of CTRL-SHUTDOWN events.</span>
-<span class="doccomment">///     let mut stream = ctrl_shutdown()?;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     stream.recv().await;</span>
-<span class="doccomment">///     println!(&quot;got CTRL-SHUTDOWN. Cleaning up before exiting&quot;);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ctrl_shutdown</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">CtrlShutdown</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">CtrlShutdown</span> {
-        <span class="ident">inner</span>: <span class="ident"><span class="self">self</span>::imp::ctrl_shutdown</span>()<span class="question-mark">?</span>,
+<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-shutdown&quot; notifications sent to the
+/// process.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use tokio::signal::windows::ctrl_shutdown;
+///
+/// #[tokio::main]
+/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+///     // An infinite stream of CTRL-SHUTDOWN events.
+///     let mut stream = ctrl_shutdown()?;
+///
+///     stream.recv().await;
+///     println!(&quot;got CTRL-SHUTDOWN. Cleaning up before exiting&quot;);
+///
+///     Ok(())
+/// }
+/// ```
+</span><span class="kw">pub fn </span>ctrl_shutdown() -&gt; io::Result&lt;CtrlShutdown&gt; {
+    <span class="prelude-val">Ok</span>(CtrlShutdown {
+        inner: <span class="self">self</span>::imp::ctrl_shutdown()<span class="question-mark">?</span>,
     })
 }
 
-<span class="doccomment">/// Represents a stream which receives &quot;ctrl-shutdown&quot; notitifications sent to the process</span>
-<span class="doccomment">/// via &#39;SetConsoleCtrlHandler&#39;.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A notification to this process notifies *all* streams listening for</span>
-<span class="doccomment">/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed</span>
-<span class="doccomment">/// quickly enough. This means that if two notifications are received back-to-back,</span>
-<span class="doccomment">/// then the stream may only receive one item about the two notifications.</span>
-<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;streams do nothing unless polled&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CtrlShutdown</span> {
-    <span class="ident">inner</span>: <span class="ident">RxFuture</span>,
+<span class="doccomment">/// Represents a stream which receives &quot;ctrl-shutdown&quot; notitifications sent to the process
+/// via &#39;SetConsoleCtrlHandler&#39;.
+///
+/// A notification to this process notifies *all* streams listening for
+/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed
+/// quickly enough. This means that if two notifications are received back-to-back,
+/// then the stream may only receive one item about the two notifications.
+</span><span class="attribute">#[must_use = <span class="string">&quot;streams do nothing unless polled&quot;</span>]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>CtrlShutdown {
+    inner: RxFuture,
 }
 
-<span class="kw">impl</span> <span class="ident">CtrlShutdown</span> {
-    <span class="doccomment">/// Receives the next signal notification event.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use tokio::signal::windows::ctrl_shutdown;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[tokio::main]</span>
-    <span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">///     // An infinite stream of CTRL-SHUTDOWN events.</span>
-    <span class="doccomment">///     let mut stream = ctrl_shutdown()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Print whenever a CTRL-SHUTDOWN event is received.</span>
-    <span class="doccomment">///     stream.recv().await;</span>
-    <span class="doccomment">///     println!(&quot;got CTRL-SHUTDOWN. Cleaning up before exiting&quot;);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">recv</span>().<span class="kw">await</span>
-    }
+<span class="kw">impl </span>CtrlShutdown {
+    <span class="doccomment">/// Receives the next signal notification event.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use tokio::signal::windows::ctrl_shutdown;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    ///     // An infinite stream of CTRL-SHUTDOWN events.
+    ///     let mut stream = ctrl_shutdown()?;
+    ///
+    ///     // Print whenever a CTRL-SHUTDOWN event is received.
+    ///     stream.recv().await;
+    ///     println!(&quot;got CTRL-SHUTDOWN. Cleaning up before exiting&quot;);
+    ///
+    ///     Ok(())
+    /// }
+    /// ```
+    </span><span class="kw">pub async fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="self">self</span>.inner.recv().<span class="kw">await
+    </span>}
 
-    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an</span>
-    <span class="doccomment">/// `async` context.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Polling from a manually implemented future</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use std::pin::Pin;</span>
-    <span class="doccomment">/// use std::future::Future;</span>
-    <span class="doccomment">/// use std::task::{Context, Poll};</span>
-    <span class="doccomment">/// use tokio::signal::windows::CtrlShutdown;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// struct MyFuture {</span>
-    <span class="doccomment">///     ctrl_shutdown: CtrlShutdown,</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// impl Future for MyFuture {</span>
-    <span class="doccomment">///     type Output = Option&lt;()&gt;;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {</span>
-    <span class="doccomment">///         println!(&quot;polling MyFuture&quot;);</span>
-    <span class="doccomment">///         self.ctrl_shutdown.poll_recv(cx)</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">poll_recv</span>(<span class="ident">cx</span>)
+    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an
+    /// `async` context.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// Polling from a manually implemented future
+    ///
+    /// ```rust,no_run
+    /// use std::pin::Pin;
+    /// use std::future::Future;
+    /// use std::task::{Context, Poll};
+    /// use tokio::signal::windows::CtrlShutdown;
+    ///
+    /// struct MyFuture {
+    ///     ctrl_shutdown: CtrlShutdown,
+    /// }
+    ///
+    /// impl Future for MyFuture {
+    ///     type Output = Option&lt;()&gt;;
+    ///
+    ///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {
+    ///         println!(&quot;polling MyFuture&quot;);
+    ///         self.ctrl_shutdown.poll_recv(cx)
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>poll_recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt; {
+        <span class="self">self</span>.inner.poll_recv(cx)
     }
 }
 
-<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-logoff&quot; notifications sent to the</span>
-<span class="doccomment">/// process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// use tokio::signal::windows::ctrl_logoff;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[tokio::main]</span>
-<span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">///     // An infinite stream of CTRL-LOGOFF events.</span>
-<span class="doccomment">///     let mut stream = ctrl_logoff()?;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     stream.recv().await;</span>
-<span class="doccomment">///     println!(&quot;got CTRL-LOGOFF. Cleaning up before exiting&quot;);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ctrl_logoff</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">CtrlLogoff</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">CtrlLogoff</span> {
-        <span class="ident">inner</span>: <span class="ident"><span class="self">self</span>::imp::ctrl_logoff</span>()<span class="question-mark">?</span>,
+<span class="doccomment">/// Creates a new stream which receives &quot;ctrl-logoff&quot; notifications sent to the
+/// process.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use tokio::signal::windows::ctrl_logoff;
+///
+/// #[tokio::main]
+/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+///     // An infinite stream of CTRL-LOGOFF events.
+///     let mut stream = ctrl_logoff()?;
+///
+///     stream.recv().await;
+///     println!(&quot;got CTRL-LOGOFF. Cleaning up before exiting&quot;);
+///
+///     Ok(())
+/// }
+/// ```
+</span><span class="kw">pub fn </span>ctrl_logoff() -&gt; io::Result&lt;CtrlLogoff&gt; {
+    <span class="prelude-val">Ok</span>(CtrlLogoff {
+        inner: <span class="self">self</span>::imp::ctrl_logoff()<span class="question-mark">?</span>,
     })
 }
 
-<span class="doccomment">/// Represents a stream which receives &quot;ctrl-logoff&quot; notitifications sent to the process</span>
-<span class="doccomment">/// via &#39;SetConsoleCtrlHandler&#39;.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A notification to this process notifies *all* streams listening for</span>
-<span class="doccomment">/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed</span>
-<span class="doccomment">/// quickly enough. This means that if two notifications are received back-to-back,</span>
-<span class="doccomment">/// then the stream may only receive one item about the two notifications.</span>
-<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;streams do nothing unless polled&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CtrlLogoff</span> {
-    <span class="ident">inner</span>: <span class="ident">RxFuture</span>,
+<span class="doccomment">/// Represents a stream which receives &quot;ctrl-logoff&quot; notitifications sent to the process
+/// via &#39;SetConsoleCtrlHandler&#39;.
+///
+/// A notification to this process notifies *all* streams listening for
+/// this event. Moreover, the notifications **are coalesced** if they aren&#39;t processed
+/// quickly enough. This means that if two notifications are received back-to-back,
+/// then the stream may only receive one item about the two notifications.
+</span><span class="attribute">#[must_use = <span class="string">&quot;streams do nothing unless polled&quot;</span>]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>CtrlLogoff {
+    inner: RxFuture,
 }
 
-<span class="kw">impl</span> <span class="ident">CtrlLogoff</span> {
-    <span class="doccomment">/// Receives the next signal notification event.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use tokio::signal::windows::ctrl_logoff;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[tokio::main]</span>
-    <span class="doccomment">/// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">///     // An infinite stream of CTRL-LOGOFF events.</span>
-    <span class="doccomment">///     let mut stream = ctrl_logoff()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Print whenever a CTRL-LOGOFF event is received.</span>
-    <span class="doccomment">///     stream.recv().await;</span>
-    <span class="doccomment">///     println!(&quot;got CTRL-LOGOFF. Cleaning up before exiting&quot;);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">recv</span>().<span class="kw">await</span>
-    }
+<span class="kw">impl </span>CtrlLogoff {
+    <span class="doccomment">/// Receives the next signal notification event.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use tokio::signal::windows::ctrl_logoff;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    ///     // An infinite stream of CTRL-LOGOFF events.
+    ///     let mut stream = ctrl_logoff()?;
+    ///
+    ///     // Print whenever a CTRL-LOGOFF event is received.
+    ///     stream.recv().await;
+    ///     println!(&quot;got CTRL-LOGOFF. Cleaning up before exiting&quot;);
+    ///
+    ///     Ok(())
+    /// }
+    /// ```
+    </span><span class="kw">pub async fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="self">self</span>.inner.recv().<span class="kw">await
+    </span>}
 
-    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an</span>
-    <span class="doccomment">/// `async` context.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `None` is returned if no more events can be received by this stream.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Polling from a manually implemented future</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// use std::pin::Pin;</span>
-    <span class="doccomment">/// use std::future::Future;</span>
-    <span class="doccomment">/// use std::task::{Context, Poll};</span>
-    <span class="doccomment">/// use tokio::signal::windows::CtrlLogoff;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// struct MyFuture {</span>
-    <span class="doccomment">///     ctrl_logoff: CtrlLogoff,</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// impl Future for MyFuture {</span>
-    <span class="doccomment">///     type Output = Option&lt;()&gt;;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {</span>
-    <span class="doccomment">///         println!(&quot;polling MyFuture&quot;);</span>
-    <span class="doccomment">///         self.ctrl_logoff.poll_recv(cx)</span>
-    <span class="doccomment">///     }</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_recv</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">poll_recv</span>(<span class="ident">cx</span>)
+    <span class="doccomment">/// Polls to receive the next signal notification event, outside of an
+    /// `async` context.
+    ///
+    /// `None` is returned if no more events can be received by this stream.
+    ///
+    /// # Examples
+    ///
+    /// Polling from a manually implemented future
+    ///
+    /// ```rust,no_run
+    /// use std::pin::Pin;
+    /// use std::future::Future;
+    /// use std::task::{Context, Poll};
+    /// use tokio::signal::windows::CtrlLogoff;
+    ///
+    /// struct MyFuture {
+    ///     ctrl_logoff: CtrlLogoff,
+    /// }
+    ///
+    /// impl Future for MyFuture {
+    ///     type Output = Option&lt;()&gt;;
+    ///
+    ///     fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Self::Output&gt; {
+    ///         println!(&quot;polling MyFuture&quot;);
+    ///         self.ctrl_logoff.poll_recv(cx)
+    ///     }
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>poll_recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt; {
+        <span class="self">self</span>.inner.poll_recv(cx)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

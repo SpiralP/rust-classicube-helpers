@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tokio-1.21.2\src\signal\windows\sys.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sys.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tokio-1.22.0\src\signal\windows\sys.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sys.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -229,236 +229,236 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::sync::Once</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::convert::TryFrom;
+<span class="kw">use </span>std::io;
+<span class="kw">use </span>std::sync::Once;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::signal::registry</span>::{<span class="ident">globals</span>, <span class="ident">EventId</span>, <span class="ident">EventInfo</span>, <span class="ident">Init</span>, <span class="ident">Storage</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::signal::RxFuture</span>;
+<span class="kw">use </span><span class="kw">crate</span>::signal::registry::{globals, EventId, EventInfo, Init, Storage};
+<span class="kw">use </span><span class="kw">crate</span>::signal::RxFuture;
 
-<span class="kw">use</span> <span class="ident">winapi::shared::minwindef</span>::{<span class="ident">BOOL</span>, <span class="ident">DWORD</span>, <span class="ident">FALSE</span>, <span class="ident">TRUE</span>};
-<span class="kw">use</span> <span class="ident">winapi::um::consoleapi::SetConsoleCtrlHandler</span>;
-<span class="kw">use</span> <span class="ident">winapi::um::wincon</span>;
+<span class="kw">use </span>winapi::shared::minwindef::{BOOL, DWORD, FALSE, TRUE};
+<span class="kw">use </span>winapi::um::consoleapi::SetConsoleCtrlHandler;
+<span class="kw">use </span>winapi::um::wincon;
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ctrl_break</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">new</span>(<span class="ident">wincon::CTRL_BREAK_EVENT</span>)
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>ctrl_break() -&gt; io::Result&lt;RxFuture&gt; {
+    new(wincon::CTRL_BREAK_EVENT)
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ctrl_close</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">new</span>(<span class="ident">wincon::CTRL_CLOSE_EVENT</span>)
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>ctrl_close() -&gt; io::Result&lt;RxFuture&gt; {
+    new(wincon::CTRL_CLOSE_EVENT)
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ctrl_c</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">new</span>(<span class="ident">wincon::CTRL_C_EVENT</span>)
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>ctrl_c() -&gt; io::Result&lt;RxFuture&gt; {
+    new(wincon::CTRL_C_EVENT)
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ctrl_logoff</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">new</span>(<span class="ident">wincon::CTRL_LOGOFF_EVENT</span>)
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>ctrl_logoff() -&gt; io::Result&lt;RxFuture&gt; {
+    new(wincon::CTRL_LOGOFF_EVENT)
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ctrl_shutdown</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">new</span>(<span class="ident">wincon::CTRL_SHUTDOWN_EVENT</span>)
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>ctrl_shutdown() -&gt; io::Result&lt;RxFuture&gt; {
+    new(wincon::CTRL_SHUTDOWN_EVENT)
 }
 
-<span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">signum</span>: <span class="ident">DWORD</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RxFuture</span><span class="op">&gt;</span> {
-    <span class="ident">global_init</span>()<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">rx</span> <span class="op">=</span> <span class="ident">globals</span>().<span class="ident">register_listener</span>(<span class="ident">signum</span> <span class="kw">as</span> <span class="ident">EventId</span>);
-    <span class="prelude-val">Ok</span>(<span class="ident">RxFuture::new</span>(<span class="ident">rx</span>))
+<span class="kw">fn </span>new(signum: DWORD) -&gt; io::Result&lt;RxFuture&gt; {
+    global_init()<span class="question-mark">?</span>;
+    <span class="kw">let </span>rx = globals().register_listener(signum <span class="kw">as </span>EventId);
+    <span class="prelude-val">Ok</span>(RxFuture::new(rx))
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">OsStorage</span> {
-    <span class="ident">ctrl_break</span>: <span class="ident">EventInfo</span>,
-    <span class="ident">ctrl_close</span>: <span class="ident">EventInfo</span>,
-    <span class="ident">ctrl_c</span>: <span class="ident">EventInfo</span>,
-    <span class="ident">ctrl_logoff</span>: <span class="ident">EventInfo</span>,
-    <span class="ident">ctrl_shutdown</span>: <span class="ident">EventInfo</span>,
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>OsStorage {
+    ctrl_break: EventInfo,
+    ctrl_close: EventInfo,
+    ctrl_c: EventInfo,
+    ctrl_logoff: EventInfo,
+    ctrl_shutdown: EventInfo,
 }
 
-<span class="kw">impl</span> <span class="ident">Init</span> <span class="kw">for</span> <span class="ident">OsStorage</span> {
-    <span class="kw">fn</span> <span class="ident">init</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">ctrl_break</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">ctrl_close</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">ctrl_c</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">ctrl_logoff</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">ctrl_shutdown</span>: <span class="ident">Default::default</span>(),
+<span class="kw">impl </span>Init <span class="kw">for </span>OsStorage {
+    <span class="kw">fn </span>init() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            ctrl_break: Default::default(),
+            ctrl_close: Default::default(),
+            ctrl_c: Default::default(),
+            ctrl_logoff: Default::default(),
+            ctrl_shutdown: Default::default(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Storage</span> <span class="kw">for</span> <span class="ident">OsStorage</span> {
-    <span class="kw">fn</span> <span class="ident">event_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">EventId</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">EventInfo</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="ident">DWORD::try_from</span>(<span class="ident">id</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">wincon::CTRL_BREAK_EVENT</span>) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_break</span>),
-            <span class="prelude-val">Ok</span>(<span class="ident">wincon::CTRL_CLOSE_EVENT</span>) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_close</span>),
-            <span class="prelude-val">Ok</span>(<span class="ident">wincon::CTRL_C_EVENT</span>) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_c</span>),
-            <span class="prelude-val">Ok</span>(<span class="ident">wincon::CTRL_LOGOFF_EVENT</span>) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_logoff</span>),
-            <span class="prelude-val">Ok</span>(<span class="ident">wincon::CTRL_SHUTDOWN_EVENT</span>) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_shutdown</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+<span class="kw">impl </span>Storage <span class="kw">for </span>OsStorage {
+    <span class="kw">fn </span>event_info(<span class="kw-2">&amp;</span><span class="self">self</span>, id: EventId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>EventInfo&gt; {
+        <span class="kw">match </span>DWORD::try_from(id) {
+            <span class="prelude-val">Ok</span>(wincon::CTRL_BREAK_EVENT) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_break),
+            <span class="prelude-val">Ok</span>(wincon::CTRL_CLOSE_EVENT) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_close),
+            <span class="prelude-val">Ok</span>(wincon::CTRL_C_EVENT) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_c),
+            <span class="prelude-val">Ok</span>(wincon::CTRL_LOGOFF_EVENT) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_logoff),
+            <span class="prelude-val">Ok</span>(wincon::CTRL_SHUTDOWN_EVENT) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_shutdown),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">for_each</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
-    <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">EventInfo</span>),
+    <span class="kw">fn </span>for_each&lt;<span class="lifetime">&#39;a</span>, F&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, <span class="kw-2">mut </span>f: F)
+    <span class="kw">where
+        </span>F: FnMut(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>EventInfo),
     {
-        <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_break</span>);
-        <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_close</span>);
-        <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_c</span>);
-        <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_logoff</span>);
-        <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ctrl_shutdown</span>);
+        f(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_break);
+        f(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_close);
+        f(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_c);
+        f(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_logoff);
+        f(<span class="kw-2">&amp;</span><span class="self">self</span>.ctrl_shutdown);
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">OsExtraData</span> {}
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>OsExtraData {}
 
-<span class="kw">impl</span> <span class="ident">Init</span> <span class="kw">for</span> <span class="ident">OsExtraData</span> {
-    <span class="kw">fn</span> <span class="ident">init</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {}
+<span class="kw">impl </span>Init <span class="kw">for </span>OsExtraData {
+    <span class="kw">fn </span>init() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{}
     }
 }
 
-<span class="kw">fn</span> <span class="ident">global_init</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+<span class="kw">fn </span>global_init() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">static </span>INIT: Once = Once::new();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">init</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>init = <span class="prelude-val">None</span>;
 
-    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">SetConsoleCtrlHandler</span>(<span class="prelude-val">Some</span>(<span class="ident">handler</span>), <span class="ident">TRUE</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">rc</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
+    INIT.call_once(|| <span class="kw">unsafe </span>{
+        <span class="kw">let </span>rc = SetConsoleCtrlHandler(<span class="prelude-val">Some</span>(handler), TRUE);
+        <span class="kw">let </span>ret = <span class="kw">if </span>rc == <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(())
         };
 
-        <span class="ident">init</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ret</span>);
+        init = <span class="prelude-val">Some</span>(ret);
     });
 
-    <span class="ident">init</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()))
+    init.unwrap_or_else(|| <span class="prelude-val">Ok</span>(()))
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> <span class="kw">fn</span> <span class="ident">handler</span>(<span class="ident">ty</span>: <span class="ident">DWORD</span>) -&gt; <span class="ident">BOOL</span> {
-    <span class="kw">let</span> <span class="ident">globals</span> <span class="op">=</span> <span class="ident">globals</span>();
-    <span class="ident">globals</span>.<span class="ident">record_event</span>(<span class="ident">ty</span> <span class="kw">as</span> <span class="ident">EventId</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;system&quot; </span><span class="kw">fn </span>handler(ty: DWORD) -&gt; BOOL {
+    <span class="kw">let </span>globals = globals();
+    globals.record_event(ty <span class="kw">as </span>EventId);
 
-    <span class="comment">// According to https://docs.microsoft.com/en-us/windows/console/handlerroutine</span>
-    <span class="comment">// the handler routine is always invoked in a new thread, thus we don&#39;t</span>
-    <span class="comment">// have the same restrictions as in Unix signal handlers, meaning we can</span>
-    <span class="comment">// go ahead and perform the broadcast here.</span>
-    <span class="kw">if</span> <span class="ident">globals</span>.<span class="ident">broadcast</span>() {
-        <span class="ident">TRUE</span>
-    } <span class="kw">else</span> {
-        <span class="comment">// No one is listening for this notification any more</span>
-        <span class="comment">// let the OS fire the next (possibly the default) handler.</span>
-        <span class="ident">FALSE</span>
+    <span class="comment">// According to https://docs.microsoft.com/en-us/windows/console/handlerroutine
+    // the handler routine is always invoked in a new thread, thus we don&#39;t
+    // have the same restrictions as in Unix signal handlers, meaning we can
+    // go ahead and perform the broadcast here.
+    </span><span class="kw">if </span>globals.broadcast() {
+        TRUE
+    } <span class="kw">else </span>{
+        <span class="comment">// No one is listening for this notification any more
+        // let the OS fire the next (possibly the default) handler.
+        </span>FALSE
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">loom</span>)))]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::runtime::Runtime</span>;
+<span class="attribute">#[cfg(all(test, not(loom)))]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::runtime::Runtime;
 
-    <span class="kw">use</span> <span class="ident">tokio_test</span>::{<span class="ident">assert_ok</span>, <span class="ident">assert_pending</span>, <span class="ident">assert_ready_ok</span>, <span class="ident">task</span>};
+    <span class="kw">use </span>tokio_test::{assert_ok, assert_pending, assert_ready_ok, task};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ctrl_c</span>() {
-        <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">rt</span>();
-        <span class="kw">let</span> <span class="ident">_enter</span> <span class="op">=</span> <span class="ident">rt</span>.<span class="ident">enter</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>ctrl_c() {
+        <span class="kw">let </span>rt = rt();
+        <span class="kw">let </span>_enter = rt.enter();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctrl_c</span> <span class="op">=</span> <span class="ident">task::spawn</span>(<span class="ident"><span class="kw">crate</span>::signal::ctrl_c</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>ctrl_c = task::spawn(<span class="kw">crate</span>::signal::ctrl_c());
 
-        <span class="macro">assert_pending!</span>(<span class="ident">ctrl_c</span>.<span class="ident">poll</span>());
+        <span class="macro">assert_pending!</span>(ctrl_c.poll());
 
-        <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events</span>
-        <span class="comment">// like sending signals on Unix, so we&#39;ll stub out the actual OS</span>
-        <span class="comment">// integration and test that our handling works.</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident"><span class="kw">super</span>::handler</span>(<span class="ident">wincon::CTRL_C_EVENT</span>);
+        <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events
+        // like sending signals on Unix, so we&#39;ll stub out the actual OS
+        // integration and test that our handling works.
+        </span><span class="kw">unsafe </span>{
+            <span class="kw">super</span>::handler(wincon::CTRL_C_EVENT);
         }
 
-        <span class="macro">assert_ready_ok!</span>(<span class="ident">ctrl_c</span>.<span class="ident">poll</span>());
+        <span class="macro">assert_ready_ok!</span>(ctrl_c.poll());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ctrl_break</span>() {
-        <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">rt</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>ctrl_break() {
+        <span class="kw">let </span>rt = rt();
 
-        <span class="ident">rt</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctrl_break</span> <span class="op">=</span> <span class="macro">assert_ok!</span>(<span class="ident"><span class="kw">crate</span>::signal::windows::ctrl_break</span>());
+        rt.block_on(<span class="kw">async </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>ctrl_break = <span class="macro">assert_ok!</span>(<span class="kw">crate</span>::signal::windows::ctrl_break());
 
-            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events</span>
-            <span class="comment">// like sending signals on Unix, so we&#39;ll stub out the actual OS</span>
-            <span class="comment">// integration and test that our handling works.</span>
-            <span class="kw">unsafe</span> {
-                <span class="ident"><span class="kw">super</span>::handler</span>(<span class="ident">wincon::CTRL_BREAK_EVENT</span>);
+            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events
+            // like sending signals on Unix, so we&#39;ll stub out the actual OS
+            // integration and test that our handling works.
+            </span><span class="kw">unsafe </span>{
+                <span class="kw">super</span>::handler(wincon::CTRL_BREAK_EVENT);
             }
 
-            <span class="ident">ctrl_break</span>.<span class="ident">recv</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            ctrl_break.recv().<span class="kw">await</span>.unwrap();
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ctrl_close</span>() {
-        <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">rt</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>ctrl_close() {
+        <span class="kw">let </span>rt = rt();
 
-        <span class="ident">rt</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctrl_close</span> <span class="op">=</span> <span class="macro">assert_ok!</span>(<span class="ident"><span class="kw">crate</span>::signal::windows::ctrl_close</span>());
+        rt.block_on(<span class="kw">async </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>ctrl_close = <span class="macro">assert_ok!</span>(<span class="kw">crate</span>::signal::windows::ctrl_close());
 
-            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events</span>
-            <span class="comment">// like sending signals on Unix, so we&#39;ll stub out the actual OS</span>
-            <span class="comment">// integration and test that our handling works.</span>
-            <span class="kw">unsafe</span> {
-                <span class="ident"><span class="kw">super</span>::handler</span>(<span class="ident">wincon::CTRL_CLOSE_EVENT</span>);
+            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events
+            // like sending signals on Unix, so we&#39;ll stub out the actual OS
+            // integration and test that our handling works.
+            </span><span class="kw">unsafe </span>{
+                <span class="kw">super</span>::handler(wincon::CTRL_CLOSE_EVENT);
             }
 
-            <span class="ident">ctrl_close</span>.<span class="ident">recv</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            ctrl_close.recv().<span class="kw">await</span>.unwrap();
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ctrl_shutdown</span>() {
-        <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">rt</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>ctrl_shutdown() {
+        <span class="kw">let </span>rt = rt();
 
-        <span class="ident">rt</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctrl_shutdown</span> <span class="op">=</span> <span class="macro">assert_ok!</span>(<span class="ident"><span class="kw">crate</span>::signal::windows::ctrl_shutdown</span>());
+        rt.block_on(<span class="kw">async </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>ctrl_shutdown = <span class="macro">assert_ok!</span>(<span class="kw">crate</span>::signal::windows::ctrl_shutdown());
 
-            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events</span>
-            <span class="comment">// like sending signals on Unix, so we&#39;ll stub out the actual OS</span>
-            <span class="comment">// integration and test that our handling works.</span>
-            <span class="kw">unsafe</span> {
-                <span class="ident"><span class="kw">super</span>::handler</span>(<span class="ident">wincon::CTRL_SHUTDOWN_EVENT</span>);
+            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events
+            // like sending signals on Unix, so we&#39;ll stub out the actual OS
+            // integration and test that our handling works.
+            </span><span class="kw">unsafe </span>{
+                <span class="kw">super</span>::handler(wincon::CTRL_SHUTDOWN_EVENT);
             }
 
-            <span class="ident">ctrl_shutdown</span>.<span class="ident">recv</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            ctrl_shutdown.recv().<span class="kw">await</span>.unwrap();
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ctrl_logoff</span>() {
-        <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">rt</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>ctrl_logoff() {
+        <span class="kw">let </span>rt = rt();
 
-        <span class="ident">rt</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctrl_logoff</span> <span class="op">=</span> <span class="macro">assert_ok!</span>(<span class="ident"><span class="kw">crate</span>::signal::windows::ctrl_logoff</span>());
+        rt.block_on(<span class="kw">async </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>ctrl_logoff = <span class="macro">assert_ok!</span>(<span class="kw">crate</span>::signal::windows::ctrl_logoff());
 
-            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events</span>
-            <span class="comment">// like sending signals on Unix, so we&#39;ll stub out the actual OS</span>
-            <span class="comment">// integration and test that our handling works.</span>
-            <span class="kw">unsafe</span> {
-                <span class="ident"><span class="kw">super</span>::handler</span>(<span class="ident">wincon::CTRL_LOGOFF_EVENT</span>);
+            <span class="comment">// Windows doesn&#39;t have a good programmatic way of sending events
+            // like sending signals on Unix, so we&#39;ll stub out the actual OS
+            // integration and test that our handling works.
+            </span><span class="kw">unsafe </span>{
+                <span class="kw">super</span>::handler(wincon::CTRL_LOGOFF_EVENT);
             }
 
-            <span class="ident">ctrl_logoff</span>.<span class="ident">recv</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            ctrl_logoff.recv().<span class="kw">await</span>.unwrap();
         });
     }
 
-    <span class="kw">fn</span> <span class="ident">rt</span>() -&gt; <span class="ident">Runtime</span> {
-        <span class="ident"><span class="kw">crate</span>::runtime::Builder::new_current_thread</span>()
-            .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>()
+    <span class="kw">fn </span>rt() -&gt; Runtime {
+        <span class="kw">crate</span>::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

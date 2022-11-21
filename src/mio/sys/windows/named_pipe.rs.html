@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.4\src\sys\windows\named_pipe.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>named_pipe.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.5\src\sys\windows\named_pipe.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>named_pipe.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -991,998 +991,998 @@
 <span id="991">991</span>
 <span id="992">992</span>
 <span id="993">993</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::ffi::OsStr</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">Read</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std::os::windows::io</span>::{<span class="ident">AsRawHandle</span>, <span class="ident">FromRawHandle</span>, <span class="ident">RawHandle</span>};
-<span class="kw">use</span> <span class="ident">std::sync::atomic::Ordering</span>::{<span class="ident">Relaxed</span>, <span class="ident">SeqCst</span>};
-<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">AtomicUsize</span>};
-<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">slice</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>std::ffi::OsStr;
+<span class="kw">use </span>std::io::{<span class="self">self</span>, Read, Write};
+<span class="kw">use </span>std::os::windows::io::{AsRawHandle, FromRawHandle, RawHandle};
+<span class="kw">use </span>std::sync::atomic::Ordering::{Relaxed, SeqCst};
+<span class="kw">use </span>std::sync::atomic::{AtomicBool, AtomicUsize};
+<span class="kw">use </span>std::sync::{Arc, Mutex};
+<span class="kw">use </span>std::{fmt, mem, slice};
 
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::Foundation</span>::{
-    <span class="ident">ERROR_BROKEN_PIPE</span>, <span class="ident">ERROR_IO_INCOMPLETE</span>, <span class="ident">ERROR_IO_PENDING</span>, <span class="ident">ERROR_NO_DATA</span>, <span class="ident">ERROR_PIPE_CONNECTED</span>,
-    <span class="ident">ERROR_PIPE_LISTENING</span>, <span class="ident">HANDLE</span>, <span class="ident">INVALID_HANDLE_VALUE</span>,
+<span class="kw">use </span>windows_sys::Win32::Foundation::{
+    ERROR_BROKEN_PIPE, ERROR_IO_INCOMPLETE, ERROR_IO_PENDING, ERROR_NO_DATA, ERROR_PIPE_CONNECTED,
+    ERROR_PIPE_LISTENING, HANDLE, INVALID_HANDLE_VALUE,
 };
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::Storage::FileSystem</span>::{
-    <span class="ident">ReadFile</span>, <span class="ident">WriteFile</span>, <span class="ident">FILE_FLAG_FIRST_PIPE_INSTANCE</span>, <span class="ident">FILE_FLAG_OVERLAPPED</span>, <span class="ident">PIPE_ACCESS_DUPLEX</span>,
+<span class="kw">use </span>windows_sys::Win32::Storage::FileSystem::{
+    ReadFile, WriteFile, FILE_FLAG_FIRST_PIPE_INSTANCE, FILE_FLAG_OVERLAPPED, PIPE_ACCESS_DUPLEX,
 };
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::System::Pipes</span>::{
-    <span class="ident">ConnectNamedPipe</span>, <span class="ident">CreateNamedPipeW</span>, <span class="ident">DisconnectNamedPipe</span>, <span class="ident">PIPE_TYPE_BYTE</span>,
-    <span class="ident">PIPE_UNLIMITED_INSTANCES</span>,
+<span class="kw">use </span>windows_sys::Win32::System::Pipes::{
+    ConnectNamedPipe, CreateNamedPipeW, DisconnectNamedPipe, PIPE_TYPE_BYTE,
+    PIPE_UNLIMITED_INSTANCES,
 };
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::System::IO</span>::{
-    <span class="ident">CancelIoEx</span>, <span class="ident">GetOverlappedResult</span>, <span class="ident">OVERLAPPED</span>, <span class="ident">OVERLAPPED_ENTRY</span>,
+<span class="kw">use </span>windows_sys::Win32::System::IO::{
+    CancelIoEx, GetOverlappedResult, OVERLAPPED, OVERLAPPED_ENTRY,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::event::Source</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sys::windows::iocp</span>::{<span class="ident">CompletionPort</span>, <span class="ident">CompletionStatus</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sys::windows</span>::{<span class="ident">Event</span>, <span class="ident">Handle</span>, <span class="ident">Overlapped</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Registry</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Interest</span>, <span class="ident">Token</span>};
+<span class="kw">use </span><span class="kw">crate</span>::event::Source;
+<span class="kw">use </span><span class="kw">crate</span>::sys::windows::iocp::{CompletionPort, CompletionStatus};
+<span class="kw">use </span><span class="kw">crate</span>::sys::windows::{Event, Handle, Overlapped};
+<span class="kw">use </span><span class="kw">crate</span>::Registry;
+<span class="kw">use crate</span>::{Interest, Token};
 
-<span class="doccomment">/// Non-blocking windows named pipe.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This structure internally contains a `HANDLE` which represents the named</span>
-<span class="doccomment">/// pipe, and also maintains state associated with the mio event loop and active</span>
-<span class="doccomment">/// I/O operations that have been scheduled to translate IOCP to a readiness</span>
-<span class="doccomment">/// model.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note, IOCP is a *completion* based model whereas mio is a *readiness* based</span>
-<span class="doccomment">/// model. To bridge this, `NamedPipe` performs internal buffering. Writes are</span>
-<span class="doccomment">/// written to an internal buffer and the buffer is submitted to IOCP. IOCP</span>
-<span class="doccomment">/// reads are submitted using internal buffers and `NamedPipe::read` reads from</span>
-<span class="doccomment">/// this internal buffer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Trait implementations</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The `Read` and `Write` traits are implemented for `NamedPipe` and for</span>
-<span class="doccomment">/// `&amp;NamedPipe`. This represents that a named pipe can be concurrently read and</span>
-<span class="doccomment">/// written to and also can be read and written to at all. Typically a named</span>
-<span class="doccomment">/// pipe needs to be connected to a client before it can be read or written,</span>
-<span class="doccomment">/// however.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that for I/O operations on a named pipe to succeed then the named pipe</span>
-<span class="doccomment">/// needs to be associated with an event loop. Until this happens all I/O</span>
-<span class="doccomment">/// operations will return a &quot;would block&quot; error.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Managing connections</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The `NamedPipe` type supports a `connect` method to connect to a client and</span>
-<span class="doccomment">/// a `disconnect` method to disconnect from that client. These two methods only</span>
-<span class="doccomment">/// work once a named pipe is associated with an event loop.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The `connect` method will succeed asynchronously and a completion can be</span>
-<span class="doccomment">/// detected once the object receives a writable notification.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Named pipe clients</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Currently to create a client of a named pipe server then you can use the</span>
-<span class="doccomment">/// `OpenOptions` type in the standard library to create a `File` that connects</span>
-<span class="doccomment">/// to a named pipe. Afterwards you can use the `into_raw_handle` method coupled</span>
-<span class="doccomment">/// with the `NamedPipe::from_raw_handle` method to convert that to a named pipe</span>
-<span class="doccomment">/// that can operate asynchronously. Don&#39;t forget to pass the</span>
-<span class="doccomment">/// `FILE_FLAG_OVERLAPPED` flag when opening the `File`.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NamedPipe</span> {
-    <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Non-blocking windows named pipe.
+///
+/// This structure internally contains a `HANDLE` which represents the named
+/// pipe, and also maintains state associated with the mio event loop and active
+/// I/O operations that have been scheduled to translate IOCP to a readiness
+/// model.
+///
+/// Note, IOCP is a *completion* based model whereas mio is a *readiness* based
+/// model. To bridge this, `NamedPipe` performs internal buffering. Writes are
+/// written to an internal buffer and the buffer is submitted to IOCP. IOCP
+/// reads are submitted using internal buffers and `NamedPipe::read` reads from
+/// this internal buffer.
+///
+/// # Trait implementations
+///
+/// The `Read` and `Write` traits are implemented for `NamedPipe` and for
+/// `&amp;NamedPipe`. This represents that a named pipe can be concurrently read and
+/// written to and also can be read and written to at all. Typically a named
+/// pipe needs to be connected to a client before it can be read or written,
+/// however.
+///
+/// Note that for I/O operations on a named pipe to succeed then the named pipe
+/// needs to be associated with an event loop. Until this happens all I/O
+/// operations will return a &quot;would block&quot; error.
+///
+/// # Managing connections
+///
+/// The `NamedPipe` type supports a `connect` method to connect to a client and
+/// a `disconnect` method to disconnect from that client. These two methods only
+/// work once a named pipe is associated with an event loop.
+///
+/// The `connect` method will succeed asynchronously and a completion can be
+/// detected once the object receives a writable notification.
+///
+/// # Named pipe clients
+///
+/// Currently to create a client of a named pipe server then you can use the
+/// `OpenOptions` type in the standard library to create a `File` that connects
+/// to a named pipe. Afterwards you can use the `into_raw_handle` method coupled
+/// with the `NamedPipe::from_raw_handle` method to convert that to a named pipe
+/// that can operate asynchronously. Don&#39;t forget to pass the
+/// `FILE_FLAG_OVERLAPPED` flag when opening the `File`.
+</span><span class="kw">pub struct </span>NamedPipe {
+    inner: Arc&lt;Inner&gt;,
 }
 
-<span class="doccomment">/// # Notes</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The memory layout of this structure must be fixed as the</span>
-<span class="doccomment">/// `ptr_from_*_overlapped` methods depend on it, see the `ptr_from` test.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">struct</span> <span class="ident">Inner</span> {
-    <span class="comment">// NOTE: careful modifying the order of these three fields, the `ptr_from_*`</span>
-    <span class="comment">// methods depend on the layout!</span>
-    <span class="ident">connect</span>: <span class="ident">Overlapped</span>,
-    <span class="ident">read</span>: <span class="ident">Overlapped</span>,
-    <span class="ident">write</span>: <span class="ident">Overlapped</span>,
-    <span class="comment">// END NOTE.</span>
-    <span class="ident">handle</span>: <span class="ident">Handle</span>,
-    <span class="ident">connecting</span>: <span class="ident">AtomicBool</span>,
-    <span class="ident">io</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Io</span><span class="op">&gt;</span>,
-    <span class="ident">pool</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">BufferPool</span><span class="op">&gt;</span>,
+<span class="doccomment">/// # Notes
+///
+/// The memory layout of this structure must be fixed as the
+/// `ptr_from_*_overlapped` methods depend on it, see the `ptr_from` test.
+</span><span class="attribute">#[repr(C)]
+</span><span class="kw">struct </span>Inner {
+    <span class="comment">// NOTE: careful modifying the order of these three fields, the `ptr_from_*`
+    // methods depend on the layout!
+    </span>connect: Overlapped,
+    read: Overlapped,
+    write: Overlapped,
+    <span class="comment">// END NOTE.
+    </span>handle: Handle,
+    connecting: AtomicBool,
+    io: Mutex&lt;Io&gt;,
+    pool: Mutex&lt;BufferPool&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Inner</span> {
-    <span class="doccomment">/// Converts a pointer to `Inner.connect` to a pointer to `Inner`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Caller must ensure `ptr` is pointing to `Inner.connect`.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ptr_from_conn_overlapped</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">Inner</span> {
-        <span class="comment">// `connect` is the first field, so the pointer are the same.</span>
-        <span class="ident">ptr</span>.<span class="ident">cast</span>()
+<span class="kw">impl </span>Inner {
+    <span class="doccomment">/// Converts a pointer to `Inner.connect` to a pointer to `Inner`.
+    ///
+    /// # Unsafety
+    ///
+    /// Caller must ensure `ptr` is pointing to `Inner.connect`.
+    </span><span class="kw">unsafe fn </span>ptr_from_conn_overlapped(ptr: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; <span class="kw-2">*const </span>Inner {
+        <span class="comment">// `connect` is the first field, so the pointer are the same.
+        </span>ptr.cast()
     }
 
-    <span class="doccomment">/// Same as [`ptr_from_conn_overlapped`] but for `Inner.read`.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ptr_from_read_overlapped</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">Inner</span> {
-        <span class="comment">// `read` is after `connect: Overlapped`.</span>
-        (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">Overlapped</span>).<span class="ident">wrapping_sub</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Inner</span>
+    <span class="doccomment">/// Same as [`ptr_from_conn_overlapped`] but for `Inner.read`.
+    </span><span class="kw">unsafe fn </span>ptr_from_read_overlapped(ptr: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; <span class="kw-2">*const </span>Inner {
+        <span class="comment">// `read` is after `connect: Overlapped`.
+        </span>(ptr <span class="kw">as </span><span class="kw-2">*mut </span>Overlapped).wrapping_sub(<span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*const </span>Inner
     }
 
-    <span class="doccomment">/// Same as [`ptr_from_conn_overlapped`] but for `Inner.write`.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ptr_from_write_overlapped</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">Inner</span> {
-        <span class="comment">// `read` is after `connect: Overlapped` and `read: Overlapped`.</span>
-        (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">Overlapped</span>).<span class="ident">wrapping_sub</span>(<span class="number">2</span>) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Inner</span>
+    <span class="doccomment">/// Same as [`ptr_from_conn_overlapped`] but for `Inner.write`.
+    </span><span class="kw">unsafe fn </span>ptr_from_write_overlapped(ptr: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; <span class="kw-2">*const </span>Inner {
+        <span class="comment">// `read` is after `connect: Overlapped` and `read: Overlapped`.
+        </span>(ptr <span class="kw">as </span><span class="kw-2">*mut </span>Overlapped).wrapping_sub(<span class="number">2</span>) <span class="kw">as </span><span class="kw-2">*const </span>Inner
     }
 
-    <span class="doccomment">/// Issue a connection request with the specified overlapped operation.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will issue a request to connect a client to this server,</span>
-    <span class="doccomment">/// returning immediately after starting the overlapped operation.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If this function immediately succeeds then `Ok(true)` is returned. If</span>
-    <span class="doccomment">/// the overlapped operation is enqueued and pending, then `Ok(false)` is</span>
-    <span class="doccomment">/// returned. Otherwise an error is returned indicating what went wrong.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe because the kernel requires that the</span>
-    <span class="doccomment">/// `overlapped` pointer is valid until the end of the I/O operation. The</span>
-    <span class="doccomment">/// kernel also requires that `overlapped` is unique for this I/O operation</span>
-    <span class="doccomment">/// and is not in use for any other I/O.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// To safely use this function callers must ensure that this pointer is</span>
-    <span class="doccomment">/// valid until the I/O operation is completed, typically via completion</span>
-    <span class="doccomment">/// ports and waiting to receive the completion notification on the port.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">connect_overlapped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">overlapped</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">ConnectNamedPipe</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(), <span class="ident">overlapped</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
+    <span class="doccomment">/// Issue a connection request with the specified overlapped operation.
+    ///
+    /// This function will issue a request to connect a client to this server,
+    /// returning immediately after starting the overlapped operation.
+    ///
+    /// If this function immediately succeeds then `Ok(true)` is returned. If
+    /// the overlapped operation is enqueued and pending, then `Ok(false)` is
+    /// returned. Otherwise an error is returned indicating what went wrong.
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe because the kernel requires that the
+    /// `overlapped` pointer is valid until the end of the I/O operation. The
+    /// kernel also requires that `overlapped` is unique for this I/O operation
+    /// and is not in use for any other I/O.
+    ///
+    /// To safely use this function callers must ensure that this pointer is
+    /// valid until the I/O operation is completed, typically via completion
+    /// ports and waiting to receive the completion notification on the port.
+    </span><span class="kw">pub unsafe fn </span>connect_overlapped(<span class="kw-2">&amp;</span><span class="self">self</span>, overlapped: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; io::Result&lt;bool&gt; {
+        <span class="kw">if </span>ConnectNamedPipe(<span class="self">self</span>.handle.raw(), overlapped) != <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
+        <span class="kw">let </span>err = io::Error::last_os_error();
 
-        <span class="kw">match</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span> <span class="kw">as</span> <span class="ident">u32</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">ERROR_PIPE_CONNECTED</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="prelude-val">Some</span>(<span class="ident">ERROR_NO_DATA</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="prelude-val">Some</span>(<span class="ident">ERROR_IO_PENDING</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="kw">match </span>err.raw_os_error().map(|e| e <span class="kw">as </span>u32) {
+            <span class="prelude-val">Some</span>(ERROR_PIPE_CONNECTED) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            <span class="prelude-val">Some</span>(ERROR_NO_DATA) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            <span class="prelude-val">Some</span>(ERROR_IO_PENDING) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(err),
         }
     }
 
-    <span class="doccomment">/// Disconnects this named pipe from any connected client.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">DisconnectNamedPipe</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>()) } <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
+    <span class="doccomment">/// Disconnects this named pipe from any connected client.
+    </span><span class="kw">pub fn </span>disconnect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">if unsafe </span>{ DisconnectNamedPipe(<span class="self">self</span>.handle.raw()) } == <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class="doccomment">/// Issues an overlapped read operation to occur on this pipe.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will issue an asynchronous read to occur in an overlapped</span>
-    <span class="doccomment">/// fashion, returning immediately. The `buf` provided will be filled in</span>
-    <span class="doccomment">/// with data and the request is tracked by the `overlapped` function</span>
-    <span class="doccomment">/// provided.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the operation succeeds immediately, `Ok(Some(n))` is returned where</span>
-    <span class="doccomment">/// `n` is the number of bytes read. If an asynchronous operation is</span>
-    <span class="doccomment">/// enqueued, then `Ok(None)` is returned. Otherwise if an error occurred</span>
-    <span class="doccomment">/// it is returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When this operation completes (or if it completes immediately), another</span>
-    <span class="doccomment">/// mechanism must be used to learn how many bytes were transferred (such as</span>
-    <span class="doccomment">/// looking at the filed in the IOCP status message).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe because the kernel requires that the `buf` and</span>
-    <span class="doccomment">/// `overlapped` pointers to be valid until the end of the I/O operation.</span>
-    <span class="doccomment">/// The kernel also requires that `overlapped` is unique for this I/O</span>
-    <span class="doccomment">/// operation and is not in use for any other I/O.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// To safely use this function callers must ensure that the pointers are</span>
-    <span class="doccomment">/// valid until the I/O operation is completed, typically via completion</span>
-    <span class="doccomment">/// ports and waiting to receive the completion notification on the port.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_overlapped</span>(
+    <span class="doccomment">/// Issues an overlapped read operation to occur on this pipe.
+    ///
+    /// This function will issue an asynchronous read to occur in an overlapped
+    /// fashion, returning immediately. The `buf` provided will be filled in
+    /// with data and the request is tracked by the `overlapped` function
+    /// provided.
+    ///
+    /// If the operation succeeds immediately, `Ok(Some(n))` is returned where
+    /// `n` is the number of bytes read. If an asynchronous operation is
+    /// enqueued, then `Ok(None)` is returned. Otherwise if an error occurred
+    /// it is returned.
+    ///
+    /// When this operation completes (or if it completes immediately), another
+    /// mechanism must be used to learn how many bytes were transferred (such as
+    /// looking at the filed in the IOCP status message).
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe because the kernel requires that the `buf` and
+    /// `overlapped` pointers to be valid until the end of the I/O operation.
+    /// The kernel also requires that `overlapped` is unique for this I/O
+    /// operation and is not in use for any other I/O.
+    ///
+    /// To safely use this function callers must ensure that the pointers are
+    /// valid until the I/O operation is completed, typically via completion
+    /// ports and waiting to receive the completion notification on the port.
+    </span><span class="kw">pub unsafe fn </span>read_overlapped(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">overlapped</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">ReadFile</span>(
-            <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(),
-            <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">len</span>,
-            <span class="ident">std::ptr::null_mut</span>(),
-            <span class="ident">overlapped</span>,
+        buf: <span class="kw-2">&amp;mut </span>[u8],
+        overlapped: <span class="kw-2">*mut </span>OVERLAPPED,
+    ) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt; {
+        <span class="kw">let </span>len = std::cmp::min(buf.len(), u32::MAX <span class="kw">as </span>usize) <span class="kw">as </span>u32;
+        <span class="kw">let </span>res = ReadFile(
+            <span class="self">self</span>.handle.raw(),
+            buf.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            len,
+            std::ptr::null_mut(),
+            overlapped,
         );
-        <span class="kw">if</span> <span class="ident">res</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_IO_PENDING</span> <span class="kw">as</span> <span class="ident">i32</span>) {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>);
+        <span class="kw">if </span>res == <span class="number">0 </span>{
+            <span class="kw">let </span>err = io::Error::last_os_error();
+            <span class="kw">if </span>err.raw_os_error() != <span class="prelude-val">Some</span>(ERROR_IO_PENDING <span class="kw">as </span>i32) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(err);
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">GetOverlappedResult</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(), <span class="ident">overlapped</span>, <span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">res</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_IO_INCOMPLETE</span> <span class="kw">as</span> <span class="ident">i32</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>bytes = <span class="number">0</span>;
+        <span class="kw">let </span>res = GetOverlappedResult(<span class="self">self</span>.handle.raw(), overlapped, <span class="kw-2">&amp;mut </span>bytes, <span class="number">0</span>);
+        <span class="kw">if </span>res == <span class="number">0 </span>{
+            <span class="kw">let </span>err = io::Error::last_os_error();
+            <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(ERROR_IO_INCOMPLETE <span class="kw">as </span>i32) {
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(err)
             }
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span> <span class="kw">as</span> <span class="ident">usize</span>))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(bytes <span class="kw">as </span>usize))
         }
     }
 
-    <span class="doccomment">/// Issues an overlapped write operation to occur on this pipe.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will issue an asynchronous write to occur in an overlapped</span>
-    <span class="doccomment">/// fashion, returning immediately. The `buf` provided will be filled in</span>
-    <span class="doccomment">/// with data and the request is tracked by the `overlapped` function</span>
-    <span class="doccomment">/// provided.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the operation succeeds immediately, `Ok(Some(n))` is returned where</span>
-    <span class="doccomment">/// `n` is the number of bytes written. If an asynchronous operation is</span>
-    <span class="doccomment">/// enqueued, then `Ok(None)` is returned. Otherwise if an error occurred</span>
-    <span class="doccomment">/// it is returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When this operation completes (or if it completes immediately), another</span>
-    <span class="doccomment">/// mechanism must be used to learn how many bytes were transferred (such as</span>
-    <span class="doccomment">/// looking at the filed in the IOCP status message).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe because the kernel requires that the `buf` and</span>
-    <span class="doccomment">/// `overlapped` pointers to be valid until the end of the I/O operation.</span>
-    <span class="doccomment">/// The kernel also requires that `overlapped` is unique for this I/O</span>
-    <span class="doccomment">/// operation and is not in use for any other I/O.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// To safely use this function callers must ensure that the pointers are</span>
-    <span class="doccomment">/// valid until the I/O operation is completed, typically via completion</span>
-    <span class="doccomment">/// ports and waiting to receive the completion notification on the port.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_overlapped</span>(
+    <span class="doccomment">/// Issues an overlapped write operation to occur on this pipe.
+    ///
+    /// This function will issue an asynchronous write to occur in an overlapped
+    /// fashion, returning immediately. The `buf` provided will be filled in
+    /// with data and the request is tracked by the `overlapped` function
+    /// provided.
+    ///
+    /// If the operation succeeds immediately, `Ok(Some(n))` is returned where
+    /// `n` is the number of bytes written. If an asynchronous operation is
+    /// enqueued, then `Ok(None)` is returned. Otherwise if an error occurred
+    /// it is returned.
+    ///
+    /// When this operation completes (or if it completes immediately), another
+    /// mechanism must be used to learn how many bytes were transferred (such as
+    /// looking at the filed in the IOCP status message).
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe because the kernel requires that the `buf` and
+    /// `overlapped` pointers to be valid until the end of the I/O operation.
+    /// The kernel also requires that `overlapped` is unique for this I/O
+    /// operation and is not in use for any other I/O.
+    ///
+    /// To safely use this function callers must ensure that the pointers are
+    /// valid until the I/O operation is completed, typically via completion
+    /// ports and waiting to receive the completion notification on the port.
+    </span><span class="kw">pub unsafe fn </span>write_overlapped(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">overlapped</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="ident">buf</span>.<span class="ident">len</span>(), <span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">WriteFile</span>(
-            <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(),
-            <span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-            <span class="ident">len</span>,
-            <span class="ident">std::ptr::null_mut</span>(),
-            <span class="ident">overlapped</span>,
+        buf: <span class="kw-2">&amp;</span>[u8],
+        overlapped: <span class="kw-2">*mut </span>OVERLAPPED,
+    ) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt; {
+        <span class="kw">let </span>len = std::cmp::min(buf.len(), u32::MAX <span class="kw">as </span>usize) <span class="kw">as </span>u32;
+        <span class="kw">let </span>res = WriteFile(
+            <span class="self">self</span>.handle.raw(),
+            buf.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            len,
+            std::ptr::null_mut(),
+            overlapped,
         );
-        <span class="kw">if</span> <span class="ident">res</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_IO_PENDING</span> <span class="kw">as</span> <span class="ident">i32</span>) {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>);
+        <span class="kw">if </span>res == <span class="number">0 </span>{
+            <span class="kw">let </span>err = io::Error::last_os_error();
+            <span class="kw">if </span>err.raw_os_error() != <span class="prelude-val">Some</span>(ERROR_IO_PENDING <span class="kw">as </span>i32) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(err);
             }
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">GetOverlappedResult</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(), <span class="ident">overlapped</span>, <span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">res</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_IO_INCOMPLETE</span> <span class="kw">as</span> <span class="ident">i32</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>bytes = <span class="number">0</span>;
+        <span class="kw">let </span>res = GetOverlappedResult(<span class="self">self</span>.handle.raw(), overlapped, <span class="kw-2">&amp;mut </span>bytes, <span class="number">0</span>);
+        <span class="kw">if </span>res == <span class="number">0 </span>{
+            <span class="kw">let </span>err = io::Error::last_os_error();
+            <span class="kw">if </span>err.raw_os_error() == <span class="prelude-val">Some</span>(ERROR_IO_INCOMPLETE <span class="kw">as </span>i32) {
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(err)
             }
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span> <span class="kw">as</span> <span class="ident">usize</span>))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(bytes <span class="kw">as </span>usize))
         }
     }
 
-    <span class="doccomment">/// Calls the `GetOverlappedResult` function to get the result of an</span>
-    <span class="doccomment">/// overlapped operation for this handle.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function takes the `OVERLAPPED` argument which must have been used</span>
-    <span class="doccomment">/// to initiate an overlapped I/O operation, and returns either the</span>
-    <span class="doccomment">/// successful number of bytes transferred during the operation or an error</span>
-    <span class="doccomment">/// if one occurred.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Unsafety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe as `overlapped` must have previously been used</span>
-    <span class="doccomment">/// to execute an operation for this handle, and it must also be a valid</span>
-    <span class="doccomment">/// pointer to an `Overlapped` instance.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">result</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">overlapped</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">transferred</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">GetOverlappedResult</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">raw</span>(), <span class="ident">overlapped</span>, <span class="kw-2">&amp;mut</span> <span class="ident">transferred</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">r</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">transferred</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    <span class="doccomment">/// Calls the `GetOverlappedResult` function to get the result of an
+    /// overlapped operation for this handle.
+    ///
+    /// This function takes the `OVERLAPPED` argument which must have been used
+    /// to initiate an overlapped I/O operation, and returns either the
+    /// successful number of bytes transferred during the operation or an error
+    /// if one occurred.
+    ///
+    /// # Unsafety
+    ///
+    /// This function is unsafe as `overlapped` must have previously been used
+    /// to execute an operation for this handle, and it must also be a valid
+    /// pointer to an `Overlapped` instance.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>result(<span class="kw-2">&amp;</span><span class="self">self</span>, overlapped: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; io::Result&lt;usize&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>transferred = <span class="number">0</span>;
+        <span class="kw">let </span>r = GetOverlappedResult(<span class="self">self</span>.handle.raw(), overlapped, <span class="kw-2">&amp;mut </span>transferred, <span class="number">0</span>);
+        <span class="kw">if </span>r == <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(transferred <span class="kw">as </span>usize)
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">ptr_from</span>() {
-    <span class="kw">use</span> <span class="ident">std::mem::ManuallyDrop</span>;
-    <span class="kw">use</span> <span class="ident">std::ptr</span>;
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>ptr_from() {
+    <span class="kw">use </span>std::mem::ManuallyDrop;
+    <span class="kw">use </span>std::ptr;
 
-    <span class="kw">let</span> <span class="ident">pipe</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ManuallyDrop::new</span>(<span class="ident">NamedPipe::from_raw_handle</span>(<span class="ident">ptr::null_mut</span>())) };
-    <span class="kw">let</span> <span class="ident">inner</span>: <span class="kw-2">&amp;</span><span class="ident">Inner</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">pipe</span>.<span class="ident">inner</span>;
+    <span class="kw">let </span>pipe = <span class="kw">unsafe </span>{ ManuallyDrop::new(NamedPipe::from_raw_handle(ptr::null_mut())) };
+    <span class="kw">let </span>inner: <span class="kw-2">&amp;</span>Inner = <span class="kw-2">&amp;</span>pipe.inner;
     <span class="macro">assert_eq!</span>(
-        <span class="ident">inner</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Inner</span>,
-        <span class="kw">unsafe</span> { <span class="ident">Inner::ptr_from_conn_overlapped</span>(<span class="kw-2">&amp;</span><span class="ident">inner</span>.<span class="ident">connect</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) },
-        <span class="string">&quot;`ptr_from_conn_overlapped` incorrect&quot;</span>
-    );
+        inner <span class="kw">as </span><span class="kw-2">*const </span>Inner,
+        <span class="kw">unsafe </span>{ Inner::ptr_from_conn_overlapped(<span class="kw-2">&amp;</span>inner.connect <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span>OVERLAPPED) },
+        <span class="string">&quot;`ptr_from_conn_overlapped` incorrect&quot;
+    </span>);
     <span class="macro">assert_eq!</span>(
-        <span class="ident">inner</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Inner</span>,
-        <span class="kw">unsafe</span> { <span class="ident">Inner::ptr_from_read_overlapped</span>(<span class="kw-2">&amp;</span><span class="ident">inner</span>.<span class="ident">read</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) },
-        <span class="string">&quot;`ptr_from_read_overlapped` incorrect&quot;</span>
-    );
+        inner <span class="kw">as </span><span class="kw-2">*const </span>Inner,
+        <span class="kw">unsafe </span>{ Inner::ptr_from_read_overlapped(<span class="kw-2">&amp;</span>inner.read <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span>OVERLAPPED) },
+        <span class="string">&quot;`ptr_from_read_overlapped` incorrect&quot;
+    </span>);
     <span class="macro">assert_eq!</span>(
-        <span class="ident">inner</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Inner</span>,
-        <span class="kw">unsafe</span> { <span class="ident">Inner::ptr_from_write_overlapped</span>(<span class="kw-2">&amp;</span><span class="ident">inner</span>.<span class="ident">write</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) },
-        <span class="string">&quot;`ptr_from_write_overlapped` incorrect&quot;</span>
-    );
+        inner <span class="kw">as </span><span class="kw-2">*const </span>Inner,
+        <span class="kw">unsafe </span>{ Inner::ptr_from_write_overlapped(<span class="kw-2">&amp;</span>inner.write <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span>OVERLAPPED) },
+        <span class="string">&quot;`ptr_from_write_overlapped` incorrect&quot;
+    </span>);
 }
 
-<span class="kw">struct</span> <span class="ident">Io</span> {
-    <span class="comment">// Uniquely identifies the selector associated with this named pipe</span>
-    <span class="ident">cp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="comment">// Token used to identify events</span>
-    <span class="ident">token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Token</span><span class="op">&gt;</span>,
-    <span class="ident">read</span>: <span class="ident">State</span>,
-    <span class="ident">write</span>: <span class="ident">State</span>,
-    <span class="ident">connect_error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span>,
+<span class="kw">struct </span>Io {
+    <span class="comment">// Uniquely identifies the selector associated with this named pipe
+    </span>cp: <span class="prelude-ty">Option</span>&lt;Arc&lt;CompletionPort&gt;&gt;,
+    <span class="comment">// Token used to identify events
+    </span>token: <span class="prelude-ty">Option</span>&lt;Token&gt;,
+    read: State,
+    write: State,
+    connect_error: <span class="prelude-ty">Option</span>&lt;io::Error&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">enum</span> <span class="ident">State</span> {
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">enum </span>State {
     <span class="prelude-val">None</span>,
-    <span class="ident">Pending</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span>),
-    <span class="prelude-val">Ok</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span>),
-    <span class="prelude-val">Err</span>(<span class="ident">io::Error</span>),
+    Pending(Vec&lt;u8&gt;, usize),
+    <span class="prelude-val">Ok</span>(Vec&lt;u8&gt;, usize),
+    <span class="prelude-val">Err</span>(io::Error),
 }
 
-<span class="comment">// Odd tokens are for named pipes</span>
-<span class="kw">static</span> <span class="ident">NEXT_TOKEN</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">1</span>);
+<span class="comment">// Odd tokens are for named pipes
+</span><span class="kw">static </span>NEXT_TOKEN: AtomicUsize = AtomicUsize::new(<span class="number">1</span>);
 
-<span class="kw">fn</span> <span class="ident">would_block</span>() -&gt; <span class="ident">io::Error</span> {
-    <span class="ident">io::ErrorKind::WouldBlock</span>.<span class="ident">into</span>()
+<span class="kw">fn </span>would_block() -&gt; io::Error {
+    io::ErrorKind::WouldBlock.into()
 }
 
-<span class="kw">impl</span> <span class="ident">NamedPipe</span> {
-    <span class="doccomment">/// Creates a new named pipe at the specified `addr` given a &quot;reasonable</span>
-    <span class="doccomment">/// set&quot; of initial configuration options.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">addr</span>: <span class="ident">A</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">NamedPipe</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">std::os::windows::ffi::OsStrExt</span>;
-        <span class="kw">let</span> <span class="ident">name</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">as_ref</span>().<span class="ident">encode_wide</span>().<span class="ident">chain</span>(<span class="prelude-val">Some</span>(<span class="number">0</span>)).<span class="ident">collect</span>();
+<span class="kw">impl </span>NamedPipe {
+    <span class="doccomment">/// Creates a new named pipe at the specified `addr` given a &quot;reasonable
+    /// set&quot; of initial configuration options.
+    </span><span class="kw">pub fn </span>new&lt;A: AsRef&lt;OsStr&gt;&gt;(addr: A) -&gt; io::Result&lt;NamedPipe&gt; {
+        <span class="kw">use </span>std::os::windows::ffi::OsStrExt;
+        <span class="kw">let </span>name: Vec&lt;<span class="kw">_</span>&gt; = addr.as_ref().encode_wide().chain(<span class="prelude-val">Some</span>(<span class="number">0</span>)).collect();
 
-        <span class="comment">// Safety: syscall</span>
-        <span class="kw">let</span> <span class="ident">h</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">CreateNamedPipeW</span>(
-                <span class="ident">name</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">PIPE_ACCESS_DUPLEX</span> <span class="op">|</span> <span class="ident">FILE_FLAG_FIRST_PIPE_INSTANCE</span> <span class="op">|</span> <span class="ident">FILE_FLAG_OVERLAPPED</span>,
-                <span class="ident">PIPE_TYPE_BYTE</span>,
-                <span class="ident">PIPE_UNLIMITED_INSTANCES</span>,
+        <span class="comment">// Safety: syscall
+        </span><span class="kw">let </span>h = <span class="kw">unsafe </span>{
+            CreateNamedPipeW(
+                name.as_ptr(),
+                PIPE_ACCESS_DUPLEX | FILE_FLAG_FIRST_PIPE_INSTANCE | FILE_FLAG_OVERLAPPED,
+                PIPE_TYPE_BYTE,
+                PIPE_UNLIMITED_INSTANCES,
                 <span class="number">65536</span>,
                 <span class="number">65536</span>,
                 <span class="number">0</span>,
-                <span class="ident">std::ptr::null_mut</span>(),
+                std::ptr::null_mut(),
             )
         };
 
-        <span class="kw">if</span> <span class="ident">h</span> <span class="op">==</span> <span class="ident">INVALID_HANDLE_VALUE</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-        } <span class="kw">else</span> {
-            <span class="comment">// Safety: nothing actually unsafe about this. The trait fn includes</span>
-            <span class="comment">// `unsafe`.</span>
-            <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_raw_handle</span>(<span class="ident">h</span> <span class="kw">as</span> <span class="ident">RawHandle</span>) })
+        <span class="kw">if </span>h == INVALID_HANDLE_VALUE {
+            <span class="prelude-val">Err</span>(io::Error::last_os_error())
+        } <span class="kw">else </span>{
+            <span class="comment">// Safety: nothing actually unsafe about this. The trait fn includes
+            // `unsafe`.
+            </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_handle(h <span class="kw">as </span>RawHandle) })
         }
     }
 
-    <span class="doccomment">/// Attempts to call `ConnectNamedPipe`, if possible.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will attempt to connect this pipe to a client in an</span>
-    <span class="doccomment">/// asynchronous fashion. If the function immediately establishes a</span>
-    <span class="doccomment">/// connection to a client then `Ok(())` is returned. Otherwise if a</span>
-    <span class="doccomment">/// connection attempt was issued and is now in progress then a &quot;would</span>
-    <span class="doccomment">/// block&quot; error is returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When the connection is finished then this object will be flagged as</span>
-    <span class="doccomment">/// being ready for a write, or otherwise in the writable state.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will return a &quot;would block&quot; error if the pipe has not yet</span>
-    <span class="doccomment">/// been registered with an event loop, if the connection operation has</span>
-    <span class="doccomment">/// previously been issued but has not yet completed, or if the connect</span>
-    <span class="doccomment">/// itself was issued and didn&#39;t finish immediately.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Normal I/O errors from the call to `ConnectNamedPipe` are returned</span>
-    <span class="doccomment">/// immediately.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="comment">// &quot;Acquire the connecting lock&quot; or otherwise just make sure we&#39;re the</span>
-        <span class="comment">// only operation that&#39;s using the `connect` overlapped instance.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connecting</span>.<span class="ident">swap</span>(<span class="bool-val">true</span>, <span class="ident">SeqCst</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">would_block</span>());
+    <span class="doccomment">/// Attempts to call `ConnectNamedPipe`, if possible.
+    ///
+    /// This function will attempt to connect this pipe to a client in an
+    /// asynchronous fashion. If the function immediately establishes a
+    /// connection to a client then `Ok(())` is returned. Otherwise if a
+    /// connection attempt was issued and is now in progress then a &quot;would
+    /// block&quot; error is returned.
+    ///
+    /// When the connection is finished then this object will be flagged as
+    /// being ready for a write, or otherwise in the writable state.
+    ///
+    /// # Errors
+    ///
+    /// This function will return a &quot;would block&quot; error if the pipe has not yet
+    /// been registered with an event loop, if the connection operation has
+    /// previously been issued but has not yet completed, or if the connect
+    /// itself was issued and didn&#39;t finish immediately.
+    ///
+    /// Normal I/O errors from the call to `ConnectNamedPipe` are returned
+    /// immediately.
+    </span><span class="kw">pub fn </span>connect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="comment">// &quot;Acquire the connecting lock&quot; or otherwise just make sure we&#39;re the
+        // only operation that&#39;s using the `connect` overlapped instance.
+        </span><span class="kw">if </span><span class="self">self</span>.inner.connecting.swap(<span class="bool-val">true</span>, SeqCst) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(would_block());
         }
 
-        <span class="comment">// Now that we&#39;ve flagged ourselves in the connecting state, issue the</span>
-        <span class="comment">// connection attempt. Afterwards interpret the return value and set</span>
-        <span class="comment">// internal state accordingly.</span>
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">overlapped</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connect</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connect_overlapped</span>(<span class="ident">overlapped</span>)
+        <span class="comment">// Now that we&#39;ve flagged ourselves in the connecting state, issue the
+        // connection attempt. Afterwards interpret the return value and set
+        // internal state accordingly.
+        </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{
+            <span class="kw">let </span>overlapped = <span class="self">self</span>.inner.connect.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+            <span class="self">self</span>.inner.connect_overlapped(overlapped)
         };
 
-        <span class="kw">match</span> <span class="ident">res</span> {
-            <span class="comment">// The connection operation finished immediately, so let&#39;s schedule</span>
-            <span class="comment">// reads/writes and such.</span>
-            <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>) =&gt; {
-                <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connecting</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">SeqCst</span>);
-                <span class="ident">Inner::post_register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="prelude-val">None</span>);
+        <span class="kw">match </span>res {
+            <span class="comment">// The connection operation finished immediately, so let&#39;s schedule
+            // reads/writes and such.
+            </span><span class="prelude-val">Ok</span>(<span class="bool-val">true</span>) =&gt; {
+                <span class="self">self</span>.inner.connecting.store(<span class="bool-val">false</span>, SeqCst);
+                Inner::post_register(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, <span class="prelude-val">None</span>);
                 <span class="prelude-val">Ok</span>(())
             }
 
-            <span class="comment">// If the overlapped operation was successful and didn&#39;t finish</span>
-            <span class="comment">// immediately then we forget a copy of the arc we hold</span>
-            <span class="comment">// internally. This ensures that when the completion status comes</span>
-            <span class="comment">// in for the I/O operation finishing it&#39;ll have a reference</span>
-            <span class="comment">// associated with it and our data will still be valid. The</span>
-            <span class="comment">// `connect_done` function will &quot;reify&quot; this forgotten pointer to</span>
-            <span class="comment">// drop the refcount on the other side.</span>
-            <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) =&gt; {
-                <span class="ident">mem::forget</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">clone</span>());
-                <span class="prelude-val">Err</span>(<span class="ident">would_block</span>())
+            <span class="comment">// If the overlapped operation was successful and didn&#39;t finish
+            // immediately then we forget a copy of the arc we hold
+            // internally. This ensures that when the completion status comes
+            // in for the I/O operation finishing it&#39;ll have a reference
+            // associated with it and our data will still be valid. The
+            // `connect_done` function will &quot;reify&quot; this forgotten pointer to
+            // drop the refcount on the other side.
+            </span><span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) =&gt; {
+                mem::forget(<span class="self">self</span>.inner.clone());
+                <span class="prelude-val">Err</span>(would_block())
             }
 
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connecting</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">SeqCst</span>);
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>)
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                <span class="self">self</span>.inner.connecting.store(<span class="bool-val">false</span>, SeqCst);
+                <span class="prelude-val">Err</span>(e)
             }
         }
     }
 
-    <span class="doccomment">/// Takes any internal error that has happened after the last I/O operation</span>
-    <span class="doccomment">/// which hasn&#39;t been retrieved yet.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is particularly useful when detecting failed attempts to `connect`.</span>
-    <span class="doccomment">/// After a completed `connect` flags this pipe as writable then callers</span>
-    <span class="doccomment">/// must invoke this method to determine whether the connection actually</span>
-    <span class="doccomment">/// succeeded. If this function returns `None` then a client is connected,</span>
-    <span class="doccomment">/// otherwise it returns an error of what happened and a client shouldn&#39;t be</span>
-    <span class="doccomment">/// connected.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">connect_error</span>.<span class="ident">take</span>())
+    <span class="doccomment">/// Takes any internal error that has happened after the last I/O operation
+    /// which hasn&#39;t been retrieved yet.
+    ///
+    /// This is particularly useful when detecting failed attempts to `connect`.
+    /// After a completed `connect` flags this pipe as writable then callers
+    /// must invoke this method to determine whether the connection actually
+    /// succeeded. If this function returns `None` then a client is connected,
+    /// otherwise it returns an error of what happened and a client shouldn&#39;t be
+    /// connected.
+    </span><span class="kw">pub fn </span>take_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;io::Error&gt;&gt; {
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.inner.io.lock().unwrap().connect_error.take())
     }
 
-    <span class="doccomment">/// Disconnects this named pipe from a connected client.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will disconnect the pipe from a connected client, if any,</span>
-    <span class="doccomment">/// transitively calling the `DisconnectNamedPipe` function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// After a `disconnect` is issued, then a `connect` may be called again to</span>
-    <span class="doccomment">/// connect to another client.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">disconnect</span>()
+    <span class="doccomment">/// Disconnects this named pipe from a connected client.
+    ///
+    /// This function will disconnect the pipe from a connected client, if any,
+    /// transitively calling the `DisconnectNamedPipe` function.
+    ///
+    /// After a `disconnect` is issued, then a `connect` may be called again to
+    /// connect to another client.
+    </span><span class="kw">pub fn </span>disconnect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="self">self</span>.inner.disconnect()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">RawHandle</span>) -&gt; <span class="ident">NamedPipe</span> {
-        <span class="ident">NamedPipe</span> {
-            <span class="ident">inner</span>: <span class="ident">Arc::new</span>(<span class="ident">Inner</span> {
-                <span class="ident">handle</span>: <span class="ident">Handle::new</span>(<span class="ident">handle</span> <span class="kw">as</span> <span class="ident">HANDLE</span>),
-                <span class="ident">connect</span>: <span class="ident">Overlapped::new</span>(<span class="ident">connect_done</span>),
-                <span class="ident">connecting</span>: <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>),
-                <span class="ident">read</span>: <span class="ident">Overlapped::new</span>(<span class="ident">read_done</span>),
-                <span class="ident">write</span>: <span class="ident">Overlapped::new</span>(<span class="ident">write_done</span>),
-                <span class="ident">io</span>: <span class="ident">Mutex::new</span>(<span class="ident">Io</span> {
-                    <span class="ident">cp</span>: <span class="prelude-val">None</span>,
-                    <span class="ident">token</span>: <span class="prelude-val">None</span>,
-                    <span class="ident">read</span>: <span class="ident">State::None</span>,
-                    <span class="ident">write</span>: <span class="ident">State::None</span>,
-                    <span class="ident">connect_error</span>: <span class="prelude-val">None</span>,
+<span class="kw">impl </span>FromRawHandle <span class="kw">for </span>NamedPipe {
+    <span class="kw">unsafe fn </span>from_raw_handle(handle: RawHandle) -&gt; NamedPipe {
+        NamedPipe {
+            inner: Arc::new(Inner {
+                handle: Handle::new(handle <span class="kw">as </span>HANDLE),
+                connect: Overlapped::new(connect_done),
+                connecting: AtomicBool::new(<span class="bool-val">false</span>),
+                read: Overlapped::new(read_done),
+                write: Overlapped::new(write_done),
+                io: Mutex::new(Io {
+                    cp: <span class="prelude-val">None</span>,
+                    token: <span class="prelude-val">None</span>,
+                    read: State::None,
+                    write: State::None,
+                    connect_error: <span class="prelude-val">None</span>,
                 }),
-                <span class="ident">pool</span>: <span class="ident">Mutex::new</span>(<span class="ident">BufferPool::with_capacity</span>(<span class="number">2</span>)),
+                pool: Mutex::new(BufferPool::with_capacity(<span class="number">2</span>)),
             }),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">NamedPipe</span> <span class="kw">as</span> <span class="ident">Read</span><span class="op">&gt;</span><span class="ident">::read</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">buf</span>)
+<span class="kw">impl </span>Read <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        &lt;<span class="kw-2">&amp;</span>NamedPipe <span class="kw">as </span>Read&gt;::read(<span class="kw-2">&amp;mut &amp;*</span><span class="self">self</span>, buf)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">NamedPipe</span> <span class="kw">as</span> <span class="ident">Write</span><span class="op">&gt;</span><span class="ident">::write</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">buf</span>)
+<span class="kw">impl </span>Write <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        &lt;<span class="kw-2">&amp;</span>NamedPipe <span class="kw">as </span>Write&gt;::write(<span class="kw-2">&amp;mut &amp;*</span><span class="self">self</span>, buf)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">NamedPipe</span> <span class="kw">as</span> <span class="ident">Write</span><span class="op">&gt;</span><span class="ident">::flush</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>)
+    <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        &lt;<span class="kw-2">&amp;</span>NamedPipe <span class="kw">as </span>Write&gt;::flush(<span class="kw-2">&amp;mut &amp;*</span><span class="self">self</span>)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Read <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>NamedPipe {
+    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>state = <span class="self">self</span>.inner.io.lock().unwrap();
 
-        <span class="kw">if</span> <span class="ident">state</span>.<span class="ident">token</span>.<span class="ident">is_none</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">would_block</span>());
+        <span class="kw">if </span>state.token.is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(would_block());
         }
 
-        <span class="kw">match</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>.<span class="ident">read</span>, <span class="ident">State::None</span>) {
-            <span class="comment">// In theory not possible with `token` checked above,</span>
-            <span class="comment">// but return would block for now.</span>
-            <span class="ident">State::None</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">would_block</span>()),
+        <span class="kw">match </span>mem::replace(<span class="kw-2">&amp;mut </span>state.read, State::None) {
+            <span class="comment">// In theory not possible with `token` checked above,
+            // but return would block for now.
+            </span>State::None =&gt; <span class="prelude-val">Err</span>(would_block()),
 
-            <span class="comment">// A read is in flight, still waiting for it to finish</span>
-            <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="ident">amt</span>) =&gt; {
-                <span class="ident">state</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="ident">amt</span>);
-                <span class="prelude-val">Err</span>(<span class="ident">would_block</span>())
+            <span class="comment">// A read is in flight, still waiting for it to finish
+            </span>State::Pending(buf, amt) =&gt; {
+                state.read = State::Pending(buf, amt);
+                <span class="prelude-val">Err</span>(would_block())
             }
 
-            <span class="comment">// We previously read something into `data`, try to copy out some</span>
-            <span class="comment">// data. If we copy out all the data schedule a new read and</span>
-            <span class="comment">// otherwise store the buffer to get read later.</span>
-            <span class="ident">State::Ok</span>(<span class="ident">data</span>, <span class="ident">cur</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> {
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>[<span class="ident">cur</span>..];
-                    <span class="ident">remaining</span>.<span class="ident">read</span>(<span class="ident">buf</span>)<span class="question-mark">?</span>
-                };
-                <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">cur</span> <span class="op">+</span> <span class="ident">n</span>;
-                <span class="kw">if</span> <span class="ident">next</span> <span class="op">!</span><span class="op">=</span> <span class="ident">data</span>.<span class="ident">len</span>() {
-                    <span class="ident">state</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Ok</span>(<span class="ident">data</span>, <span class="ident">next</span>);
-                } <span class="kw">else</span> {
-                    <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">put_buffer</span>(<span class="ident">data</span>);
-                    <span class="ident">Inner::schedule_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="prelude-val">None</span>);
+            <span class="comment">// We previously read something into `data`, try to copy out some
+            // data. If we copy out all the data schedule a new read and
+            // otherwise store the buffer to get read later.
+            </span>State::Ok(data, cur) =&gt; {
+                <span class="kw">let </span>n = {
+                    <span class="kw">let </span><span class="kw-2">mut </span>remaining = <span class="kw-2">&amp;</span>data[cur..];
+                    remaining.read(buf)<span class="question-mark">?
+                </span>};
+                <span class="kw">let </span>next = cur + n;
+                <span class="kw">if </span>next != data.len() {
+                    state.read = State::Ok(data, next);
+                } <span class="kw">else </span>{
+                    <span class="self">self</span>.inner.put_buffer(data);
+                    Inner::schedule_read(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, <span class="kw-2">&amp;mut </span>state, <span class="prelude-val">None</span>);
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">n</span>)
+                <span class="prelude-val">Ok</span>(n)
             }
 
-            <span class="comment">// Looks like an in-flight read hit an error, return that here while</span>
-            <span class="comment">// we schedule a new one.</span>
-            <span class="ident">State::Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="ident">Inner::schedule_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="prelude-val">None</span>);
-                <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_BROKEN_PIPE</span> <span class="kw">as</span> <span class="ident">i32</span>) {
+            <span class="comment">// Looks like an in-flight read hit an error, return that here while
+            // we schedule a new one.
+            </span>State::Err(e) =&gt; {
+                Inner::schedule_read(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, <span class="kw-2">&amp;mut </span>state, <span class="prelude-val">None</span>);
+                <span class="kw">if </span>e.raw_os_error() == <span class="prelude-val">Some</span>(ERROR_BROKEN_PIPE <span class="kw">as </span>i32) {
                     <span class="prelude-val">Ok</span>(<span class="number">0</span>)
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Err</span>(<span class="ident">e</span>)
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">Err</span>(e)
                 }
             }
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="comment">// Make sure there&#39;s no writes pending</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Write <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>NamedPipe {
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        <span class="comment">// Make sure there&#39;s no writes pending
+        </span><span class="kw">let </span><span class="kw-2">mut </span>io = <span class="self">self</span>.inner.io.lock().unwrap();
 
-        <span class="kw">if</span> <span class="ident">io</span>.<span class="ident">token</span>.<span class="ident">is_none</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">would_block</span>());
+        <span class="kw">if </span>io.token.is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(would_block());
         }
 
-        <span class="kw">match</span> <span class="ident">io</span>.<span class="ident">write</span> {
-            <span class="ident">State::None</span> =&gt; {}
-            <span class="ident">State::Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">match</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">io</span>.<span class="ident">write</span>, <span class="ident">State::None</span>) {
-                <span class="ident">State::Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
-                <span class="comment">// `io` is locked, so this branch is unreachable</span>
-                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+        <span class="kw">match </span>io.write {
+            State::None =&gt; {}
+            State::Err(<span class="kw">_</span>) =&gt; <span class="kw">match </span>mem::replace(<span class="kw-2">&amp;mut </span>io.write, State::None) {
+                State::Err(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e),
+                <span class="comment">// `io` is locked, so this branch is unreachable
+                </span><span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="comment">// any other state should be handled in `write_done`</span>
-            <span class="kw">_</span> =&gt; {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">would_block</span>());
+            <span class="comment">// any other state should be handled in `write_done`
+            </span><span class="kw">_ </span>=&gt; {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(would_block());
             }
         }
 
-        <span class="comment">// Move `buf` onto the heap and fire off the write</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">owned_buf</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get_buffer</span>();
-        <span class="ident">owned_buf</span>.<span class="ident">extend</span>(<span class="ident">buf</span>);
-        <span class="kw">match</span> <span class="ident">Inner::maybe_schedule_write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="ident">owned_buf</span>, <span class="number">0</span>, <span class="kw-2">&amp;mut</span> <span class="ident">io</span>)<span class="question-mark">?</span> {
-            <span class="comment">// Some bytes are written immediately</span>
-            <span class="prelude-val">Some</span>(<span class="ident">n</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">n</span>),
-            <span class="comment">// Write operation is anqueued for whole buffer</span>
-            <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">buf</span>.<span class="ident">len</span>()),
+        <span class="comment">// Move `buf` onto the heap and fire off the write
+        </span><span class="kw">let </span><span class="kw-2">mut </span>owned_buf = <span class="self">self</span>.inner.get_buffer();
+        owned_buf.extend(buf);
+        <span class="kw">match </span>Inner::maybe_schedule_write(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, owned_buf, <span class="number">0</span>, <span class="kw-2">&amp;mut </span>io)<span class="question-mark">? </span>{
+            <span class="comment">// Some bytes are written immediately
+            </span><span class="prelude-val">Some</span>(n) =&gt; <span class="prelude-val">Ok</span>(n),
+            <span class="comment">// Write operation is anqueued for whole buffer
+            </span><span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(buf.len()),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Source</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="kw">_</span>: <span class="ident">Interest</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+<span class="kw">impl </span>Source <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>register(<span class="kw-2">&amp;mut </span><span class="self">self</span>, registry: <span class="kw-2">&amp;</span>Registry, token: Token, <span class="kw">_</span>: Interest) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>io = <span class="self">self</span>.inner.io.lock().unwrap();
 
-        <span class="ident">io</span>.<span class="ident">check_association</span>(<span class="ident">registry</span>, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
+        io.check_association(registry, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">io</span>.<span class="ident">token</span>.<span class="ident">is_some</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::AlreadyExists</span>,
+        <span class="kw">if </span>io.token.is_some() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::AlreadyExists,
                 <span class="string">&quot;I/O source already registered with a `Registry`&quot;</span>,
             ));
         }
 
-        <span class="kw">if</span> <span class="ident">io</span>.<span class="ident">cp</span>.<span class="ident">is_none</span>() {
-            <span class="kw">let</span> <span class="ident">selector</span> <span class="op">=</span> <span class="ident">registry</span>.<span class="ident">selector</span>();
+        <span class="kw">if </span>io.cp.is_none() {
+            <span class="kw">let </span>selector = registry.selector();
 
-            <span class="ident">io</span>.<span class="ident">cp</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">selector</span>.<span class="ident">clone_port</span>());
+            io.cp = <span class="prelude-val">Some</span>(selector.clone_port());
 
-            <span class="kw">let</span> <span class="ident">inner_token</span> <span class="op">=</span> <span class="ident">NEXT_TOKEN</span>.<span class="ident">fetch_add</span>(<span class="number">2</span>, <span class="ident">Relaxed</span>) <span class="op">+</span> <span class="number">2</span>;
-            <span class="ident">selector</span>.<span class="ident">inner</span>.<span class="ident">cp</span>.<span class="ident">add_handle</span>(<span class="ident">inner_token</span>, <span class="self">self</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>inner_token = NEXT_TOKEN.fetch_add(<span class="number">2</span>, Relaxed) + <span class="number">2</span>;
+            selector.inner.cp.add_handle(inner_token, <span class="self">self</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="ident">io</span>.<span class="ident">token</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>);
-        <span class="ident">drop</span>(<span class="ident">io</span>);
+        io.token = <span class="prelude-val">Some</span>(token);
+        drop(io);
 
-        <span class="ident">Inner::post_register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="prelude-val">None</span>);
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">fn</span> <span class="ident">reregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="kw">_</span>: <span class="ident">Interest</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-
-        <span class="ident">io</span>.<span class="ident">check_association</span>(<span class="ident">registry</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
-
-        <span class="ident">io</span>.<span class="ident">token</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>);
-        <span class="ident">drop</span>(<span class="ident">io</span>);
-
-        <span class="ident">Inner::post_register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="prelude-val">None</span>);
+        Inner::post_register(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, <span class="prelude-val">None</span>);
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+    <span class="kw">fn </span>reregister(<span class="kw-2">&amp;mut </span><span class="self">self</span>, registry: <span class="kw-2">&amp;</span>Registry, token: Token, <span class="kw">_</span>: Interest) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>io = <span class="self">self</span>.inner.io.lock().unwrap();
 
-        <span class="ident">io</span>.<span class="ident">check_association</span>(<span class="ident">registry</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
+        io.check_association(registry, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">io</span>.<span class="ident">token</span>.<span class="ident">is_none</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::NotFound</span>,
+        io.token = <span class="prelude-val">Some</span>(token);
+        drop(io);
+
+        Inner::post_register(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, <span class="prelude-val">None</span>);
+
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>deregister(<span class="kw-2">&amp;mut </span><span class="self">self</span>, registry: <span class="kw-2">&amp;</span>Registry) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>io = <span class="self">self</span>.inner.io.lock().unwrap();
+
+        io.check_association(registry, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">if </span>io.token.is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::NotFound,
                 <span class="string">&quot;I/O source not registered with `Registry`&quot;</span>,
             ));
         }
 
-        <span class="ident">io</span>.<span class="ident">token</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        io.token = <span class="prelude-val">None</span>;
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RawHandle</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">handle</span>.<span class="ident">raw</span>() <span class="kw">as</span> <span class="ident">RawHandle</span>
+<span class="kw">impl </span>AsRawHandle <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>as_raw_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RawHandle {
+        <span class="self">self</span>.inner.handle.raw() <span class="kw">as </span>RawHandle
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">handle</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="self">self</span>.inner.handle.fmt(f)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">NamedPipe</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="comment">// Cancel pending reads/connects, but don&#39;t cancel writes to ensure that</span>
-        <span class="comment">// everything is flushed out.</span>
-        <span class="kw">unsafe</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connecting</span>.<span class="ident">load</span>(<span class="ident">SeqCst</span>) {
-                <span class="ident">drop</span>(<span class="ident">cancel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">handle</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">connect</span>));
+<span class="kw">impl </span>Drop <span class="kw">for </span>NamedPipe {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="comment">// Cancel pending reads/connects, but don&#39;t cancel writes to ensure that
+        // everything is flushed out.
+        </span><span class="kw">unsafe </span>{
+            <span class="kw">if </span><span class="self">self</span>.inner.connecting.load(SeqCst) {
+                drop(cancel(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.handle, <span class="kw-2">&amp;</span><span class="self">self</span>.inner.connect));
             }
 
-            <span class="kw">let</span> <span class="ident">io</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">State::Pending</span>(..) <span class="op">=</span> <span class="ident">io</span>.<span class="ident">read</span> {
-                <span class="ident">drop</span>(<span class="ident">cancel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">handle</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">read</span>));
+            <span class="kw">let </span>io = <span class="self">self</span>.inner.io.lock().unwrap();
+            <span class="kw">if let </span>State::Pending(..) = io.read {
+                drop(cancel(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.handle, <span class="kw-2">&amp;</span><span class="self">self</span>.inner.read));
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Inner</span> {
-    <span class="doccomment">/// Schedules a read to happen in the background, executing an overlapped</span>
-    <span class="doccomment">/// operation.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function returns `true` if a normal error happens or if the read</span>
-    <span class="doccomment">/// is scheduled in the background. If the pipe is no longer connected</span>
-    <span class="doccomment">/// (ERROR_PIPE_LISTENING) then `false` is returned and no read is</span>
-    <span class="doccomment">/// scheduled.</span>
-    <span class="kw">fn</span> <span class="ident">schedule_read</span>(<span class="ident">me</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>, <span class="ident">io</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Io</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// Check to see if a read is already scheduled/completed</span>
-        <span class="kw">match</span> <span class="ident">io</span>.<span class="ident">read</span> {
-            <span class="ident">State::None</span> =&gt; {}
-            <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="bool-val">true</span>,
+<span class="kw">impl </span>Inner {
+    <span class="doccomment">/// Schedules a read to happen in the background, executing an overlapped
+    /// operation.
+    ///
+    /// This function returns `true` if a normal error happens or if the read
+    /// is scheduled in the background. If the pipe is no longer connected
+    /// (ERROR_PIPE_LISTENING) then `false` is returned and no read is
+    /// scheduled.
+    </span><span class="kw">fn </span>schedule_read(me: <span class="kw-2">&amp;</span>Arc&lt;Inner&gt;, io: <span class="kw-2">&amp;mut </span>Io, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) -&gt; bool {
+        <span class="comment">// Check to see if a read is already scheduled/completed
+        </span><span class="kw">match </span>io.read {
+            State::None =&gt; {}
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="bool-val">true</span>,
         }
 
-        <span class="comment">// Allocate a buffer and schedule the read.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">get_buffer</span>();
-        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">overlapped</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">read</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">buf</span>.<span class="ident">capacity</span>());
-            <span class="ident">me</span>.<span class="ident">read_overlapped</span>(<span class="ident">slice</span>, <span class="ident">overlapped</span>)
+        <span class="comment">// Allocate a buffer and schedule the read.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>buf = me.get_buffer();
+        <span class="kw">let </span>e = <span class="kw">unsafe </span>{
+            <span class="kw">let </span>overlapped = me.read.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+            <span class="kw">let </span>slice = slice::from_raw_parts_mut(buf.as_mut_ptr(), buf.capacity());
+            me.read_overlapped(slice, overlapped)
         };
 
-        <span class="kw">match</span> <span class="ident">e</span> {
-            <span class="comment">// See `NamedPipe::connect` above for the rationale behind `forget`</span>
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                <span class="ident">io</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="number">0</span>); <span class="comment">// 0 is ignored on read side</span>
-                <span class="ident">mem::forget</span>(<span class="ident">me</span>.<span class="ident">clone</span>());
-                <span class="bool-val">true</span>
-            }
+        <span class="kw">match </span>e {
+            <span class="comment">// See `NamedPipe::connect` above for the rationale behind `forget`
+            </span><span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
+                io.read = State::Pending(buf, <span class="number">0</span>); <span class="comment">// 0 is ignored on read side
+                </span>mem::forget(me.clone());
+                <span class="bool-val">true
+            </span>}
 
-            <span class="comment">// If ERROR_PIPE_LISTENING happens then it&#39;s not a real read error,</span>
-            <span class="comment">// we just need to wait for a connect.</span>
-            <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_PIPE_LISTENING</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; <span class="bool-val">false</span>,
+            <span class="comment">// If ERROR_PIPE_LISTENING happens then it&#39;s not a real read error,
+            // we just need to wait for a connect.
+            </span><span class="prelude-val">Err</span>(<span class="kw-2">ref </span>e) <span class="kw">if </span>e.raw_os_error() == <span class="prelude-val">Some</span>(ERROR_PIPE_LISTENING <span class="kw">as </span>i32) =&gt; <span class="bool-val">false</span>,
 
-            <span class="comment">// If some other error happened, though, we&#39;re now readable to give</span>
-            <span class="comment">// out the error.</span>
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="ident">io</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Err</span>(<span class="ident">e</span>);
-                <span class="ident">io</span>.<span class="ident">notify_readable</span>(<span class="ident">events</span>);
-                <span class="bool-val">true</span>
-            }
+            <span class="comment">// If some other error happened, though, we&#39;re now readable to give
+            // out the error.
+            </span><span class="prelude-val">Err</span>(e) =&gt; {
+                io.read = State::Err(e);
+                io.notify_readable(events);
+                <span class="bool-val">true
+            </span>}
         }
     }
 
-    <span class="doccomment">/// Maybe schedules overlapped write operation.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// * `None` means that overlapped operation was enqueued</span>
-    <span class="doccomment">/// * `Some(n)` means that `n` bytes was immediately written.</span>
-    <span class="doccomment">///   Note, that `write_done` will fire anyway to clean up the state.</span>
-    <span class="kw">fn</span> <span class="ident">maybe_schedule_write</span>(
-        <span class="ident">me</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>,
-        <span class="ident">buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="ident">usize</span>,
-        <span class="ident">io</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Io</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="comment">// Very similar to `schedule_read` above, just done for the write half.</span>
-        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">overlapped</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">write</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-            <span class="ident">me</span>.<span class="ident">write_overlapped</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="ident">pos</span>..], <span class="ident">overlapped</span>)
+    <span class="doccomment">/// Maybe schedules overlapped write operation.
+    ///
+    /// * `None` means that overlapped operation was enqueued
+    /// * `Some(n)` means that `n` bytes was immediately written.
+    ///   Note, that `write_done` will fire anyway to clean up the state.
+    </span><span class="kw">fn </span>maybe_schedule_write(
+        me: <span class="kw-2">&amp;</span>Arc&lt;Inner&gt;,
+        buf: Vec&lt;u8&gt;,
+        pos: usize,
+        io: <span class="kw-2">&amp;mut </span>Io,
+    ) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt; {
+        <span class="comment">// Very similar to `schedule_read` above, just done for the write half.
+        </span><span class="kw">let </span>e = <span class="kw">unsafe </span>{
+            <span class="kw">let </span>overlapped = me.write.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+            me.write_overlapped(<span class="kw-2">&amp;</span>buf[pos..], overlapped)
         };
 
-        <span class="comment">// See `connect` above for the rationale behind `forget`</span>
-        <span class="kw">match</span> <span class="ident">e</span> {
-            <span class="comment">// `n` bytes are written immediately</span>
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">n</span>)) =&gt; {
-                <span class="ident">io</span>.<span class="ident">write</span> <span class="op">=</span> <span class="ident">State::Ok</span>(<span class="ident">buf</span>, <span class="ident">pos</span>);
-                <span class="ident">mem::forget</span>(<span class="ident">me</span>.<span class="ident">clone</span>());
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">n</span>))
+        <span class="comment">// See `connect` above for the rationale behind `forget`
+        </span><span class="kw">match </span>e {
+            <span class="comment">// `n` bytes are written immediately
+            </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(n)) =&gt; {
+                io.write = State::Ok(buf, pos);
+                mem::forget(me.clone());
+                <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(n))
             }
-            <span class="comment">// write operation is enqueued</span>
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-                <span class="ident">io</span>.<span class="ident">write</span> <span class="op">=</span> <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="ident">pos</span>);
-                <span class="ident">mem::forget</span>(<span class="ident">me</span>.<span class="ident">clone</span>());
+            <span class="comment">// write operation is enqueued
+            </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
+                io.write = State::Pending(buf, pos);
+                mem::forget(me.clone());
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">schedule_write</span>(
-        <span class="ident">me</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>,
-        <span class="ident">buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-        <span class="ident">pos</span>: <span class="ident">usize</span>,
-        <span class="ident">io</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Io</span>,
-        <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>schedule_write(
+        me: <span class="kw-2">&amp;</span>Arc&lt;Inner&gt;,
+        buf: Vec&lt;u8&gt;,
+        pos: usize,
+        io: <span class="kw-2">&amp;mut </span>Io,
+        events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;,
     ) {
-        <span class="kw">match</span> <span class="ident">Inner::maybe_schedule_write</span>(<span class="ident">me</span>, <span class="ident">buf</span>, <span class="ident">pos</span>, <span class="ident">io</span>) {
+        <span class="kw">match </span>Inner::maybe_schedule_write(me, buf, pos, io) {
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
-                <span class="comment">// immediate result will be handled in `write_done`,</span>
-                <span class="comment">// so we&#39;ll reinterpret the `Ok` state</span>
-                <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">io</span>.<span class="ident">write</span>, <span class="ident">State::None</span>);
-                <span class="ident">io</span>.<span class="ident">write</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">state</span> {
-                    <span class="ident">State::Ok</span>(<span class="ident">buf</span>, <span class="ident">pos</span>) =&gt; <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="ident">pos</span>),
-                    <span class="comment">// io is locked, so this branch is unreachable</span>
-                    <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+                <span class="comment">// immediate result will be handled in `write_done`,
+                // so we&#39;ll reinterpret the `Ok` state
+                </span><span class="kw">let </span>state = mem::replace(<span class="kw-2">&amp;mut </span>io.write, State::None);
+                io.write = <span class="kw">match </span>state {
+                    State::Ok(buf, pos) =&gt; State::Pending(buf, pos),
+                    <span class="comment">// io is locked, so this branch is unreachable
+                    </span><span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
                 };
-                <span class="ident">mem::forget</span>(<span class="ident">me</span>.<span class="ident">clone</span>());
+                mem::forget(me.clone());
             }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; (),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="ident">io</span>.<span class="ident">write</span> <span class="op">=</span> <span class="ident">State::Err</span>(<span class="ident">e</span>);
-                <span class="ident">io</span>.<span class="ident">notify_writable</span>(<span class="ident">events</span>);
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                io.write = State::Err(e);
+                io.notify_writable(events);
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">post_register</span>(<span class="ident">me</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::needless_option_as_deref</span>)]</span>
-        <span class="kw">if</span> <span class="ident">Inner::schedule_read</span>(<span class="ident">me</span>, <span class="kw-2">&amp;mut</span> <span class="ident">io</span>, <span class="ident">events</span>.<span class="ident">as_deref_mut</span>()) {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">State::None</span> <span class="op">=</span> <span class="ident">io</span>.<span class="ident">write</span> {
-                <span class="ident">io</span>.<span class="ident">notify_writable</span>(<span class="ident">events</span>);
+    <span class="kw">fn </span>post_register(me: <span class="kw-2">&amp;</span>Arc&lt;Inner&gt;, <span class="kw-2">mut </span>events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+        <span class="kw">let </span><span class="kw-2">mut </span>io = me.io.lock().unwrap();
+        <span class="attribute">#[allow(clippy::needless_option_as_deref)]
+        </span><span class="kw">if </span>Inner::schedule_read(me, <span class="kw-2">&amp;mut </span>io, events.as_deref_mut()) {
+            <span class="kw">if let </span>State::None = io.write {
+                io.notify_writable(events);
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_buffer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">get</span>(<span class="number">4</span> <span class="op">*</span> <span class="number">1024</span>)
+    <span class="kw">fn </span>get_buffer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;u8&gt; {
+        <span class="self">self</span>.pool.lock().unwrap().get(<span class="number">4 </span>* <span class="number">1024</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">put_buffer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">put</span>(<span class="ident">buf</span>)
+    <span class="kw">fn </span>put_buffer(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: Vec&lt;u8&gt;) {
+        <span class="self">self</span>.pool.lock().unwrap().put(buf)
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cancel</span>(<span class="ident">handle</span>: <span class="kw-2">&amp;</span><span class="ident">Handle</span>, <span class="ident">overlapped</span>: <span class="kw-2">&amp;</span><span class="ident">Overlapped</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">CancelIoEx</span>(<span class="ident">handle</span>.<span class="ident">raw</span>(), <span class="ident">overlapped</span>.<span class="ident">as_ptr</span>());
-    <span class="comment">// `CancelIoEx` returns 0 on error:</span>
-    <span class="comment">// https://docs.microsoft.com/en-us/windows/win32/fileio/cancelioex-func</span>
-    <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>())
-    } <span class="kw">else</span> {
+<span class="kw">unsafe fn </span>cancel(handle: <span class="kw-2">&amp;</span>Handle, overlapped: <span class="kw-2">&amp;</span>Overlapped) -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span>ret = CancelIoEx(handle.raw(), overlapped.as_ptr());
+    <span class="comment">// `CancelIoEx` returns 0 on error:
+    // https://docs.microsoft.com/en-us/windows/win32/fileio/cancelioex-func
+    </span><span class="kw">if </span>ret == <span class="number">0 </span>{
+        <span class="prelude-val">Err</span>(io::Error::last_os_error())
+    } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">fn</span> <span class="ident">connect_done</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">OVERLAPPED_ENTRY</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">CompletionStatus::from_entry</span>(<span class="ident">status</span>);
+<span class="kw">fn </span>connect_done(status: <span class="kw-2">&amp;</span>OVERLAPPED_ENTRY, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+    <span class="kw">let </span>status = CompletionStatus::from_entry(status);
 
-    <span class="comment">// Acquire the `Arc&lt;Inner&gt;`. Note that we should be guaranteed that</span>
-    <span class="comment">// the refcount is available to us due to the `mem::forget` in</span>
-    <span class="comment">// `connect` above.</span>
-    <span class="kw">let</span> <span class="ident">me</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Arc::from_raw</span>(<span class="ident">Inner::ptr_from_conn_overlapped</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>())) };
+    <span class="comment">// Acquire the `Arc&lt;Inner&gt;`. Note that we should be guaranteed that
+    // the refcount is available to us due to the `mem::forget` in
+    // `connect` above.
+    </span><span class="kw">let </span>me = <span class="kw">unsafe </span>{ Arc::from_raw(Inner::ptr_from_conn_overlapped(status.overlapped())) };
 
-    <span class="comment">// Flag ourselves as no longer using the `connect` overlapped instances.</span>
-    <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">connecting</span>.<span class="ident">swap</span>(<span class="bool-val">false</span>, <span class="ident">SeqCst</span>);
-    <span class="macro">assert!</span>(<span class="ident">prev</span>, <span class="string">&quot;NamedPipe was not previously connecting&quot;</span>);
+    <span class="comment">// Flag ourselves as no longer using the `connect` overlapped instances.
+    </span><span class="kw">let </span>prev = me.connecting.swap(<span class="bool-val">false</span>, SeqCst);
+    <span class="macro">assert!</span>(prev, <span class="string">&quot;NamedPipe was not previously connecting&quot;</span>);
 
-    <span class="comment">// Stash away our connect error if one happened</span>
-    <span class="macro">debug_assert_eq!</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>(), <span class="number">0</span>);
-    <span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">me</span>.<span class="ident">result</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>()) {
-            <span class="prelude-val">Ok</span>(<span class="ident">n</span>) =&gt; <span class="macro">debug_assert_eq!</span>(<span class="ident">n</span>, <span class="number">0</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">me</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">connect_error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
+    <span class="comment">// Stash away our connect error if one happened
+    </span><span class="macro">debug_assert_eq!</span>(status.bytes_transferred(), <span class="number">0</span>);
+    <span class="kw">unsafe </span>{
+        <span class="kw">match </span>me.result(status.overlapped()) {
+            <span class="prelude-val">Ok</span>(n) =&gt; <span class="macro">debug_assert_eq!</span>(n, <span class="number">0</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; me.io.lock().unwrap().connect_error = <span class="prelude-val">Some</span>(e),
         }
     }
 
-    <span class="comment">// We essentially just finished a registration, so kick off a</span>
-    <span class="comment">// read and register write readiness.</span>
-    <span class="ident">Inner::post_register</span>(<span class="kw-2">&amp;</span><span class="ident">me</span>, <span class="ident">events</span>);
+    <span class="comment">// We essentially just finished a registration, so kick off a
+    // read and register write readiness.
+    </span>Inner::post_register(<span class="kw-2">&amp;</span>me, events);
 }
 
-<span class="kw">fn</span> <span class="ident">read_done</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">OVERLAPPED_ENTRY</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">CompletionStatus::from_entry</span>(<span class="ident">status</span>);
+<span class="kw">fn </span>read_done(status: <span class="kw-2">&amp;</span>OVERLAPPED_ENTRY, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+    <span class="kw">let </span>status = CompletionStatus::from_entry(status);
 
-    <span class="comment">// Acquire the `FromRawArc&lt;Inner&gt;`. Note that we should be guaranteed that</span>
-    <span class="comment">// the refcount is available to us due to the `mem::forget` in</span>
-    <span class="comment">// `schedule_read` above.</span>
-    <span class="kw">let</span> <span class="ident">me</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Arc::from_raw</span>(<span class="ident">Inner::ptr_from_read_overlapped</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>())) };
+    <span class="comment">// Acquire the `FromRawArc&lt;Inner&gt;`. Note that we should be guaranteed that
+    // the refcount is available to us due to the `mem::forget` in
+    // `schedule_read` above.
+    </span><span class="kw">let </span>me = <span class="kw">unsafe </span>{ Arc::from_raw(Inner::ptr_from_read_overlapped(status.overlapped())) };
 
-    <span class="comment">// Move from the `Pending` to `Ok` state.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">io</span>.<span class="ident">read</span>, <span class="ident">State::None</span>) {
-        <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="kw">_</span>) =&gt; <span class="ident">buf</span>,
-        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+    <span class="comment">// Move from the `Pending` to `Ok` state.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>io = me.io.lock().unwrap();
+    <span class="kw">let </span><span class="kw-2">mut </span>buf = <span class="kw">match </span>mem::replace(<span class="kw-2">&amp;mut </span>io.read, State::None) {
+        State::Pending(buf, <span class="kw">_</span>) =&gt; buf,
+        <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
     };
-    <span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">me</span>.<span class="ident">result</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>()) {
-            <span class="prelude-val">Ok</span>(<span class="ident">n</span>) =&gt; {
-                <span class="macro">debug_assert_eq!</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">n</span>);
-                <span class="ident">buf</span>.<span class="ident">set_len</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>() <span class="kw">as</span> <span class="ident">usize</span>);
-                <span class="ident">io</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Ok</span>(<span class="ident">buf</span>, <span class="number">0</span>);
+    <span class="kw">unsafe </span>{
+        <span class="kw">match </span>me.result(status.overlapped()) {
+            <span class="prelude-val">Ok</span>(n) =&gt; {
+                <span class="macro">debug_assert_eq!</span>(status.bytes_transferred() <span class="kw">as </span>usize, n);
+                buf.set_len(status.bytes_transferred() <span class="kw">as </span>usize);
+                io.read = State::Ok(buf, <span class="number">0</span>);
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="macro">debug_assert_eq!</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>(), <span class="number">0</span>);
-                <span class="ident">io</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">State::Err</span>(<span class="ident">e</span>);
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                <span class="macro">debug_assert_eq!</span>(status.bytes_transferred(), <span class="number">0</span>);
+                io.read = State::Err(e);
             }
         }
     }
 
-    <span class="comment">// Flag our readiness that we&#39;ve got data.</span>
-    <span class="ident">io</span>.<span class="ident">notify_readable</span>(<span class="ident">events</span>);
+    <span class="comment">// Flag our readiness that we&#39;ve got data.
+    </span>io.notify_readable(events);
 }
 
-<span class="kw">fn</span> <span class="ident">write_done</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">OVERLAPPED_ENTRY</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">CompletionStatus::from_entry</span>(<span class="ident">status</span>);
+<span class="kw">fn </span>write_done(status: <span class="kw-2">&amp;</span>OVERLAPPED_ENTRY, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+    <span class="kw">let </span>status = CompletionStatus::from_entry(status);
 
-    <span class="comment">// Acquire the `Arc&lt;Inner&gt;`. Note that we should be guaranteed that</span>
-    <span class="comment">// the refcount is available to us due to the `mem::forget` in</span>
-    <span class="comment">// `schedule_write` above.</span>
-    <span class="kw">let</span> <span class="ident">me</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Arc::from_raw</span>(<span class="ident">Inner::ptr_from_write_overlapped</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>())) };
+    <span class="comment">// Acquire the `Arc&lt;Inner&gt;`. Note that we should be guaranteed that
+    // the refcount is available to us due to the `mem::forget` in
+    // `schedule_write` above.
+    </span><span class="kw">let </span>me = <span class="kw">unsafe </span>{ Arc::from_raw(Inner::ptr_from_write_overlapped(status.overlapped())) };
 
-    <span class="comment">// Make the state change out of `Pending`. If we wrote the entire buffer</span>
-    <span class="comment">// then we&#39;re writable again and otherwise we schedule another write.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">io</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">io</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> (<span class="ident">buf</span>, <span class="ident">pos</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">io</span>.<span class="ident">write</span>, <span class="ident">State::None</span>) {
-        <span class="comment">// `Ok` here means, that the operation was completed immediately</span>
-        <span class="comment">// `bytes_transferred` is already reported to a client</span>
-        <span class="ident">State::Ok</span>(..) =&gt; {
-            <span class="ident">io</span>.<span class="ident">notify_writable</span>(<span class="ident">events</span>);
+    <span class="comment">// Make the state change out of `Pending`. If we wrote the entire buffer
+    // then we&#39;re writable again and otherwise we schedule another write.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>io = me.io.lock().unwrap();
+    <span class="kw">let </span>(buf, pos) = <span class="kw">match </span>mem::replace(<span class="kw-2">&amp;mut </span>io.write, State::None) {
+        <span class="comment">// `Ok` here means, that the operation was completed immediately
+        // `bytes_transferred` is already reported to a client
+        </span>State::Ok(..) =&gt; {
+            io.notify_writable(events);
             <span class="kw">return</span>;
         }
-        <span class="ident">State::Pending</span>(<span class="ident">buf</span>, <span class="ident">pos</span>) =&gt; (<span class="ident">buf</span>, <span class="ident">pos</span>),
-        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+        State::Pending(buf, pos) =&gt; (buf, pos),
+        <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
     };
 
-    <span class="kw">unsafe</span> {
-        <span class="kw">match</span> <span class="ident">me</span>.<span class="ident">result</span>(<span class="ident">status</span>.<span class="ident">overlapped</span>()) {
-            <span class="prelude-val">Ok</span>(<span class="ident">n</span>) =&gt; {
-                <span class="macro">debug_assert_eq!</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">n</span>);
-                <span class="kw">let</span> <span class="ident">new_pos</span> <span class="op">=</span> <span class="ident">pos</span> <span class="op">+</span> (<span class="ident">status</span>.<span class="ident">bytes_transferred</span>() <span class="kw">as</span> <span class="ident">usize</span>);
-                <span class="kw">if</span> <span class="ident">new_pos</span> <span class="op">==</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
-                    <span class="ident">me</span>.<span class="ident">put_buffer</span>(<span class="ident">buf</span>);
-                    <span class="ident">io</span>.<span class="ident">notify_writable</span>(<span class="ident">events</span>);
-                } <span class="kw">else</span> {
-                    <span class="ident">Inner::schedule_write</span>(<span class="kw-2">&amp;</span><span class="ident">me</span>, <span class="ident">buf</span>, <span class="ident">new_pos</span>, <span class="kw-2">&amp;mut</span> <span class="ident">io</span>, <span class="ident">events</span>);
+    <span class="kw">unsafe </span>{
+        <span class="kw">match </span>me.result(status.overlapped()) {
+            <span class="prelude-val">Ok</span>(n) =&gt; {
+                <span class="macro">debug_assert_eq!</span>(status.bytes_transferred() <span class="kw">as </span>usize, n);
+                <span class="kw">let </span>new_pos = pos + (status.bytes_transferred() <span class="kw">as </span>usize);
+                <span class="kw">if </span>new_pos == buf.len() {
+                    me.put_buffer(buf);
+                    io.notify_writable(events);
+                } <span class="kw">else </span>{
+                    Inner::schedule_write(<span class="kw-2">&amp;</span>me, buf, new_pos, <span class="kw-2">&amp;mut </span>io, events);
                 }
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="macro">debug_assert_eq!</span>(<span class="ident">status</span>.<span class="ident">bytes_transferred</span>(), <span class="number">0</span>);
-                <span class="ident">io</span>.<span class="ident">write</span> <span class="op">=</span> <span class="ident">State::Err</span>(<span class="ident">e</span>);
-                <span class="ident">io</span>.<span class="ident">notify_writable</span>(<span class="ident">events</span>);
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                <span class="macro">debug_assert_eq!</span>(status.bytes_transferred(), <span class="number">0</span>);
+                io.write = State::Err(e);
+                io.notify_writable(events);
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Io</span> {
-    <span class="kw">fn</span> <span class="ident">check_association</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span>, <span class="ident">required</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cp</span> {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">cp</span>) <span class="kw">if</span> <span class="op">!</span><span class="ident">registry</span>.<span class="ident">selector</span>().<span class="ident">same_port</span>(<span class="ident">cp</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::AlreadyExists</span>,
+<span class="kw">impl </span>Io {
+    <span class="kw">fn </span>check_association(<span class="kw-2">&amp;</span><span class="self">self</span>, registry: <span class="kw-2">&amp;</span>Registry, required: bool) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">match </span><span class="self">self</span>.cp {
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>cp) <span class="kw">if </span>!registry.selector().same_port(cp) =&gt; <span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::AlreadyExists,
                 <span class="string">&quot;I/O source already registered with a different `Registry`&quot;</span>,
             )),
-            <span class="prelude-val">None</span> <span class="kw">if</span> <span class="ident">required</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::NotFound</span>,
+            <span class="prelude-val">None </span><span class="kw">if </span>required =&gt; <span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::NotFound,
                 <span class="string">&quot;I/O source not registered with `Registry`&quot;</span>,
             )),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Ok</span>(()),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(()),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">notify_readable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">token</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">Event::new</span>(<span class="ident">token</span>);
-            <span class="ident">ev</span>.<span class="ident">set_readable</span>();
+    <span class="kw">fn </span>notify_readable(<span class="kw-2">&amp;</span><span class="self">self</span>, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(token) = <span class="self">self</span>.token {
+            <span class="kw">let </span><span class="kw-2">mut </span>ev = Event::new(token);
+            ev.set_readable();
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">events</span>) <span class="op">=</span> <span class="ident">events</span> {
-                <span class="ident">events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);
-            } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cp</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">post</span>(<span class="ident">ev</span>.<span class="ident">to_completion_status</span>());
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(events) = events {
+                events.push(ev);
+            } <span class="kw">else </span>{
+                <span class="kw">let _ </span>= <span class="self">self</span>.cp.as_ref().unwrap().post(ev.to_completion_status());
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">notify_writable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">token</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">Event::new</span>(<span class="ident">token</span>);
-            <span class="ident">ev</span>.<span class="ident">set_writable</span>();
+    <span class="kw">fn </span>notify_writable(<span class="kw-2">&amp;</span><span class="self">self</span>, events: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;&gt;) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(token) = <span class="self">self</span>.token {
+            <span class="kw">let </span><span class="kw-2">mut </span>ev = Event::new(token);
+            ev.set_writable();
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">events</span>) <span class="op">=</span> <span class="ident">events</span> {
-                <span class="ident">events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);
-            } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cp</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">post</span>(<span class="ident">ev</span>.<span class="ident">to_completion_status</span>());
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(events) = events {
+                events.push(ev);
+            } <span class="kw">else </span>{
+                <span class="kw">let _ </span>= <span class="self">self</span>.cp.as_ref().unwrap().post(ev.to_completion_status());
             }
         }
     }
 }
 
-<span class="kw">struct</span> <span class="ident">BufferPool</span> {
-    <span class="ident">pool</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="kw">struct </span>BufferPool {
+    pool: Vec&lt;Vec&lt;u8&gt;&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">BufferPool</span> {
-    <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">cap</span>: <span class="ident">usize</span>) -&gt; <span class="ident">BufferPool</span> {
-        <span class="ident">BufferPool</span> {
-            <span class="ident">pool</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">cap</span>),
+<span class="kw">impl </span>BufferPool {
+    <span class="kw">fn </span>with_capacity(cap: usize) -&gt; BufferPool {
+        BufferPool {
+            pool: Vec::with_capacity(cap),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">default_cap</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">pool</span>
-            .<span class="ident">pop</span>()
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">default_cap</span>))
+    <span class="kw">fn </span>get(<span class="kw-2">&amp;mut </span><span class="self">self</span>, default_cap: usize) -&gt; Vec&lt;u8&gt; {
+        <span class="self">self</span>.pool
+            .pop()
+            .unwrap_or_else(|| Vec::with_capacity(default_cap))
     }
 
-    <span class="kw">fn</span> <span class="ident">put</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">capacity</span>() {
-            <span class="kw">unsafe</span> {
-                <span class="ident">buf</span>.<span class="ident">set_len</span>(<span class="number">0</span>);
+    <span class="kw">fn </span>put(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>buf: Vec&lt;u8&gt;) {
+        <span class="kw">if </span><span class="self">self</span>.pool.len() &lt; <span class="self">self</span>.pool.capacity() {
+            <span class="kw">unsafe </span>{
+                buf.set_len(<span class="number">0</span>);
             }
-            <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">push</span>(<span class="ident">buf</span>);
+            <span class="self">self</span>.pool.push(buf);
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

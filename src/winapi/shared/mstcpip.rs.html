@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\mstcpip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mstcpip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\mstcpip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mstcpip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -490,497 +490,497 @@
 <span id="490">490</span>
 <span id="491">491</span>
 <span id="492">492</span>
-</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
-<span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
-<span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms</span>
-<span class="doccomment">//! This module contains Microsoft-specific extensions to the core Winsock definitions.</span>
-<span class="kw">use</span> <span class="ident">ctypes::wchar_t</span>;
-<span class="kw">use</span> <span class="ident">shared::basetsd</span>::{<span class="ident">UINT32</span>, <span class="ident">UINT64</span>, <span class="ident">ULONG64</span>};
-<span class="kw">use</span> <span class="ident">shared::guiddef::GUID</span>;
-<span class="kw">use</span> <span class="ident">shared::in6addr::IN6_ADDR</span>;
-<span class="kw">use</span> <span class="ident">shared::inaddr::IN_ADDR</span>;
-<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">DWORD</span>, <span class="ident">PULONG</span>, <span class="ident">PUSHORT</span>, <span class="ident">UCHAR</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>};
-<span class="kw">use</span> <span class="ident">shared::ws2def</span>::{
-    <span class="ident">INADDR_ANY</span>, <span class="ident">INADDR_BROADCAST</span>, <span class="ident">INADDR_NONE</span>, <span class="ident">IOC_VENDOR</span>, <span class="ident">SOCKADDR_IN</span>,
-    <span class="ident">SOCKADDR_STORAGE</span>,
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0
+// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.
+// All files in the project carrying such notice may not be copied, modified, or distributed
+// except according to those terms
+</span><span class="doccomment">//! This module contains Microsoft-specific extensions to the core Winsock definitions.
+</span><span class="kw">use </span>ctypes::wchar_t;
+<span class="kw">use </span>shared::basetsd::{UINT32, UINT64, ULONG64};
+<span class="kw">use </span>shared::guiddef::GUID;
+<span class="kw">use </span>shared::in6addr::IN6_ADDR;
+<span class="kw">use </span>shared::inaddr::IN_ADDR;
+<span class="kw">use </span>shared::minwindef::{DWORD, PULONG, PUSHORT, UCHAR, ULONG, USHORT};
+<span class="kw">use </span>shared::ws2def::{
+    INADDR_ANY, INADDR_BROADCAST, INADDR_NONE, IOC_VENDOR, SOCKADDR_IN,
+    SOCKADDR_STORAGE,
 };
-<span class="kw">use</span> <span class="ident">um::winnt</span>::{<span class="ident">BOOLEAN</span>, <span class="ident">LONG</span>, <span class="ident">LPCWSTR</span>, <span class="ident">PCSTR</span>, <span class="ident">PCWSTR</span>, <span class="ident">PSTR</span>, <span class="ident">PWSTR</span>};
-<span class="macro">DEFINE_GUID!</span>{<span class="ident">SOCKET_DEFAULT2_QM_POLICY</span>,
+<span class="kw">use </span>um::winnt::{BOOLEAN, LONG, LPCWSTR, PCSTR, PCWSTR, PSTR, PWSTR};
+<span class="macro">DEFINE_GUID!</span>{SOCKET_DEFAULT2_QM_POLICY,
     <span class="number">0xaec2ef9c</span>, <span class="number">0x3a4d</span>, <span class="number">0x4d3e</span>, <span class="number">0x88</span>, <span class="number">0x42</span>, <span class="number">0x23</span>, <span class="number">0x99</span>, <span class="number">0x42</span>, <span class="number">0xe3</span>, <span class="number">0x9a</span>, <span class="number">0x47</span>}
-<span class="macro">DEFINE_GUID!</span>{<span class="ident">REAL_TIME_NOTIFICATION_CAPABILITY</span>,
+<span class="macro">DEFINE_GUID!</span>{REAL_TIME_NOTIFICATION_CAPABILITY,
     <span class="number">0x6b59819a</span>, <span class="number">0x5cae</span>, <span class="number">0x492d</span>, <span class="number">0xa9</span>, <span class="number">0x01</span>, <span class="number">0x2a</span>, <span class="number">0x3c</span>, <span class="number">0x2c</span>, <span class="number">0x50</span>, <span class="number">0x16</span>, <span class="number">0x4f</span>}
-<span class="macro">DEFINE_GUID!</span>{<span class="ident">REAL_TIME_NOTIFICATION_CAPABILITY_EX</span>,
+<span class="macro">DEFINE_GUID!</span>{REAL_TIME_NOTIFICATION_CAPABILITY_EX,
     <span class="number">0x6843da03</span>, <span class="number">0x154a</span>, <span class="number">0x4616</span>, <span class="number">0xa5</span>, <span class="number">0x08</span>, <span class="number">0x44</span>, <span class="number">0x37</span>, <span class="number">0x12</span>, <span class="number">0x95</span>, <span class="number">0xf9</span>, <span class="number">0x6b</span>}
-<span class="macro">DEFINE_GUID!</span>{<span class="ident">ASSOCIATE_NAMERES_CONTEXT</span>,
+<span class="macro">DEFINE_GUID!</span>{ASSOCIATE_NAMERES_CONTEXT,
     <span class="number">0x59a38b67</span>, <span class="number">0xd4fe</span>, <span class="number">0x46e1</span>, <span class="number">0xba</span>, <span class="number">0x3c</span>, <span class="number">0x87</span>, <span class="number">0xea</span>, <span class="number">0x74</span>, <span class="number">0xca</span>, <span class="number">0x30</span>, <span class="number">0x49</span>}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">TCPSTATE</span> {
-    <span class="ident">TCPSTATE_CLOSED</span>,
-    <span class="ident">TCPSTATE_LISTEN</span>,
-    <span class="ident">TCPSTATE_SYN_SENT</span>,
-    <span class="ident">TCPSTATE_SYN_RCVD</span>,
-    <span class="ident">TCPSTATE_ESTABLISHED</span>,
-    <span class="ident">TCPSTATE_FIN_WAIT_1</span>,
-    <span class="ident">TCPSTATE_FIN_WAIT_2</span>,
-    <span class="ident">TCPSTATE_CLOSE_WAIT</span>,
-    <span class="ident">TCPSTATE_CLOSING</span>,
-    <span class="ident">TCPSTATE_LAST_ACK</span>,
-    <span class="ident">TCPSTATE_TIME_WAIT</span>,
-    <span class="ident">TCPSTATE_MAX</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>TCPSTATE {
+    TCPSTATE_CLOSED,
+    TCPSTATE_LISTEN,
+    TCPSTATE_SYN_SENT,
+    TCPSTATE_SYN_RCVD,
+    TCPSTATE_ESTABLISHED,
+    TCPSTATE_FIN_WAIT_1,
+    TCPSTATE_FIN_WAIT_2,
+    TCPSTATE_CLOSE_WAIT,
+    TCPSTATE_CLOSING,
+    TCPSTATE_LAST_ACK,
+    TCPSTATE_TIME_WAIT,
+    TCPSTATE_MAX,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TRANSPORT_SETTING_ID</span> {
-    <span class="ident">Guid</span>: <span class="ident">GUID</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TRANSPORT_SETTING_ID {
+    Guid: GUID,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTRANSPORT_SETTING_ID</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TRANSPORT_SETTING_ID</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">tcp_keepalive</span> {
-    <span class="ident">onoff</span>: <span class="ident">ULONG</span>,
-    <span class="ident">keepalivetime</span>: <span class="ident">ULONG</span>,
-    <span class="ident">keepaliveinterval</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PTRANSPORT_SETTING_ID = <span class="kw-2">*mut </span>TRANSPORT_SETTING_ID;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>tcp_keepalive {
+    onoff: ULONG,
+    keepalivetime: ULONG,
+    keepaliveinterval: ULONG,
 }}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS</span> {
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_INVALID</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_SOFTWARE_SLOT_ALLOCATED</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_HARDWARE_SLOT_ALLOCATED</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_POLICY_ERROR</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_SYSTEM_ERROR</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_TRANSPORT_DISCONNECTED</span> <span class="op">=</span> <span class="number">5</span>,
-    <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_SERVICE_UNAVAILABLE</span> <span class="op">=</span> <span class="number">6</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>CONTROL_CHANNEL_TRIGGER_STATUS {
+    CONTROL_CHANNEL_TRIGGER_STATUS_INVALID = <span class="number">0</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_SOFTWARE_SLOT_ALLOCATED = <span class="number">1</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_HARDWARE_SLOT_ALLOCATED = <span class="number">2</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_POLICY_ERROR = <span class="number">3</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_SYSTEM_ERROR = <span class="number">4</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_TRANSPORT_DISCONNECTED = <span class="number">5</span>,
+    CONTROL_CHANNEL_TRIGGER_STATUS_SERVICE_UNAVAILABLE = <span class="number">6</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCONTROL_CHANNEL_TRIGGER_STATUS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_MAX</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS_SYSTEM_ERROR</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_INPUT</span> {
-    <span class="ident">TransportSettingId</span>: <span class="ident">TRANSPORT_SETTING_ID</span>,
-    <span class="ident">BrokerEventGuid</span>: <span class="ident">GUID</span>,
+<span class="kw">pub type </span>PCONTROL_CHANNEL_TRIGGER_STATUS = <span class="kw-2">*mut </span>CONTROL_CHANNEL_TRIGGER_STATUS;
+<span class="kw">pub const </span>CONTROL_CHANNEL_TRIGGER_STATUS_MAX: u32 = CONTROL_CHANNEL_TRIGGER_STATUS_SYSTEM_ERROR;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>REAL_TIME_NOTIFICATION_SETTING_INPUT {
+    TransportSettingId: TRANSPORT_SETTING_ID,
+    BrokerEventGuid: GUID,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PREAL_TIME_NOTIFICATION_SETTING_INPUT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_INPUT</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_INPUT_EX</span> {
-    <span class="ident">TransportSettingId</span>: <span class="ident">TRANSPORT_SETTING_ID</span>,
-    <span class="ident">BrokerEventGuid</span>: <span class="ident">GUID</span>,
-    <span class="ident">Unmark</span>: <span class="ident">BOOLEAN</span>,
+<span class="kw">pub type </span>PREAL_TIME_NOTIFICATION_SETTING_INPUT = <span class="kw-2">*mut </span>REAL_TIME_NOTIFICATION_SETTING_INPUT;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>REAL_TIME_NOTIFICATION_SETTING_INPUT_EX {
+    TransportSettingId: TRANSPORT_SETTING_ID,
+    BrokerEventGuid: GUID,
+    Unmark: BOOLEAN,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PREAL_TIME_NOTIFICATION_SETTING_INPUT_EX</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_INPUT_EX</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_OUTPUT</span> {
-    <span class="ident">ChannelStatus</span>: <span class="ident">CONTROL_CHANNEL_TRIGGER_STATUS</span>,
+<span class="kw">pub type </span>PREAL_TIME_NOTIFICATION_SETTING_INPUT_EX = <span class="kw-2">*mut </span>REAL_TIME_NOTIFICATION_SETTING_INPUT_EX;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>REAL_TIME_NOTIFICATION_SETTING_OUTPUT {
+    ChannelStatus: CONTROL_CHANNEL_TRIGGER_STATUS,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PREAL_TIME_NOTIFICATION_SETTING_OUTPUT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">REAL_TIME_NOTIFICATION_SETTING_OUTPUT</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ASSOCIATE_NAMERES_CONTEXT_INPUT</span> {
-    <span class="ident">TransportSettingId</span>: <span class="ident">TRANSPORT_SETTING_ID</span>,
-    <span class="ident">Handle</span>: <span class="ident">UINT64</span>,
+<span class="kw">pub type </span>PREAL_TIME_NOTIFICATION_SETTING_OUTPUT = <span class="kw-2">*mut </span>REAL_TIME_NOTIFICATION_SETTING_OUTPUT;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ASSOCIATE_NAMERES_CONTEXT_INPUT {
+    TransportSettingId: TRANSPORT_SETTING_ID,
+    Handle: UINT64,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PASSOCIATE_NAMERES_CONTEXT_INPUT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ASSOCIATE_NAMERES_CONTEXT_INPUT</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RCVALL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">1</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RCVALL_MCAST</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">2</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RCVALL_IGMPMCAST</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">3</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_KEEPALIVE_VALS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">4</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ABSORB_RTRALERT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">5</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_UCAST_IF</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">6</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_LIMIT_BROADCASTS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">7</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_INDEX_BIND</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">8</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_INDEX_MCASTIF</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">9</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_INDEX_ADD_MCAST</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">10</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_INDEX_DEL_MCAST</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">11</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RCVALL_MCAST_IF</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">13</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RCVALL_IF</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">14</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_LOOPBACK_FAST_PATH</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">16</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_TCP_INITIAL_RTO</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">17</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_APPLY_TRANSPORT_SETTING</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">19</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_TRANSPORT_SETTING</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">20</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_TCP_SET_ICW</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">22</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_TCP_SET_ACK_FREQUENCY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">23</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_TCP_INFO</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_VENDOR</span>,<span class="number">39</span>);
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">RCVALL_VALUE</span> {
-    <span class="ident">RCVALL_OFF</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">RCVALL_ON</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">RCVALL_SOCKETLEVELONLY</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">RCVALL_IPLEVEL</span> <span class="op">=</span> <span class="number">3</span>,
+<span class="kw">pub type </span>PASSOCIATE_NAMERES_CONTEXT_INPUT = <span class="kw-2">*mut </span>ASSOCIATE_NAMERES_CONTEXT_INPUT;
+<span class="kw">pub const </span>SIO_RCVALL: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">1</span>);
+<span class="kw">pub const </span>SIO_RCVALL_MCAST: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">2</span>);
+<span class="kw">pub const </span>SIO_RCVALL_IGMPMCAST: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">3</span>);
+<span class="kw">pub const </span>SIO_KEEPALIVE_VALS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">4</span>);
+<span class="kw">pub const </span>SIO_ABSORB_RTRALERT: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">5</span>);
+<span class="kw">pub const </span>SIO_UCAST_IF: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">6</span>);
+<span class="kw">pub const </span>SIO_LIMIT_BROADCASTS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">7</span>);
+<span class="kw">pub const </span>SIO_INDEX_BIND: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">8</span>);
+<span class="kw">pub const </span>SIO_INDEX_MCASTIF: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">9</span>);
+<span class="kw">pub const </span>SIO_INDEX_ADD_MCAST: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">10</span>);
+<span class="kw">pub const </span>SIO_INDEX_DEL_MCAST: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">11</span>);
+<span class="kw">pub const </span>SIO_RCVALL_MCAST_IF: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">13</span>);
+<span class="kw">pub const </span>SIO_RCVALL_IF: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">14</span>);
+<span class="kw">pub const </span>SIO_LOOPBACK_FAST_PATH: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">16</span>);
+<span class="kw">pub const </span>SIO_TCP_INITIAL_RTO: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">17</span>);
+<span class="kw">pub const </span>SIO_APPLY_TRANSPORT_SETTING: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">19</span>);
+<span class="kw">pub const </span>SIO_QUERY_TRANSPORT_SETTING: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">20</span>);
+<span class="kw">pub const </span>SIO_TCP_SET_ICW: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">22</span>);
+<span class="kw">pub const </span>SIO_TCP_SET_ACK_FREQUENCY: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR,<span class="number">23</span>);
+<span class="kw">pub const </span>SIO_TCP_INFO: DWORD = <span class="macro">_WSAIORW!</span>(IOC_VENDOR,<span class="number">39</span>);
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>RCVALL_VALUE {
+    RCVALL_OFF = <span class="number">0</span>,
+    RCVALL_ON = <span class="number">1</span>,
+    RCVALL_SOCKETLEVELONLY = <span class="number">2</span>,
+    RCVALL_IPLEVEL = <span class="number">3</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PRCVALL_VALUE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RCVALL_VALUE</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RCVALL_IF</span> {
-    <span class="ident">Mode</span>: <span class="ident">RCVALL_VALUE</span>,
-    <span class="ident">Interface</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PRCVALL_VALUE = <span class="kw-2">*mut </span>RCVALL_VALUE;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>RCVALL_IF {
+    Mode: RCVALL_VALUE,
+    Interface: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PRCVALL_IF</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RCVALL_IF</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TCP_INITIAL_RTO_UNSPECIFIED_RTT</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="op">-</span><span class="number">1i16</span> <span class="kw">as</span> <span class="ident">u16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TCP_INITIAL_RTO_UNSPECIFIED_MAX_SYN_RETRANSMISSIONS</span>: <span class="ident">UCHAR</span> <span class="op">=</span> <span class="op">-</span><span class="number">1i8</span> <span class="kw">as</span> <span class="ident">u8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TCP_INITIAL_RTO_DEFAULT_RTT</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TCP_INITIAL_RTO_DEFAULT_MAX_SYN_RETRANSMISSIONS</span>: <span class="ident">UCHAR</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TCP_INITIAL_RTO_PARAMETERS</span> {
-    <span class="ident">Rtt</span>: <span class="ident">USHORT</span>,
-    <span class="ident">MaxSynRetransmissions</span>: <span class="ident">UCHAR</span>,
+<span class="kw">pub type </span>PRCVALL_IF = <span class="kw-2">*mut </span>RCVALL_IF;
+<span class="kw">pub const </span>TCP_INITIAL_RTO_UNSPECIFIED_RTT: USHORT = -<span class="number">1i16 </span><span class="kw">as </span>u16;
+<span class="kw">pub const </span>TCP_INITIAL_RTO_UNSPECIFIED_MAX_SYN_RETRANSMISSIONS: UCHAR = -<span class="number">1i8 </span><span class="kw">as </span>u8;
+<span class="kw">pub const </span>TCP_INITIAL_RTO_DEFAULT_RTT: USHORT = <span class="number">0</span>;
+<span class="kw">pub const </span>TCP_INITIAL_RTO_DEFAULT_MAX_SYN_RETRANSMISSIONS: UCHAR = <span class="number">0</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TCP_INITIAL_RTO_PARAMETERS {
+    Rtt: USHORT,
+    MaxSynRetransmissions: UCHAR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTCP_INITIAL_RTO_PARAMETERS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TCP_INITIAL_RTO_PARAMETERS</span>;
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">TCP_ICW_LEVEL</span> {
-    <span class="ident">TCP_ICW_LEVEL_DEFAULT</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="ident">TCP_ICW_LEVEL_HIGH</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">TCP_ICW_LEVEL_VERY_HIGH</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">TCP_ICW_LEVEL_AGGRESSIVE</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">TCP_ICW_LEVEL_EXPERIMENTAL</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">TCP_ICW_LEVEL_COMPAT</span> <span class="op">=</span> <span class="number">254</span>,
-    <span class="ident">TCP_ICW_LEVEL_MAX</span> <span class="op">=</span> <span class="number">255</span>,
+<span class="kw">pub type </span>PTCP_INITIAL_RTO_PARAMETERS = <span class="kw-2">*mut </span>TCP_INITIAL_RTO_PARAMETERS;
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>TCP_ICW_LEVEL {
+    TCP_ICW_LEVEL_DEFAULT = <span class="number">0</span>,
+    TCP_ICW_LEVEL_HIGH = <span class="number">1</span>,
+    TCP_ICW_LEVEL_VERY_HIGH = <span class="number">2</span>,
+    TCP_ICW_LEVEL_AGGRESSIVE = <span class="number">3</span>,
+    TCP_ICW_LEVEL_EXPERIMENTAL = <span class="number">4</span>,
+    TCP_ICW_LEVEL_COMPAT = <span class="number">254</span>,
+    TCP_ICW_LEVEL_MAX = <span class="number">255</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTCP_ICW_LEVEL</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TCP_ICW_LEVEL</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TCP_ICW_PARAMETERS</span> {
-    <span class="ident">Level</span>: <span class="ident">TCP_ICW_LEVEL</span>,
+<span class="kw">pub type </span>PTCP_ICW_LEVEL = <span class="kw-2">*mut </span>TCP_ICW_LEVEL;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TCP_ICW_PARAMETERS {
+    Level: TCP_ICW_LEVEL,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTCP_ICW_PARAMETERS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TCP_ICW_PARAMETERS</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TCP_ACK_FREQUENCY_PARAMETERS</span> {
-    <span class="ident">TcpDelayedAckFrequency</span>: <span class="ident">UCHAR</span>,
+<span class="kw">pub type </span>PTCP_ICW_PARAMETERS = <span class="kw-2">*mut </span>TCP_ICW_PARAMETERS;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TCP_ACK_FREQUENCY_PARAMETERS {
+    TcpDelayedAckFrequency: UCHAR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTCP_ACK_FREQUENCY_PARAMETERS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TCP_ACK_FREQUENCY_PARAMETERS</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">TCP_INFO_v0</span> {
-    <span class="ident">State</span>: <span class="ident">TCPSTATE</span>,
-    <span class="ident">Mss</span>: <span class="ident">ULONG</span>,
-    <span class="ident">ConnectionTimeMs</span>: <span class="ident">ULONG64</span>,
-    <span class="ident">TimestampsEnabled</span>: <span class="ident">BOOLEAN</span>,
-    <span class="ident">RttUs</span>: <span class="ident">ULONG</span>,
-    <span class="ident">MinRttUs</span>: <span class="ident">ULONG</span>,
-    <span class="ident">BytesInFlight</span>: <span class="ident">ULONG</span>,
-    <span class="ident">Cwnd</span>: <span class="ident">ULONG</span>,
-    <span class="ident">SndWnd</span>: <span class="ident">ULONG</span>,
-    <span class="ident">RcvWnd</span>: <span class="ident">ULONG</span>,
-    <span class="ident">RcvBuf</span>: <span class="ident">ULONG</span>,
-    <span class="ident">BytesOut</span>: <span class="ident">ULONG64</span>,
-    <span class="ident">BytesIn</span>: <span class="ident">ULONG64</span>,
-    <span class="ident">BytesReordered</span>: <span class="ident">ULONG</span>,
-    <span class="ident">BytesRetrans</span>: <span class="ident">ULONG</span>,
-    <span class="ident">FastRetrans</span>: <span class="ident">ULONG</span>,
-    <span class="ident">DupAcksIn</span>: <span class="ident">ULONG</span>,
-    <span class="ident">TimeoutEpisodes</span>: <span class="ident">ULONG</span>,
-    <span class="ident">SynRetrans</span>: <span class="ident">UCHAR</span>,
+<span class="kw">pub type </span>PTCP_ACK_FREQUENCY_PARAMETERS = <span class="kw-2">*mut </span>TCP_ACK_FREQUENCY_PARAMETERS;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>TCP_INFO_v0 {
+    State: TCPSTATE,
+    Mss: ULONG,
+    ConnectionTimeMs: ULONG64,
+    TimestampsEnabled: BOOLEAN,
+    RttUs: ULONG,
+    MinRttUs: ULONG,
+    BytesInFlight: ULONG,
+    Cwnd: ULONG,
+    SndWnd: ULONG,
+    RcvWnd: ULONG,
+    RcvBuf: ULONG,
+    BytesOut: ULONG64,
+    BytesIn: ULONG64,
+    BytesReordered: ULONG,
+    BytesRetrans: ULONG,
+    FastRetrans: ULONG,
+    DupAcksIn: ULONG,
+    TimeoutEpisodes: ULONG,
+    SynRetrans: UCHAR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTCP_INFO_v0</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">TCP_INFO_v0</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ACQUIRE_PORT_RESERVATION</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">100</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RELEASE_PORT_RESERVATION</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">101</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ASSOCIATE_PORT_RESERVATION</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">102</span>);
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INET_PORT_RANGE</span> {
-    <span class="ident">StartPort</span>: <span class="ident">USHORT</span>,
-    <span class="ident">NumberOfPorts</span>: <span class="ident">USHORT</span>,
+<span class="kw">pub type </span>PTCP_INFO_v0 = <span class="kw-2">*mut </span>TCP_INFO_v0;
+<span class="kw">pub const </span>SIO_ACQUIRE_PORT_RESERVATION: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">100</span>);
+<span class="kw">pub const </span>SIO_RELEASE_PORT_RESERVATION: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">101</span>);
+<span class="kw">pub const </span>SIO_ASSOCIATE_PORT_RESERVATION: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">102</span>);
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INET_PORT_RANGE {
+    StartPort: USHORT,
+    NumberOfPorts: USHORT,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINET_PORT_RANGE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INET_PORT_RANGE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">INET_PORT_RESERVATION</span> <span class="op">=</span> <span class="ident">INET_PORT_RANGE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINET_PORT_RESERVATION</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INET_PORT_RANGE</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INET_PORT_RESERVATION_TOKEN</span> {
-    <span class="ident">Token</span>: <span class="ident">ULONG64</span>,
+<span class="kw">pub type </span>PINET_PORT_RANGE = <span class="kw-2">*mut </span>INET_PORT_RANGE;
+<span class="kw">pub type </span>INET_PORT_RESERVATION = INET_PORT_RANGE;
+<span class="kw">pub type </span>PINET_PORT_RESERVATION = <span class="kw-2">*mut </span>INET_PORT_RANGE;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INET_PORT_RESERVATION_TOKEN {
+    Token: ULONG64,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINET_PORT_RESERVATION_TOKEN</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INET_PORT_RESERVATION_TOKEN</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INET_PORT_RESERVATION_INSTANCE</span> {
-    <span class="ident">Reservation</span>: <span class="ident">INET_PORT_RESERVATION</span>,
-    <span class="ident">Token</span>: <span class="ident">INET_PORT_RESERVATION_TOKEN</span>,
+<span class="kw">pub type </span>PINET_PORT_RESERVATION_TOKEN = <span class="kw-2">*mut </span>INET_PORT_RESERVATION_TOKEN;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INET_PORT_RESERVATION_INSTANCE {
+    Reservation: INET_PORT_RESERVATION,
+    Token: INET_PORT_RESERVATION_TOKEN,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINET_PORT_RESERVATION_INSTANCE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INET_PORT_RESERVATION_INSTANCE</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">INET_PORT_RESERVATION_INFORMATION</span> {
-    <span class="ident">OwningPid</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>PINET_PORT_RESERVATION_INSTANCE = <span class="kw-2">*mut </span>INET_PORT_RESERVATION_INSTANCE;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>INET_PORT_RESERVATION_INFORMATION {
+    OwningPid: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PINET_PORT_RESERVATION_INFORMATION</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">INET_PORT_RESERVATION_INFORMATION</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SET_SECURITY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">200</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_SECURITY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">201</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SET_PEER_TARGET_NAME</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">202</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_DELETE_PEER_TARGET_NAME</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">203</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_WFP_CONNECTION_REDIRECT_RECORDS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">220</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_WFP_CONNECTION_REDIRECT_CONTEXT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">221</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SET_WFP_CONNECTION_REDIRECT_RECORDS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">222</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SOCKET_USAGE_NOTIFICATION</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">204</span>);
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SOCKET_USAGE_TYPE</span> {
-    <span class="ident">SYSTEM_CRITICAL_SOCKET</span> <span class="op">=</span> <span class="number">1</span>,
+<span class="kw">pub type </span>PINET_PORT_RESERVATION_INFORMATION = <span class="kw-2">*mut </span>INET_PORT_RESERVATION_INFORMATION;
+<span class="kw">pub const </span>SIO_SET_SECURITY: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">200</span>);
+<span class="kw">pub const </span>SIO_QUERY_SECURITY: DWORD = <span class="macro">_WSAIORW!</span>(IOC_VENDOR, <span class="number">201</span>);
+<span class="kw">pub const </span>SIO_SET_PEER_TARGET_NAME: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">202</span>);
+<span class="kw">pub const </span>SIO_DELETE_PEER_TARGET_NAME: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">203</span>);
+<span class="kw">pub const </span>SIO_QUERY_WFP_CONNECTION_REDIRECT_RECORDS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">220</span>);
+<span class="kw">pub const </span>SIO_QUERY_WFP_CONNECTION_REDIRECT_CONTEXT: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">221</span>);
+<span class="kw">pub const </span>SIO_SET_WFP_CONNECTION_REDIRECT_RECORDS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">222</span>);
+<span class="kw">pub const </span>SIO_SOCKET_USAGE_NOTIFICATION: DWORD = <span class="macro">_WSAIOW!</span>(IOC_VENDOR, <span class="number">204</span>);
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>SOCKET_USAGE_TYPE {
+    SYSTEM_CRITICAL_SOCKET = <span class="number">1</span>,
 }}
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SOCKET_SECURITY_PROTOCOL</span> {
-    <span class="ident">SOCKET_SECURITY_PROTOCOL_DEFAULT</span>,
-    <span class="ident">SOCKET_SECURITY_PROTOCOL_IPSEC</span>,
-    <span class="ident">SOCKET_SECURITY_PROTOCOL_IPSEC2</span>,
-    <span class="ident">SOCKET_SECURITY_PROTOCOL_INVALID</span>,
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>SOCKET_SECURITY_PROTOCOL {
+    SOCKET_SECURITY_PROTOCOL_DEFAULT,
+    SOCKET_SECURITY_PROTOCOL_IPSEC,
+    SOCKET_SECURITY_PROTOCOL_IPSEC2,
+    SOCKET_SECURITY_PROTOCOL_INVALID,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_SETTINGS</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">SecurityFlags</span>: <span class="ident">ULONG</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_SETTINGS {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    SecurityFlags: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_SETTINGS_IPSEC_SKIP_FILTER_INSTANTIATION</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_SETTINGS_IPSEC_OPTIONAL_PEER_NAME_VERIFICATION</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_SETTINGS_IPSEC_ALLOW_FIRST_INBOUND_PKT_UNENCRYPTED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_SETTINGS_IPSEC_PEER_NAME_IS_RAW_FORMAT</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x8</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_SETTINGS_IPSEC</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">SecurityFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">IpsecFlags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">AuthipMMPolicyKey</span>: <span class="ident">GUID</span>,
-    <span class="ident">AuthipQMPolicyKey</span>: <span class="ident">GUID</span>,
-    <span class="ident">Reserved</span>: <span class="ident">GUID</span>,
-    <span class="ident">Reserved2</span>: <span class="ident">UINT64</span>,
-    <span class="ident">UserNameStringLen</span>: <span class="ident">ULONG</span>,
-    <span class="ident">DomainNameStringLen</span>: <span class="ident">ULONG</span>,
-    <span class="ident">PasswordStringLen</span>: <span class="ident">ULONG</span>,
-    <span class="ident">AllStrings</span>: [<span class="ident">wchar_t</span>; <span class="number">0</span>],
+<span class="kw">pub const </span>SOCKET_SETTINGS_IPSEC_SKIP_FILTER_INSTANTIATION: ULONG = <span class="number">0x1</span>;
+<span class="kw">pub const </span>SOCKET_SETTINGS_IPSEC_OPTIONAL_PEER_NAME_VERIFICATION: ULONG = <span class="number">0x2</span>;
+<span class="kw">pub const </span>SOCKET_SETTINGS_IPSEC_ALLOW_FIRST_INBOUND_PKT_UNENCRYPTED: ULONG = <span class="number">0x4</span>;
+<span class="kw">pub const </span>SOCKET_SETTINGS_IPSEC_PEER_NAME_IS_RAW_FORMAT: ULONG = <span class="number">0x8</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_SETTINGS_IPSEC {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    SecurityFlags: ULONG,
+    IpsecFlags: ULONG,
+    AuthipMMPolicyKey: GUID,
+    AuthipQMPolicyKey: GUID,
+    Reserved: GUID,
+    Reserved2: UINT64,
+    UserNameStringLen: ULONG,
+    DomainNameStringLen: ULONG,
+    PasswordStringLen: ULONG,
+    AllStrings: [wchar_t; <span class="number">0</span>],
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_PEER_TARGET_NAME</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">PeerAddress</span>: <span class="ident">SOCKADDR_STORAGE</span>,
-    <span class="ident">PeerTargetNameStringLen</span>: <span class="ident">ULONG</span>,
-    <span class="ident">AllStrings</span>: [<span class="ident">wchar_t</span>; <span class="number">0</span>],
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_PEER_TARGET_NAME {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    PeerAddress: SOCKADDR_STORAGE,
+    PeerTargetNameStringLen: ULONG,
+    AllStrings: [wchar_t; <span class="number">0</span>],
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_QUERY_TEMPLATE</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">PeerAddress</span>: <span class="ident">SOCKADDR_STORAGE</span>,
-    <span class="ident">PeerTokenAccessMask</span>: <span class="ident">ULONG</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_QUERY_TEMPLATE {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    PeerAddress: SOCKADDR_STORAGE,
+    PeerTokenAccessMask: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_QUERY_IPSEC2_ABORT_CONNECTION_ON_FIELD_CHANGE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_QUERY_IPSEC2_FIELD_MASK_MM_SA_ID</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_QUERY_IPSEC2_FIELD_MASK_QM_SA_ID</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x2</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_QUERY_TEMPLATE_IPSEC2</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">PeerAddress</span>: <span class="ident">SOCKADDR_STORAGE</span>,
-    <span class="ident">PeerTokenAccessMask</span>: <span class="ident">ULONG</span>,
-    <span class="ident">Flags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">FieldMask</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub const </span>SOCKET_QUERY_IPSEC2_ABORT_CONNECTION_ON_FIELD_CHANGE: ULONG = <span class="number">0x1</span>;
+<span class="kw">pub const </span>SOCKET_QUERY_IPSEC2_FIELD_MASK_MM_SA_ID: ULONG = <span class="number">0x1</span>;
+<span class="kw">pub const </span>SOCKET_QUERY_IPSEC2_FIELD_MASK_QM_SA_ID: ULONG = <span class="number">0x2</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_QUERY_TEMPLATE_IPSEC2 {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    PeerAddress: SOCKADDR_STORAGE,
+    PeerTokenAccessMask: ULONG,
+    Flags: ULONG,
+    FieldMask: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_INFO_CONNECTION_SECURED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_INFO_CONNECTION_ENCRYPTED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCKET_INFO_CONNECTION_IMPERSONATED</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x4</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_QUERY_INFO</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">Flags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">PeerApplicationAccessTokenHandle</span>: <span class="ident">UINT64</span>,
-    <span class="ident">PeerMachineAccessTokenHandle</span>: <span class="ident">UINT64</span>,
+<span class="kw">pub const </span>SOCKET_INFO_CONNECTION_SECURED: ULONG = <span class="number">0x1</span>;
+<span class="kw">pub const </span>SOCKET_INFO_CONNECTION_ENCRYPTED: ULONG = <span class="number">0x2</span>;
+<span class="kw">pub const </span>SOCKET_INFO_CONNECTION_IMPERSONATED: ULONG = <span class="number">0x4</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_QUERY_INFO {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    Flags: ULONG,
+    PeerApplicationAccessTokenHandle: UINT64,
+    PeerMachineAccessTokenHandle: UINT64,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_SECURITY_QUERY_INFO_IPSEC2</span> {
-    <span class="ident">SecurityProtocol</span>: <span class="ident">SOCKET_SECURITY_PROTOCOL</span>,
-    <span class="ident">Flags</span>: <span class="ident">ULONG</span>,
-    <span class="ident">PeerApplicationAccessTokenHandle</span>: <span class="ident">UINT64</span>,
-    <span class="ident">PeerMachineAccessTokenHandle</span>: <span class="ident">UINT64</span>,
-    <span class="ident">MmSaId</span>: <span class="ident">UINT64</span>,
-    <span class="ident">QmSaId</span>: <span class="ident">UINT64</span>,
-    <span class="ident">NegotiationWinerr</span>: <span class="ident">UINT32</span>,
-    <span class="ident">SaLookupContext</span>: <span class="ident">GUID</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_SECURITY_QUERY_INFO_IPSEC2 {
+    SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    Flags: ULONG,
+    PeerApplicationAccessTokenHandle: UINT64,
+    PeerMachineAccessTokenHandle: UINT64,
+    MmSaId: UINT64,
+    QmSaId: UINT64,
+    NegotiationWinerr: UINT32,
+    SaLookupContext: GUID,
 }}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_WFP_ALE_ENDPOINT_HANDLE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">205</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_RSS_SCALABILITY_INFO</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_VENDOR</span>, <span class="number">210</span>);
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RSS_SCALABILITY_INFO</span> {
-    <span class="ident">RssEnabled</span>: <span class="ident">BOOLEAN</span>,
+<span class="kw">pub const </span>SIO_QUERY_WFP_ALE_ENDPOINT_HANDLE: DWORD = <span class="macro">_WSAIOR!</span>(IOC_VENDOR, <span class="number">205</span>);
+<span class="kw">pub const </span>SIO_QUERY_RSS_SCALABILITY_INFO: DWORD = <span class="macro">_WSAIOR!</span>(IOC_VENDOR, <span class="number">210</span>);
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>RSS_SCALABILITY_INFO {
+    RssEnabled: BOOLEAN,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PRSS_SCALABILITY_INFO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RSS_SCALABILITY_INFO</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_CLASSA</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="op">&amp;</span> <span class="number">0x80</span>) <span class="op">==</span> <span class="number">0</span>
+<span class="kw">pub type </span>PRSS_SCALABILITY_INFO = <span class="kw-2">*mut </span>RSS_SCALABILITY_INFO;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_CLASSA(i: LONG) -&gt; bool {
+    (i &amp; <span class="number">0x80</span>) == <span class="number">0
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_CLASSB(i: LONG) -&gt; bool {
+    (i &amp; <span class="number">0xc0</span>) == <span class="number">0x80
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_CLASSC(i: LONG) -&gt; bool {
+    (i &amp; <span class="number">0xe0</span>) == <span class="number">0xc0
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_CLASSD(i: LONG) -&gt; bool {
+    (i &amp; <span class="number">0xf0</span>) == <span class="number">0xe0
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_MULTICAST(i: LONG) -&gt; bool {
+    IN4_CLASSD(i)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_CLASSB</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="op">&amp;</span> <span class="number">0xc0</span>) <span class="op">==</span> <span class="number">0x80</span>
+<span class="kw">pub const </span>IN4ADDR_ANY: ULONG = INADDR_ANY;
+<span class="kw">pub const </span>IN4ADDR_LOOPBACK: ULONG = <span class="number">0x0100007f</span>;
+<span class="kw">pub const </span>IN4ADDR_BROADCAST: ULONG = INADDR_BROADCAST;
+<span class="kw">pub const </span>IN4ADDR_NONE: ULONG = INADDR_NONE;
+<span class="kw">pub const </span>IN4ADDR_LOOPBACKPREFIX_LENGTH: usize = <span class="number">8</span>;
+<span class="kw">pub const </span>IN4ADDR_LINKLOCALPREFIX_LENGTH: usize = <span class="number">16</span>;
+<span class="kw">pub const </span>IN4ADDR_MULTICASTPREFIX_LENGTH: usize = <span class="number">4</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_ADDR_EQUAL(a: <span class="kw-2">&amp;</span>IN_ADDR, b: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == <span class="kw-2">*</span>b.S_un.S_addr() }
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_CLASSC</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="op">&amp;</span> <span class="number">0xe0</span>) <span class="op">==</span> <span class="number">0xc0</span>
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_UNALIGNED_ADDR_EQUAL(a: <span class="kw-2">&amp;</span>IN_ADDR, b: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == <span class="kw-2">*</span>b.S_un.S_addr() }
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_CLASSD</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="op">&amp;</span> <span class="number">0xf0</span>) <span class="op">==</span> <span class="number">0xe0</span>
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_UNSPECIFIED(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == IN4ADDR_ANY }
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_MULTICAST</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_CLASSD</span>(<span class="ident">i</span>)
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_UNSPECIFIED(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == IN4ADDR_ANY }
 }
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_ANY</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">INADDR_ANY</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_LOOPBACK</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x0100007f</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_BROADCAST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">INADDR_BROADCAST</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_NONE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="ident">INADDR_NONE</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_LOOPBACKPREFIX_LENGTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_LINKLOCALPREFIX_LENGTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN4ADDR_MULTICASTPREFIX_LENGTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_ADDR_EQUAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="kw-2">*</span><span class="ident">b</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_LOOPBACK(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ a.S_un.S_un_b().s_b1 == <span class="number">0x7f </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_UNALIGNED_ADDR_EQUAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="kw-2">*</span><span class="ident">b</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_LOOPBACK(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ a.S_un.S_un_b().s_b1 == <span class="number">0x7f </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_UNSPECIFIED</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="ident">IN4ADDR_ANY</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_BROADCAST(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == IN4ADDR_BROADCAST }
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_UNSPECIFIED</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="ident">IN4ADDR_ANY</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_BROADCAST(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() == IN4ADDR_BROADCAST }
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_LOOPBACK</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_un_b</span>().<span class="ident">s_b1</span> <span class="op">==</span> <span class="number">0x7f</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_MULTICAST(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    IN4_MULTICAST(<span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() <span class="kw">as </span>LONG })
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_LOOPBACK</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_un_b</span>().<span class="ident">s_b1</span> <span class="op">==</span> <span class="number">0x7f</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_MULTICAST(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    IN4_MULTICAST(<span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() <span class="kw">as </span>LONG })
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_BROADCAST</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="ident">IN4ADDR_BROADCAST</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_LINKLOCAL(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ (<span class="kw-2">*</span>a.S_un.S_addr() &amp; <span class="number">0xffff</span>) == <span class="number">0xfea9 </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_BROADCAST</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">==</span> <span class="ident">IN4ADDR_BROADCAST</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_LINKLOCAL(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ (<span class="kw-2">*</span>a.S_un.S_addr() &amp; <span class="number">0xffff</span>) == <span class="number">0xfea9 </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_MULTICAST</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_MULTICAST</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="kw">as</span> <span class="ident">LONG</span> })
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_SITELOCAL(<span class="kw">_</span>: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="bool-val">false
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_SITELOCAL(<span class="kw">_</span>: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="bool-val">false
+</span>}
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_RFC1918(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">let </span>s_addr = <span class="kw">unsafe </span>{ <span class="kw-2">*</span>a.S_un.S_addr() };
+    ((s_addr &amp; <span class="number">0x00ff</span>) == <span class="number">0x0a</span>) || ((s_addr &amp; <span class="number">0xf0ff</span>) == <span class="number">0x10ac</span>) || ((s_addr &amp; <span class="number">0xffff</span>) == <span class="number">0xa8c0</span>)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_MULTICAST</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_MULTICAST</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="kw">as</span> <span class="ident">LONG</span> })
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_UNALIGNED_ADDR_RFC1918(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    IN4_IS_ADDR_RFC1918(a)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_LINKLOCAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">==</span> <span class="number">0xfea9</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_MC_LINKLOCAL(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ (<span class="kw-2">*</span>a.S_un.S_addr() &amp; <span class="number">0xffffff</span>) == <span class="number">0xe0 </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_LINKLOCAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">==</span> <span class="number">0xfea9</span> }
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_MC_ADMINLOCAL(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">unsafe </span>{ (<span class="kw-2">*</span>a.S_un.S_addr() &amp; <span class="number">0xffff</span>) == <span class="number">0xffef </span>}
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_SITELOCAL</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="bool-val">false</span>
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4_IS_ADDR_MC_SITELOCAL(a: <span class="kw-2">&amp;</span>IN_ADDR) -&gt; bool {
+    <span class="kw">let </span>first = <span class="kw">unsafe </span>{ (<span class="kw-2">*</span>a.S_un.S_addr() &amp; <span class="number">0xff</span>) == <span class="number">0xef </span>};
+    first &amp;&amp; !IN4_IS_ADDR_MC_ADMINLOCAL(a)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_SITELOCAL</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="bool-val">false</span>
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4ADDR_ISANY(a: <span class="kw-2">&amp;</span>SOCKADDR_IN) -&gt; bool {
+    IN4_IS_ADDR_UNSPECIFIED(<span class="kw-2">&amp;</span>a.sin_addr)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_RFC1918</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">let</span> <span class="ident">s_addr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() };
-    ((<span class="ident">s_addr</span> <span class="op">&amp;</span> <span class="number">0x00ff</span>) <span class="op">==</span> <span class="number">0x0a</span>) <span class="op">|</span><span class="op">|</span> ((<span class="ident">s_addr</span> <span class="op">&amp;</span> <span class="number">0xf0ff</span>) <span class="op">==</span> <span class="number">0x10ac</span>) <span class="op">|</span><span class="op">|</span> ((<span class="ident">s_addr</span> <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">==</span> <span class="number">0xa8c0</span>)
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN4ADDR_ISLOOPBACK(a: <span class="kw-2">&amp;</span>SOCKADDR_IN) -&gt; bool {
+    IN4_IS_ADDR_LOOPBACK(<span class="kw-2">&amp;</span>a.sin_addr)
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_UNALIGNED_ADDR_RFC1918</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_IS_ADDR_RFC1918</span>(<span class="ident">a</span>)
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>RtlIpv4AddressToStringA(
+        Addr: <span class="kw-2">*const </span>IN_ADDR,
+        S: PSTR,
+    ) -&gt; PSTR;
+    <span class="kw">pub fn </span>RtlIpv4AddressToStringExA(
+        Address: <span class="kw-2">*const </span>IN_ADDR,
+        Port: USHORT,
+        AddressString: PSTR,
+        AddressStringLength: PULONG,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv4AddressToStringW(
+        Addr: <span class="kw-2">*const </span>IN_ADDR,
+        S: PWSTR,
+    ) -&gt; PWSTR;
+    <span class="kw">pub fn </span>RtlIpv4AddressToStringExW(
+        Address: <span class="kw-2">*const </span>IN_ADDR,
+        Port: USHORT,
+        AddressString: PWSTR,
+        AddressStringLength: PULONG,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv4StringToAddressA(
+        S: PCSTR,
+        Strict: BOOLEAN,
+        Terminator: <span class="kw-2">*mut </span>PCSTR,
+        Addr: <span class="kw-2">*mut </span>IN_ADDR,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv4StringToAddressExA(
+        AddressString: PCSTR,
+        Strict: BOOLEAN,
+        Address: <span class="kw-2">*mut </span>IN_ADDR,
+        Port: PUSHORT,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv4StringToAddressW(
+        S: PCWSTR,
+        Strict: BOOLEAN,
+        Terminator: <span class="kw-2">*mut </span>LPCWSTR,
+        Addr: <span class="kw-2">*mut </span>IN_ADDR,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv4StringToAddressExW(
+        AddressString: PCWSTR,
+        Strict: BOOLEAN,
+        Address: <span class="kw-2">*mut </span>IN_ADDR,
+        Port: PUSHORT,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6AddressToStringA(
+        Addr: <span class="kw-2">*const </span>IN6_ADDR,
+        S: PSTR,
+    ) -&gt; PSTR;
+    <span class="kw">pub fn </span>RtlIpv6AddressToStringExA(
+        Address: <span class="kw-2">*const </span>IN6_ADDR,
+        ScopeId: ULONG,
+        Port: USHORT,
+        AddressString: PSTR,
+        AddressStringLength: PULONG,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6AddressToStringW(
+        Addr: <span class="kw-2">*const </span>IN6_ADDR,
+        S: PWSTR,
+    ) -&gt; PWSTR;
+    <span class="kw">pub fn </span>RtlIpv6AddressToStringExW(
+        Address: <span class="kw-2">*const </span>IN6_ADDR,
+        ScopeId: ULONG,
+        Port: USHORT,
+        AddressString: PWSTR,
+        AddressStringLength: PULONG,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6StringToAddressA(
+        S: PCSTR,
+        Terminator: <span class="kw-2">*mut </span>PCSTR,
+        Addr: <span class="kw-2">*mut </span>IN6_ADDR,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6StringToAddressExA(
+        AddressString: PCSTR,
+        Address: <span class="kw-2">*mut </span>IN6_ADDR,
+        ScopeId: PULONG,
+        Port: PUSHORT,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6StringToAddressW(
+        S: PCWSTR,
+        Terminator: <span class="kw-2">*mut </span>PCWSTR,
+        Addr: <span class="kw-2">*mut </span>IN6_ADDR,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlIpv6StringToAddressExW(
+        AddressString: PCWSTR,
+        Address: <span class="kw-2">*mut </span>IN6_ADDR,
+        ScopeId: PULONG,
+        Port: PUSHORT,
+    ) -&gt; LONG;
 }
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_MC_LINKLOCAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">&amp;</span> <span class="number">0xffffff</span>) <span class="op">==</span> <span class="number">0xe0</span> }
-}
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_MC_ADMINLOCAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">==</span> <span class="number">0xffef</span> }
-}
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4_IS_ADDR_MC_SITELOCAL</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">IN_ADDR</span>) -&gt; <span class="ident">bool</span> {
-    <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">a</span>.<span class="ident">S_un</span>.<span class="ident">S_addr</span>() <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="op">==</span> <span class="number">0xef</span> };
-    <span class="ident">first</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">IN4_IS_ADDR_MC_ADMINLOCAL</span>(<span class="ident">a</span>)
-}
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4ADDR_ISANY</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">SOCKADDR_IN</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_IS_ADDR_UNSPECIFIED</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>.<span class="ident">sin_addr</span>)
-}
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN4ADDR_ISLOOPBACK</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">SOCKADDR_IN</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN4_IS_ADDR_LOOPBACK</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>.<span class="ident">sin_addr</span>)
-}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4AddressToStringA</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">S</span>: <span class="ident">PSTR</span>,
-    ) -&gt; <span class="ident">PSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4AddressToStringExA</span>(
-        <span class="ident">Address</span>: <span class="kw-2">*const</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">Port</span>: <span class="ident">USHORT</span>,
-        <span class="ident">AddressString</span>: <span class="ident">PSTR</span>,
-        <span class="ident">AddressStringLength</span>: <span class="ident">PULONG</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4AddressToStringW</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">S</span>: <span class="ident">PWSTR</span>,
-    ) -&gt; <span class="ident">PWSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4AddressToStringExW</span>(
-        <span class="ident">Address</span>: <span class="kw-2">*const</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">Port</span>: <span class="ident">USHORT</span>,
-        <span class="ident">AddressString</span>: <span class="ident">PWSTR</span>,
-        <span class="ident">AddressStringLength</span>: <span class="ident">PULONG</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4StringToAddressA</span>(
-        <span class="ident">S</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">Strict</span>: <span class="ident">BOOLEAN</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">PCSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">IN_ADDR</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4StringToAddressExA</span>(
-        <span class="ident">AddressString</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">Strict</span>: <span class="ident">BOOLEAN</span>,
-        <span class="ident">Address</span>: <span class="kw-2">*mut</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">Port</span>: <span class="ident">PUSHORT</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4StringToAddressW</span>(
-        <span class="ident">S</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">Strict</span>: <span class="ident">BOOLEAN</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">LPCWSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">IN_ADDR</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv4StringToAddressExW</span>(
-        <span class="ident">AddressString</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">Strict</span>: <span class="ident">BOOLEAN</span>,
-        <span class="ident">Address</span>: <span class="kw-2">*mut</span> <span class="ident">IN_ADDR</span>,
-        <span class="ident">Port</span>: <span class="ident">PUSHORT</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6AddressToStringA</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">S</span>: <span class="ident">PSTR</span>,
-    ) -&gt; <span class="ident">PSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6AddressToStringExA</span>(
-        <span class="ident">Address</span>: <span class="kw-2">*const</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">ScopeId</span>: <span class="ident">ULONG</span>,
-        <span class="ident">Port</span>: <span class="ident">USHORT</span>,
-        <span class="ident">AddressString</span>: <span class="ident">PSTR</span>,
-        <span class="ident">AddressStringLength</span>: <span class="ident">PULONG</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6AddressToStringW</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">S</span>: <span class="ident">PWSTR</span>,
-    ) -&gt; <span class="ident">PWSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6AddressToStringExW</span>(
-        <span class="ident">Address</span>: <span class="kw-2">*const</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">ScopeId</span>: <span class="ident">ULONG</span>,
-        <span class="ident">Port</span>: <span class="ident">USHORT</span>,
-        <span class="ident">AddressString</span>: <span class="ident">PWSTR</span>,
-        <span class="ident">AddressStringLength</span>: <span class="ident">PULONG</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6StringToAddressA</span>(
-        <span class="ident">S</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">PCSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">IN6_ADDR</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6StringToAddressExA</span>(
-        <span class="ident">AddressString</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">Address</span>: <span class="kw-2">*mut</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">ScopeId</span>: <span class="ident">PULONG</span>,
-        <span class="ident">Port</span>: <span class="ident">PUSHORT</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6StringToAddressW</span>(
-        <span class="ident">S</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">PCWSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">IN6_ADDR</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlIpv6StringToAddressExW</span>(
-        <span class="ident">AddressString</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">Address</span>: <span class="kw-2">*mut</span> <span class="ident">IN6_ADDR</span>,
-        <span class="ident">ScopeId</span>: <span class="ident">PULONG</span>,
-        <span class="ident">Port</span>: <span class="ident">PUSHORT</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-}
-<span class="macro">DECLARE_HANDLE!</span>{<span class="ident">DL_EUI48</span>, <span class="ident">_DL_EUI48</span>}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PDL_EUI48</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">DL_EUI48</span>;
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlEthernetAddressToStringA</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">DL_EUI48</span>,
-        <span class="ident">S</span>: <span class="ident">PSTR</span>,
-    ) -&gt; <span class="ident">PSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlEthernetAddressToStringW</span>(
-        <span class="ident">Addr</span>: <span class="kw-2">*const</span> <span class="ident">DL_EUI48</span>,
-        <span class="ident">S</span>: <span class="ident">PWSTR</span>,
-    ) -&gt; <span class="ident">PWSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlEthernetStringToAddressA</span>(
-        <span class="ident">S</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">PCSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">DL_EUI48</span>,
-    ) -&gt; <span class="ident">LONG</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RtlEthernetStringToAddressW</span>(
-        <span class="ident">S</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">Terminator</span>: <span class="kw-2">*mut</span> <span class="ident">LPCWSTR</span>,
-        <span class="ident">Addr</span>: <span class="kw-2">*mut</span> <span class="ident">DL_EUI48</span>,
-    ) -&gt; <span class="ident">LONG</span>;
+<span class="macro">DECLARE_HANDLE!</span>{DL_EUI48, _DL_EUI48}
+<span class="kw">pub type </span>PDL_EUI48 = <span class="kw-2">*mut </span>DL_EUI48;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>RtlEthernetAddressToStringA(
+        Addr: <span class="kw-2">*const </span>DL_EUI48,
+        S: PSTR,
+    ) -&gt; PSTR;
+    <span class="kw">pub fn </span>RtlEthernetAddressToStringW(
+        Addr: <span class="kw-2">*const </span>DL_EUI48,
+        S: PWSTR,
+    ) -&gt; PWSTR;
+    <span class="kw">pub fn </span>RtlEthernetStringToAddressA(
+        S: PCSTR,
+        Terminator: <span class="kw-2">*mut </span>PCSTR,
+        Addr: <span class="kw-2">*mut </span>DL_EUI48,
+    ) -&gt; LONG;
+    <span class="kw">pub fn </span>RtlEthernetStringToAddressW(
+        S: PCWSTR,
+        Terminator: <span class="kw-2">*mut </span>LPCWSTR,
+        Addr: <span class="kw-2">*mut </span>DL_EUI48,
+    ) -&gt; LONG;
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

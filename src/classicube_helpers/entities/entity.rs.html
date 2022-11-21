@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\entities\entity.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>entity.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../classicube_helpers/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\entities\entity.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>entity.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../classicube_helpers/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -104,111 +104,113 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">classicube_sys</span>::{<span class="ident">Entities</span>, <span class="ident">Matrix</span>, <span class="ident">Vec3</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::CStr</span>, <span class="ident">os::raw::c_char</span>, <span class="ident">ptr::NonNull</span>};
+<span id="107">107</span>
+</pre><pre class="rust"><code><span class="kw">use </span>std::{ffi::CStr, os::raw::c_char, ptr::NonNull};
 
-<span class="doccomment">/// 255 is self entity</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ENTITY_SELF_ID</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">255</span>;
+<span class="kw">use </span>classicube_sys::{Entities, Matrix, Vec3};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Entity</span> {
-    <span class="ident">id</span>: <span class="ident">u8</span>,
-    <span class="ident">inner</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">classicube_sys::Entity</span>,
+<span class="doccomment">/// 255 is self entity
+</span><span class="kw">pub const </span>ENTITY_SELF_ID: u8 = <span class="number">255</span>;
+
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Entity {
+    id: u8,
+    inner: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw-2">mut </span>classicube_sys::Entity,
 }
 
-<span class="kw">impl</span> <span class="ident">Entity</span> {
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `id` must exist.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `Entity` cannot outlive the entity in-game.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `Entities` will use `Weak` to make sure this dies when the entity is removed.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_id</span>(<span class="ident">id</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">Entities</span>.<span class="ident">List</span>[<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>])<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">as_mut</span>();
-        <span class="prelude-val">Some</span>(<span class="self">Self</span> { <span class="ident">id</span>, <span class="ident">inner</span> })
+<span class="kw">impl </span>Entity {
+    <span class="doccomment">/// # Safety
+    ///
+    /// `id` must exist.
+    ///
+    /// `Entity` cannot outlive the entity in-game.
+    ///
+    /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
+    </span><span class="kw">pub unsafe fn </span>from_id(id: u8) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>ptr = NonNull::new(Entities.List[id <span class="kw">as </span>usize])<span class="question-mark">?</span>;
+        <span class="kw">let </span>inner = ptr.as_mut();
+        <span class="prelude-val">Some</span>(<span class="self">Self </span>{ id, inner })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">classicube_sys::Entity</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>
+    <span class="kw">pub fn </span>get_inner(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>classicube_sys::Entity {
+        <span class="self">self</span>.inner
     }
 
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `Entity` cannot outlive the entity in-game.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `Entities` will use `Weak` to make sure this dies when the entity is removed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_inner_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">classicube_sys::Entity</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>
+    <span class="doccomment">/// # Safety
+    ///
+    /// `Entity` cannot outlive the entity in-game.
+    ///
+    /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
+    </span><span class="kw">pub fn </span>get_inner_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>classicube_sys::Entity {
+        <span class="self">self</span>.inner
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
-        <span class="self">self</span>.<span class="ident">id</span>
+    <span class="kw">pub fn </span>get_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u8 {
+        <span class="self">self</span>.id
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec3</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Position</span>
+    <span class="kw">pub fn </span>get_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
+        <span class="self">self</span>.inner.Position
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_transform</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Matrix</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Transform</span>
+    <span class="kw">pub fn </span>get_transform(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Matrix {
+        <span class="self">self</span>.inner.Transform
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_head</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [<span class="ident">f32</span>; <span class="number">2</span>] {
-        [<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Pitch</span>, <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Yaw</span>]
+    <span class="kw">pub fn </span>get_head(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [f32; <span class="number">2</span>] {
+        [<span class="self">self</span>.inner.Pitch, <span class="self">self</span>.inner.Yaw]
     }
 
-    <span class="doccomment">/// [x, y, z], numbers are 0-360</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_rot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [<span class="ident">f32</span>; <span class="number">3</span>] {
-        [<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">RotX</span>, <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">RotY</span>, <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">RotZ</span>]
+    <span class="doccomment">/// [x, y, z], numbers are 0-360
+    </span><span class="kw">pub fn </span>get_rot(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [f32; <span class="number">3</span>] {
+        [<span class="self">self</span>.inner.RotX, <span class="self">self</span>.inner.RotY, <span class="self">self</span>.inner.RotZ]
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_velocity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec3</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Velocity</span>
+    <span class="kw">pub fn </span>get_velocity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
+        <span class="self">self</span>.inner.Velocity
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_model</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">classicube_sys::Model</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">model</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">Model</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Some</span>(<span class="ident">model</span>.<span class="ident">as_mut</span>())
+    <span class="kw">pub unsafe fn </span>get_model(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>classicube_sys::Model&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>model = NonNull::new(<span class="self">self</span>.inner.Model)<span class="question-mark">?</span>;
+        <span class="prelude-val">Some</span>(model.as_mut())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_model_eye_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
-        <span class="kw">let</span> <span class="ident">model</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_model</span>().<span class="ident">expect</span>(<span class="string">&quot;Entity::get_model&quot;</span>) };
-        <span class="kw">let</span> <span class="ident">get_eye_y</span> <span class="op">=</span> <span class="ident">model</span>.<span class="ident">GetEyeY</span>.<span class="ident">expect</span>(<span class="string">&quot;GetEyeY&quot;</span>);
+    <span class="kw">pub fn </span>get_model_eye_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        <span class="kw">let </span>model = <span class="kw">unsafe </span>{ <span class="self">self</span>.get_model().expect(<span class="string">&quot;Entity::get_model&quot;</span>) };
+        <span class="kw">let </span>get_eye_y = model.GetEyeY.expect(<span class="string">&quot;GetEyeY&quot;</span>);
 
-        <span class="comment">// it most likely doesn&#39;t mutate the Entity</span>
-        <span class="kw">let</span> <span class="ident">inner_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-        <span class="kw">unsafe</span> { <span class="ident">get_eye_y</span>(<span class="ident">inner_ptr</span>) }
+        <span class="comment">// it most likely doesn&#39;t mutate the Entity
+        </span><span class="kw">let </span>inner_ptr = <span class="self">self</span>.inner <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+        <span class="kw">unsafe </span>{ get_eye_y(inner_ptr) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_model_name_y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
-        <span class="kw">let</span> <span class="ident">model</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_model</span>().<span class="ident">expect</span>(<span class="string">&quot;Entity::get_model&quot;</span>) };
-        <span class="kw">let</span> <span class="ident">get_name_y</span> <span class="op">=</span> <span class="ident">model</span>.<span class="ident">GetNameY</span>.<span class="ident">expect</span>(<span class="string">&quot;GetNameY&quot;</span>);
+    <span class="kw">pub fn </span>get_model_name_y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        <span class="kw">let </span>model = <span class="kw">unsafe </span>{ <span class="self">self</span>.get_model().expect(<span class="string">&quot;Entity::get_model&quot;</span>) };
+        <span class="kw">let </span>get_name_y = model.GetNameY.expect(<span class="string">&quot;GetNameY&quot;</span>);
 
-        <span class="comment">// it most likely doesn&#39;t mutate the Entity</span>
-        <span class="kw">let</span> <span class="ident">inner_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
-        <span class="kw">unsafe</span> { <span class="ident">get_name_y</span>(<span class="ident">inner_ptr</span>) }
+        <span class="comment">// it most likely doesn&#39;t mutate the Entity
+        </span><span class="kw">let </span>inner_ptr = <span class="self">self</span>.inner <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
+        <span class="kw">unsafe </span>{ get_name_y(inner_ptr) }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_model_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec3</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ModelScale</span>
+    <span class="kw">pub fn </span>get_model_scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
+        <span class="self">self</span>.inner.ModelScale
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_display_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">c_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">NameRaw</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_char</span>) };
-        <span class="ident">c_str</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>()
+    <span class="kw">pub fn </span>get_display_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="kw">let </span>c_str = <span class="kw">unsafe </span>{ CStr::from_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.NameRaw <span class="kw">as </span><span class="kw-2">*const </span>c_char) };
+        c_str.to_string_lossy().to_string()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_eye_height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
-        <span class="self">self</span>.<span class="ident">get_model_eye_y</span>() <span class="op">*</span> <span class="self">self</span>.<span class="ident">get_model_scale</span>().<span class="ident">Y</span>
+    <span class="kw">pub fn </span>get_eye_height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        <span class="self">self</span>.get_model_eye_y() * <span class="self">self</span>.get_model_scale().Y
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_eye_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec3</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_position</span>();
-        <span class="ident">pos</span>.<span class="ident">Y</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">get_eye_height</span>();
-        <span class="ident">pos</span>
+    <span class="kw">pub fn </span>get_eye_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
+        <span class="kw">let </span><span class="kw-2">mut </span>pos = <span class="self">self</span>.get_position();
+        pos.Y += <span class="self">self</span>.get_eye_height();
+        pos
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

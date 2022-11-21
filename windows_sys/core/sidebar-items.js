@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GUID",""]],"type":[["HRESULT",""],["HSTRING",""],["IInspectable",""],["IUnknown",""],["PCSTR",""],["PCWSTR",""],["PSTR",""],["PWSTR",""]]};
+window.SIDEBAR_ITEMS = {"struct":[["GUID",""]],"type":[["BSTR",""],["HRESULT",""],["HSTRING",""],["IInspectable",""],["IUnknown",""],["PCSTR",""],["PCWSTR",""],["PSTR",""],["PWSTR",""]]};

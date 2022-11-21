@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.4\src\sys\windows\selector.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>selector.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.5\src\sys\windows\selector.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>selector.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -750,724 +750,724 @@
 <span id="750">750</span>
 <span id="751">751</span>
 <span id="752">752</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::afd</span>::{<span class="self">self</span>, <span class="ident">Afd</span>, <span class="ident">AfdPollInfo</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::io_status_block::IoStatusBlock</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Event</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sys::Events</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::afd::{<span class="self">self</span>, Afd, AfdPollInfo};
+<span class="kw">use </span><span class="kw">super</span>::io_status_block::IoStatusBlock;
+<span class="kw">use </span><span class="kw">super</span>::Event;
+<span class="kw">use </span><span class="kw">crate</span>::sys::Events;
 
-<span class="macro">cfg_net!</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sys::event</span>::{
-        <span class="ident">ERROR_FLAGS</span>, <span class="ident">READABLE_FLAGS</span>, <span class="ident">READ_CLOSED_FLAGS</span>, <span class="ident">WRITABLE_FLAGS</span>, <span class="ident">WRITE_CLOSED_FLAGS</span>,
+<span class="macro">cfg_net! </span>{
+    <span class="kw">use </span><span class="kw">crate</span>::sys::event::{
+        ERROR_FLAGS, READABLE_FLAGS, READ_CLOSED_FLAGS, WRITABLE_FLAGS, WRITE_CLOSED_FLAGS,
     };
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Interest</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::Interest;
 }
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::iocp</span>::{<span class="ident">CompletionPort</span>, <span class="ident">CompletionStatus</span>};
-<span class="kw">use</span> <span class="ident">std::collections::VecDeque</span>;
-<span class="kw">use</span> <span class="ident">std::ffi::c_void</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::marker::PhantomPinned</span>;
-<span class="kw">use</span> <span class="ident">std::os::windows::io::RawSocket</span>;
-<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-<span class="kw">use</span> <span class="ident">std::sync::atomic::AtomicUsize</span>;
-<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
-<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
-<span class="kw">use</span> <span class="ident">std::time::Duration</span>;
+<span class="kw">use </span><span class="kw">super</span>::iocp::{CompletionPort, CompletionStatus};
+<span class="kw">use </span>std::collections::VecDeque;
+<span class="kw">use </span>std::ffi::c_void;
+<span class="kw">use </span>std::io;
+<span class="kw">use </span>std::marker::PhantomPinned;
+<span class="kw">use </span>std::os::windows::io::RawSocket;
+<span class="kw">use </span>std::pin::Pin;
+<span class="attribute">#[cfg(debug_assertions)]
+</span><span class="kw">use </span>std::sync::atomic::AtomicUsize;
+<span class="kw">use </span>std::sync::atomic::{AtomicBool, Ordering};
+<span class="kw">use </span>std::sync::{Arc, Mutex};
+<span class="kw">use </span>std::time::Duration;
 
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::Foundation</span>::{
-    <span class="ident">ERROR_INVALID_HANDLE</span>, <span class="ident">ERROR_IO_PENDING</span>, <span class="ident">HANDLE</span>, <span class="ident">STATUS_CANCELLED</span>, <span class="ident">WAIT_TIMEOUT</span>,
+<span class="kw">use </span>windows_sys::Win32::Foundation::{
+    ERROR_INVALID_HANDLE, ERROR_IO_PENDING, HANDLE, STATUS_CANCELLED, WAIT_TIMEOUT,
 };
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::System::IO::OVERLAPPED</span>;
+<span class="kw">use </span>windows_sys::Win32::System::IO::OVERLAPPED;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">AfdGroup</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;net&quot;</span>), <span class="ident">allow</span>(<span class="ident">dead_code</span>))]</span>
-    <span class="ident">cp</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span>,
-    <span class="ident">afd_group</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">struct </span>AfdGroup {
+    <span class="attribute">#[cfg_attr(not(feature = <span class="string">&quot;net&quot;</span>), allow(dead_code))]
+    </span>cp: Arc&lt;CompletionPort&gt;,
+    afd_group: Mutex&lt;Vec&lt;Arc&lt;Afd&gt;&gt;&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">AfdGroup</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">cp</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span>) -&gt; <span class="ident">AfdGroup</span> {
-        <span class="ident">AfdGroup</span> {
-            <span class="ident">afd_group</span>: <span class="ident">Mutex::new</span>(<span class="ident">Vec::new</span>()),
-            <span class="ident">cp</span>,
+<span class="kw">impl </span>AfdGroup {
+    <span class="kw">pub fn </span>new(cp: Arc&lt;CompletionPort&gt;) -&gt; AfdGroup {
+        AfdGroup {
+            afd_group: Mutex::new(Vec::new()),
+            cp,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">release_unused_afd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">afd_group</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="ident">afd_group</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">Arc::strong_count</span>(<span class="ident">g</span>) <span class="op">&gt;</span> <span class="number">1</span>);
+    <span class="kw">pub fn </span>release_unused_afd(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>afd_group = <span class="self">self</span>.afd_group.lock().unwrap();
+        afd_group.retain(|g| Arc::strong_count(g) &gt; <span class="number">1</span>);
     }
 }
 
-<span class="macro">cfg_io_source!</span> {
-    <span class="kw">const</span> <span class="ident">POLL_GROUP__MAX_GROUP_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">32</span>;
+<span class="macro">cfg_io_source! </span>{
+    <span class="kw">const </span>POLL_GROUP__MAX_GROUP_SIZE: usize = <span class="number">32</span>;
 
-    <span class="kw">impl</span> <span class="ident">AfdGroup</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">acquire</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">afd_group</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-            <span class="kw">if</span> <span class="ident">afd_group</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
-                <span class="self">self</span>.<span class="ident">_alloc_afd_group</span>(<span class="kw-2">&amp;mut</span> <span class="ident">afd_group</span>)<span class="question-mark">?</span>;
-            } <span class="kw">else</span> {
-                <span class="comment">// + 1 reference in Vec</span>
-                <span class="kw">if</span> <span class="ident">Arc::strong_count</span>(<span class="ident">afd_group</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>()) <span class="op">&gt;</span> <span class="ident">POLL_GROUP__MAX_GROUP_SIZE</span>  {
-                    <span class="self">self</span>.<span class="ident">_alloc_afd_group</span>(<span class="kw-2">&amp;mut</span> <span class="ident">afd_group</span>)<span class="question-mark">?</span>;
+    <span class="kw">impl </span>AfdGroup {
+        <span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;Arc&lt;Afd&gt;&gt; {
+            <span class="kw">let </span><span class="kw-2">mut </span>afd_group = <span class="self">self</span>.afd_group.lock().unwrap();
+            <span class="kw">if </span>afd_group.len() == <span class="number">0 </span>{
+                <span class="self">self</span>._alloc_afd_group(<span class="kw-2">&amp;mut </span>afd_group)<span class="question-mark">?</span>;
+            } <span class="kw">else </span>{
+                <span class="comment">// + 1 reference in Vec
+                </span><span class="kw">if </span>Arc::strong_count(afd_group.last().unwrap()) &gt; POLL_GROUP__MAX_GROUP_SIZE  {
+                    <span class="self">self</span>._alloc_afd_group(<span class="kw-2">&amp;mut </span>afd_group)<span class="question-mark">?</span>;
                 }
             }
 
-            <span class="kw">match</span> <span class="ident">afd_group</span>.<span class="ident">last</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">arc</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">arc</span>.<span class="ident">clone</span>()),
-                <span class="prelude-val">None</span> =&gt; <span class="macro">unreachable!</span>(
+            <span class="kw">match </span>afd_group.last() {
+                <span class="prelude-val">Some</span>(arc) =&gt; <span class="prelude-val">Ok</span>(arc.clone()),
+                <span class="prelude-val">None </span>=&gt; <span class="macro">unreachable!</span>(
                     <span class="string">&quot;Cannot acquire afd, {:#?}, afd_group: {:#?}&quot;</span>,
-                    <span class="self">self</span>, <span class="ident">afd_group</span>
+                    <span class="self">self</span>, afd_group
                 ),
             }
         }
 
-        <span class="kw">fn</span> <span class="ident">_alloc_afd_group</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">afd_group</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">afd</span> <span class="op">=</span> <span class="ident">Afd::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cp</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">arc</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">afd</span>);
-            <span class="ident">afd_group</span>.<span class="ident">push</span>(<span class="ident">arc</span>);
+        <span class="kw">fn </span>_alloc_afd_group(<span class="kw-2">&amp;</span><span class="self">self</span>, afd_group: <span class="kw-2">&amp;mut </span>Vec&lt;Arc&lt;Afd&gt;&gt;) -&gt; io::Result&lt;()&gt; {
+            <span class="kw">let </span>afd = Afd::new(<span class="kw-2">&amp;</span><span class="self">self</span>.cp)<span class="question-mark">?</span>;
+            <span class="kw">let </span>arc = Arc::new(afd);
+            afd_group.push(arc);
             <span class="prelude-val">Ok</span>(())
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">enum</span> <span class="ident">SockPollStatus</span> {
-    <span class="ident">Idle</span>,
-    <span class="ident">Pending</span>,
-    <span class="ident">Cancelled</span>,
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">enum </span>SockPollStatus {
+    Idle,
+    Pending,
+    Cancelled,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SockState</span> {
-    <span class="ident">iosb</span>: <span class="ident">IoStatusBlock</span>,
-    <span class="ident">poll_info</span>: <span class="ident">AfdPollInfo</span>,
-    <span class="ident">afd</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>SockState {
+    iosb: IoStatusBlock,
+    poll_info: AfdPollInfo,
+    afd: Arc&lt;Afd&gt;,
 
-    <span class="ident">base_socket</span>: <span class="ident">RawSocket</span>,
+    base_socket: RawSocket,
 
-    <span class="ident">user_evts</span>: <span class="ident">u32</span>,
-    <span class="ident">pending_evts</span>: <span class="ident">u32</span>,
+    user_evts: u32,
+    pending_evts: u32,
 
-    <span class="ident">user_data</span>: <span class="ident">u64</span>,
+    user_data: u64,
 
-    <span class="ident">poll_status</span>: <span class="ident">SockPollStatus</span>,
-    <span class="ident">delete_pending</span>: <span class="ident">bool</span>,
+    poll_status: SockPollStatus,
+    delete_pending: bool,
 
-    <span class="comment">// last raw os error</span>
-    <span class="ident">error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+    <span class="comment">// last raw os error
+    </span>error: <span class="prelude-ty">Option</span>&lt;i32&gt;,
 
-    <span class="ident">_pinned</span>: <span class="ident">PhantomPinned</span>,
+    _pinned: PhantomPinned,
 }
 
-<span class="kw">impl</span> <span class="ident">SockState</span> {
-    <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">self_arc</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">delete_pending</span>);
+<span class="kw">impl </span>SockState {
+    <span class="kw">fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, self_arc: <span class="kw-2">&amp;</span>Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;) -&gt; io::Result&lt;()&gt; {
+        <span class="macro">assert!</span>(!<span class="self">self</span>.delete_pending);
 
-        <span class="comment">// make sure to reset previous error before a new update</span>
-        <span class="self">self</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="comment">// make sure to reset previous error before a new update
+        </span><span class="self">self</span>.error = <span class="prelude-val">None</span>;
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SockPollStatus::Pending</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_status</span> {
-            <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">user_evts</span> <span class="op">&amp;</span> <span class="ident">afd::KNOWN_EVENTS</span> <span class="op">&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">pending_evts</span>) <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">if let </span>SockPollStatus::Pending = <span class="self">self</span>.poll_status {
+            <span class="kw">if </span>(<span class="self">self</span>.user_evts &amp; afd::KNOWN_EVENTS &amp; !<span class="self">self</span>.pending_evts) == <span class="number">0 </span>{
                 <span class="comment">/* All the events the user is interested in are already being monitored by
                  * the pending poll operation. It might spuriously complete because of an
                  * event that we&#39;re no longer interested in; when that happens we&#39;ll submit
-                 * a new poll operation with the updated event mask. */</span>
-            } <span class="kw">else</span> {
+                 * a new poll operation with the updated event mask. */
+            </span>} <span class="kw">else </span>{
                 <span class="comment">/* A poll operation is already pending, but it&#39;s not monitoring for all the
                  * events that the user is interested in. Therefore, cancel the pending
                  * poll operation; when we receive it&#39;s completion package, a new poll
-                 * operation will be submitted with the correct event mask. */</span>
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">cancel</span>() {
-                    <span class="self">self</span>.<span class="ident">error</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>();
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>);
+                 * operation will be submitted with the correct event mask. */
+                </span><span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <span class="self">self</span>.cancel() {
+                    <span class="self">self</span>.error = e.raw_os_error();
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(e);
                 }
-                <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SockPollStatus::Cancelled</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_status</span> {
+        } <span class="kw">else if let </span>SockPollStatus::Cancelled = <span class="self">self</span>.poll_status {
             <span class="comment">/* The poll operation has already been cancelled, we&#39;re still waiting for
-             * it to return. For now, there&#39;s nothing that needs to be done. */</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SockPollStatus::Idle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_status</span> {
-            <span class="comment">/* No poll operation is pending; start one. */</span>
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">exclusive</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">number_of_handles</span> <span class="op">=</span> <span class="number">1</span>;
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">timeout</span> <span class="op">=</span> <span class="ident">i64::MAX</span>;
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">handles</span>[<span class="number">0</span>].<span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base_socket</span> <span class="kw">as</span> <span class="ident">HANDLE</span>;
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">handles</span>[<span class="number">0</span>].<span class="ident">status</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">handles</span>[<span class="number">0</span>].<span class="ident">events</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">user_evts</span> <span class="op">|</span> <span class="ident">afd::POLL_LOCAL_CLOSE</span>;
+             * it to return. For now, there&#39;s nothing that needs to be done. */
+        </span>} <span class="kw">else if let </span>SockPollStatus::Idle = <span class="self">self</span>.poll_status {
+            <span class="comment">/* No poll operation is pending; start one. */
+            </span><span class="self">self</span>.poll_info.exclusive = <span class="number">0</span>;
+            <span class="self">self</span>.poll_info.number_of_handles = <span class="number">1</span>;
+            <span class="self">self</span>.poll_info.timeout = i64::MAX;
+            <span class="self">self</span>.poll_info.handles[<span class="number">0</span>].handle = <span class="self">self</span>.base_socket <span class="kw">as </span>HANDLE;
+            <span class="self">self</span>.poll_info.handles[<span class="number">0</span>].status = <span class="number">0</span>;
+            <span class="self">self</span>.poll_info.handles[<span class="number">0</span>].events = <span class="self">self</span>.user_evts | afd::POLL_LOCAL_CLOSE;
 
-            <span class="comment">// Increase the ref count as the memory will be used by the kernel.</span>
-            <span class="kw">let</span> <span class="ident">overlapped_ptr</span> <span class="op">=</span> <span class="ident">into_overlapped</span>(<span class="ident">self_arc</span>.<span class="ident">clone</span>());
+            <span class="comment">// Increase the ref count as the memory will be used by the kernel.
+            </span><span class="kw">let </span>overlapped_ptr = into_overlapped(self_arc.clone());
 
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">afd</span>
-                    .<span class="ident">poll</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">poll_info</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">iosb</span>, <span class="ident">overlapped_ptr</span>)
+            <span class="kw">let </span>result = <span class="kw">unsafe </span>{
+                <span class="self">self</span>.afd
+                    .poll(<span class="kw-2">&amp;mut </span><span class="self">self</span>.poll_info, <span class="kw-2">&amp;mut *</span><span class="self">self</span>.iosb, overlapped_ptr)
             };
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">result</span> {
-                <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>().<span class="ident">unwrap</span>();
-                <span class="kw">if</span> <span class="ident">code</span> <span class="op">==</span> <span class="ident">ERROR_IO_PENDING</span> <span class="kw">as</span> <span class="ident">i32</span> {
-                    <span class="comment">/* Overlapped poll operation in progress; this is expected. */</span>
-                } <span class="kw">else</span> {
-                    <span class="comment">// Since the operation failed it means the kernel won&#39;t be</span>
-                    <span class="comment">// using the memory any more.</span>
-                    <span class="ident">drop</span>(<span class="ident">from_overlapped</span>(<span class="ident">overlapped_ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>));
-                    <span class="kw">if</span> <span class="ident">code</span> <span class="op">==</span> <span class="ident">ERROR_INVALID_HANDLE</span> <span class="kw">as</span> <span class="ident">i32</span> {
-                        <span class="comment">/* Socket closed; it&#39;ll be dropped. */</span>
-                        <span class="self">self</span>.<span class="ident">mark_delete</span>();
-                        <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
-                    } <span class="kw">else</span> {
-                        <span class="self">self</span>.<span class="ident">error</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>();
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>);
+            <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = result {
+                <span class="kw">let </span>code = e.raw_os_error().unwrap();
+                <span class="kw">if </span>code == ERROR_IO_PENDING <span class="kw">as </span>i32 {
+                    <span class="comment">/* Overlapped poll operation in progress; this is expected. */
+                </span>} <span class="kw">else </span>{
+                    <span class="comment">// Since the operation failed it means the kernel won&#39;t be
+                    // using the memory any more.
+                    </span>drop(from_overlapped(overlapped_ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>));
+                    <span class="kw">if </span>code == ERROR_INVALID_HANDLE <span class="kw">as </span>i32 {
+                        <span class="comment">/* Socket closed; it&#39;ll be dropped. */
+                        </span><span class="self">self</span>.mark_delete();
+                        <span class="kw">return </span><span class="prelude-val">Ok</span>(());
+                    } <span class="kw">else </span>{
+                        <span class="self">self</span>.error = e.raw_os_error();
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(e);
                     }
                 }
             }
 
-            <span class="self">self</span>.<span class="ident">poll_status</span> <span class="op">=</span> <span class="ident">SockPollStatus::Pending</span>;
-            <span class="self">self</span>.<span class="ident">pending_evts</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">user_evts</span>;
-        } <span class="kw">else</span> {
+            <span class="self">self</span>.poll_status = SockPollStatus::Pending;
+            <span class="self">self</span>.pending_evts = <span class="self">self</span>.user_evts;
+        } <span class="kw">else </span>{
             <span class="macro">unreachable!</span>(<span class="string">&quot;Invalid poll status during update, {:#?}&quot;</span>, <span class="self">self</span>)
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">cancel</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">poll_status</span> {
-            <span class="ident">SockPollStatus::Pending</span> =&gt; {}
-            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Invalid poll status during cancel, {:#?}&quot;</span>, <span class="self">self</span>),
+    <span class="kw">fn </span>cancel(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">match </span><span class="self">self</span>.poll_status {
+            SockPollStatus::Pending =&gt; {}
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Invalid poll status during cancel, {:#?}&quot;</span>, <span class="self">self</span>),
         };
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">afd</span>.<span class="ident">cancel</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">iosb</span>)<span class="question-mark">?</span>;
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.afd.cancel(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.iosb)<span class="question-mark">?</span>;
         }
-        <span class="self">self</span>.<span class="ident">poll_status</span> <span class="op">=</span> <span class="ident">SockPollStatus::Cancelled</span>;
-        <span class="self">self</span>.<span class="ident">pending_evts</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="self">self</span>.poll_status = SockPollStatus::Cancelled;
+        <span class="self">self</span>.pending_evts = <span class="number">0</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="comment">// This is the function called from the overlapped using as Arc&lt;Mutex&lt;SockState&gt;&gt;. Watch out for reference counting.</span>
-    <span class="kw">fn</span> <span class="ident">feed_event</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">poll_status</span> <span class="op">=</span> <span class="ident">SockPollStatus::Idle</span>;
-        <span class="self">self</span>.<span class="ident">pending_evts</span> <span class="op">=</span> <span class="number">0</span>;
+    <span class="comment">// This is the function called from the overlapped using as Arc&lt;Mutex&lt;SockState&gt;&gt;. Watch out for reference counting.
+    </span><span class="kw">fn </span>feed_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Event&gt; {
+        <span class="self">self</span>.poll_status = SockPollStatus::Idle;
+        <span class="self">self</span>.pending_evts = <span class="number">0</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">afd_events</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="comment">// We use the status info in IO_STATUS_BLOCK to determine the socket poll status. It is unsafe to use a pointer of IO_STATUS_BLOCK.</span>
-        <span class="kw">unsafe</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">delete_pending</span> {
-                <span class="kw">return</span> <span class="prelude-val">None</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">iosb</span>.<span class="ident">Anonymous</span>.<span class="ident">Status</span> <span class="op">==</span> <span class="ident">STATUS_CANCELLED</span> {
-                <span class="comment">/* The poll request was cancelled by CancelIoEx. */</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">iosb</span>.<span class="ident">Anonymous</span>.<span class="ident">Status</span> <span class="op">&lt;</span> <span class="number">0</span> {
-                <span class="comment">/* The overlapped request itself failed in an unexpected way. */</span>
-                <span class="ident">afd_events</span> <span class="op">=</span> <span class="ident">afd::POLL_CONNECT_FAIL</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">number_of_handles</span> <span class="op">&lt;</span> <span class="number">1</span> {
-                <span class="comment">/* This poll operation succeeded but didn&#39;t report any socket events. */</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">handles</span>[<span class="number">0</span>].<span class="ident">events</span> <span class="op">&amp;</span> <span class="ident">afd::POLL_LOCAL_CLOSE</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="comment">/* The poll operation reported that the socket was closed. */</span>
-                <span class="self">self</span>.<span class="ident">mark_delete</span>();
-                <span class="kw">return</span> <span class="prelude-val">None</span>;
-            } <span class="kw">else</span> {
-                <span class="ident">afd_events</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_info</span>.<span class="ident">handles</span>[<span class="number">0</span>].<span class="ident">events</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>afd_events = <span class="number">0</span>;
+        <span class="comment">// We use the status info in IO_STATUS_BLOCK to determine the socket poll status. It is unsafe to use a pointer of IO_STATUS_BLOCK.
+        </span><span class="kw">unsafe </span>{
+            <span class="kw">if </span><span class="self">self</span>.delete_pending {
+                <span class="kw">return </span><span class="prelude-val">None</span>;
+            } <span class="kw">else if </span><span class="self">self</span>.iosb.Anonymous.Status == STATUS_CANCELLED {
+                <span class="comment">/* The poll request was cancelled by CancelIoEx. */
+            </span>} <span class="kw">else if </span><span class="self">self</span>.iosb.Anonymous.Status &lt; <span class="number">0 </span>{
+                <span class="comment">/* The overlapped request itself failed in an unexpected way. */
+                </span>afd_events = afd::POLL_CONNECT_FAIL;
+            } <span class="kw">else if </span><span class="self">self</span>.poll_info.number_of_handles &lt; <span class="number">1 </span>{
+                <span class="comment">/* This poll operation succeeded but didn&#39;t report any socket events. */
+            </span>} <span class="kw">else if </span><span class="self">self</span>.poll_info.handles[<span class="number">0</span>].events &amp; afd::POLL_LOCAL_CLOSE != <span class="number">0 </span>{
+                <span class="comment">/* The poll operation reported that the socket was closed. */
+                </span><span class="self">self</span>.mark_delete();
+                <span class="kw">return </span><span class="prelude-val">None</span>;
+            } <span class="kw">else </span>{
+                afd_events = <span class="self">self</span>.poll_info.handles[<span class="number">0</span>].events;
             }
         }
 
-        <span class="ident">afd_events</span> <span class="op">&amp;=</span> <span class="self">self</span>.<span class="ident">user_evts</span>;
+        afd_events &amp;= <span class="self">self</span>.user_evts;
 
-        <span class="kw">if</span> <span class="ident">afd_events</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">if </span>afd_events == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
-        <span class="comment">// In mio, we have to simulate Edge-triggered behavior to match API usage.</span>
-        <span class="comment">// The strategy here is to intercept all read/write from user that could cause WouldBlock usage,</span>
-        <span class="comment">// then reregister the socket to reset the interests.</span>
-        <span class="self">self</span>.<span class="ident">user_evts</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="ident">afd_events</span>;
+        <span class="comment">// In mio, we have to simulate Edge-triggered behavior to match API usage.
+        // The strategy here is to intercept all read/write from user that could cause WouldBlock usage,
+        // then reregister the socket to reset the interests.
+        </span><span class="self">self</span>.user_evts &amp;= !afd_events;
 
-        <span class="prelude-val">Some</span>(<span class="ident">Event</span> {
-            <span class="ident">data</span>: <span class="self">self</span>.<span class="ident">user_data</span>,
-            <span class="ident">flags</span>: <span class="ident">afd_events</span>,
+        <span class="prelude-val">Some</span>(Event {
+            data: <span class="self">self</span>.user_data,
+            flags: afd_events,
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_pending_deletion</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">delete_pending</span>
+    <span class="kw">pub fn </span>is_pending_deletion(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.delete_pending
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mark_delete</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">delete_pending</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SockPollStatus::Pending</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_status</span> {
-                <span class="ident">drop</span>(<span class="self">self</span>.<span class="ident">cancel</span>());
+    <span class="kw">pub fn </span>mark_delete(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if </span>!<span class="self">self</span>.delete_pending {
+            <span class="kw">if let </span>SockPollStatus::Pending = <span class="self">self</span>.poll_status {
+                drop(<span class="self">self</span>.cancel());
             }
 
-            <span class="self">self</span>.<span class="ident">delete_pending</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            <span class="self">self</span>.delete_pending = <span class="bool-val">true</span>;
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">has_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">error</span>.<span class="ident">is_some</span>()
+    <span class="kw">fn </span>has_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.error.is_some()
     }
 }
 
-<span class="macro">cfg_io_source!</span> {
-    <span class="kw">impl</span> <span class="ident">SockState</span> {
-        <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">raw_socket</span>: <span class="ident">RawSocket</span>, <span class="ident">afd</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Afd</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">SockState</span> {
-                <span class="ident">iosb</span>: <span class="ident">IoStatusBlock::zeroed</span>(),
-                <span class="ident">poll_info</span>: <span class="ident">AfdPollInfo::zeroed</span>(),
-                <span class="ident">afd</span>,
-                <span class="ident">base_socket</span>: <span class="ident">get_base_socket</span>(<span class="ident">raw_socket</span>)<span class="question-mark">?</span>,
-                <span class="ident">user_evts</span>: <span class="number">0</span>,
-                <span class="ident">pending_evts</span>: <span class="number">0</span>,
-                <span class="ident">user_data</span>: <span class="number">0</span>,
-                <span class="ident">poll_status</span>: <span class="ident">SockPollStatus::Idle</span>,
-                <span class="ident">delete_pending</span>: <span class="bool-val">false</span>,
-                <span class="ident">error</span>: <span class="prelude-val">None</span>,
-                <span class="ident">_pinned</span>: <span class="ident">PhantomPinned</span>,
+<span class="macro">cfg_io_source! </span>{
+    <span class="kw">impl </span>SockState {
+        <span class="kw">fn </span>new(raw_socket: RawSocket, afd: Arc&lt;Afd&gt;) -&gt; io::Result&lt;SockState&gt; {
+            <span class="prelude-val">Ok</span>(SockState {
+                iosb: IoStatusBlock::zeroed(),
+                poll_info: AfdPollInfo::zeroed(),
+                afd,
+                base_socket: get_base_socket(raw_socket)<span class="question-mark">?</span>,
+                user_evts: <span class="number">0</span>,
+                pending_evts: <span class="number">0</span>,
+                user_data: <span class="number">0</span>,
+                poll_status: SockPollStatus::Idle,
+                delete_pending: <span class="bool-val">false</span>,
+                error: <span class="prelude-val">None</span>,
+                _pinned: PhantomPinned,
             })
         }
 
-        <span class="doccomment">/// True if need to be added on update queue, false otherwise.</span>
-        <span class="kw">fn</span> <span class="ident">set_event</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ev</span>: <span class="ident">Event</span>) -&gt; <span class="ident">bool</span> {
-            <span class="comment">/* afd::POLL_CONNECT_FAIL and afd::POLL_ABORT are always reported, even when not requested by the caller. */</span>
-            <span class="kw">let</span> <span class="ident">events</span> <span class="op">=</span> <span class="ident">ev</span>.<span class="ident">flags</span> <span class="op">|</span> <span class="ident">afd::POLL_CONNECT_FAIL</span> <span class="op">|</span> <span class="ident">afd::POLL_ABORT</span>;
+        <span class="doccomment">/// True if need to be added on update queue, false otherwise.
+        </span><span class="kw">fn </span>set_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ev: Event) -&gt; bool {
+            <span class="comment">/* afd::POLL_CONNECT_FAIL and afd::POLL_ABORT are always reported, even when not requested by the caller. */
+            </span><span class="kw">let </span>events = ev.flags | afd::POLL_CONNECT_FAIL | afd::POLL_ABORT;
 
-            <span class="self">self</span>.<span class="ident">user_evts</span> <span class="op">=</span> <span class="ident">events</span>;
-            <span class="self">self</span>.<span class="ident">user_data</span> <span class="op">=</span> <span class="ident">ev</span>.<span class="ident">data</span>;
+            <span class="self">self</span>.user_evts = events;
+            <span class="self">self</span>.user_data = ev.data;
 
-            (<span class="ident">events</span> <span class="op">&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">pending_evts</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-        }
+            (events &amp; !<span class="self">self</span>.pending_evts) != <span class="number">0
+        </span>}
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">SockState</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">mark_delete</span>();
+<span class="kw">impl </span>Drop <span class="kw">for </span>SockState {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.mark_delete();
     }
 }
 
-<span class="doccomment">/// Converts the pointer to a `SockState` into a raw pointer.</span>
-<span class="doccomment">/// To revert see `from_overlapped`.</span>
-<span class="kw">fn</span> <span class="ident">into_overlapped</span>(<span class="ident">sock_state</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_void</span> {
-    <span class="kw">let</span> <span class="ident">overlapped_ptr</span>: <span class="kw-2">*const</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span> <span class="op">=</span>
-        <span class="kw">unsafe</span> { <span class="ident">Arc::into_raw</span>(<span class="ident">Pin::into_inner_unchecked</span>(<span class="ident">sock_state</span>)) };
-    <span class="ident">overlapped_ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>
+<span class="doccomment">/// Converts the pointer to a `SockState` into a raw pointer.
+/// To revert see `from_overlapped`.
+</span><span class="kw">fn </span>into_overlapped(sock_state: Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;) -&gt; <span class="kw-2">*mut </span>c_void {
+    <span class="kw">let </span>overlapped_ptr: <span class="kw-2">*const </span>Mutex&lt;SockState&gt; =
+        <span class="kw">unsafe </span>{ Arc::into_raw(Pin::into_inner_unchecked(sock_state)) };
+    overlapped_ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
+</span>}
+
+<span class="doccomment">/// Convert a raw overlapped pointer into a reference to `SockState`.
+/// Reverts `into_overlapped`.
+</span><span class="kw">fn </span>from_overlapped(ptr: <span class="kw-2">*mut </span>OVERLAPPED) -&gt; Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt; {
+    <span class="kw">let </span>sock_ptr: <span class="kw-2">*const </span>Mutex&lt;SockState&gt; = ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
+    <span class="kw">unsafe </span>{ Pin::new_unchecked(Arc::from_raw(sock_ptr)) }
 }
 
-<span class="doccomment">/// Convert a raw overlapped pointer into a reference to `SockState`.</span>
-<span class="doccomment">/// Reverts `into_overlapped`.</span>
-<span class="kw">fn</span> <span class="ident">from_overlapped</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">OVERLAPPED</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">sock_ptr</span>: <span class="kw-2">*const</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>;
-    <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">Arc::from_raw</span>(<span class="ident">sock_ptr</span>)) }
+<span class="doccomment">/// Each Selector has a globally unique(ish) ID associated with it. This ID
+/// gets tracked by `TcpStream`, `TcpListener`, etc... when they are first
+/// registered with the `Selector`. If a type that is previously associated with
+/// a `Selector` attempts to register itself with a different `Selector`, the
+/// operation will return with an error. This matches windows behavior.
+</span><span class="attribute">#[cfg(debug_assertions)]
+</span><span class="kw">static </span>NEXT_ID: AtomicUsize = AtomicUsize::new(<span class="number">0</span>);
+
+<span class="doccomment">/// Windows implementaion of `sys::Selector`
+///
+/// Edge-triggered event notification is simulated by resetting internal event flag of each socket state `SockState`
+/// and setting all events back by intercepting all requests that could cause `io::ErrorKind::WouldBlock` happening.
+///
+/// This selector is currently only support socket due to `Afd` driver is winsock2 specific.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Selector {
+    <span class="attribute">#[cfg(debug_assertions)]
+    </span>id: usize,
+    <span class="kw">pub</span>(<span class="kw">super</span>) inner: Arc&lt;SelectorInner&gt;,
+    <span class="attribute">#[cfg(debug_assertions)]
+    </span>has_waker: AtomicBool,
 }
 
-<span class="doccomment">/// Each Selector has a globally unique(ish) ID associated with it. This ID</span>
-<span class="doccomment">/// gets tracked by `TcpStream`, `TcpListener`, etc... when they are first</span>
-<span class="doccomment">/// registered with the `Selector`. If a type that is previously associated with</span>
-<span class="doccomment">/// a `Selector` attempts to register itself with a different `Selector`, the</span>
-<span class="doccomment">/// operation will return with an error. This matches windows behavior.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-<span class="kw">static</span> <span class="ident">NEXT_ID</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
-
-<span class="doccomment">/// Windows implementaion of `sys::Selector`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Edge-triggered event notification is simulated by resetting internal event flag of each socket state `SockState`</span>
-<span class="doccomment">/// and setting all events back by intercepting all requests that could cause `io::ErrorKind::WouldBlock` happening.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This selector is currently only support socket due to `Afd` driver is winsock2 specific.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Selector</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="ident">id</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SelectorInner</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="ident">has_waker</span>: <span class="ident">AtomicBool</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Selector</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Selector</span><span class="op">&gt;</span> {
-        <span class="ident">SelectorInner::new</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">inner</span><span class="op">|</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">NEXT_ID</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>) <span class="op">+</span> <span class="number">1</span>;
-            <span class="ident">Selector</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-                <span class="ident">id</span>,
-                <span class="ident">inner</span>: <span class="ident">Arc::new</span>(<span class="ident">inner</span>),
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-                <span class="ident">has_waker</span>: <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>),
+<span class="kw">impl </span>Selector {
+    <span class="kw">pub fn </span>new() -&gt; io::Result&lt;Selector&gt; {
+        SelectorInner::new().map(|inner| {
+            <span class="attribute">#[cfg(debug_assertions)]
+            </span><span class="kw">let </span>id = NEXT_ID.fetch_add(<span class="number">1</span>, Ordering::Relaxed) + <span class="number">1</span>;
+            Selector {
+                <span class="attribute">#[cfg(debug_assertions)]
+                </span>id,
+                inner: Arc::new(inner),
+                <span class="attribute">#[cfg(debug_assertions)]
+                </span>has_waker: AtomicBool::new(<span class="bool-val">false</span>),
             }
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Selector</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">Selector</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-            <span class="ident">id</span>: <span class="self">self</span>.<span class="ident">id</span>,
-            <span class="ident">inner</span>: <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-            <span class="ident">has_waker</span>: <span class="ident">AtomicBool::new</span>(<span class="self">self</span>.<span class="ident">has_waker</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>)),
+    <span class="kw">pub fn </span>try_clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;Selector&gt; {
+        <span class="prelude-val">Ok</span>(Selector {
+            <span class="attribute">#[cfg(debug_assertions)]
+            </span>id: <span class="self">self</span>.id,
+            inner: Arc::clone(<span class="kw-2">&amp;</span><span class="self">self</span>.inner),
+            <span class="attribute">#[cfg(debug_assertions)]
+            </span>has_waker: AtomicBool::new(<span class="self">self</span>.has_waker.load(Ordering::Acquire)),
         })
     }
 
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This requires a mutable reference to self because only a single thread</span>
-    <span class="doccomment">/// can poll IOCP at a time.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Events</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">select</span>(<span class="ident">events</span>, <span class="ident">timeout</span>)
+    <span class="doccomment">/// # Safety
+    ///
+    /// This requires a mutable reference to self because only a single thread
+    /// can poll IOCP at a time.
+    </span><span class="kw">pub fn </span>select(<span class="kw-2">&amp;mut </span><span class="self">self</span>, events: <span class="kw-2">&amp;mut </span>Events, timeout: <span class="prelude-ty">Option</span>&lt;Duration&gt;) -&gt; io::Result&lt;()&gt; {
+        <span class="self">self</span>.inner.select(events, timeout)
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_waker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">has_waker</span>.<span class="ident">swap</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::AcqRel</span>)
+    <span class="attribute">#[cfg(debug_assertions)]
+    </span><span class="kw">pub fn </span>register_waker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.has_waker.swap(<span class="bool-val">true</span>, Ordering::AcqRel)
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">clone_port</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">cp</span>.<span class="ident">clone</span>()
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>clone_port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;CompletionPort&gt; {
+        <span class="self">self</span>.inner.cp.clone()
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;os-ext&quot;</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">same_port</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="ident">Arc::ptr_eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">cp</span>, <span class="ident">other</span>)
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;os-ext&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>same_port(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Arc&lt;CompletionPort&gt;) -&gt; bool {
+        Arc::ptr_eq(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.cp, other)
     }
 }
 
-<span class="macro">cfg_io_source!</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::InternalState</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Token</span>;
+<span class="macro">cfg_io_source! </span>{
+    <span class="kw">use </span><span class="kw">super</span>::InternalState;
+    <span class="kw">use </span><span class="kw">crate</span>::Token;
 
-    <span class="kw">impl</span> <span class="ident">Selector</span> {
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">register</span>(
+    <span class="kw">impl </span>Selector {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>register(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">socket</span>: <span class="ident">RawSocket</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>,
-            <span class="ident">interests</span>: <span class="ident">Interest</span>,
-        ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">InternalState</span><span class="op">&gt;</span> {
-            <span class="ident">SelectorInner::register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="ident">socket</span>, <span class="ident">token</span>, <span class="ident">interests</span>)
+            socket: RawSocket,
+            token: Token,
+            interests: Interest,
+        ) -&gt; io::Result&lt;InternalState&gt; {
+            SelectorInner::register(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, socket, token, interests)
         }
 
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">reregister</span>(
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>reregister(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">state</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>,
-            <span class="ident">interests</span>: <span class="ident">Interest</span>,
-        ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">reregister</span>(<span class="ident">state</span>, <span class="ident">token</span>, <span class="ident">interests</span>)
+            state: Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;,
+            token: Token,
+            interests: Interest,
+        ) -&gt; io::Result&lt;()&gt; {
+            <span class="self">self</span>.inner.reregister(state, token, interests)
         }
 
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-            <span class="self">self</span>.<span class="ident">id</span>
+        <span class="attribute">#[cfg(debug_assertions)]
+        </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+            <span class="self">self</span>.id
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SelectorInner</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">cp</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CompletionPort</span><span class="op">&gt;</span>,
-    <span class="ident">update_queue</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">afd_group</span>: <span class="ident">AfdGroup</span>,
-    <span class="ident">is_polling</span>: <span class="ident">AtomicBool</span>,
+<span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>SelectorInner {
+    <span class="kw">pub</span>(<span class="kw">super</span>) cp: Arc&lt;CompletionPort&gt;,
+    update_queue: Mutex&lt;VecDeque&lt;Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;&gt;&gt;,
+    afd_group: AfdGroup,
+    is_polling: AtomicBool,
 }
 
-<span class="comment">// We have ensured thread safety by introducing lock manually.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">SelectorInner</span> {}
+<span class="comment">// We have ensured thread safety by introducing lock manually.
+</span><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>SelectorInner {}
 
-<span class="kw">impl</span> <span class="ident">SelectorInner</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SelectorInner</span><span class="op">&gt;</span> {
-        <span class="ident">CompletionPort::new</span>(<span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">cp</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">cp</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">cp</span>);
-            <span class="kw">let</span> <span class="ident">cp_afd</span> <span class="op">=</span> <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="ident">cp</span>);
+<span class="kw">impl </span>SelectorInner {
+    <span class="kw">pub fn </span>new() -&gt; io::Result&lt;SelectorInner&gt; {
+        CompletionPort::new(<span class="number">0</span>).map(|cp| {
+            <span class="kw">let </span>cp = Arc::new(cp);
+            <span class="kw">let </span>cp_afd = Arc::clone(<span class="kw-2">&amp;</span>cp);
 
-            <span class="ident">SelectorInner</span> {
-                <span class="ident">cp</span>,
-                <span class="ident">update_queue</span>: <span class="ident">Mutex::new</span>(<span class="ident">VecDeque::new</span>()),
-                <span class="ident">afd_group</span>: <span class="ident">AfdGroup::new</span>(<span class="ident">cp_afd</span>),
-                <span class="ident">is_polling</span>: <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>),
+            SelectorInner {
+                cp,
+                update_queue: Mutex::new(VecDeque::new()),
+                afd_group: AfdGroup::new(cp_afd),
+                is_polling: AtomicBool::new(<span class="bool-val">false</span>),
             }
         })
     }
 
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// May only be calling via `Selector::select`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Events</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">events</span>.<span class="ident">clear</span>();
+    <span class="doccomment">/// # Safety
+    ///
+    /// May only be calling via `Selector::select`.
+    </span><span class="kw">pub fn </span>select(<span class="kw-2">&amp;</span><span class="self">self</span>, events: <span class="kw-2">&amp;mut </span>Events, timeout: <span class="prelude-ty">Option</span>&lt;Duration&gt;) -&gt; io::Result&lt;()&gt; {
+        events.clear();
 
-        <span class="kw">if</span> <span class="ident">timeout</span>.<span class="ident">is_none</span>() {
-            <span class="kw">loop</span> {
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">select2</span>(<span class="kw-2">&amp;mut</span> <span class="ident">events</span>.<span class="ident">statuses</span>, <span class="kw-2">&amp;mut</span> <span class="ident">events</span>.<span class="ident">events</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
-                <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">if </span>timeout.is_none() {
+            <span class="kw">loop </span>{
+                <span class="kw">let </span>len = <span class="self">self</span>.select2(<span class="kw-2">&amp;mut </span>events.statuses, <span class="kw-2">&amp;mut </span>events.events, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+                <span class="kw">if </span>len == <span class="number">0 </span>{
                     <span class="kw">continue</span>;
                 }
-                <span class="kw">break</span> <span class="prelude-val">Ok</span>(());
+                <span class="kw">break </span><span class="prelude-val">Ok</span>(());
             }
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">select2</span>(<span class="kw-2">&amp;mut</span> <span class="ident">events</span>.<span class="ident">statuses</span>, <span class="kw-2">&amp;mut</span> <span class="ident">events</span>.<span class="ident">events</span>, <span class="ident">timeout</span>)<span class="question-mark">?</span>;
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.select2(<span class="kw-2">&amp;mut </span>events.statuses, <span class="kw-2">&amp;mut </span>events.events, timeout)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select2</span>(
+    <span class="kw">pub fn </span>select2(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">statuses</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">CompletionStatus</span>],
-        <span class="ident">events</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span>,
-        <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">is_polling</span>.<span class="ident">swap</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::AcqRel</span>));
+        statuses: <span class="kw-2">&amp;mut </span>[CompletionStatus],
+        events: <span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;,
+        timeout: <span class="prelude-ty">Option</span>&lt;Duration&gt;,
+    ) -&gt; io::Result&lt;usize&gt; {
+        <span class="macro">assert!</span>(!<span class="self">self</span>.is_polling.swap(<span class="bool-val">true</span>, Ordering::AcqRel));
 
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">update_sockets_events</span>() }<span class="question-mark">?</span>;
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.update_sockets_events() }<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cp</span>.<span class="ident">get_many</span>(<span class="ident">statuses</span>, <span class="ident">timeout</span>);
+        <span class="kw">let </span>result = <span class="self">self</span>.cp.get_many(statuses, timeout);
 
-        <span class="self">self</span>.<span class="ident">is_polling</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">Ordering::Relaxed</span>);
+        <span class="self">self</span>.is_polling.store(<span class="bool-val">false</span>, Ordering::Relaxed);
 
-        <span class="kw">match</span> <span class="ident">result</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">iocp_events</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">feed_events</span>(<span class="ident">events</span>, <span class="ident">iocp_events</span>) }),
-            <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">WAIT_TIMEOUT</span> <span class="kw">as</span> <span class="ident">i32</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+        <span class="kw">match </span>result {
+            <span class="prelude-val">Ok</span>(iocp_events) =&gt; <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.feed_events(events, iocp_events) }),
+            <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>e) <span class="kw">if </span>e.raw_os_error() == <span class="prelude-val">Some</span>(WAIT_TIMEOUT <span class="kw">as </span>i32) =&gt; <span class="prelude-val">Ok</span>(<span class="number">0</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e),
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">update_sockets_events</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">update_queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">update_queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw">for</span> <span class="ident">sock</span> <span class="kw">in</span> <span class="ident">update_queue</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sock_internal</span> <span class="op">=</span> <span class="ident">sock</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">sock_internal</span>.<span class="ident">is_pending_deletion</span>() {
-                <span class="ident">sock_internal</span>.<span class="ident">update</span>(<span class="ident">sock</span>)<span class="question-mark">?</span>;
+    <span class="kw">unsafe fn </span>update_sockets_events(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>update_queue = <span class="self">self</span>.update_queue.lock().unwrap();
+        <span class="kw">for </span>sock <span class="kw">in </span>update_queue.iter_mut() {
+            <span class="kw">let </span><span class="kw-2">mut </span>sock_internal = sock.lock().unwrap();
+            <span class="kw">if </span>!sock_internal.is_pending_deletion() {
+                sock_internal.update(sock)<span class="question-mark">?</span>;
             }
         }
 
-        <span class="comment">// remove all sock which do not have error, they have afd op pending</span>
-        <span class="ident">update_queue</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">sock</span><span class="op">|</span> <span class="ident">sock</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">has_error</span>());
+        <span class="comment">// remove all sock which do not have error, they have afd op pending
+        </span>update_queue.retain(|sock| sock.lock().unwrap().has_error());
 
-        <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">release_unused_afd</span>();
+        <span class="self">self</span>.afd_group.release_unused_afd();
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="comment">// It returns processed count of iocp_events rather than the events itself.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">feed_events</span>(
+    <span class="comment">// It returns processed count of iocp_events rather than the events itself.
+    </span><span class="kw">unsafe fn </span>feed_events(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">events</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span>,
-        <span class="ident">iocp_events</span>: <span class="kw-2">&amp;</span>[<span class="ident">CompletionStatus</span>],
-    ) -&gt; <span class="ident">usize</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">n</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">update_queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">update_queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw">for</span> <span class="ident">iocp_event</span> <span class="kw">in</span> <span class="ident">iocp_events</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">iocp_event</span>.<span class="ident">overlapped</span>().<span class="ident">is_null</span>() {
-                <span class="ident">events</span>.<span class="ident">push</span>(<span class="ident">Event::from_completion_status</span>(<span class="ident">iocp_event</span>));
-                <span class="ident">n</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        events: <span class="kw-2">&amp;mut </span>Vec&lt;Event&gt;,
+        iocp_events: <span class="kw-2">&amp;</span>[CompletionStatus],
+    ) -&gt; usize {
+        <span class="kw">let </span><span class="kw-2">mut </span>n = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>update_queue = <span class="self">self</span>.update_queue.lock().unwrap();
+        <span class="kw">for </span>iocp_event <span class="kw">in </span>iocp_events.iter() {
+            <span class="kw">if </span>iocp_event.overlapped().is_null() {
+                events.push(Event::from_completion_status(iocp_event));
+                n += <span class="number">1</span>;
                 <span class="kw">continue</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">iocp_event</span>.<span class="ident">token</span>() <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">1</span> {
-                <span class="comment">// Handle is a named pipe. This could be extended to be any non-AFD event.</span>
-                <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> (<span class="kw-2">*</span>(<span class="ident">iocp_event</span>.<span class="ident">overlapped</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident"><span class="kw">super</span>::Overlapped</span>)).<span class="ident">callback</span>;
+            } <span class="kw">else if </span>iocp_event.token() % <span class="number">2 </span>== <span class="number">1 </span>{
+                <span class="comment">// Handle is a named pipe. This could be extended to be any non-AFD event.
+                </span><span class="kw">let </span>callback = (<span class="kw-2">*</span>(iocp_event.overlapped() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">super</span>::Overlapped)).callback;
 
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">events</span>.<span class="ident">len</span>();
-                <span class="ident">callback</span>(<span class="ident">iocp_event</span>.<span class="ident">entry</span>(), <span class="prelude-val">Some</span>(<span class="ident">events</span>));
-                <span class="ident">n</span> <span class="op">+</span><span class="op">=</span> <span class="ident">events</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">len</span>;
+                <span class="kw">let </span>len = events.len();
+                callback(iocp_event.entry(), <span class="prelude-val">Some</span>(events));
+                n += events.len() - len;
                 <span class="kw">continue</span>;
             }
 
-            <span class="kw">let</span> <span class="ident">sock_state</span> <span class="op">=</span> <span class="ident">from_overlapped</span>(<span class="ident">iocp_event</span>.<span class="ident">overlapped</span>());
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sock_guard</span> <span class="op">=</span> <span class="ident">sock_state</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">sock_guard</span>.<span class="ident">feed_event</span>() {
-                <span class="ident">events</span>.<span class="ident">push</span>(<span class="ident">e</span>);
-                <span class="ident">n</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="kw">let </span>sock_state = from_overlapped(iocp_event.overlapped());
+            <span class="kw">let </span><span class="kw-2">mut </span>sock_guard = sock_state.lock().unwrap();
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(e) = sock_guard.feed_event() {
+                events.push(e);
+                n += <span class="number">1</span>;
             }
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">sock_guard</span>.<span class="ident">is_pending_deletion</span>() {
-                <span class="ident">update_queue</span>.<span class="ident">push_back</span>(<span class="ident">sock_state</span>.<span class="ident">clone</span>());
+            <span class="kw">if </span>!sock_guard.is_pending_deletion() {
+                update_queue.push_back(sock_state.clone());
             }
         }
-        <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">release_unused_afd</span>();
-        <span class="ident">n</span>
+        <span class="self">self</span>.afd_group.release_unused_afd();
+        n
     }
 }
 
-<span class="macro">cfg_io_source!</span> {
-    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
-    <span class="kw">use</span> <span class="ident">std::ptr::null_mut</span>;
+<span class="macro">cfg_io_source! </span>{
+    <span class="kw">use </span>std::mem::size_of;
+    <span class="kw">use </span>std::ptr::null_mut;
 
-    <span class="kw">use</span> <span class="ident">windows_sys::Win32::Networking::WinSock</span>::{
-        <span class="ident">WSAGetLastError</span>, <span class="ident">WSAIoctl</span>, <span class="ident">SIO_BASE_HANDLE</span>, <span class="ident">SIO_BSP_HANDLE</span>,
-        <span class="ident">SIO_BSP_HANDLE_POLL</span>, <span class="ident">SIO_BSP_HANDLE_SELECT</span>, <span class="ident">SOCKET_ERROR</span>,
+    <span class="kw">use </span>windows_sys::Win32::Networking::WinSock::{
+        WSAGetLastError, WSAIoctl, SIO_BASE_HANDLE, SIO_BSP_HANDLE,
+        SIO_BSP_HANDLE_POLL, SIO_BSP_HANDLE_SELECT, SOCKET_ERROR,
     };
 
 
-    <span class="kw">impl</span> <span class="ident">SelectorInner</span> {
-        <span class="kw">fn</span> <span class="ident">register</span>(
-            <span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-            <span class="ident">socket</span>: <span class="ident">RawSocket</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>,
-            <span class="ident">interests</span>: <span class="ident">Interest</span>,
-        ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">InternalState</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">interests_to_afd_flags</span>(<span class="ident">interests</span>);
+    <span class="kw">impl </span>SelectorInner {
+        <span class="kw">fn </span>register(
+            this: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;,
+            socket: RawSocket,
+            token: Token,
+            interests: Interest,
+        ) -&gt; io::Result&lt;InternalState&gt; {
+            <span class="kw">let </span>flags = interests_to_afd_flags(interests);
 
-            <span class="kw">let</span> <span class="ident">sock</span> <span class="op">=</span> {
-                <span class="kw">let</span> <span class="ident">sock</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">_alloc_sock_for_rawsocket</span>(<span class="ident">socket</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">Event</span> {
-                    <span class="ident">flags</span>,
-                    <span class="ident">data</span>: <span class="ident">token</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">u64</span>,
+            <span class="kw">let </span>sock = {
+                <span class="kw">let </span>sock = this._alloc_sock_for_rawsocket(socket)<span class="question-mark">?</span>;
+                <span class="kw">let </span>event = Event {
+                    flags,
+                    data: token.<span class="number">0 </span><span class="kw">as </span>u64,
                 };
-                <span class="ident">sock</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">set_event</span>(<span class="ident">event</span>);
-                <span class="ident">sock</span>
+                sock.lock().unwrap().set_event(event);
+                sock
             };
 
-            <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">InternalState</span> {
-                <span class="ident">selector</span>: <span class="ident">this</span>.<span class="ident">clone</span>(),
-                <span class="ident">token</span>,
-                <span class="ident">interests</span>,
-                <span class="ident">sock_state</span>: <span class="ident">sock</span>.<span class="ident">clone</span>(),
+            <span class="kw">let </span>state = InternalState {
+                selector: this.clone(),
+                token,
+                interests,
+                sock_state: sock.clone(),
             };
 
-            <span class="ident">this</span>.<span class="ident">queue_state</span>(<span class="ident">sock</span>);
-            <span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">update_sockets_events_if_polling</span>()<span class="question-mark">?</span> };
+            this.queue_state(sock);
+            <span class="kw">unsafe </span>{ this.update_sockets_events_if_polling()<span class="question-mark">? </span>};
 
-            <span class="prelude-val">Ok</span>(<span class="ident">state</span>)
+            <span class="prelude-val">Ok</span>(state)
         }
 
-        <span class="comment">// Directly accessed in `IoSourceState::do_io`.</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">reregister</span>(
+        <span class="comment">// Directly accessed in `IoSourceState::do_io`.
+        </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>reregister(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">state</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>,
-            <span class="ident">interests</span>: <span class="ident">Interest</span>,
-        ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            state: Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;,
+            token: Token,
+            interests: Interest,
+        ) -&gt; io::Result&lt;()&gt; {
             {
-                <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">Event</span> {
-                    <span class="ident">flags</span>: <span class="ident">interests_to_afd_flags</span>(<span class="ident">interests</span>),
-                    <span class="ident">data</span>: <span class="ident">token</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">u64</span>,
+                <span class="kw">let </span>event = Event {
+                    flags: interests_to_afd_flags(interests),
+                    data: token.<span class="number">0 </span><span class="kw">as </span>u64,
                 };
 
-                <span class="ident">state</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">set_event</span>(<span class="ident">event</span>);
+                state.lock().unwrap().set_event(event);
             }
 
-            <span class="comment">// FIXME: a sock which has_error true should not be re-added to</span>
-            <span class="comment">// the update queue because it&#39;s already there.</span>
-            <span class="self">self</span>.<span class="ident">queue_state</span>(<span class="ident">state</span>);
-            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">update_sockets_events_if_polling</span>() }
+            <span class="comment">// FIXME: a sock which has_error true should not be re-added to
+            // the update queue because it&#39;s already there.
+            </span><span class="self">self</span>.queue_state(state);
+            <span class="kw">unsafe </span>{ <span class="self">self</span>.update_sockets_events_if_polling() }
         }
 
-        <span class="doccomment">/// This function is called by register() and reregister() to start an</span>
-        <span class="doccomment">/// IOCTL_AFD_POLL operation corresponding to the registered events, but</span>
-        <span class="doccomment">/// only if necessary.</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// Since it is not possible to modify or synchronously cancel an AFD_POLL</span>
-        <span class="doccomment">/// operation, and there can be only one active AFD_POLL operation per</span>
-        <span class="doccomment">/// (socket, completion port) pair at any time, it is expensive to change</span>
-        <span class="doccomment">/// a socket&#39;s event registration after it has been submitted to the kernel.</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// Therefore, if no other threads are polling when interest in a socket</span>
-        <span class="doccomment">/// event is (re)registered, the socket is added to the &#39;update queue&#39;, but</span>
-        <span class="doccomment">/// the actual syscall to start the IOCTL_AFD_POLL operation is deferred</span>
-        <span class="doccomment">/// until just before the GetQueuedCompletionStatusEx() syscall is made.</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// However, when another thread is already blocked on</span>
-        <span class="doccomment">/// GetQueuedCompletionStatusEx() we tell the kernel about the registered</span>
-        <span class="doccomment">/// socket event(s) immediately.</span>
-        <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">update_sockets_events_if_polling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_polling</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>) {
-                <span class="self">self</span>.<span class="ident">update_sockets_events</span>()
-            } <span class="kw">else</span> {
+        <span class="doccomment">/// This function is called by register() and reregister() to start an
+        /// IOCTL_AFD_POLL operation corresponding to the registered events, but
+        /// only if necessary.
+        ///
+        /// Since it is not possible to modify or synchronously cancel an AFD_POLL
+        /// operation, and there can be only one active AFD_POLL operation per
+        /// (socket, completion port) pair at any time, it is expensive to change
+        /// a socket&#39;s event registration after it has been submitted to the kernel.
+        ///
+        /// Therefore, if no other threads are polling when interest in a socket
+        /// event is (re)registered, the socket is added to the &#39;update queue&#39;, but
+        /// the actual syscall to start the IOCTL_AFD_POLL operation is deferred
+        /// until just before the GetQueuedCompletionStatusEx() syscall is made.
+        ///
+        /// However, when another thread is already blocked on
+        /// GetQueuedCompletionStatusEx() we tell the kernel about the registered
+        /// socket event(s) immediately.
+        </span><span class="kw">unsafe fn </span>update_sockets_events_if_polling(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+            <span class="kw">if </span><span class="self">self</span>.is_polling.load(Ordering::Acquire) {
+                <span class="self">self</span>.update_sockets_events()
+            } <span class="kw">else </span>{
                 <span class="prelude-val">Ok</span>(())
             }
         }
 
-        <span class="kw">fn</span> <span class="ident">queue_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sock_state</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">update_queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">update_queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-            <span class="ident">update_queue</span>.<span class="ident">push_back</span>(<span class="ident">sock_state</span>);
+        <span class="kw">fn </span>queue_state(<span class="kw-2">&amp;</span><span class="self">self</span>, sock_state: Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;) {
+            <span class="kw">let </span><span class="kw-2">mut </span>update_queue = <span class="self">self</span>.update_queue.lock().unwrap();
+            update_queue.push_back(sock_state);
         }
 
-        <span class="kw">fn</span> <span class="ident">_alloc_sock_for_rawsocket</span>(
+        <span class="kw">fn </span>_alloc_sock_for_rawsocket(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">raw_socket</span>: <span class="ident">RawSocket</span>,
-        ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SockState</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">afd</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">acquire</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">Arc::pin</span>(<span class="ident">Mutex::new</span>(<span class="ident">SockState::new</span>(<span class="ident">raw_socket</span>, <span class="ident">afd</span>)<span class="question-mark">?</span>)))
+            raw_socket: RawSocket,
+        ) -&gt; io::Result&lt;Pin&lt;Arc&lt;Mutex&lt;SockState&gt;&gt;&gt;&gt; {
+            <span class="kw">let </span>afd = <span class="self">self</span>.afd_group.acquire()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(Arc::pin(Mutex::new(SockState::new(raw_socket, afd)<span class="question-mark">?</span>)))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">try_get_base_socket</span>(<span class="ident">raw_socket</span>: <span class="ident">RawSocket</span>, <span class="ident">ioctl</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RawSocket</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">base_socket</span>: <span class="ident">RawSocket</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">if</span> <span class="ident">WSAIoctl</span>(
-                <span class="ident">raw_socket</span> <span class="kw">as</span> <span class="ident">usize</span>,
-                <span class="ident">ioctl</span>,
-                <span class="ident">null_mut</span>(),
+    <span class="kw">fn </span>try_get_base_socket(raw_socket: RawSocket, ioctl: u32) -&gt; <span class="prelude-ty">Result</span>&lt;RawSocket, i32&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>base_socket: RawSocket = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>bytes: u32 = <span class="number">0</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">if </span>WSAIoctl(
+                raw_socket <span class="kw">as </span>usize,
+                ioctl,
+                null_mut(),
                 <span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">base_socket</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-                <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RawSocket</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>,
-                <span class="ident">null_mut</span>(),
+                <span class="kw-2">&amp;mut </span>base_socket <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>c_void,
+                size_of::&lt;RawSocket&gt;() <span class="kw">as </span>u32,
+                <span class="kw-2">&amp;mut </span>bytes,
+                null_mut(),
                 <span class="prelude-val">None</span>,
-            ) <span class="op">!</span><span class="op">=</span> <span class="ident">SOCKET_ERROR</span>
+            ) != SOCKET_ERROR
             {
-                <span class="prelude-val">Ok</span>(<span class="ident">base_socket</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">WSAGetLastError</span>())
+                <span class="prelude-val">Ok</span>(base_socket)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(WSAGetLastError())
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_base_socket</span>(<span class="ident">raw_socket</span>: <span class="ident">RawSocket</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RawSocket</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">try_get_base_socket</span>(<span class="ident">raw_socket</span>, <span class="ident">SIO_BASE_HANDLE</span>);
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">base_socket</span>) <span class="op">=</span> <span class="ident">res</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">base_socket</span>);
+    <span class="kw">fn </span>get_base_socket(raw_socket: RawSocket) -&gt; io::Result&lt;RawSocket&gt; {
+        <span class="kw">let </span>res = try_get_base_socket(raw_socket, SIO_BASE_HANDLE);
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(base_socket) = res {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(base_socket);
         }
 
-        <span class="comment">// The `SIO_BASE_HANDLE` should not be intercepted by LSPs, therefore</span>
-        <span class="comment">// it should not fail as long as `raw_socket` is a valid socket. See</span>
-        <span class="comment">// https://docs.microsoft.com/en-us/windows/win32/winsock/winsock-ioctls.</span>
-        <span class="comment">// However, at least one known LSP deliberately breaks it, so we try</span>
-        <span class="comment">// some alternative IOCTLs, starting with the most appropriate one.</span>
-        <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">ioctl</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[
-            <span class="ident">SIO_BSP_HANDLE_SELECT</span>,
-            <span class="ident">SIO_BSP_HANDLE_POLL</span>,
-            <span class="ident">SIO_BSP_HANDLE</span>,
+        <span class="comment">// The `SIO_BASE_HANDLE` should not be intercepted by LSPs, therefore
+        // it should not fail as long as `raw_socket` is a valid socket. See
+        // https://docs.microsoft.com/en-us/windows/win32/winsock/winsock-ioctls.
+        // However, at least one known LSP deliberately breaks it, so we try
+        // some alternative IOCTLs, starting with the most appropriate one.
+        </span><span class="kw">for </span><span class="kw-2">&amp;</span>ioctl <span class="kw">in </span><span class="kw-2">&amp;</span>[
+            SIO_BSP_HANDLE_SELECT,
+            SIO_BSP_HANDLE_POLL,
+            SIO_BSP_HANDLE,
         ] {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">base_socket</span>) <span class="op">=</span> <span class="ident">try_get_base_socket</span>(<span class="ident">raw_socket</span>, <span class="ident">ioctl</span>) {
-                <span class="comment">// Since we know now that we&#39;re dealing with an LSP (otherwise</span>
-                <span class="comment">// SIO_BASE_HANDLE would&#39;t have failed), only return any result</span>
-                <span class="comment">// when it is different from the original `raw_socket`.</span>
-                <span class="kw">if</span> <span class="ident">base_socket</span> <span class="op">!</span><span class="op">=</span> <span class="ident">raw_socket</span> {
-                    <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">base_socket</span>);
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(base_socket) = try_get_base_socket(raw_socket, ioctl) {
+                <span class="comment">// Since we know now that we&#39;re dealing with an LSP (otherwise
+                // SIO_BASE_HANDLE would&#39;t have failed), only return any result
+                // when it is different from the original `raw_socket`.
+                </span><span class="kw">if </span>base_socket != raw_socket {
+                    <span class="kw">return </span><span class="prelude-val">Ok</span>(base_socket);
                 }
             }
         }
 
-        <span class="comment">// If the alternative IOCTLs also failed, return the original error.</span>
-        <span class="kw">let</span> <span class="ident">os_error</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">unwrap_err</span>();
-        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::from_raw_os_error</span>(<span class="ident">os_error</span>);
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+        <span class="comment">// If the alternative IOCTLs also failed, return the original error.
+        </span><span class="kw">let </span>os_error = res.unwrap_err();
+        <span class="kw">let </span>err = io::Error::from_raw_os_error(os_error);
+        <span class="prelude-val">Err</span>(err)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">SelectorInner</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">loop</span> {
-            <span class="kw">let</span> <span class="ident">events_num</span>: <span class="ident">usize</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">statuses</span>: [<span class="ident">CompletionStatus</span>; <span class="number">1024</span>] <span class="op">=</span> [<span class="ident">CompletionStatus::zero</span>(); <span class="number">1024</span>];
+<span class="kw">impl </span>Drop <span class="kw">for </span>SelectorInner {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">loop </span>{
+            <span class="kw">let </span>events_num: usize;
+            <span class="kw">let </span><span class="kw-2">mut </span>statuses: [CompletionStatus; <span class="number">1024</span>] = [CompletionStatus::zero(); <span class="number">1024</span>];
 
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>
-                .<span class="ident">cp</span>
-                .<span class="ident">get_many</span>(<span class="kw-2">&amp;mut</span> <span class="ident">statuses</span>, <span class="prelude-val">Some</span>(<span class="ident">std::time::Duration::from_millis</span>(<span class="number">0</span>)));
-            <span class="kw">match</span> <span class="ident">result</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">iocp_events</span>) =&gt; {
-                    <span class="ident">events_num</span> <span class="op">=</span> <span class="ident">iocp_events</span>.<span class="ident">iter</span>().<span class="ident">len</span>();
-                    <span class="kw">for</span> <span class="ident">iocp_event</span> <span class="kw">in</span> <span class="ident">iocp_events</span>.<span class="ident">iter</span>() {
-                        <span class="kw">if</span> <span class="ident">iocp_event</span>.<span class="ident">overlapped</span>().<span class="ident">is_null</span>() {
-                            <span class="comment">// Custom event</span>
-                        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">iocp_event</span>.<span class="ident">token</span>() <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">1</span> {
-                            <span class="comment">// Named pipe, dispatch the event so it can release resources</span>
-                            <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                                (<span class="kw-2">*</span>(<span class="ident">iocp_event</span>.<span class="ident">overlapped</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident"><span class="kw">super</span>::Overlapped</span>)).<span class="ident">callback</span>
+            <span class="kw">let </span>result = <span class="self">self
+                </span>.cp
+                .get_many(<span class="kw-2">&amp;mut </span>statuses, <span class="prelude-val">Some</span>(std::time::Duration::from_millis(<span class="number">0</span>)));
+            <span class="kw">match </span>result {
+                <span class="prelude-val">Ok</span>(iocp_events) =&gt; {
+                    events_num = iocp_events.iter().len();
+                    <span class="kw">for </span>iocp_event <span class="kw">in </span>iocp_events.iter() {
+                        <span class="kw">if </span>iocp_event.overlapped().is_null() {
+                            <span class="comment">// Custom event
+                        </span>} <span class="kw">else if </span>iocp_event.token() % <span class="number">2 </span>== <span class="number">1 </span>{
+                            <span class="comment">// Named pipe, dispatch the event so it can release resources
+                            </span><span class="kw">let </span>callback = <span class="kw">unsafe </span>{
+                                (<span class="kw-2">*</span>(iocp_event.overlapped() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">super</span>::Overlapped)).callback
                             };
 
-                            <span class="ident">callback</span>(<span class="ident">iocp_event</span>.<span class="ident">entry</span>(), <span class="prelude-val">None</span>);
-                        } <span class="kw">else</span> {
-                            <span class="comment">// drain sock state to release memory of Arc reference</span>
-                            <span class="kw">let</span> <span class="ident">_sock_state</span> <span class="op">=</span> <span class="ident">from_overlapped</span>(<span class="ident">iocp_event</span>.<span class="ident">overlapped</span>());
+                            callback(iocp_event.entry(), <span class="prelude-val">None</span>);
+                        } <span class="kw">else </span>{
+                            <span class="comment">// drain sock state to release memory of Arc reference
+                            </span><span class="kw">let </span>_sock_state = from_overlapped(iocp_event.overlapped());
                         }
                     }
                 }
@@ -1477,30 +1477,30 @@
                 }
             }
 
-            <span class="kw">if</span> <span class="ident">events_num</span> <span class="op">==</span> <span class="number">0</span> {
-                <span class="comment">// continue looping until all completion statuses have been drained</span>
-                <span class="kw">break</span>;
+            <span class="kw">if </span>events_num == <span class="number">0 </span>{
+                <span class="comment">// continue looping until all completion statuses have been drained
+                </span><span class="kw">break</span>;
             }
         }
 
-        <span class="self">self</span>.<span class="ident">afd_group</span>.<span class="ident">release_unused_afd</span>();
+        <span class="self">self</span>.afd_group.release_unused_afd();
     }
 }
 
-<span class="macro">cfg_net!</span> {
-    <span class="kw">fn</span> <span class="ident">interests_to_afd_flags</span>(<span class="ident">interests</span>: <span class="ident">Interest</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="macro">cfg_net! </span>{
+    <span class="kw">fn </span>interests_to_afd_flags(interests: Interest) -&gt; u32 {
+        <span class="kw">let </span><span class="kw-2">mut </span>flags = <span class="number">0</span>;
 
-        <span class="kw">if</span> <span class="ident">interests</span>.<span class="ident">is_readable</span>() {
-            <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">READABLE_FLAGS</span> <span class="op">|</span> <span class="ident">READ_CLOSED_FLAGS</span> <span class="op">|</span> <span class="ident">ERROR_FLAGS</span>;
+        <span class="kw">if </span>interests.is_readable() {
+            flags |= READABLE_FLAGS | READ_CLOSED_FLAGS | ERROR_FLAGS;
         }
 
-        <span class="kw">if</span> <span class="ident">interests</span>.<span class="ident">is_writable</span>() {
-            <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">WRITABLE_FLAGS</span> <span class="op">|</span> <span class="ident">WRITE_CLOSED_FLAGS</span> <span class="op">|</span> <span class="ident">ERROR_FLAGS</span>;
+        <span class="kw">if </span>interests.is_writable() {
+            flags |= WRITABLE_FLAGS | WRITE_CLOSED_FLAGS | ERROR_FLAGS;
         }
 
-        <span class="ident">flags</span>
+        flags
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

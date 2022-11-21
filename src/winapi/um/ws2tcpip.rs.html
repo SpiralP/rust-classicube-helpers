@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\ws2tcpip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ws2tcpip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\ws2tcpip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ws2tcpip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -344,351 +344,351 @@
 <span id="344">344</span>
 <span id="345">345</span>
 <span id="346">346</span>
-</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
-<span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
-<span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms</span>
-<span class="doccomment">//! WinSock2 Extension for TCP/IP protocols</span>
-<span class="kw">use</span> <span class="ident">ctypes::c_int</span>;
-<span class="kw">use</span> <span class="ident">shared::guiddef::LPGUID</span>;
-<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">DWORD</span>, <span class="ident">INT</span>, <span class="ident">LPHANDLE</span>, <span class="ident">ULONG</span>};
-<span class="kw">use</span> <span class="ident">shared::mstcpip</span>::{
-    <span class="ident">SOCKET_PEER_TARGET_NAME</span>, <span class="ident">SOCKET_SECURITY_QUERY_INFO</span>, <span class="ident">SOCKET_SECURITY_QUERY_TEMPLATE</span>,
-    <span class="ident">SOCKET_SECURITY_SETTINGS</span>,
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0
+// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.
+// All files in the project carrying such notice may not be copied, modified, or distributed
+// except according to those terms
+</span><span class="doccomment">//! WinSock2 Extension for TCP/IP protocols
+</span><span class="kw">use </span>ctypes::c_int;
+<span class="kw">use </span>shared::guiddef::LPGUID;
+<span class="kw">use </span>shared::minwindef::{DWORD, INT, LPHANDLE, ULONG};
+<span class="kw">use </span>shared::mstcpip::{
+    SOCKET_PEER_TARGET_NAME, SOCKET_SECURITY_QUERY_INFO, SOCKET_SECURITY_QUERY_TEMPLATE,
+    SOCKET_SECURITY_SETTINGS,
 };
-<span class="kw">use</span> <span class="ident">shared::winerror</span>::{
-    <span class="ident">WSAEAFNOSUPPORT</span>, <span class="ident">WSAEINVAL</span>, <span class="ident">WSAESOCKTNOSUPPORT</span>, <span class="ident">WSAHOST_NOT_FOUND</span>, <span class="ident">WSANO_RECOVERY</span>,
-    <span class="ident">WSATRY_AGAIN</span>, <span class="ident">WSATYPE_NOT_FOUND</span>, <span class="ident">WSA_IPSEC_NAME_POLICY_ERROR</span>, <span class="ident">WSA_SECURE_HOST_NOT_FOUND</span>,
+<span class="kw">use </span>shared::winerror::{
+    WSAEAFNOSUPPORT, WSAEINVAL, WSAESOCKTNOSUPPORT, WSAHOST_NOT_FOUND, WSANO_RECOVERY,
+    WSATRY_AGAIN, WSATYPE_NOT_FOUND, WSA_IPSEC_NAME_POLICY_ERROR, WSA_SECURE_HOST_NOT_FOUND,
 };
-<span class="kw">use</span> <span class="ident">shared::ws2def</span>::{
-    <span class="ident">ADDRINFOA</span>, <span class="ident">ADDRINFOEXA</span>, <span class="ident">ADDRINFOEXW</span>, <span class="ident">ADDRINFOW</span>, <span class="ident">PADDRINFOA</span>, <span class="ident">PADDRINFOEXA</span>, <span class="ident">PADDRINFOEXW</span>,
-    <span class="ident">PADDRINFOW</span>, <span class="ident">SOCKADDR</span>, <span class="ident">SOCKET_ADDRESS</span>,
+<span class="kw">use </span>shared::ws2def::{
+    ADDRINFOA, ADDRINFOEXA, ADDRINFOEXW, ADDRINFOW, PADDRINFOA, PADDRINFOEXA, PADDRINFOEXW,
+    PADDRINFOW, SOCKADDR, SOCKET_ADDRESS,
 };
-<span class="kw">use</span> <span class="ident">shared::wtypesbase::LPBLOB</span>;
-<span class="kw">use</span> <span class="ident">um::minwinbase::LPOVERLAPPED</span>;
-<span class="kw">use</span> <span class="ident">um::winnt</span>::{<span class="ident">PCHAR</span>, <span class="ident">PCSTR</span>, <span class="ident">PCWSTR</span>, <span class="ident">PSTR</span>, <span class="ident">PVOID</span>, <span class="ident">PWCHAR</span>, <span class="ident">PWSTR</span>, <span class="ident">VOID</span>};
-<span class="kw">use</span> <span class="ident">um::winsock2</span>::{
-    <span class="ident">LPWSAOVERLAPPED</span>, <span class="ident">LPWSAOVERLAPPED_COMPLETION_ROUTINE</span>, <span class="ident">SOCKET</span>, <span class="ident">WSA_NOT_ENOUGH_MEMORY</span>, <span class="ident">timeval</span>,
+<span class="kw">use </span>shared::wtypesbase::LPBLOB;
+<span class="kw">use </span>um::minwinbase::LPOVERLAPPED;
+<span class="kw">use </span>um::winnt::{PCHAR, PCSTR, PCWSTR, PSTR, PVOID, PWCHAR, PWSTR, VOID};
+<span class="kw">use </span>um::winsock2::{
+    LPWSAOVERLAPPED, LPWSAOVERLAPPED_COMPLETION_ROUTINE, SOCKET, WSA_NOT_ENOUGH_MEMORY, timeval,
 };
-<span class="kw">use</span> <span class="ident">vc::vcruntime::size_t</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UDP_NOCHECKSUM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UDP_CHECKSUM_COVERAGE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">20</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_AGAIN</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSATRY_AGAIN</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_BADFLAGS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSAEINVAL</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_FAIL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSANO_RECOVERY</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_FAMILY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSAEAFNOSUPPORT</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_MEMORY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSA_NOT_ENOUGH_MEMORY</span> <span class="kw">as</span> <span class="ident">u32</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_NOSECURENAME</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSA_SECURE_HOST_NOT_FOUND</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_NONAME</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSAHOST_NOT_FOUND</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_SERVICE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSATYPE_NOT_FOUND</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_SOCKTYPE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSAESOCKTNOSUPPORT</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_IPSECPOLICY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">WSA_IPSEC_NAME_POLICY_ERROR</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EAI_NODATA</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">EAI_NONAME</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ADDRINFO</span> <span class="op">=</span> <span class="ident">ADDRINFOA</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOA</span>;
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getaddrinfo</span>(
-        <span class="ident">pNodeName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pHints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOA</span>,
-        <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOA</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAddrInfoW</span>(
-        <span class="ident">pNodeName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pHints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOW</span>,
-        <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOW</span>,
-    ) -&gt; <span class="ident">INT</span>;
+<span class="kw">use </span>vc::vcruntime::size_t;
+<span class="kw">pub const </span>UDP_NOCHECKSUM: c_int = <span class="number">1</span>;
+<span class="kw">pub const </span>UDP_CHECKSUM_COVERAGE: c_int = <span class="number">20</span>;
+<span class="kw">pub const </span>EAI_AGAIN: DWORD = WSATRY_AGAIN;
+<span class="kw">pub const </span>EAI_BADFLAGS: DWORD = WSAEINVAL;
+<span class="kw">pub const </span>EAI_FAIL: DWORD = WSANO_RECOVERY;
+<span class="kw">pub const </span>EAI_FAMILY: DWORD = WSAEAFNOSUPPORT;
+<span class="kw">pub const </span>EAI_MEMORY: DWORD = WSA_NOT_ENOUGH_MEMORY <span class="kw">as </span>u32;
+<span class="kw">pub const </span>EAI_NOSECURENAME: DWORD = WSA_SECURE_HOST_NOT_FOUND;
+<span class="kw">pub const </span>EAI_NONAME: DWORD = WSAHOST_NOT_FOUND;
+<span class="kw">pub const </span>EAI_SERVICE: DWORD = WSATYPE_NOT_FOUND;
+<span class="kw">pub const </span>EAI_SOCKTYPE: DWORD = WSAESOCKTNOSUPPORT;
+<span class="kw">pub const </span>EAI_IPSECPOLICY: DWORD = WSA_IPSEC_NAME_POLICY_ERROR;
+<span class="kw">pub const </span>EAI_NODATA: DWORD = EAI_NONAME;
+<span class="kw">pub type </span>ADDRINFO = ADDRINFOA;
+<span class="kw">pub type </span>LPADDRINFO = <span class="kw-2">*mut </span>ADDRINFOA;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>getaddrinfo(
+        pNodeName: PCSTR,
+        pServiceName: PCSTR,
+        pHints: <span class="kw-2">*const </span>ADDRINFOA,
+        ppResult: <span class="kw-2">*mut </span>PADDRINFOA,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>GetAddrInfoW(
+        pNodeName: PCWSTR,
+        pServiceName: PCWSTR,
+        pHints: <span class="kw-2">*const </span>ADDRINFOW,
+        ppResult: <span class="kw-2">*mut </span>PADDRINFOW,
+    ) -&gt; INT;
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFO</span>(
-    <span class="ident">pNodeName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pHints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOA</span>,
-    <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOA</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFOW</span>(
-    <span class="ident">pNodeName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pHints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOW</span>,
-    <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOW</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>(
-    <span class="ident">dwError</span>: <span class="ident">DWORD</span>,
-    <span class="ident">dwBytes</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPWSAOVERLAPPED</span>,
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFO(
+    pNodeName: PCSTR,
+    pServiceName: PCSTR,
+    pHints: <span class="kw-2">*const </span>ADDRINFOA,
+    ppResult: <span class="kw-2">*mut </span>PADDRINFOA,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFOW(
+    pNodeName: PCWSTR,
+    pServiceName: PCWSTR,
+    pHints: <span class="kw-2">*const </span>ADDRINFOW,
+    ppResult: <span class="kw-2">*mut </span>PADDRINFOW,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPLOOKUPSERVICE_COMPLETION_ROUTINE(
+    dwError: DWORD,
+    dwBytes: DWORD,
+    lpOverlapped: LPWSAOVERLAPPED,
 ) -&gt; ()}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAddrInfoExA</span>(
-        <span class="ident">pName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-        <span class="ident">hints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOEXA</span>,
-        <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOEXA</span>,
-        <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-        <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-        <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-        <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAddrInfoExW</span>(
-        <span class="ident">pName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-        <span class="ident">hints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOEXW</span>,
-        <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOEXW</span>,
-        <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-        <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-        <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-        <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAddrInfoExCancel</span>(
-        <span class="ident">lpHandle</span>: <span class="ident">LPHANDLE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAddrInfoExOverlappedResult</span>(
-        <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-    ) -&gt; <span class="ident">INT</span>;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>GetAddrInfoExA(
+        pName: PCSTR,
+        pServiceName: PCSTR,
+        dwNameSpace: DWORD,
+        lpNspId: LPGUID,
+        hints: <span class="kw-2">*const </span>ADDRINFOEXA,
+        ppResult: <span class="kw-2">*mut </span>PADDRINFOEXA,
+        timeout: <span class="kw-2">*mut </span>timeval,
+        lpOverlapped: LPOVERLAPPED,
+        lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+        lpNameHandle: LPHANDLE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>GetAddrInfoExW(
+        pName: PCWSTR,
+        pServiceName: PCWSTR,
+        dwNameSpace: DWORD,
+        lpNspId: LPGUID,
+        hints: <span class="kw-2">*const </span>ADDRINFOEXW,
+        ppResult: <span class="kw-2">*mut </span>PADDRINFOEXW,
+        timeout: <span class="kw-2">*mut </span>timeval,
+        lpOverlapped: LPOVERLAPPED,
+        lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+        lpNameHandle: LPHANDLE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>GetAddrInfoExCancel(
+        lpHandle: LPHANDLE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>GetAddrInfoExOverlappedResult(
+        lpOverlapped: LPOVERLAPPED,
+    ) -&gt; INT;
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFOEXA</span>(
-    <span class="ident">pName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">hints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOEXA</span>,
-    <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOEXA</span>,
-    <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-    <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-    <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFOEXW</span>(
-    <span class="ident">pName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">hints</span>: <span class="kw-2">*const</span> <span class="ident">ADDRINFOEXW</span>,
-    <span class="ident">ppResult</span>: <span class="kw-2">*mut</span> <span class="ident">PADDRINFOEXW</span>,
-    <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-    <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-    <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFOEXCANCEL</span>(
-    <span class="ident">lpHandle</span>: <span class="ident">LPHANDLE</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETADDRINFOEXOVERLAPPEDRESULT</span>(
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetAddrInfoExA</span>(
-        <span class="ident">pName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pAddresses</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>,
-        <span class="ident">dwAddressCount</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpBlob</span>: <span class="ident">LPBLOB</span>,
-        <span class="ident">dwFlags</span>: <span class="ident">DWORD</span>,
-        <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-        <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-        <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-        <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-        <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetAddrInfoExW</span>(
-        <span class="ident">pName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pAddresses</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>,
-        <span class="ident">dwAddressCount</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpBlob</span>: <span class="ident">LPBLOB</span>,
-        <span class="ident">dwFlags</span>: <span class="ident">DWORD</span>,
-        <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-        <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-        <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-        <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-        <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-        <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-    ) -&gt; <span class="ident">INT</span>;
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFOEXA(
+    pName: PCSTR,
+    pServiceName: PCSTR,
+    dwNameSpace: DWORD,
+    lpNspId: LPGUID,
+    hints: <span class="kw-2">*const </span>ADDRINFOEXA,
+    ppResult: <span class="kw-2">*mut </span>PADDRINFOEXA,
+    timeout: <span class="kw-2">*mut </span>timeval,
+    lpOverlapped: LPOVERLAPPED,
+    lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+    lpNameHandle: LPHANDLE,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFOEXW(
+    pName: PCWSTR,
+    pServiceName: PCWSTR,
+    dwNameSpace: DWORD,
+    lpNspId: LPGUID,
+    hints: <span class="kw-2">*const </span>ADDRINFOEXW,
+    ppResult: <span class="kw-2">*mut </span>PADDRINFOEXW,
+    timeout: <span class="kw-2">*mut </span>timeval,
+    lpOverlapped: LPOVERLAPPED,
+    lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+    lpNameHandle: LPHANDLE,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFOEXCANCEL(
+    lpHandle: LPHANDLE,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_GETADDRINFOEXOVERLAPPEDRESULT(
+    lpOverlapped: LPOVERLAPPED,
+) -&gt; INT}
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>SetAddrInfoExA(
+        pName: PCSTR,
+        pServiceName: PCSTR,
+        pAddresses: <span class="kw-2">*mut </span>SOCKET_ADDRESS,
+        dwAddressCount: DWORD,
+        lpBlob: LPBLOB,
+        dwFlags: DWORD,
+        dwNameSpace: DWORD,
+        lpNspId: LPGUID,
+        timeout: <span class="kw-2">*mut </span>timeval,
+        lpOverlapped: LPOVERLAPPED,
+        lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+        lpNameHandle: LPHANDLE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>SetAddrInfoExW(
+        pName: PCWSTR,
+        pServiceName: PCWSTR,
+        pAddresses: <span class="kw-2">*mut </span>SOCKET_ADDRESS,
+        dwAddressCount: DWORD,
+        lpBlob: LPBLOB,
+        dwFlags: DWORD,
+        dwNameSpace: DWORD,
+        lpNspId: LPGUID,
+        timeout: <span class="kw-2">*mut </span>timeval,
+        lpOverlapped: LPOVERLAPPED,
+        lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+        lpNameHandle: LPHANDLE,
+    ) -&gt; INT;
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_SETADDRINFOEXA</span>(
-    <span class="ident">pName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pAddresses</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>,
-    <span class="ident">dwAddressCount</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpBlob</span>: <span class="ident">LPBLOB</span>,
-    <span class="ident">dwFlags</span>: <span class="ident">DWORD</span>,
-    <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-    <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-    <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_SETADDRINFOEXW</span>(
-    <span class="ident">pName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pServiceName</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pAddresses</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>,
-    <span class="ident">dwAddressCount</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpBlob</span>: <span class="ident">LPBLOB</span>,
-    <span class="ident">dwFlags</span>: <span class="ident">DWORD</span>,
-    <span class="ident">dwNameSpace</span>: <span class="ident">DWORD</span>,
-    <span class="ident">lpNspId</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">timeout</span>: <span class="kw-2">*mut</span> <span class="ident">timeval</span>,
-    <span class="ident">lpOverlapped</span>: <span class="ident">LPOVERLAPPED</span>,
-    <span class="ident">lpCompletionRoutine</span>: <span class="ident">LPLOOKUPSERVICE_COMPLETION_ROUTINE</span>,
-    <span class="ident">lpNameHandle</span>: <span class="ident">LPHANDLE</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">freeaddrinfo</span>(
-        <span class="ident">pAddrInfo</span>: <span class="ident">PADDRINFOA</span>,
+<span class="macro">FN!</span>{stdcall LPFN_SETADDRINFOEXA(
+    pName: PCSTR,
+    pServiceName: PCSTR,
+    pAddresses: <span class="kw-2">*mut </span>SOCKET_ADDRESS,
+    dwAddressCount: DWORD,
+    lpBlob: LPBLOB,
+    dwFlags: DWORD,
+    dwNameSpace: DWORD,
+    lpNspId: LPGUID,
+    timeout: <span class="kw-2">*mut </span>timeval,
+    lpOverlapped: LPOVERLAPPED,
+    lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+    lpNameHandle: LPHANDLE,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_SETADDRINFOEXW(
+    pName: PCWSTR,
+    pServiceName: PCWSTR,
+    pAddresses: <span class="kw-2">*mut </span>SOCKET_ADDRESS,
+    dwAddressCount: DWORD,
+    lpBlob: LPBLOB,
+    dwFlags: DWORD,
+    dwNameSpace: DWORD,
+    lpNspId: LPGUID,
+    timeout: <span class="kw-2">*mut </span>timeval,
+    lpOverlapped: LPOVERLAPPED,
+    lpCompletionRoutine: LPLOOKUPSERVICE_COMPLETION_ROUTINE,
+    lpNameHandle: LPHANDLE,
+) -&gt; INT}
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>freeaddrinfo(
+        pAddrInfo: PADDRINFOA,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeAddrInfoW</span>(
-        <span class="ident">pAddrInfo</span>: <span class="ident">PADDRINFOW</span>,
-    );
-}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_FREEADDRINFO</span>(
-    <span class="ident">pAddrInfo</span>: <span class="ident">PADDRINFOA</span>,
-) -&gt; ()}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_FREEADDRINFOW</span>(
-    <span class="ident">pAddrInfo</span>: <span class="ident">PADDRINFOW</span>,
-) -&gt; ()}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeAddrInfoEx</span>(
-        <span class="ident">pAddrInfoEx</span>: <span class="ident">PADDRINFOEXA</span>,
-    );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeAddrInfoExW</span>(
-        <span class="ident">pAddrInfoEx</span>: <span class="ident">PADDRINFOEXW</span>,
+    <span class="kw">pub fn </span>FreeAddrInfoW(
+        pAddrInfo: PADDRINFOW,
     );
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_FREEADDRINFOEXA</span>(
-    <span class="ident">pAddrInfoEx</span>: <span class="ident">PADDRINFOEXA</span>,
+<span class="macro">FN!</span>{stdcall LPFN_FREEADDRINFO(
+    pAddrInfo: PADDRINFOA,
 ) -&gt; ()}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_FREEADDRINFOEXW</span>(
-    <span class="ident">pAddrInfoEx</span>: <span class="ident">PADDRINFOEXW</span>,
+<span class="macro">FN!</span>{stdcall LPFN_FREEADDRINFOW(
+    pAddrInfo: PADDRINFOW,
 ) -&gt; ()}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">socklen_t</span> <span class="op">=</span> <span class="ident">c_int</span>;
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getnameinfo</span>(
-        <span class="ident">pSockaddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-        <span class="ident">SockaddrLength</span>: <span class="ident">socklen_t</span>,
-        <span class="ident">pNodeBuffer</span>: <span class="ident">PCHAR</span>,
-        <span class="ident">NodeBufferSize</span>: <span class="ident">DWORD</span>,
-        <span class="ident">pServiceBuffer</span>: <span class="ident">PCHAR</span>,
-        <span class="ident">ServiceBufferSize</span>: <span class="ident">DWORD</span>,
-        <span class="ident">Flags</span>: <span class="ident">INT</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetNameInfoW</span>(
-        <span class="ident">pSockaddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-        <span class="ident">SockaddrLength</span>: <span class="ident">socklen_t</span>,
-        <span class="ident">pNodeBuffer</span>: <span class="ident">PWCHAR</span>,
-        <span class="ident">NodeBufferSize</span>: <span class="ident">DWORD</span>,
-        <span class="ident">pServiceBuffer</span>: <span class="ident">PWCHAR</span>,
-        <span class="ident">ServiceBufferSize</span>: <span class="ident">DWORD</span>,
-        <span class="ident">Flags</span>: <span class="ident">INT</span>,
-    ) -&gt; <span class="ident">INT</span>;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>FreeAddrInfoEx(
+        pAddrInfoEx: PADDRINFOEXA,
+    );
+    <span class="kw">pub fn </span>FreeAddrInfoExW(
+        pAddrInfoEx: PADDRINFOEXW,
+    );
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETNAMEINFO</span>(
-    <span class="ident">pSockaddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">SockaddrLength</span>: <span class="ident">socklen_t</span>,
-    <span class="ident">pNodeBuffer</span>: <span class="ident">PCHAR</span>,
-    <span class="ident">NodeBufferSize</span>: <span class="ident">DWORD</span>,
-    <span class="ident">pServiceBuffer</span>: <span class="ident">PCHAR</span>,
-    <span class="ident">ServiceBufferSize</span>: <span class="ident">DWORD</span>,
-    <span class="ident">Flags</span>: <span class="ident">INT</span>,
-) -&gt; <span class="ident">c_int</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_GETNAMEINFOW</span>(
-    <span class="ident">pSockaddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">SockaddrLength</span>: <span class="ident">socklen_t</span>,
-    <span class="ident">pNodeBuffer</span>: <span class="ident">PWCHAR</span>,
-    <span class="ident">NodeBufferSize</span>: <span class="ident">DWORD</span>,
-    <span class="ident">pServiceBuffer</span>: <span class="ident">PWCHAR</span>,
-    <span class="ident">ServiceBufferSize</span>: <span class="ident">DWORD</span>,
-    <span class="ident">Flags</span>: <span class="ident">INT</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inet_pton</span>(
-        <span class="ident">Family</span>: <span class="ident">INT</span>,
-        <span class="ident">pszAddrString</span>: <span class="ident">PCSTR</span>,
-        <span class="ident">pAddrBuf</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">InetPtonW</span>(
-        <span class="ident">Family</span>: <span class="ident">INT</span>,
-        <span class="ident">pszAddrString</span>: <span class="ident">PCWSTR</span>,
-        <span class="ident">pAddrBuf</span>: <span class="ident">PVOID</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inet_ntop</span>(
-        <span class="ident">Family</span>: <span class="ident">INT</span>,
-        <span class="ident">pAddr</span>: <span class="kw-2">*const</span> <span class="ident">VOID</span>,
-        <span class="ident">pStringBuf</span>: <span class="ident">PSTR</span>,
-        <span class="ident">StringBufSize</span>: <span class="ident">size_t</span>,
-    ) -&gt; <span class="ident">PCSTR</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">InetNtopW</span>(
-        <span class="ident">Family</span>: <span class="ident">INT</span>,
-        <span class="ident">pAddr</span>: <span class="kw-2">*const</span> <span class="ident">VOID</span>,
-        <span class="ident">pStringBuf</span>: <span class="ident">PWSTR</span>,
-        <span class="ident">StringBufSize</span>: <span class="ident">size_t</span>,
-    ) -&gt; <span class="ident">PCWSTR</span>;
+<span class="macro">FN!</span>{stdcall LPFN_FREEADDRINFOEXA(
+    pAddrInfoEx: PADDRINFOEXA,
+) -&gt; ()}
+<span class="macro">FN!</span>{stdcall LPFN_FREEADDRINFOEXW(
+    pAddrInfoEx: PADDRINFOEXW,
+) -&gt; ()}
+<span class="kw">pub type </span>socklen_t = c_int;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>getnameinfo(
+        pSockaddr: <span class="kw-2">*const </span>SOCKADDR,
+        SockaddrLength: socklen_t,
+        pNodeBuffer: PCHAR,
+        NodeBufferSize: DWORD,
+        pServiceBuffer: PCHAR,
+        ServiceBufferSize: DWORD,
+        Flags: INT,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>GetNameInfoW(
+        pSockaddr: <span class="kw-2">*const </span>SOCKADDR,
+        SockaddrLength: socklen_t,
+        pNodeBuffer: PWCHAR,
+        NodeBufferSize: DWORD,
+        pServiceBuffer: PWCHAR,
+        ServiceBufferSize: DWORD,
+        Flags: INT,
+    ) -&gt; INT;
 }
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_INET_PTONA</span>(
-    <span class="ident">Family</span>: <span class="ident">INT</span>,
-    <span class="ident">pszAddrString</span>: <span class="ident">PCSTR</span>,
-    <span class="ident">pAddrBuf</span>: <span class="ident">PVOID</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_INET_PTONW</span>(
-    <span class="ident">Family</span>: <span class="ident">INT</span>,
-    <span class="ident">pszAddrString</span>: <span class="ident">PCWSTR</span>,
-    <span class="ident">pAddrBuf</span>: <span class="ident">PVOID</span>,
-) -&gt; <span class="ident">INT</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_INET_NTOPA</span>(
-    <span class="ident">Family</span>: <span class="ident">INT</span>,
-    <span class="ident">pAddr</span>: <span class="kw-2">*const</span> <span class="ident">VOID</span>,
-    <span class="ident">pStringBuf</span>: <span class="ident">PSTR</span>,
-    <span class="ident">StringBufSize</span>: <span class="ident">size_t</span>,
-) -&gt; <span class="ident">PCSTR</span>}
-<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">LPFN_INET_NTOPW</span>(
-    <span class="ident">Family</span>: <span class="ident">INT</span>,
-    <span class="ident">pAddr</span>: <span class="kw-2">*const</span> <span class="ident">VOID</span>,
-    <span class="ident">pStringBuf</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">StringBufSize</span>: <span class="ident">size_t</span>,
-) -&gt; <span class="ident">PCWSTR</span>}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GAI_STRERROR_BUFFER_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1024</span>;
-<span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSASetSocketSecurity</span>(
-        <span class="ident">Socket</span>: <span class="ident">SOCKET</span>,
-        <span class="ident">SecuritySettings</span>: <span class="kw-2">*const</span> <span class="ident">SOCKET_SECURITY_SETTINGS</span>,
-        <span class="ident">SecuritySettingsLen</span>: <span class="ident">ULONG</span>,
-        <span class="ident">Overlapped</span>: <span class="ident">LPWSAOVERLAPPED</span>,
-        <span class="ident">CompletionRoutine</span>: <span class="ident">LPWSAOVERLAPPED_COMPLETION_ROUTINE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSAQuerySocketSecurity</span>(
-        <span class="ident">Socket</span>: <span class="ident">SOCKET</span>,
-        <span class="ident">SecurityQueryTemplate</span>: <span class="kw-2">*const</span> <span class="ident">SOCKET_SECURITY_QUERY_TEMPLATE</span>,
-        <span class="ident">SecurityQueryTemplateLen</span>: <span class="ident">ULONG</span>,
-        <span class="ident">SecurityQueryInfo</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKET_SECURITY_QUERY_INFO</span>,
-        <span class="ident">SecurityQueryInfoLen</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
-        <span class="ident">Overlapped</span>: <span class="ident">LPWSAOVERLAPPED</span>,
-        <span class="ident">CompletionRoutine</span>: <span class="ident">LPWSAOVERLAPPED_COMPLETION_ROUTINE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSASetSocketPeerTargetName</span>(
-        <span class="ident">Socket</span>: <span class="ident">SOCKET</span>,
-        <span class="ident">PeerTargetName</span>: <span class="kw-2">*const</span> <span class="ident">SOCKET_PEER_TARGET_NAME</span>,
-        <span class="ident">PeerTargetNameLen</span>: <span class="ident">ULONG</span>,
-        <span class="ident">Overlapped</span>: <span class="ident">LPWSAOVERLAPPED</span>,
-        <span class="ident">CompletionRoutine</span>: <span class="ident">LPWSAOVERLAPPED_COMPLETION_ROUTINE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSADeleteSocketPeerTargetName</span>(
-        <span class="ident">Socket</span>: <span class="ident">SOCKET</span>,
-        <span class="ident">PeerAddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-        <span class="ident">PeerAddrLen</span>: <span class="ident">ULONG</span>,
-        <span class="ident">Overlapped</span>: <span class="ident">LPWSAOVERLAPPED</span>,
-        <span class="ident">CompletionRoutine</span>: <span class="ident">LPWSAOVERLAPPED_COMPLETION_ROUTINE</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSAImpersonateSocketPeer</span>(
-        <span class="ident">Socket</span>: <span class="ident">SOCKET</span>,
-        <span class="ident">PeerAddr</span>: <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>,
-        <span class="ident">PeerAddrLen</span>: <span class="ident">ULONG</span>,
-    ) -&gt; <span class="ident">INT</span>;
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">WSARevertImpersonation</span>();
+<span class="macro">FN!</span>{stdcall LPFN_GETNAMEINFO(
+    pSockaddr: <span class="kw-2">*const </span>SOCKADDR,
+    SockaddrLength: socklen_t,
+    pNodeBuffer: PCHAR,
+    NodeBufferSize: DWORD,
+    pServiceBuffer: PCHAR,
+    ServiceBufferSize: DWORD,
+    Flags: INT,
+) -&gt; c_int}
+<span class="macro">FN!</span>{stdcall LPFN_GETNAMEINFOW(
+    pSockaddr: <span class="kw-2">*const </span>SOCKADDR,
+    SockaddrLength: socklen_t,
+    pNodeBuffer: PWCHAR,
+    NodeBufferSize: DWORD,
+    pServiceBuffer: PWCHAR,
+    ServiceBufferSize: DWORD,
+    Flags: INT,
+) -&gt; INT}
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>inet_pton(
+        Family: INT,
+        pszAddrString: PCSTR,
+        pAddrBuf: PVOID,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>InetPtonW(
+        Family: INT,
+        pszAddrString: PCWSTR,
+        pAddrBuf: PVOID,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>inet_ntop(
+        Family: INT,
+        pAddr: <span class="kw-2">*const </span>VOID,
+        pStringBuf: PSTR,
+        StringBufSize: size_t,
+    ) -&gt; PCSTR;
+    <span class="kw">pub fn </span>InetNtopW(
+        Family: INT,
+        pAddr: <span class="kw-2">*const </span>VOID,
+        pStringBuf: PWSTR,
+        StringBufSize: size_t,
+    ) -&gt; PCWSTR;
+}
+<span class="macro">FN!</span>{stdcall LPFN_INET_PTONA(
+    Family: INT,
+    pszAddrString: PCSTR,
+    pAddrBuf: PVOID,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_INET_PTONW(
+    Family: INT,
+    pszAddrString: PCWSTR,
+    pAddrBuf: PVOID,
+) -&gt; INT}
+<span class="macro">FN!</span>{stdcall LPFN_INET_NTOPA(
+    Family: INT,
+    pAddr: <span class="kw-2">*const </span>VOID,
+    pStringBuf: PSTR,
+    StringBufSize: size_t,
+) -&gt; PCSTR}
+<span class="macro">FN!</span>{stdcall LPFN_INET_NTOPW(
+    Family: INT,
+    pAddr: <span class="kw-2">*const </span>VOID,
+    pStringBuf: PWSTR,
+    StringBufSize: size_t,
+) -&gt; PCWSTR}
+<span class="kw">pub const </span>GAI_STRERROR_BUFFER_SIZE: usize = <span class="number">1024</span>;
+<span class="kw">extern </span><span class="string">&quot;system&quot; </span>{
+    <span class="kw">pub fn </span>WSASetSocketSecurity(
+        Socket: SOCKET,
+        SecuritySettings: <span class="kw-2">*const </span>SOCKET_SECURITY_SETTINGS,
+        SecuritySettingsLen: ULONG,
+        Overlapped: LPWSAOVERLAPPED,
+        CompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>WSAQuerySocketSecurity(
+        Socket: SOCKET,
+        SecurityQueryTemplate: <span class="kw-2">*const </span>SOCKET_SECURITY_QUERY_TEMPLATE,
+        SecurityQueryTemplateLen: ULONG,
+        SecurityQueryInfo: <span class="kw-2">*mut </span>SOCKET_SECURITY_QUERY_INFO,
+        SecurityQueryInfoLen: <span class="kw-2">*mut </span>ULONG,
+        Overlapped: LPWSAOVERLAPPED,
+        CompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>WSASetSocketPeerTargetName(
+        Socket: SOCKET,
+        PeerTargetName: <span class="kw-2">*const </span>SOCKET_PEER_TARGET_NAME,
+        PeerTargetNameLen: ULONG,
+        Overlapped: LPWSAOVERLAPPED,
+        CompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>WSADeleteSocketPeerTargetName(
+        Socket: SOCKET,
+        PeerAddr: <span class="kw-2">*const </span>SOCKADDR,
+        PeerAddrLen: ULONG,
+        Overlapped: LPWSAOVERLAPPED,
+        CompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>WSAImpersonateSocketPeer(
+        Socket: SOCKET,
+        PeerAddr: <span class="kw-2">*const </span>SOCKADDR,
+        PeerAddrLen: ULONG,
+    ) -&gt; INT;
+    <span class="kw">pub fn </span>WSARevertImpersonation();
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

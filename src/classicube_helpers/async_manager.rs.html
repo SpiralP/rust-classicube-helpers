@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\async_manager.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>async_manager.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../classicube_helpers/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\async_manager.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>async_manager.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../classicube_helpers/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../classicube_helpers/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -361,368 +361,374 @@
 <span id="361">361</span>
 <span id="362">362</span>
 <span id="363">363</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">tick::TickEventHandler</span>, <span class="ident">WithInner</span>};
-<span class="kw">use</span> <span class="ident">async_dispatcher</span>::{<span class="ident">Dispatcher</span>, <span class="ident">DispatcherHandle</span>, <span class="ident">LocalDispatcherHandle</span>};
-<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future::Either</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="ident">futures_timer::Delay</span>;
-<span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>},
-    <span class="ident">future::Future</span>,
-    <span class="ident">pin::Pin</span>,
-    <span class="ident">rc::Rc</span>,
-    <span class="ident">sync::Mutex</span>,
-    <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
-    <span class="ident">time::Duration</span>,
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    cell::{Cell, RefCell},
+    future::Future,
+    pin::Pin,
+    rc::Rc,
+    sync::Mutex,
+    task::{Context, Poll},
+    time::Duration,
 };
-<span class="kw">use</span> <span class="ident">tokio::task::JoinHandle</span>;
-<span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">debug</span>, <span class="ident">Instrument</span>};
+
+<span class="kw">use </span>async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
+<span class="kw">use </span>futures::{future::Either, prelude::<span class="kw-2">*</span>};
+<span class="kw">use </span>futures_timer::Delay;
+<span class="kw">use </span>lazy_static::lazy_static;
+<span class="kw">use </span>tokio::task::JoinHandle;
+<span class="kw">use </span>tracing::{debug, Instrument};
+
+<span class="kw">use crate</span>::{tick::TickEventHandler, WithInner};
 
 <span class="macro">thread_local!</span>(
-    <span class="kw">static</span> <span class="ident">ASYNC_DISPATCHER</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Dispatcher</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+    <span class="kw">static </span>ASYNC_DISPATCHER: RefCell&lt;<span class="prelude-ty">Option</span>&lt;Dispatcher&gt;&gt; = Default::default();
 );
 
 <span class="macro">thread_local!</span>(
-    <span class="kw">static</span> <span class="ident">ASYNC_DISPATCHER_LOCAL_HANDLE</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LocalDispatcherHandle</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-        <span class="ident">Default::default</span>();
+    <span class="kw">static </span>ASYNC_DISPATCHER_LOCAL_HANDLE: RefCell&lt;<span class="prelude-ty">Option</span>&lt;LocalDispatcherHandle&gt;&gt; =
+        Default::default();
 );
 
-<span class="macro">lazy_static!</span> {
-    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ASYNC_DISPATCHER_HANDLE</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DispatcherHandle</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+<span class="macro">lazy_static! </span>{
+    <span class="kw">static </span><span class="kw-2">ref </span>ASYNC_DISPATCHER_HANDLE: Mutex&lt;<span class="prelude-ty">Option</span>&lt;DispatcherHandle&gt;&gt; = Default::default();
 }
 
-<span class="macro">lazy_static!</span> {
-    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">TOKIO_RUNTIME</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">tokio::runtime::Runtime</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+<span class="macro">lazy_static! </span>{
+    <span class="kw">static </span><span class="kw-2">ref </span>TOKIO_RUNTIME: Mutex&lt;<span class="prelude-ty">Option</span>&lt;tokio::runtime::Runtime&gt;&gt; = Default::default();
 }
 
 <span class="macro">thread_local!</span>(
-    <span class="kw">static</span> <span class="ident">TICK_HANDLER</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TickEventHandler</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+    <span class="kw">static </span>TICK_HANDLER: RefCell&lt;<span class="prelude-ty">Option</span>&lt;TickEventHandler&gt;&gt; = Default::default();
 );
 
-<span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize</span>() {
+<span class="attribute">#[tracing::instrument]
+</span><span class="kw">pub fn </span>initialize() {
     <span class="macro">debug!</span>(<span class="string">&quot;async_manager&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">async_dispatcher</span> <span class="op">=</span> <span class="ident">Dispatcher::new</span>();
-    <span class="kw">let</span> <span class="ident">async_dispatcher_handle</span> <span class="op">=</span> <span class="ident">async_dispatcher</span>.<span class="ident">get_handle</span>();
-    <span class="ident">ASYNC_DISPATCHER_LOCAL_HANDLE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-        <span class="kw-2">*</span><span class="ident">cell</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">async_dispatcher</span>.<span class="ident">get_handle_local</span>());
+    <span class="kw">let </span>async_dispatcher = Dispatcher::new();
+    <span class="kw">let </span>async_dispatcher_handle = async_dispatcher.get_handle();
+    ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
+        <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher.get_handle_local());
     });
-    <span class="ident">ASYNC_DISPATCHER</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-        <span class="kw-2">*</span><span class="ident">cell</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">async_dispatcher</span>);
+    ASYNC_DISPATCHER.with(|cell| {
+        <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher);
     });
 
-    <span class="kw-2">*</span><span class="ident">ASYNC_DISPATCHER_HANDLE</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">async_dispatcher_handle</span>);
+    <span class="kw-2">*</span>ASYNC_DISPATCHER_HANDLE.lock().unwrap() = <span class="prelude-val">Some</span>(async_dispatcher_handle);
 
-    <span class="kw">let</span> <span class="ident">rt</span> <span class="op">=</span> <span class="ident">tokio::runtime::Builder::new_multi_thread</span>()
-        .<span class="ident">enable_all</span>()
-        .<span class="ident">build</span>()
-        .<span class="ident">unwrap</span>();
+    <span class="kw">let </span>rt = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap();
 
-    <span class="kw-2">*</span><span class="ident">TOKIO_RUNTIME</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">rt</span>);
+    <span class="kw-2">*</span>TOKIO_RUNTIME.lock().unwrap() = <span class="prelude-val">Some</span>(rt);
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    {
-        <span class="ident">TICK_HANDLER</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tick_handler</span> <span class="op">=</span> <span class="ident">TickEventHandler::new</span>();
-            <span class="ident">tick_handler</span>.<span class="ident">on</span>(<span class="op">|</span><span class="ident">_task</span><span class="op">|</span> {
-                <span class="ident">step</span>();
+    <span class="attribute">#[cfg(not(test))]
+    </span>{
+        TICK_HANDLER.with(|cell| {
+            <span class="kw">let </span><span class="kw-2">mut </span>tick_handler = TickEventHandler::new();
+            tick_handler.on(|_task| {
+                step();
             });
 
-            <span class="kw-2">*</span><span class="ident">cell</span>.<span class="ident">borrow_mut</span>() <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">tick_handler</span>);
+            <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(tick_handler);
         });
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>() {
+<span class="kw">pub fn </span>shutdown() {
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">option</span> <span class="op">=</span> <span class="ident">TOKIO_RUNTIME</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw">if</span> <span class="ident">option</span>.<span class="ident">is_some</span>() {
+        <span class="kw">let </span><span class="kw-2">mut </span>option = TOKIO_RUNTIME.lock().unwrap();
+        <span class="kw">if </span>option.is_some() {
             <span class="macro">debug!</span>(<span class="string">&quot;shutdown tokio&quot;</span>);
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rt</span>) <span class="op">=</span> <span class="ident">option</span>.<span class="ident">take</span>() {
-                <span class="ident">rt</span>.<span class="ident">shutdown_timeout</span>(<span class="ident">Duration::from_millis</span>(<span class="number">100</span>));
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(rt) = option.take() {
+                rt.shutdown_timeout(Duration::from_millis(<span class="number">100</span>));
             }
-        } <span class="kw">else</span> {
+        } <span class="kw">else </span>{
             <span class="macro">debug!</span>(<span class="string">&quot;tokio already shutdown?&quot;</span>);
         }
     }
 
     {
-        <span class="kw">if</span> <span class="ident">ASYNC_DISPATCHER</span>.<span class="ident">with_inner</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ()).<span class="ident">is_some</span>() {
+        <span class="kw">if </span>ASYNC_DISPATCHER.with_inner(|<span class="kw">_</span>| ()).is_some() {
             <span class="macro">debug!</span>(<span class="string">&quot;shutdown async_dispatcher&quot;</span>);
 
-            <span class="ident">ASYNC_DISPATCHER_HANDLE</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">take</span>();
-            <span class="ident">ASYNC_DISPATCHER_LOCAL_HANDLE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">borrow_mut</span>().<span class="ident">take</span>());
-            <span class="ident">ASYNC_DISPATCHER</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">borrow_mut</span>().<span class="ident">take</span>());
-        } <span class="kw">else</span> {
+            ASYNC_DISPATCHER_HANDLE.lock().unwrap().take();
+            ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| cell.borrow_mut().take());
+            ASYNC_DISPATCHER.with(|cell| cell.borrow_mut().take());
+        } <span class="kw">else </span>{
             <span class="macro">debug!</span>(<span class="string">&quot;async_dispatcher already shutdown?&quot;</span>);
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    {
-        <span class="kw">if</span> <span class="ident">TICK_HANDLER</span>.<span class="ident">with_inner</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ()).<span class="ident">is_some</span>() {
+    <span class="attribute">#[cfg(not(test))]
+    </span>{
+        <span class="kw">if </span>TICK_HANDLER.with_inner(|<span class="kw">_</span>| ()).is_some() {
             <span class="macro">debug!</span>(<span class="string">&quot;shutdown tick_handler&quot;</span>);
 
-            <span class="ident">TICK_HANDLER</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">borrow_mut</span>().<span class="ident">take</span>());
-        } <span class="kw">else</span> {
+            TICK_HANDLER.with(|cell| cell.borrow_mut().take());
+        } <span class="kw">else </span>{
             <span class="macro">debug!</span>(<span class="string">&quot;tick_handler already shutdown?&quot;</span>);
         }
     }
 }
 
 <span class="macro">thread_local!</span>(
-    <span class="kw">static</span> <span class="ident">YIELDED_WAKERS</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+    <span class="kw">static </span>YIELDED_WAKERS: RefCell&lt;Vec&lt;Rc&lt;Cell&lt;bool&gt;&gt;&gt;&gt; = Default::default();
 );
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">step</span>() {
-    <span class="ident">YIELDED_WAKERS</span>.<span class="ident">with</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">vec</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">cell</span>.<span class="ident">borrow_mut</span>();
-        <span class="kw">for</span> <span class="ident">waker</span> <span class="kw">in</span> <span class="ident">vec</span>.<span class="ident">drain</span>(..) {
-            <span class="ident">waker</span>.<span class="ident">set</span>(<span class="bool-val">true</span>);
+<span class="kw">pub fn </span>step() {
+    YIELDED_WAKERS.with(<span class="kw">move </span>|cell| {
+        <span class="kw">let </span>vec = <span class="kw-2">&amp;mut *</span>cell.borrow_mut();
+        <span class="kw">for </span>waker <span class="kw">in </span>vec.drain(..) {
+            waker.set(<span class="bool-val">true</span>);
         }
     });
 
-    <span class="comment">// process futures</span>
-    <span class="ident">ASYNC_DISPATCHER</span>
-        .<span class="ident">with_inner_mut</span>(<span class="op">|</span><span class="ident">async_dispatcher</span><span class="op">|</span> {
-            <span class="ident">async_dispatcher</span>.<span class="ident">run_until_stalled</span>();
+    <span class="comment">// process futures
+    </span>ASYNC_DISPATCHER
+        .with_inner_mut(|async_dispatcher| {
+            async_dispatcher.run_until_stalled();
         })
-        .<span class="ident">unwrap</span>();
+        .unwrap();
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>() {
-    <span class="ident">ASYNC_DISPATCHER</span>
-        .<span class="ident">with_inner_mut</span>(<span class="op">|</span><span class="ident">async_dispatcher</span><span class="op">|</span> {
-            <span class="ident">async_dispatcher</span>.<span class="ident">run</span>();
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub fn </span>run() {
+    ASYNC_DISPATCHER
+        .with_inner_mut(|async_dispatcher| {
+            async_dispatcher.run();
         })
-        .<span class="ident">unwrap</span>();
+        .unwrap();
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">duration</span>: <span class="ident">Duration</span>) {
-    <span class="ident">Delay::new</span>(<span class="ident">duration</span>).<span class="kw">await</span>;
+<span class="kw">pub async fn </span>sleep(duration: Duration) {
+    Delay::new(duration).<span class="kw">await</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">yield_now</span>() {
-    <span class="kw">struct</span> <span class="ident">YieldNow</span> {
-        <span class="ident">waker</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="kw">pub async fn </span>yield_now() {
+    <span class="kw">struct </span>YieldNow {
+        waker: Rc&lt;Cell&lt;bool&gt;&gt;,
     }
 
-    <span class="kw">impl</span> <span class="ident">Future</span> <span class="kw">for</span> <span class="ident">YieldNow</span> {
-        <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> ();
+    <span class="kw">impl </span>Future <span class="kw">for </span>YieldNow {
+        <span class="kw">type </span>Output = ();
 
-        <span class="kw">fn</span> <span class="ident">poll</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
-            <span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">wake_by_ref</span>();
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">waker</span>.<span class="ident">get</span>() {
-                <span class="ident">Poll::Ready</span>(())
-            } <span class="kw">else</span> {
-                <span class="ident">Poll::Pending</span>
+        <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+            cx.waker().wake_by_ref();
+            <span class="kw">if </span><span class="self">self</span>.waker.get() {
+                Poll::Ready(())
+            } <span class="kw">else </span>{
+                Poll::Pending
             }
         }
     }
 
-    <span class="kw">let</span> <span class="ident">waker</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="ident">Cell::new</span>(<span class="bool-val">false</span>));
+    <span class="kw">let </span>waker = Rc::new(Cell::new(<span class="bool-val">false</span>));
     {
-        <span class="kw">let</span> <span class="ident">waker</span> <span class="op">=</span> <span class="ident">waker</span>.<span class="ident">clone</span>();
-        <span class="ident">YIELDED_WAKERS</span>.<span class="ident">with</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">vec</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">cell</span>.<span class="ident">borrow_mut</span>();
-            <span class="ident">vec</span>.<span class="ident">push</span>(<span class="ident">waker</span>);
+        <span class="kw">let </span>waker = waker.clone();
+        YIELDED_WAKERS.with(<span class="kw">move </span>|cell| {
+            <span class="kw">let </span>vec = <span class="kw-2">&amp;mut *</span>cell.borrow_mut();
+            vec.push(waker);
         });
     }
-    <span class="ident">YieldNow</span> { <span class="ident">waker</span> }.<span class="kw">await</span>
-}
+    YieldNow { waker }.<span class="kw">await
+</span>}
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">timeout</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">duration</span>: <span class="ident">Duration</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
+<span class="kw">pub async fn </span>timeout&lt;T, F&gt;(duration: Duration, f: F) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt;
+<span class="kw">where
+    </span>F: Future&lt;Output = T&gt; + Send,
 {
-    <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="ident">Delay::new</span>(<span class="ident">duration</span>);
+    <span class="kw">let </span>delay = Delay::new(duration);
 
-    <span class="kw">match</span> <span class="ident">future::select</span>(<span class="ident">delay</span>, <span class="ident">f</span>.<span class="ident">boxed</span>()).<span class="kw">await</span> {
-        <span class="ident">Either::Left</span>((<span class="kw">_</span>, <span class="ident">_f</span>)) =&gt; <span class="prelude-val">None</span>,
-        <span class="ident">Either::Right</span>((<span class="ident">r</span>, <span class="ident">_delay</span>)) =&gt; <span class="prelude-val">Some</span>(<span class="ident">r</span>),
+    <span class="kw">match </span>future::select(delay, f.boxed()).<span class="kw">await </span>{
+        Either::Left((<span class="kw">_</span>, _f)) =&gt; <span class="prelude-val">None</span>,
+        Either::Right((r, _delay)) =&gt; <span class="prelude-val">Some</span>(r),
     }
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">timeout_local</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">duration</span>: <span class="ident">Duration</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
+<span class="kw">pub async fn </span>timeout_local&lt;T, F&gt;(duration: Duration, f: F) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt;
+<span class="kw">where
+    </span>F: Future&lt;Output = T&gt;,
 {
-    <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="ident">Delay::new</span>(<span class="ident">duration</span>);
+    <span class="kw">let </span>delay = Delay::new(duration);
 
-    <span class="kw">match</span> <span class="ident">future::select</span>(<span class="ident">delay</span>, <span class="ident">f</span>.<span class="ident">boxed_local</span>()).<span class="kw">await</span> {
-        <span class="ident">Either::Left</span>((<span class="kw">_</span>, <span class="ident">_f</span>)) =&gt; <span class="prelude-val">None</span>,
-        <span class="ident">Either::Right</span>((<span class="ident">r</span>, <span class="ident">_delay</span>)) =&gt; <span class="prelude-val">Some</span>(<span class="ident">r</span>),
+    <span class="kw">match </span>future::select(delay, f.boxed_local()).<span class="kw">await </span>{
+        Either::Left((<span class="kw">_</span>, _f)) =&gt; <span class="prelude-val">None</span>,
+        Either::Right((r, _delay)) =&gt; <span class="prelude-val">Some</span>(r),
     }
 }
 
-<span class="doccomment">/// Block thread until future is resolved.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This will continue to call the same executor so `cef_step()` will still be called!</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">block_on_local</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="doccomment">/// Block thread until future is resolved.
+///
+/// This will continue to call the same executor so `cef_step()` will still be called!
+</span><span class="kw">pub fn </span>block_on_local&lt;F&gt;(f: F)
+<span class="kw">where
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">in_current_span</span>().<span class="ident">shared</span>();
+    <span class="kw">let </span>shared = f.in_current_span().shared();
 
     {
-        <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">shared</span>.<span class="ident">clone</span>();
-        <span class="ident">spawn_local_on_main_thread</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="ident">shared</span>.<span class="kw">await</span>;
+        <span class="kw">let </span>shared = shared.clone();
+        spawn_local_on_main_thread(<span class="kw">async move </span>{
+            shared.<span class="kw">await</span>;
         });
     }
 
-    <span class="kw">loop</span> {
-        <span class="kw">match</span> <span class="ident">shared</span>.<span class="ident">peek</span>() {
+    <span class="kw">loop </span>{
+        <span class="kw">match </span>shared.peek() {
             <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; {
                 <span class="kw">return</span>;
             }
 
-            <span class="prelude-val">None</span> =&gt; {
-                <span class="ident">step</span>();
+            <span class="prelude-val">None </span>=&gt; {
+                step();
             }
         }
 
-        <span class="comment">// don&#39;t burn anything</span>
-        <span class="ident">std::thread::sleep</span>(<span class="ident">Duration::from_millis</span>(<span class="number">16</span>));
+        <span class="comment">// don&#39;t burn anything
+        </span>std::thread::sleep(Duration::from_millis(<span class="number">16</span>));
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="ident">F::Output</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">F::Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="kw">pub fn </span>spawn&lt;F&gt;(f: F) -&gt; JoinHandle&lt;F::Output&gt;
+<span class="kw">where
+    </span>F: Future + Send + <span class="lifetime">&#39;static</span>,
+    F::Output: Send + <span class="lifetime">&#39;static</span>,
 {
-    <span class="ident">TOKIO_RUNTIME</span>
-        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> <span class="ident">rt</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()))
-        .<span class="ident">unwrap</span>()
+    TOKIO_RUNTIME
+        .with_inner(<span class="kw">move </span>|rt| rt.spawn(f.in_current_span()))
+        .unwrap()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_blocking</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="ident">F::Output</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="ident">R</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">R</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="kw">pub fn </span>spawn_blocking&lt;F, R&gt;(f: F) -&gt; JoinHandle&lt;F::Output&gt;
+<span class="kw">where
+    </span>F: FnOnce() -&gt; R + Send + <span class="lifetime">&#39;static</span>,
+    R: Send + <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">tracing::Span::current</span>();
-    <span class="ident">TOKIO_RUNTIME</span>
-        .<span class="ident">with_inner</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">rt</span><span class="op">|</span> {
-            <span class="ident">rt</span>.<span class="ident">spawn_blocking</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">_enter</span> <span class="op">=</span> <span class="ident">span</span>.<span class="ident">enter</span>();
-                <span class="ident">f</span>()
+    <span class="kw">let </span>span = tracing::Span::current();
+    TOKIO_RUNTIME
+        .with_inner(<span class="kw">move </span>|rt| {
+            rt.spawn_blocking(<span class="kw">move </span>|| {
+                <span class="kw">let </span>_enter = span.enter();
+                f()
             })
         })
-        .<span class="ident">unwrap</span>()
+        .unwrap()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span>,
+<span class="kw">pub fn </span>spawn_on_main_thread&lt;F&gt;(f: F)
+<span class="kw">where
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static </span>+ Send,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">ASYNC_DISPATCHER_HANDLE</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="ident">handle</span>.<span class="ident">as_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;handle.as_mut()&quot;</span>).<span class="ident">clone</span>()
+    <span class="kw">let </span><span class="kw-2">mut </span>handle = {
+        <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
+        handle.as_mut().expect(<span class="string">&quot;handle.as_mut()&quot;</span>).clone()
     };
 
-    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>());
+    handle.spawn(f.in_current_span());
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">O</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">F::Output</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">O</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span>,
-    <span class="ident">F::Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span>,
+<span class="kw">pub fn </span>run_on_main_thread&lt;F, O&gt;(f: F) -&gt; <span class="kw">impl </span>Future&lt;Output = F::Output&gt;
+<span class="kw">where
+    </span>F: Future&lt;Output = O&gt; + <span class="lifetime">&#39;static </span>+ Send,
+    F::Output: Send + <span class="lifetime">&#39;static </span>+ std::fmt::Debug,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">ASYNC_DISPATCHER_HANDLE</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="ident">handle</span>.<span class="ident">as_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;handle.as_mut()&quot;</span>).<span class="ident">clone</span>()
+    <span class="kw">let </span><span class="kw-2">mut </span>handle = {
+        <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
+        handle.as_mut().expect(<span class="string">&quot;handle.as_mut()&quot;</span>).clone()
     };
 
-    <span class="kw">async</span> <span class="kw">move</span> { <span class="ident">handle</span>.<span class="ident">dispatch</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>()).<span class="kw">await</span> }
+    <span class="kw">async move </span>{ handle.dispatch(f.in_current_span()).<span class="kw">await </span>}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_local_on_main_thread</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>)
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="kw">pub fn </span>spawn_local_on_main_thread&lt;F&gt;(f: F)
+<span class="kw">where
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">ASYNC_DISPATCHER_LOCAL_HANDLE</span>
-        .<span class="ident">with_inner</span>(<span class="ident">Clone::clone</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;ASYNC_DISPATCHER_LOCAL_HANDLE is None&quot;</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_LOCAL_HANDLE
+        .with_inner(Clone::clone)
+        .expect(<span class="string">&quot;ASYNC_DISPATCHER_LOCAL_HANDLE is None&quot;</span>);
 
-    <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">f</span>.<span class="ident">in_current_span</span>());
+    handle.spawn(f.in_current_span());
 }
 
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_async_manager</span>() {
-    <span class="kw">fn</span> <span class="ident">logger</span>(<span class="ident">debug</span>: <span class="ident">bool</span>, <span class="ident">other_crates</span>: <span class="ident">bool</span>) {
-        <span class="kw">use</span> <span class="ident">std::sync::Once</span>;
-        <span class="kw">use</span> <span class="ident">tracing_subscriber</span>::{<span class="ident">filter::EnvFilter</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
+<span class="attribute">#[test]
+</span><span class="kw">fn </span>test_async_manager() {
+    <span class="kw">fn </span>logger(debug: bool, other_crates: bool) {
+        <span class="kw">use </span>std::sync::Once;
 
-        <span class="kw">static</span> <span class="ident">ONCE</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
-        <span class="ident">ONCE</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">debug</span> { <span class="string">&quot;debug&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;info&quot;</span> };
-            <span class="kw">let</span> <span class="ident">my_crate_name</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>).<span class="ident">replace</span>(<span class="string">&#39;-&#39;</span>, <span class="string">&quot;_&quot;</span>);
+        <span class="kw">use </span>tracing_subscriber::{filter::EnvFilter, prelude::<span class="kw-2">*</span>};
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">EnvFilter::from_default_env</span>();
+        <span class="kw">static </span>ONCE: Once = Once::new();
+        ONCE.call_once(<span class="kw">move </span>|| {
+            <span class="kw">let </span>level = <span class="kw">if </span>debug { <span class="string">&quot;debug&quot; </span>} <span class="kw">else </span>{ <span class="string">&quot;info&quot; </span>};
+            <span class="kw">let </span>my_crate_name = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>).replace(<span class="string">&#39;-&#39;</span>, <span class="string">&quot;_&quot;</span>);
 
-            <span class="kw">if</span> <span class="ident">other_crates</span> {
-                <span class="ident">filter</span> <span class="op">=</span> <span class="ident">filter</span>.<span class="ident">add_directive</span>(<span class="ident">level</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-            } <span class="kw">else</span> {
-                <span class="ident">filter</span> <span class="op">=</span>
-                    <span class="ident">filter</span>.<span class="ident">add_directive</span>(<span class="macro">format!</span>(<span class="string">&quot;{}={}&quot;</span>, <span class="ident">my_crate_name</span>, <span class="ident">level</span>).<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+            <span class="kw">let </span><span class="kw-2">mut </span>filter = EnvFilter::from_default_env();
+
+            <span class="kw">if </span>other_crates {
+                filter = filter.add_directive(level.parse().unwrap());
+            } <span class="kw">else </span>{
+                filter =
+                    filter.add_directive(<span class="macro">format!</span>(<span class="string">&quot;{}={}&quot;</span>, my_crate_name, level).parse().unwrap());
             }
 
-            <span class="ident">tracing_subscriber::fmt</span>()
-                .<span class="ident">with_env_filter</span>(<span class="ident">filter</span>)
-                .<span class="ident">with_target</span>(<span class="bool-val">false</span>)
-                .<span class="ident">with_thread_ids</span>(<span class="bool-val">false</span>)
-                .<span class="ident">with_thread_names</span>(<span class="bool-val">false</span>)
-                .<span class="ident">with_ansi</span>(<span class="bool-val">true</span>)
-                .<span class="ident">without_time</span>()
-                .<span class="ident">finish</span>()
-                .<span class="ident">init</span>();
+            tracing_subscriber::fmt()
+                .with_env_filter(filter)
+                .with_target(<span class="bool-val">false</span>)
+                .with_thread_ids(<span class="bool-val">false</span>)
+                .with_thread_names(<span class="bool-val">false</span>)
+                .with_ansi(<span class="bool-val">true</span>)
+                .without_time()
+                .finish()
+                .init();
         });
     }
 
-    <span class="ident">logger</span>(<span class="bool-val">true</span>, <span class="bool-val">true</span>);
+    logger(<span class="bool-val">true</span>, <span class="bool-val">true</span>);
 
-    <span class="ident">initialize</span>();
+    initialize();
 
     {
-        <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
-        <span class="kw">fn</span> <span class="ident">test</span>() {
-            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
-            <span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
-                <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
-                <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
-                <span class="ident">run_on_main_thread</span>(<span class="kw">async</span> <span class="kw">move</span> {
-                    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
-                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">enter</span>();
+        <span class="attribute">#[tracing::instrument]
+        </span><span class="kw">fn </span>test() {
+            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
+            <span class="kw">let _ </span>= a.enter();
+            spawn(<span class="kw">async move </span>{
+                <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+                <span class="kw">let _ </span>= a.enter();
+                run_on_main_thread(<span class="kw">async move </span>{
+                    <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+                    <span class="kw">let _ </span>= a.enter();
                     <span class="macro">debug!</span>(<span class="string">&quot;HI!&quot;</span>);
                 })
                 .<span class="kw">await</span>;
             });
         }
-        <span class="ident">test</span>();
+        test();
     }
 
     {
-        <span class="attribute">#[<span class="ident">tracing::instrument</span>]</span>
-        <span class="kw">fn</span> <span class="ident">test</span>() {
-            <span class="ident">spawn_blocking</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="attribute">#[tracing::instrument]
+        </span><span class="kw">fn </span>test() {
+            spawn_blocking(|| {
                 <span class="macro">debug!</span>(<span class="string">&quot;OH&quot;</span>);
             });
         }
-        <span class="ident">test</span>();
+        test();
     }
 
-    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">2</span> {
+    <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">2 </span>{
         <span class="macro">debug!</span>(<span class="string">&quot;?&quot;</span>);
-        <span class="ident">step</span>();
+        step();
         <span class="macro">debug!</span>(<span class="string">&quot;!&quot;</span>);
     }
 
-    <span class="ident">shutdown</span>();
+    shutdown();
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="classicube_helpers" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

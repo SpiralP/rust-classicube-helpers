@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.4\src\sys\windows\net.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>net.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.5\src\sys\windows\net.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>net.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -102,109 +102,109 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>;
-<span class="kw">use</span> <span class="ident">std::net::SocketAddr</span>;
-<span class="kw">use</span> <span class="ident">std::sync::Once</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>std::mem;
+<span class="kw">use </span>std::net::SocketAddr;
+<span class="kw">use </span>std::sync::Once;
 
-<span class="kw">use</span> <span class="ident">windows_sys::Win32::Networking::WinSock</span>::{
-    <span class="ident">ioctlsocket</span>, <span class="ident">socket</span>, <span class="ident">AF_INET</span>, <span class="ident">AF_INET6</span>, <span class="ident">FIONBIO</span>, <span class="ident">IN6_ADDR</span>, <span class="ident">IN6_ADDR_0</span>, <span class="ident">INVALID_SOCKET</span>, <span class="ident">IN_ADDR</span>,
-    <span class="ident">IN_ADDR_0</span>, <span class="ident">SOCKADDR</span>, <span class="ident">SOCKADDR_IN</span>, <span class="ident">SOCKADDR_IN6</span>, <span class="ident">SOCKADDR_IN6_0</span>, <span class="ident">SOCKET</span>,
+<span class="kw">use </span>windows_sys::Win32::Networking::WinSock::{
+    ioctlsocket, socket, AF_INET, AF_INET6, FIONBIO, IN6_ADDR, IN6_ADDR_0, INVALID_SOCKET, IN_ADDR,
+    IN_ADDR_0, SOCKADDR, SOCKADDR_IN, SOCKADDR_IN6, SOCKADDR_IN6_0, SOCKET,
 };
 
-<span class="doccomment">/// Initialise the network stack for Windows.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">init</span>() {
-    <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
-    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="comment">// Let standard library call `WSAStartup` for us, we can&#39;t do it</span>
-        <span class="comment">// ourselves because otherwise using any type in `std::net` would panic</span>
-        <span class="comment">// when it tries to call `WSAStartup` a second time.</span>
-        <span class="ident">drop</span>(<span class="ident">std::net::UdpSocket::bind</span>(<span class="string">&quot;127.0.0.1:0&quot;</span>));
+<span class="doccomment">/// Initialise the network stack for Windows.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>init() {
+    <span class="kw">static </span>INIT: Once = Once::new();
+    INIT.call_once(|| {
+        <span class="comment">// Let standard library call `WSAStartup` for us, we can&#39;t do it
+        // ourselves because otherwise using any type in `std::net` would panic
+        // when it tries to call `WSAStartup` a second time.
+        </span>drop(std::net::UdpSocket::bind(<span class="string">&quot;127.0.0.1:0&quot;</span>));
     });
 }
 
-<span class="doccomment">/// Create a new non-blocking socket.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_ip_socket</span>(<span class="ident">addr</span>: <span class="ident">SocketAddr</span>, <span class="ident">socket_type</span>: <span class="ident">u16</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SOCKET</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">domain</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">addr</span> {
-        <span class="ident">SocketAddr::V4</span>(..) =&gt; <span class="ident">AF_INET</span>,
-        <span class="ident">SocketAddr::V6</span>(..) =&gt; <span class="ident">AF_INET6</span>,
+<span class="doccomment">/// Create a new non-blocking socket.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new_ip_socket(addr: SocketAddr, socket_type: u16) -&gt; io::Result&lt;SOCKET&gt; {
+    <span class="kw">let </span>domain = <span class="kw">match </span>addr {
+        SocketAddr::V4(..) =&gt; AF_INET,
+        SocketAddr::V6(..) =&gt; AF_INET6,
     };
 
-    <span class="ident">new_socket</span>(<span class="ident">domain</span>, <span class="ident">socket_type</span>)
+    new_socket(domain, socket_type)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_socket</span>(<span class="ident">domain</span>: <span class="ident">u32</span>, <span class="ident">socket_type</span>: <span class="ident">u16</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SOCKET</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new_socket(domain: u32, socket_type: u16) -&gt; io::Result&lt;SOCKET&gt; {
     <span class="macro">syscall!</span>(
-        <span class="ident">socket</span>(<span class="ident">domain</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="ident">socket_type</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="number">0</span>),
-        <span class="ident">PartialEq::eq</span>,
-        <span class="ident">INVALID_SOCKET</span>
+        socket(domain <span class="kw">as </span>i32, socket_type <span class="kw">as </span>i32, <span class="number">0</span>),
+        PartialEq::eq,
+        INVALID_SOCKET
     )
-    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">socket</span><span class="op">|</span> {
-        <span class="macro">syscall!</span>(<span class="ident">ioctlsocket</span>(<span class="ident">socket</span>, <span class="ident">FIONBIO</span>, <span class="kw-2">&amp;mut</span> <span class="number">1</span>), <span class="ident">PartialEq::ne</span>, <span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">socket</span> <span class="kw">as</span> <span class="ident">SOCKET</span>)
+    .and_then(|socket| {
+        <span class="macro">syscall!</span>(ioctlsocket(socket, FIONBIO, <span class="kw-2">&amp;mut </span><span class="number">1</span>), PartialEq::ne, <span class="number">0</span>).map(|<span class="kw">_</span>| socket <span class="kw">as </span>SOCKET)
     })
 }
 
-<span class="doccomment">/// A type with the same memory layout as `SOCKADDR`. Used in converting Rust level</span>
-<span class="doccomment">/// SocketAddr* types into their system representation. The benefit of this specific</span>
-<span class="doccomment">/// type over using `SOCKADDR_STORAGE` is that this type is exactly as large as it</span>
-<span class="doccomment">/// needs to be and not a lot larger. And it can be initialized cleaner from Rust.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">union</span> <span class="ident">SocketAddrCRepr</span> {
-    <span class="ident">v4</span>: <span class="ident">SOCKADDR_IN</span>,
-    <span class="ident">v6</span>: <span class="ident">SOCKADDR_IN6</span>,
+<span class="doccomment">/// A type with the same memory layout as `SOCKADDR`. Used in converting Rust level
+/// SocketAddr* types into their system representation. The benefit of this specific
+/// type over using `SOCKADDR_STORAGE` is that this type is exactly as large as it
+/// needs to be and not a lot larger. And it can be initialized cleaner from Rust.
+</span><span class="attribute">#[repr(C)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">union </span>SocketAddrCRepr {
+    v4: SOCKADDR_IN,
+    v6: SOCKADDR_IN6,
 }
 
-<span class="kw">impl</span> <span class="ident">SocketAddrCRepr</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span> {
-        <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">SOCKADDR</span>
+<span class="kw">impl </span>SocketAddrCRepr {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>SOCKADDR {
+        <span class="self">self </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>SOCKADDR
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">socket_addr</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) -&gt; (<span class="ident">SocketAddrCRepr</span>, <span class="ident">i32</span>) {
-    <span class="kw">match</span> <span class="ident">addr</span> {
-        <span class="ident">SocketAddr::V4</span>(<span class="kw-2">ref</span> <span class="ident">addr</span>) =&gt; {
-            <span class="comment">// `s_addr` is stored as BE on all machine and the array is in BE order.</span>
-            <span class="comment">// So the native endian conversion method is used so that it&#39;s never swapped.</span>
-            <span class="kw">let</span> <span class="ident">sin_addr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_un</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>::<span class="op">&lt;</span><span class="ident">IN_ADDR_0</span><span class="op">&gt;</span>();
-                <span class="ident">s_un</span>.<span class="ident">S_addr</span> <span class="op">=</span> <span class="ident">u32::from_ne_bytes</span>(<span class="ident">addr</span>.<span class="ident">ip</span>().<span class="ident">octets</span>());
-                <span class="ident">IN_ADDR</span> { <span class="ident">S_un</span>: <span class="ident">s_un</span> }
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>socket_addr(addr: <span class="kw-2">&amp;</span>SocketAddr) -&gt; (SocketAddrCRepr, i32) {
+    <span class="kw">match </span>addr {
+        SocketAddr::V4(<span class="kw-2">ref </span>addr) =&gt; {
+            <span class="comment">// `s_addr` is stored as BE on all machine and the array is in BE order.
+            // So the native endian conversion method is used so that it&#39;s never swapped.
+            </span><span class="kw">let </span>sin_addr = <span class="kw">unsafe </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>s_un = mem::zeroed::&lt;IN_ADDR_0&gt;();
+                s_un.S_addr = u32::from_ne_bytes(addr.ip().octets());
+                IN_ADDR { S_un: s_un }
             };
 
-            <span class="kw">let</span> <span class="ident">sockaddr_in</span> <span class="op">=</span> <span class="ident">SOCKADDR_IN</span> {
-                <span class="ident">sin_family</span>: <span class="ident">AF_INET</span> <span class="kw">as</span> <span class="ident">u16</span>, <span class="comment">// 1</span>
-                <span class="ident">sin_port</span>: <span class="ident">addr</span>.<span class="ident">port</span>().<span class="ident">to_be</span>(),
-                <span class="ident">sin_addr</span>,
-                <span class="ident">sin_zero</span>: [<span class="number">0</span>; <span class="number">8</span>],
+            <span class="kw">let </span>sockaddr_in = SOCKADDR_IN {
+                sin_family: AF_INET <span class="kw">as </span>u16, <span class="comment">// 1
+                </span>sin_port: addr.port().to_be(),
+                sin_addr,
+                sin_zero: [<span class="number">0</span>; <span class="number">8</span>],
             };
 
-            <span class="kw">let</span> <span class="ident">sockaddr</span> <span class="op">=</span> <span class="ident">SocketAddrCRepr</span> { <span class="ident">v4</span>: <span class="ident">sockaddr_in</span> };
-            (<span class="ident">sockaddr</span>, <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">SOCKADDR_IN</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">i32</span>)
+            <span class="kw">let </span>sockaddr = SocketAddrCRepr { v4: sockaddr_in };
+            (sockaddr, mem::size_of::&lt;SOCKADDR_IN&gt;() <span class="kw">as </span>i32)
         }
-        <span class="ident">SocketAddr::V6</span>(<span class="kw-2">ref</span> <span class="ident">addr</span>) =&gt; {
-            <span class="kw">let</span> <span class="ident">sin6_addr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>::<span class="op">&lt;</span><span class="ident">IN6_ADDR_0</span><span class="op">&gt;</span>();
-                <span class="ident">u</span>.<span class="ident">Byte</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">ip</span>().<span class="ident">octets</span>();
-                <span class="ident">IN6_ADDR</span> { <span class="ident">u</span> }
+        SocketAddr::V6(<span class="kw-2">ref </span>addr) =&gt; {
+            <span class="kw">let </span>sin6_addr = <span class="kw">unsafe </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>u = mem::zeroed::&lt;IN6_ADDR_0&gt;();
+                u.Byte = addr.ip().octets();
+                IN6_ADDR { u }
             };
-            <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>::<span class="op">&lt;</span><span class="ident">SOCKADDR_IN6_0</span><span class="op">&gt;</span>();
-                <span class="ident">u</span>.<span class="ident">sin6_scope_id</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">scope_id</span>();
-                <span class="ident">u</span>
-            };
-
-            <span class="kw">let</span> <span class="ident">sockaddr_in6</span> <span class="op">=</span> <span class="ident">SOCKADDR_IN6</span> {
-                <span class="ident">sin6_family</span>: <span class="ident">AF_INET6</span> <span class="kw">as</span> <span class="ident">u16</span>, <span class="comment">// 23</span>
-                <span class="ident">sin6_port</span>: <span class="ident">addr</span>.<span class="ident">port</span>().<span class="ident">to_be</span>(),
-                <span class="ident">sin6_addr</span>,
-                <span class="ident">sin6_flowinfo</span>: <span class="ident">addr</span>.<span class="ident">flowinfo</span>(),
-                <span class="ident">Anonymous</span>: <span class="ident">u</span>,
+            <span class="kw">let </span>u = <span class="kw">unsafe </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>u = mem::zeroed::&lt;SOCKADDR_IN6_0&gt;();
+                u.sin6_scope_id = addr.scope_id();
+                u
             };
 
-            <span class="kw">let</span> <span class="ident">sockaddr</span> <span class="op">=</span> <span class="ident">SocketAddrCRepr</span> { <span class="ident">v6</span>: <span class="ident">sockaddr_in6</span> };
-            (<span class="ident">sockaddr</span>, <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">SOCKADDR_IN6</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">i32</span>)
+            <span class="kw">let </span>sockaddr_in6 = SOCKADDR_IN6 {
+                sin6_family: AF_INET6 <span class="kw">as </span>u16, <span class="comment">// 23
+                </span>sin6_port: addr.port().to_be(),
+                sin6_addr,
+                sin6_flowinfo: addr.flowinfo(),
+                Anonymous: u,
+            };
+
+            <span class="kw">let </span>sockaddr = SocketAddrCRepr { v6: sockaddr_in6 };
+            (sockaddr, mem::size_of::&lt;SOCKADDR_IN6&gt;() <span class="kw">as </span>i32)
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

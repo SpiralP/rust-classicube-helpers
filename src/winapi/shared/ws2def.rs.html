@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\ws2def.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ws2def.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\ws2def.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ws2def.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../winapi/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../winapi/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -554,561 +554,561 @@
 <span id="554">554</span>
 <span id="555">555</span>
 <span id="556">556</span>
-</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
-<span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
-<span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
-<span class="comment">// except according to those terms.</span>
-<span class="doccomment">//! Core definitions for the Winsock2 specification</span>
-<span class="kw">use</span> <span class="ident">ctypes</span>::{<span class="ident">__int64</span>, <span class="ident">c_char</span>, <span class="ident">c_int</span>, <span class="ident">c_long</span>, <span class="ident">c_short</span>, <span class="ident">c_void</span>};
-<span class="kw">use</span> <span class="ident">shared::basetsd::SIZE_T</span>;
-<span class="kw">use</span> <span class="ident">shared::guiddef::LPGUID</span>;
-<span class="kw">use</span> <span class="ident">shared::inaddr::IN_ADDR</span>;
-<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">DWORD</span>, <span class="ident">INT</span>, <span class="ident">UCHAR</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>};
-<span class="kw">use</span> <span class="ident">um::winnt</span>::{<span class="ident">CHAR</span>, <span class="ident">HANDLE</span>, <span class="ident">LONG</span>, <span class="ident">PROCESSOR_NUMBER</span>, <span class="ident">PWSTR</span>};
-<span class="kw">use</span> <span class="ident">vc::vcruntime::size_t</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ADDRESS_FAMILY</span> <span class="op">=</span> <span class="ident">USHORT</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_UNSPEC</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_UNIX</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_INET</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_IMPLINK</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_PUP</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_CHAOS</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_NS</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_IPX</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">AF_NS</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_ISO</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_OSI</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="ident">AF_ISO</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_ECMA</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_DATAKIT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_CCITT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_SNA</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">11</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_DECnet</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">12</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_DLI</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">13</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_LAT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">14</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_HYLINK</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">15</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_APPLETALK</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_NETBIOS</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">17</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_VOICEVIEW</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">18</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_FIREFOX</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">19</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_UNKNOWN1</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">20</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_BAN</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">21</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_ATM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">22</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_INET6</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">23</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_CLUSTER</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">24</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_12844</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">25</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_IRDA</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">26</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_NETDES</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">28</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_TCNPROCESS</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">29</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_TCNMESSAGE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">30</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_ICLFXBM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">31</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_BTH</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">32</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_LINK</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">33</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_HYPERV</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">34</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AF_MAX</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">35</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCK_STREAM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCK_DGRAM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCK_RAW</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCK_RDM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOCK_SEQPACKET</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SOL_SOCKET</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0xffff</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_DEBUG</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_ACCEPTCONN</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_REUSEADDR</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_KEEPALIVE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_DONTROUTE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0010</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_BROADCAST</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0020</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_USELOOPBACK</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0040</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_LINGER</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0080</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_OOBINLINE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0100</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_DONTLINGER</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="op">!</span><span class="ident">SO_LINGER</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_EXCLUSIVEADDRUSE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="op">!</span><span class="ident">SO_REUSEADDR</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_SNDBUF</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_RCVBUF</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_SNDLOWAT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1003</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_RCVLOWAT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_SNDTIMEO</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1005</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_RCVTIMEO</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1006</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_ERROR</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1007</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_TYPE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_BSP_STATE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x1009</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_GROUP_ID</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x2001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_GROUP_PRIORITY</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x2002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_MAX_MSG_SIZE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x2003</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_CONDITIONAL_ACCEPT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_PAUSE_ACCEPT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3003</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_COMPARTMENT_ID</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_RANDOMIZE_PORT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3005</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_PORT_SCALABILITY</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3006</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_REUSE_UNICASTPORT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3007</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SO_REUSE_MULTICASTPORT</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x3008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WSK_SO_BASE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x4000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TCP_NODELAY</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x0001</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKADDR</span> {
-    <span class="ident">sa_family</span>: <span class="ident">ADDRESS_FAMILY</span>,
-    <span class="ident">sa_data</span>: [<span class="ident">CHAR</span>; <span class="number">14</span>],
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0
+// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.
+// All files in the project carrying such notice may not be copied, modified, or distributed
+// except according to those terms.
+</span><span class="doccomment">//! Core definitions for the Winsock2 specification
+</span><span class="kw">use </span>ctypes::{__int64, c_char, c_int, c_long, c_short, c_void};
+<span class="kw">use </span>shared::basetsd::SIZE_T;
+<span class="kw">use </span>shared::guiddef::LPGUID;
+<span class="kw">use </span>shared::inaddr::IN_ADDR;
+<span class="kw">use </span>shared::minwindef::{DWORD, INT, UCHAR, ULONG, USHORT};
+<span class="kw">use </span>um::winnt::{CHAR, HANDLE, LONG, PROCESSOR_NUMBER, PWSTR};
+<span class="kw">use </span>vc::vcruntime::size_t;
+<span class="kw">pub type </span>ADDRESS_FAMILY = USHORT;
+<span class="kw">pub const </span>AF_UNSPEC: c_int = <span class="number">0</span>;
+<span class="kw">pub const </span>AF_UNIX: c_int = <span class="number">1</span>;
+<span class="kw">pub const </span>AF_INET: c_int = <span class="number">2</span>;
+<span class="kw">pub const </span>AF_IMPLINK: c_int = <span class="number">3</span>;
+<span class="kw">pub const </span>AF_PUP: c_int = <span class="number">4</span>;
+<span class="kw">pub const </span>AF_CHAOS: c_int = <span class="number">5</span>;
+<span class="kw">pub const </span>AF_NS: c_int = <span class="number">6</span>;
+<span class="kw">pub const </span>AF_IPX: c_int = AF_NS;
+<span class="kw">pub const </span>AF_ISO: c_int = <span class="number">7</span>;
+<span class="kw">pub const </span>AF_OSI: c_int = AF_ISO;
+<span class="kw">pub const </span>AF_ECMA: c_int = <span class="number">8</span>;
+<span class="kw">pub const </span>AF_DATAKIT: c_int = <span class="number">9</span>;
+<span class="kw">pub const </span>AF_CCITT: c_int = <span class="number">10</span>;
+<span class="kw">pub const </span>AF_SNA: c_int = <span class="number">11</span>;
+<span class="kw">pub const </span>AF_DECnet: c_int = <span class="number">12</span>;
+<span class="kw">pub const </span>AF_DLI: c_int = <span class="number">13</span>;
+<span class="kw">pub const </span>AF_LAT: c_int = <span class="number">14</span>;
+<span class="kw">pub const </span>AF_HYLINK: c_int = <span class="number">15</span>;
+<span class="kw">pub const </span>AF_APPLETALK: c_int = <span class="number">16</span>;
+<span class="kw">pub const </span>AF_NETBIOS: c_int = <span class="number">17</span>;
+<span class="kw">pub const </span>AF_VOICEVIEW: c_int = <span class="number">18</span>;
+<span class="kw">pub const </span>AF_FIREFOX: c_int = <span class="number">19</span>;
+<span class="kw">pub const </span>AF_UNKNOWN1: c_int = <span class="number">20</span>;
+<span class="kw">pub const </span>AF_BAN: c_int = <span class="number">21</span>;
+<span class="kw">pub const </span>AF_ATM: c_int = <span class="number">22</span>;
+<span class="kw">pub const </span>AF_INET6: c_int = <span class="number">23</span>;
+<span class="kw">pub const </span>AF_CLUSTER: c_int = <span class="number">24</span>;
+<span class="kw">pub const </span>AF_12844: c_int = <span class="number">25</span>;
+<span class="kw">pub const </span>AF_IRDA: c_int = <span class="number">26</span>;
+<span class="kw">pub const </span>AF_NETDES: c_int = <span class="number">28</span>;
+<span class="kw">pub const </span>AF_TCNPROCESS: c_int = <span class="number">29</span>;
+<span class="kw">pub const </span>AF_TCNMESSAGE: c_int = <span class="number">30</span>;
+<span class="kw">pub const </span>AF_ICLFXBM: c_int = <span class="number">31</span>;
+<span class="kw">pub const </span>AF_BTH: c_int = <span class="number">32</span>;
+<span class="kw">pub const </span>AF_LINK: c_int = <span class="number">33</span>;
+<span class="kw">pub const </span>AF_HYPERV: c_int = <span class="number">34</span>;
+<span class="kw">pub const </span>AF_MAX: c_int = <span class="number">35</span>;
+<span class="kw">pub const </span>SOCK_STREAM: c_int = <span class="number">1</span>;
+<span class="kw">pub const </span>SOCK_DGRAM: c_int = <span class="number">2</span>;
+<span class="kw">pub const </span>SOCK_RAW: c_int = <span class="number">3</span>;
+<span class="kw">pub const </span>SOCK_RDM: c_int = <span class="number">4</span>;
+<span class="kw">pub const </span>SOCK_SEQPACKET: c_int = <span class="number">5</span>;
+<span class="kw">pub const </span>SOL_SOCKET: c_int = <span class="number">0xffff</span>;
+<span class="kw">pub const </span>SO_DEBUG: c_int = <span class="number">0x0001</span>;
+<span class="kw">pub const </span>SO_ACCEPTCONN: c_int = <span class="number">0x0002</span>;
+<span class="kw">pub const </span>SO_REUSEADDR: c_int = <span class="number">0x0004</span>;
+<span class="kw">pub const </span>SO_KEEPALIVE: c_int = <span class="number">0x0008</span>;
+<span class="kw">pub const </span>SO_DONTROUTE: c_int = <span class="number">0x0010</span>;
+<span class="kw">pub const </span>SO_BROADCAST: c_int = <span class="number">0x0020</span>;
+<span class="kw">pub const </span>SO_USELOOPBACK: c_int = <span class="number">0x0040</span>;
+<span class="kw">pub const </span>SO_LINGER: c_int = <span class="number">0x0080</span>;
+<span class="kw">pub const </span>SO_OOBINLINE: c_int = <span class="number">0x0100</span>;
+<span class="kw">pub const </span>SO_DONTLINGER: c_int = !SO_LINGER;
+<span class="kw">pub const </span>SO_EXCLUSIVEADDRUSE: c_int = !SO_REUSEADDR;
+<span class="kw">pub const </span>SO_SNDBUF: c_int = <span class="number">0x1001</span>;
+<span class="kw">pub const </span>SO_RCVBUF: c_int = <span class="number">0x1002</span>;
+<span class="kw">pub const </span>SO_SNDLOWAT: c_int = <span class="number">0x1003</span>;
+<span class="kw">pub const </span>SO_RCVLOWAT: c_int = <span class="number">0x1004</span>;
+<span class="kw">pub const </span>SO_SNDTIMEO: c_int = <span class="number">0x1005</span>;
+<span class="kw">pub const </span>SO_RCVTIMEO: c_int = <span class="number">0x1006</span>;
+<span class="kw">pub const </span>SO_ERROR: c_int = <span class="number">0x1007</span>;
+<span class="kw">pub const </span>SO_TYPE: c_int = <span class="number">0x1008</span>;
+<span class="kw">pub const </span>SO_BSP_STATE: c_int = <span class="number">0x1009</span>;
+<span class="kw">pub const </span>SO_GROUP_ID: c_int = <span class="number">0x2001</span>;
+<span class="kw">pub const </span>SO_GROUP_PRIORITY: c_int = <span class="number">0x2002</span>;
+<span class="kw">pub const </span>SO_MAX_MSG_SIZE: c_int = <span class="number">0x2003</span>;
+<span class="kw">pub const </span>SO_CONDITIONAL_ACCEPT: c_int = <span class="number">0x3002</span>;
+<span class="kw">pub const </span>SO_PAUSE_ACCEPT: c_int = <span class="number">0x3003</span>;
+<span class="kw">pub const </span>SO_COMPARTMENT_ID: c_int = <span class="number">0x3004</span>;
+<span class="kw">pub const </span>SO_RANDOMIZE_PORT: c_int = <span class="number">0x3005</span>;
+<span class="kw">pub const </span>SO_PORT_SCALABILITY: c_int = <span class="number">0x3006</span>;
+<span class="kw">pub const </span>SO_REUSE_UNICASTPORT: c_int = <span class="number">0x3007</span>;
+<span class="kw">pub const </span>SO_REUSE_MULTICASTPORT: c_int = <span class="number">0x3008</span>;
+<span class="kw">pub const </span>WSK_SO_BASE: c_int = <span class="number">0x4000</span>;
+<span class="kw">pub const </span>TCP_NODELAY: c_int = <span class="number">0x0001</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKADDR {
+    sa_family: ADDRESS_FAMILY,
+    sa_data: [CHAR; <span class="number">14</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKADDR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_ADDRESS</span> {
-    <span class="ident">lpSockaddr</span>: <span class="ident">LPSOCKADDR</span>,
-    <span class="ident">iSockaddrLength</span>: <span class="ident">INT</span>,
+<span class="kw">pub type </span>PSOCKADDR = <span class="kw-2">*mut </span>SOCKADDR;
+<span class="kw">pub type </span>LPSOCKADDR = <span class="kw-2">*mut </span>SOCKADDR;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_ADDRESS {
+    lpSockaddr: LPSOCKADDR,
+    iSockaddrLength: INT,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKET_ADDRESS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKET_ADDRESS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_ADDRESS_LIST</span> {
-    <span class="ident">iAddressCount</span>: <span class="ident">INT</span>,
-    <span class="ident">Address</span>: [<span class="ident">SOCKET_ADDRESS</span>; <span class="number">1</span>],
+<span class="kw">pub type </span>PSOCKET_ADDRESS = <span class="kw-2">*mut </span>SOCKET_ADDRESS;
+<span class="kw">pub type </span>LPSOCKET_ADDRESS = <span class="kw-2">*mut </span>SOCKET_ADDRESS;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_ADDRESS_LIST {
+    iAddressCount: INT,
+    Address: [SOCKET_ADDRESS; <span class="number">1</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKET_ADDRESS_LIST</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS_LIST</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKET_ADDRESS_LIST</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKET_ADDRESS_LIST</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">CSADDR_INFO</span> {
-    <span class="ident">LocalAddr</span>: <span class="ident">SOCKET_ADDRESS</span>,
-    <span class="ident">RemoteAddr</span>: <span class="ident">SOCKET_ADDRESS</span>,
-    <span class="ident">iSocketType</span>: <span class="ident">INT</span>,
-    <span class="ident">iProtocol</span>: <span class="ident">INT</span>,
+<span class="kw">pub type </span>PSOCKET_ADDRESS_LIST = <span class="kw-2">*mut </span>SOCKET_ADDRESS_LIST;
+<span class="kw">pub type </span>LPSOCKET_ADDRESS_LIST = <span class="kw-2">*mut </span>SOCKET_ADDRESS_LIST;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>CSADDR_INFO {
+    LocalAddr: SOCKET_ADDRESS,
+    RemoteAddr: SOCKET_ADDRESS,
+    iSocketType: INT,
+    iProtocol: INT,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCSADDR_INFO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">CSADDR_INFO</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPCSADDR_INFO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">CSADDR_INFO</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKADDR_STORAGE_LH</span> {
-    <span class="ident">ss_family</span>: <span class="ident">ADDRESS_FAMILY</span>,
-    <span class="ident">__ss_pad1</span>: [<span class="ident">CHAR</span>; <span class="number">6</span>],
-    <span class="ident">__ss_align</span>: <span class="ident">__int64</span>,
-    <span class="ident">__ss_pad2</span>: [<span class="ident">CHAR</span>; <span class="number">112</span>],
+<span class="kw">pub type </span>PCSADDR_INFO = <span class="kw-2">*mut </span>CSADDR_INFO;
+<span class="kw">pub type </span>LPCSADDR_INFO = <span class="kw-2">*mut </span>CSADDR_INFO;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKADDR_STORAGE_LH {
+    ss_family: ADDRESS_FAMILY,
+    __ss_pad1: [CHAR; <span class="number">6</span>],
+    __ss_align: __int64,
+    __ss_pad2: [CHAR; <span class="number">112</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR_STORAGE_LH</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE_LH</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKADDR_STORAGE_LH</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE_LH</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKADDR_STORAGE_XP</span> {
-    <span class="ident">ss_family</span>: <span class="ident">c_short</span>,
-    <span class="ident">__ss_pad1</span>: [<span class="ident">CHAR</span>; <span class="number">6</span>],
-    <span class="ident">__ss_align</span>: <span class="ident">__int64</span>,
-    <span class="ident">__ss_pad2</span>: [<span class="ident">CHAR</span>; <span class="number">112</span>],
+<span class="kw">pub type </span>PSOCKADDR_STORAGE_LH = <span class="kw-2">*mut </span>SOCKADDR_STORAGE_LH;
+<span class="kw">pub type </span>LPSOCKADDR_STORAGE_LH = <span class="kw-2">*mut </span>SOCKADDR_STORAGE_LH;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKADDR_STORAGE_XP {
+    ss_family: c_short,
+    __ss_pad1: [CHAR; <span class="number">6</span>],
+    __ss_align: __int64,
+    __ss_pad2: [CHAR; <span class="number">112</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR_STORAGE_XP</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE_XP</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKADDR_STORAGE_XP</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE_XP</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SOCKADDR_STORAGE</span> <span class="op">=</span> <span class="ident">SOCKADDR_STORAGE_LH</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR_STORAGE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPSOCKADDR_STORAGE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_STORAGE</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKET_PROCESSOR_AFFINITY</span> {
-    <span class="ident">Processor</span>: <span class="ident">PROCESSOR_NUMBER</span>,
-    <span class="ident">NumaNodeId</span>: <span class="ident">USHORT</span>,
-    <span class="ident">Reserved</span>: <span class="ident">USHORT</span>,
+<span class="kw">pub type </span>PSOCKADDR_STORAGE_XP = <span class="kw-2">*mut </span>SOCKADDR_STORAGE_XP;
+<span class="kw">pub type </span>LPSOCKADDR_STORAGE_XP = <span class="kw-2">*mut </span>SOCKADDR_STORAGE_XP;
+<span class="kw">pub type </span>SOCKADDR_STORAGE = SOCKADDR_STORAGE_LH;
+<span class="kw">pub type </span>PSOCKADDR_STORAGE = <span class="kw-2">*mut </span>SOCKADDR_STORAGE;
+<span class="kw">pub type </span>LPSOCKADDR_STORAGE = <span class="kw-2">*mut </span>SOCKADDR_STORAGE;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKET_PROCESSOR_AFFINITY {
+    Processor: PROCESSOR_NUMBER,
+    NumaNodeId: USHORT,
+    Reserved: USHORT,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKET_PROCESSOR_AFFINITY</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKET_PROCESSOR_AFFINITY</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_UNIX</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x00000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_WS2</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x08000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_PROTOCOL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x10000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_VENDOR</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x18000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_WSK</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">IOC_WS2</span> <span class="op">|</span> <span class="number">0x07000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ASSOCIATE_HANDLE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">1</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ENABLE_CIRCULAR_QUEUEING</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIO!</span>(<span class="ident">IOC_WS2</span>, <span class="number">2</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_FIND_ROUTE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_WS2</span>, <span class="number">3</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_FLUSH</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIO!</span>(<span class="ident">IOC_WS2</span>, <span class="number">4</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_GET_BROADCAST_ADDRESS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_WS2</span>, <span class="number">5</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_GET_EXTENSION_FUNCTION_POINTER</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">6</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_GET_QOS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">7</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_GET_GROUP_QOS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">8</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_MULTIPOINT_LOOPBACK</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">9</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_MULTICAST_SCOPE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">10</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SET_QOS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">11</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_SET_GROUP_QOS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">12</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_TRANSLATE_HANDLE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">13</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ROUTING_INTERFACE_QUERY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">20</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ROUTING_INTERFACE_CHANGE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">21</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ADDRESS_LIST_QUERY</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_WS2</span>, <span class="number">22</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ADDRESS_LIST_CHANGE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIO!</span>(<span class="ident">IOC_WS2</span>, <span class="number">23</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_TARGET_PNP_HANDLE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_WS2</span>, <span class="number">24</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_QUERY_RSS_PROCESSOR_INFO</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOR!</span>(<span class="ident">IOC_WS2</span>, <span class="number">37</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_ADDRESS_LIST_SORT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">25</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RESERVED_1</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">26</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_RESERVED_2</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIOW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">33</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO_GET_MULTIPLE_EXTENSION_FUNCTION_POINTER</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="macro">_WSAIORW!</span>(<span class="ident">IOC_WS2</span>, <span class="number">36</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPROTO_IP</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">IPPROTO</span> {
-    <span class="ident">IPPROTO_HOPOPTS</span> <span class="op">=</span> <span class="number">0</span>, <span class="comment">// IPv6 Hop-by-Hop options</span>
-    <span class="ident">IPPROTO_ICMP</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">IPPROTO_IGMP</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">IPPROTO_GGP</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">IPPROTO_IPV4</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">IPPROTO_ST</span> <span class="op">=</span> <span class="number">5</span>,
-    <span class="ident">IPPROTO_TCP</span> <span class="op">=</span> <span class="number">6</span>,
-    <span class="ident">IPPROTO_CBT</span> <span class="op">=</span> <span class="number">7</span>,
-    <span class="ident">IPPROTO_EGP</span> <span class="op">=</span> <span class="number">8</span>,
-    <span class="ident">IPPROTO_IGP</span> <span class="op">=</span> <span class="number">9</span>,
-    <span class="ident">IPPROTO_PUP</span> <span class="op">=</span> <span class="number">12</span>,
-    <span class="ident">IPPROTO_UDP</span> <span class="op">=</span> <span class="number">17</span>,
-    <span class="ident">IPPROTO_IDP</span> <span class="op">=</span> <span class="number">22</span>,
-    <span class="ident">IPPROTO_RDP</span> <span class="op">=</span> <span class="number">27</span>,
-    <span class="ident">IPPROTO_IPV6</span> <span class="op">=</span> <span class="number">41</span>, <span class="comment">// IPv6 header</span>
-    <span class="ident">IPPROTO_ROUTING</span> <span class="op">=</span> <span class="number">43</span>, <span class="comment">// IPv6 Routing header</span>
-    <span class="ident">IPPROTO_FRAGMENT</span> <span class="op">=</span> <span class="number">44</span>, <span class="comment">// IPv6 fragmentation header</span>
-    <span class="ident">IPPROTO_ESP</span> <span class="op">=</span> <span class="number">50</span>, <span class="comment">// encapsulating security payload</span>
-    <span class="ident">IPPROTO_AH</span> <span class="op">=</span> <span class="number">51</span>, <span class="comment">// authentication header</span>
-    <span class="ident">IPPROTO_ICMPV6</span> <span class="op">=</span> <span class="number">58</span>, <span class="comment">// ICMPv6</span>
-    <span class="ident">IPPROTO_NONE</span> <span class="op">=</span> <span class="number">59</span>, <span class="comment">// IPv6 no next header</span>
-    <span class="ident">IPPROTO_DSTOPTS</span> <span class="op">=</span> <span class="number">60</span>, <span class="comment">// IPv6 Destination options</span>
-    <span class="ident">IPPROTO_ND</span> <span class="op">=</span> <span class="number">77</span>,
-    <span class="ident">IPPROTO_ICLFXBM</span> <span class="op">=</span> <span class="number">78</span>,
-    <span class="ident">IPPROTO_PIM</span> <span class="op">=</span> <span class="number">103</span>,
-    <span class="ident">IPPROTO_PGM</span> <span class="op">=</span> <span class="number">113</span>,
-    <span class="ident">IPPROTO_L2TP</span> <span class="op">=</span> <span class="number">115</span>,
-    <span class="ident">IPPROTO_SCTP</span> <span class="op">=</span> <span class="number">132</span>,
-    <span class="ident">IPPROTO_RAW</span> <span class="op">=</span> <span class="number">255</span>,
-    <span class="ident">IPPROTO_MAX</span> <span class="op">=</span> <span class="number">256</span>,
-    <span class="ident">IPPROTO_RESERVED_RAW</span> <span class="op">=</span> <span class="number">257</span>,
-    <span class="ident">IPPROTO_RESERVED_IPSEC</span> <span class="op">=</span> <span class="number">258</span>,
-    <span class="ident">IPPROTO_RESERVED_IPSECOFFLOAD</span> <span class="op">=</span> <span class="number">259</span>,
-    <span class="ident">IPPROTO_RESERVED_WNV</span> <span class="op">=</span> <span class="number">260</span>,
-    <span class="ident">IPPROTO_RESERVED_MAX</span> <span class="op">=</span> <span class="number">261</span>,
+<span class="kw">pub type </span>PSOCKET_PROCESSOR_AFFINITY = <span class="kw-2">*mut </span>SOCKET_PROCESSOR_AFFINITY;
+<span class="kw">pub const </span>IOC_UNIX: DWORD = <span class="number">0x00000000</span>;
+<span class="kw">pub const </span>IOC_WS2: DWORD = <span class="number">0x08000000</span>;
+<span class="kw">pub const </span>IOC_PROTOCOL: DWORD = <span class="number">0x10000000</span>;
+<span class="kw">pub const </span>IOC_VENDOR: DWORD = <span class="number">0x18000000</span>;
+<span class="kw">pub const </span>IOC_WSK: DWORD = IOC_WS2 | <span class="number">0x07000000</span>;
+<span class="kw">pub const </span>SIO_ASSOCIATE_HANDLE: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">1</span>);
+<span class="kw">pub const </span>SIO_ENABLE_CIRCULAR_QUEUEING: DWORD = <span class="macro">_WSAIO!</span>(IOC_WS2, <span class="number">2</span>);
+<span class="kw">pub const </span>SIO_FIND_ROUTE: DWORD = <span class="macro">_WSAIOR!</span>(IOC_WS2, <span class="number">3</span>);
+<span class="kw">pub const </span>SIO_FLUSH: DWORD = <span class="macro">_WSAIO!</span>(IOC_WS2, <span class="number">4</span>);
+<span class="kw">pub const </span>SIO_GET_BROADCAST_ADDRESS: DWORD = <span class="macro">_WSAIOR!</span>(IOC_WS2, <span class="number">5</span>);
+<span class="kw">pub const </span>SIO_GET_EXTENSION_FUNCTION_POINTER: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">6</span>);
+<span class="kw">pub const </span>SIO_GET_QOS: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">7</span>);
+<span class="kw">pub const </span>SIO_GET_GROUP_QOS: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">8</span>);
+<span class="kw">pub const </span>SIO_MULTIPOINT_LOOPBACK: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">9</span>);
+<span class="kw">pub const </span>SIO_MULTICAST_SCOPE: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">10</span>);
+<span class="kw">pub const </span>SIO_SET_QOS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">11</span>);
+<span class="kw">pub const </span>SIO_SET_GROUP_QOS: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">12</span>);
+<span class="kw">pub const </span>SIO_TRANSLATE_HANDLE: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">13</span>);
+<span class="kw">pub const </span>SIO_ROUTING_INTERFACE_QUERY: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">20</span>);
+<span class="kw">pub const </span>SIO_ROUTING_INTERFACE_CHANGE: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">21</span>);
+<span class="kw">pub const </span>SIO_ADDRESS_LIST_QUERY: DWORD = <span class="macro">_WSAIOR!</span>(IOC_WS2, <span class="number">22</span>);
+<span class="kw">pub const </span>SIO_ADDRESS_LIST_CHANGE: DWORD = <span class="macro">_WSAIO!</span>(IOC_WS2, <span class="number">23</span>);
+<span class="kw">pub const </span>SIO_QUERY_TARGET_PNP_HANDLE: DWORD = <span class="macro">_WSAIOR!</span>(IOC_WS2, <span class="number">24</span>);
+<span class="kw">pub const </span>SIO_QUERY_RSS_PROCESSOR_INFO: DWORD = <span class="macro">_WSAIOR!</span>(IOC_WS2, <span class="number">37</span>);
+<span class="kw">pub const </span>SIO_ADDRESS_LIST_SORT: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">25</span>);
+<span class="kw">pub const </span>SIO_RESERVED_1: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">26</span>);
+<span class="kw">pub const </span>SIO_RESERVED_2: DWORD = <span class="macro">_WSAIOW!</span>(IOC_WS2, <span class="number">33</span>);
+<span class="kw">pub const </span>SIO_GET_MULTIPLE_EXTENSION_FUNCTION_POINTER: DWORD = <span class="macro">_WSAIORW!</span>(IOC_WS2, <span class="number">36</span>);
+<span class="kw">pub const </span>IPPROTO_IP: c_int = <span class="number">0</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>IPPROTO {
+    IPPROTO_HOPOPTS = <span class="number">0</span>, <span class="comment">// IPv6 Hop-by-Hop options
+    </span>IPPROTO_ICMP = <span class="number">1</span>,
+    IPPROTO_IGMP = <span class="number">2</span>,
+    IPPROTO_GGP = <span class="number">3</span>,
+    IPPROTO_IPV4 = <span class="number">4</span>,
+    IPPROTO_ST = <span class="number">5</span>,
+    IPPROTO_TCP = <span class="number">6</span>,
+    IPPROTO_CBT = <span class="number">7</span>,
+    IPPROTO_EGP = <span class="number">8</span>,
+    IPPROTO_IGP = <span class="number">9</span>,
+    IPPROTO_PUP = <span class="number">12</span>,
+    IPPROTO_UDP = <span class="number">17</span>,
+    IPPROTO_IDP = <span class="number">22</span>,
+    IPPROTO_RDP = <span class="number">27</span>,
+    IPPROTO_IPV6 = <span class="number">41</span>, <span class="comment">// IPv6 header
+    </span>IPPROTO_ROUTING = <span class="number">43</span>, <span class="comment">// IPv6 Routing header
+    </span>IPPROTO_FRAGMENT = <span class="number">44</span>, <span class="comment">// IPv6 fragmentation header
+    </span>IPPROTO_ESP = <span class="number">50</span>, <span class="comment">// encapsulating security payload
+    </span>IPPROTO_AH = <span class="number">51</span>, <span class="comment">// authentication header
+    </span>IPPROTO_ICMPV6 = <span class="number">58</span>, <span class="comment">// ICMPv6
+    </span>IPPROTO_NONE = <span class="number">59</span>, <span class="comment">// IPv6 no next header
+    </span>IPPROTO_DSTOPTS = <span class="number">60</span>, <span class="comment">// IPv6 Destination options
+    </span>IPPROTO_ND = <span class="number">77</span>,
+    IPPROTO_ICLFXBM = <span class="number">78</span>,
+    IPPROTO_PIM = <span class="number">103</span>,
+    IPPROTO_PGM = <span class="number">113</span>,
+    IPPROTO_L2TP = <span class="number">115</span>,
+    IPPROTO_SCTP = <span class="number">132</span>,
+    IPPROTO_RAW = <span class="number">255</span>,
+    IPPROTO_MAX = <span class="number">256</span>,
+    IPPROTO_RESERVED_RAW = <span class="number">257</span>,
+    IPPROTO_RESERVED_IPSEC = <span class="number">258</span>,
+    IPPROTO_RESERVED_IPSECOFFLOAD = <span class="number">259</span>,
+    IPPROTO_RESERVED_WNV = <span class="number">260</span>,
+    IPPROTO_RESERVED_MAX = <span class="number">261</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PIPPROTO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">IPPROTO</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_TCPMUX</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_ECHO</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">7</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_DISCARD</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">9</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_SYSTAT</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">11</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_DAYTIME</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">13</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NETSTAT</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">15</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_QOTD</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">17</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_MSP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">18</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_CHARGEN</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">19</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_FTP_DATA</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">20</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_FTP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">21</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_TELNET</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">23</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_SMTP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">25</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_TIMESERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">37</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NAMESERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">42</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_WHOIS</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">43</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_MTP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">57</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_TFTP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">69</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_RJE</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">77</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_FINGER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">79</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_TTYLINK</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">87</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_SUPDUP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">95</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_POP3</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">110</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NTP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">123</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_EPMAP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">135</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NETBIOS_NS</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">137</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NETBIOS_DGM</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">138</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_NETBIOS_SSN</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">139</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_IMAP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">143</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_SNMP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">161</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_SNMP_TRAP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">162</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_IMAP3</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">220</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_LDAP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">389</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_HTTPS</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">443</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_MICROSOFT_DS</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">445</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_EXECSERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">512</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_LOGINSERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">513</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_CMDSERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">514</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_EFSSERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">520</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_BIFFUDP</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">512</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_WHOSERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">513</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_ROUTESERVER</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">520</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_RESERVED</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">1024</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_REGISTERED_MIN</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="ident">IPPORT_RESERVED</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_REGISTERED_MAX</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">0xbfff</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_DYNAMIC_MIN</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">0xc000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IPPORT_DYNAMIC_MAX</span>: <span class="ident">USHORT</span> <span class="op">=</span> <span class="number">0xffff</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN_CLASSA</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="op">&amp;</span> <span class="number">0x80000000</span>) <span class="op">==</span> <span class="number">0</span>
+<span class="kw">pub type </span>PIPPROTO = <span class="kw-2">*mut </span>IPPROTO;
+<span class="kw">pub const </span>IPPORT_TCPMUX: USHORT = <span class="number">1</span>;
+<span class="kw">pub const </span>IPPORT_ECHO: USHORT = <span class="number">7</span>;
+<span class="kw">pub const </span>IPPORT_DISCARD: USHORT = <span class="number">9</span>;
+<span class="kw">pub const </span>IPPORT_SYSTAT: USHORT = <span class="number">11</span>;
+<span class="kw">pub const </span>IPPORT_DAYTIME: USHORT = <span class="number">13</span>;
+<span class="kw">pub const </span>IPPORT_NETSTAT: USHORT = <span class="number">15</span>;
+<span class="kw">pub const </span>IPPORT_QOTD: USHORT = <span class="number">17</span>;
+<span class="kw">pub const </span>IPPORT_MSP: USHORT = <span class="number">18</span>;
+<span class="kw">pub const </span>IPPORT_CHARGEN: USHORT = <span class="number">19</span>;
+<span class="kw">pub const </span>IPPORT_FTP_DATA: USHORT = <span class="number">20</span>;
+<span class="kw">pub const </span>IPPORT_FTP: USHORT = <span class="number">21</span>;
+<span class="kw">pub const </span>IPPORT_TELNET: USHORT = <span class="number">23</span>;
+<span class="kw">pub const </span>IPPORT_SMTP: USHORT = <span class="number">25</span>;
+<span class="kw">pub const </span>IPPORT_TIMESERVER: USHORT = <span class="number">37</span>;
+<span class="kw">pub const </span>IPPORT_NAMESERVER: USHORT = <span class="number">42</span>;
+<span class="kw">pub const </span>IPPORT_WHOIS: USHORT = <span class="number">43</span>;
+<span class="kw">pub const </span>IPPORT_MTP: USHORT = <span class="number">57</span>;
+<span class="kw">pub const </span>IPPORT_TFTP: USHORT = <span class="number">69</span>;
+<span class="kw">pub const </span>IPPORT_RJE: USHORT = <span class="number">77</span>;
+<span class="kw">pub const </span>IPPORT_FINGER: USHORT = <span class="number">79</span>;
+<span class="kw">pub const </span>IPPORT_TTYLINK: USHORT = <span class="number">87</span>;
+<span class="kw">pub const </span>IPPORT_SUPDUP: USHORT = <span class="number">95</span>;
+<span class="kw">pub const </span>IPPORT_POP3: USHORT = <span class="number">110</span>;
+<span class="kw">pub const </span>IPPORT_NTP: USHORT = <span class="number">123</span>;
+<span class="kw">pub const </span>IPPORT_EPMAP: USHORT = <span class="number">135</span>;
+<span class="kw">pub const </span>IPPORT_NETBIOS_NS: USHORT = <span class="number">137</span>;
+<span class="kw">pub const </span>IPPORT_NETBIOS_DGM: USHORT = <span class="number">138</span>;
+<span class="kw">pub const </span>IPPORT_NETBIOS_SSN: USHORT = <span class="number">139</span>;
+<span class="kw">pub const </span>IPPORT_IMAP: USHORT = <span class="number">143</span>;
+<span class="kw">pub const </span>IPPORT_SNMP: USHORT = <span class="number">161</span>;
+<span class="kw">pub const </span>IPPORT_SNMP_TRAP: USHORT = <span class="number">162</span>;
+<span class="kw">pub const </span>IPPORT_IMAP3: USHORT = <span class="number">220</span>;
+<span class="kw">pub const </span>IPPORT_LDAP: USHORT = <span class="number">389</span>;
+<span class="kw">pub const </span>IPPORT_HTTPS: USHORT = <span class="number">443</span>;
+<span class="kw">pub const </span>IPPORT_MICROSOFT_DS: USHORT = <span class="number">445</span>;
+<span class="kw">pub const </span>IPPORT_EXECSERVER: USHORT = <span class="number">512</span>;
+<span class="kw">pub const </span>IPPORT_LOGINSERVER: USHORT = <span class="number">513</span>;
+<span class="kw">pub const </span>IPPORT_CMDSERVER: USHORT = <span class="number">514</span>;
+<span class="kw">pub const </span>IPPORT_EFSSERVER: USHORT = <span class="number">520</span>;
+<span class="kw">pub const </span>IPPORT_BIFFUDP: USHORT = <span class="number">512</span>;
+<span class="kw">pub const </span>IPPORT_WHOSERVER: USHORT = <span class="number">513</span>;
+<span class="kw">pub const </span>IPPORT_ROUTESERVER: USHORT = <span class="number">520</span>;
+<span class="kw">pub const </span>IPPORT_RESERVED: USHORT = <span class="number">1024</span>;
+<span class="kw">pub const </span>IPPORT_REGISTERED_MIN: USHORT = IPPORT_RESERVED;
+<span class="kw">pub const </span>IPPORT_REGISTERED_MAX: USHORT = <span class="number">0xbfff</span>;
+<span class="kw">pub const </span>IPPORT_DYNAMIC_MIN: USHORT = <span class="number">0xc000</span>;
+<span class="kw">pub const </span>IPPORT_DYNAMIC_MAX: USHORT = <span class="number">0xffff</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN_CLASSA(i: LONG) -&gt; bool {
+    (i &amp; <span class="number">0x80000000</span>) == <span class="number">0
+</span>}
+<span class="kw">pub const </span>IN_CLASSA_NET: LONG = <span class="number">0xff000000</span>;
+<span class="kw">pub const </span>IN_CLASSA_NSHIFT: LONG = <span class="number">24</span>;
+<span class="kw">pub const </span>IN_CLASSA_HOST: LONG = <span class="number">0x00ffffff</span>;
+<span class="kw">pub const </span>IN_CLASSA_MAX: LONG = <span class="number">128</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN_CLASSB(i: LONG) -&gt; bool {
+    (i <span class="kw">as </span>u32 &amp; <span class="number">0xc0000000</span>) == <span class="number">0x80000000
+</span>}
+<span class="kw">pub const </span>IN_CLASSB_NET: LONG = <span class="number">0xffff0000</span>;
+<span class="kw">pub const </span>IN_CLASSB_NSHIFT: LONG = <span class="number">16</span>;
+<span class="kw">pub const </span>IN_CLASSB_HOST: LONG = <span class="number">0x0000ffff</span>;
+<span class="kw">pub const </span>IN_CLASSB_MAX: LONG = <span class="number">65536</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN_CLASSC(i: LONG) -&gt; bool {
+    (i <span class="kw">as </span>u32 &amp; <span class="number">0xe0000000</span>) == <span class="number">0xc0000000
+</span>}
+<span class="kw">pub const </span>IN_CLASSC_NET: LONG = <span class="number">0xffffff00</span>;
+<span class="kw">pub const </span>IN_CLASSC_NSHIFT: LONG = <span class="number">8</span>;
+<span class="kw">pub const </span>IN_CLASSC_HOST: LONG = <span class="number">0x000000ff</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN_CLASSD(i: c_long) -&gt; bool {
+    (i <span class="kw">as </span>u32 &amp; <span class="number">0xf0000000</span>) == <span class="number">0xe0000000
+</span>}
+<span class="kw">pub const </span>IN_CLASSD_NET: LONG = <span class="number">0xf0000000</span>;
+<span class="kw">pub const </span>IN_CLASSD_NSHIFT: LONG = <span class="number">28</span>;
+<span class="kw">pub const </span>IN_CLASSD_HOST: LONG = <span class="number">0x0fffffff</span>;
+<span class="attribute">#[inline]
+</span><span class="kw">pub fn </span>IN_MULTICAST(i: c_long) -&gt; bool {
+    IN_CLASSD(i)
 }
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSA_NET</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0xff000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSA_NSHIFT</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">24</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSA_HOST</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0x00ffffff</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSA_MAX</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">128</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN_CLASSB</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&amp;</span> <span class="number">0xc0000000</span>) <span class="op">==</span> <span class="number">0x80000000</span>
-}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSB_NET</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0xffff0000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSB_NSHIFT</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSB_HOST</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0x0000ffff</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSB_MAX</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">65536</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN_CLASSC</span>(<span class="ident">i</span>: <span class="ident">LONG</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&amp;</span> <span class="number">0xe0000000</span>) <span class="op">==</span> <span class="number">0xc0000000</span>
-}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSC_NET</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0xffffff00</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSC_NSHIFT</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSC_HOST</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0x000000ff</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN_CLASSD</span>(<span class="ident">i</span>: <span class="ident">c_long</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&amp;</span> <span class="number">0xf0000000</span>) <span class="op">==</span> <span class="number">0xe0000000</span>
-}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSD_NET</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0xf0000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSD_NSHIFT</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">28</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IN_CLASSD_HOST</span>: <span class="ident">LONG</span> <span class="op">=</span> <span class="number">0x0fffffff</span>;
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">IN_MULTICAST</span>(<span class="ident">i</span>: <span class="ident">c_long</span>) -&gt; <span class="ident">bool</span> {
-    <span class="ident">IN_CLASSD</span>(<span class="ident">i</span>)
-}
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INADDR_ANY</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x00000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INADDR_LOOPBACK</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x7f000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INADDR_BROADCAST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0xffffffff</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INADDR_NONE</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0xffffffff</span>;
-<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SCOPE_LEVEL</span> {
-    <span class="ident">ScopeLevelInterface</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">ScopeLevelLink</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">ScopeLevelSubnet</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="ident">ScopeLevelAdmin</span> <span class="op">=</span> <span class="number">4</span>,
-    <span class="ident">ScopeLevelSite</span> <span class="op">=</span> <span class="number">5</span>,
-    <span class="ident">ScopeLevelOrganization</span> <span class="op">=</span> <span class="number">8</span>,
-    <span class="ident">ScopeLevelGlobal</span> <span class="op">=</span> <span class="number">14</span>,
-    <span class="ident">ScopeLevelCount</span> <span class="op">=</span> <span class="number">16</span>,
+<span class="kw">pub const </span>INADDR_ANY: ULONG = <span class="number">0x00000000</span>;
+<span class="kw">pub const </span>INADDR_LOOPBACK: ULONG = <span class="number">0x7f000001</span>;
+<span class="kw">pub const </span>INADDR_BROADCAST: ULONG = <span class="number">0xffffffff</span>;
+<span class="kw">pub const </span>INADDR_NONE: ULONG = <span class="number">0xffffffff</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum </span>SCOPE_LEVEL {
+    ScopeLevelInterface = <span class="number">1</span>,
+    ScopeLevelLink = <span class="number">2</span>,
+    ScopeLevelSubnet = <span class="number">3</span>,
+    ScopeLevelAdmin = <span class="number">4</span>,
+    ScopeLevelSite = <span class="number">5</span>,
+    ScopeLevelOrganization = <span class="number">8</span>,
+    ScopeLevelGlobal = <span class="number">14</span>,
+    ScopeLevelCount = <span class="number">16</span>,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SCOPE_ID_u_s</span> {
-    <span class="ident">bitfield</span>: <span class="ident">ULONG</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SCOPE_ID_u_s {
+    bitfield: ULONG,
 }}
-<span class="macro">BITFIELD!</span>{<span class="ident">SCOPE_ID_u_s</span> <span class="ident">bitfield</span>: <span class="ident">ULONG</span> [
-    <span class="ident">Zone</span> <span class="ident">set_Zone</span>[<span class="number">0</span>..<span class="number">28</span>],
-    <span class="ident">Level</span> <span class="ident">set_Level</span>[<span class="number">28</span>..<span class="number">32</span>],
+<span class="macro">BITFIELD!</span>{SCOPE_ID_u_s bitfield: ULONG [
+    Zone set_Zone[<span class="number">0</span>..<span class="number">28</span>],
+    Level set_Level[<span class="number">28</span>..<span class="number">32</span>],
 ]}
-<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">SCOPE_ID_u</span> {
-    [<span class="ident">u32</span>; <span class="number">1</span>],
-    <span class="ident">s</span> <span class="ident">s_mut</span>: <span class="ident">SCOPE_ID_u_s</span>,
-    <span class="ident">Value</span> <span class="ident">Value_mut</span>: <span class="ident">ULONG</span>,
+<span class="macro">UNION!</span>{<span class="kw">union </span>SCOPE_ID_u {
+    [u32; <span class="number">1</span>],
+    s s_mut: SCOPE_ID_u_s,
+    Value Value_mut: ULONG,
 }}
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SCOPE_ID</span> {
-    <span class="ident">u</span>: <span class="ident">SCOPE_ID_u</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SCOPE_ID {
+    u: SCOPE_ID_u,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSCOPE_ID</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SCOPE_ID</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKADDR_IN</span> {
-    <span class="ident">sin_family</span>: <span class="ident">ADDRESS_FAMILY</span>,
-    <span class="ident">sin_port</span>: <span class="ident">USHORT</span>,
-    <span class="ident">sin_addr</span>: <span class="ident">IN_ADDR</span>,
-    <span class="ident">sin_zero</span>: [<span class="ident">CHAR</span>; <span class="number">8</span>],
+<span class="kw">pub type </span>PSCOPE_ID = <span class="kw-2">*mut </span>SCOPE_ID;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKADDR_IN {
+    sin_family: ADDRESS_FAMILY,
+    sin_port: USHORT,
+    sin_addr: IN_ADDR,
+    sin_zero: [CHAR; <span class="number">8</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR_IN</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_IN</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SOCKADDR_DL</span> {
-    <span class="ident">sdl_family</span>: <span class="ident">ADDRESS_FAMILY</span>,
-    <span class="ident">sdl_data</span>: [<span class="ident">UCHAR</span>; <span class="number">8</span>],
-    <span class="ident">sdl_zero</span>: [<span class="ident">UCHAR</span>; <span class="number">4</span>],
+<span class="kw">pub type </span>PSOCKADDR_IN = <span class="kw-2">*mut </span>SOCKADDR_IN;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>SOCKADDR_DL {
+    sdl_family: ADDRESS_FAMILY,
+    sdl_data: [UCHAR; <span class="number">8</span>],
+    sdl_zero: [UCHAR; <span class="number">4</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSOCKADDR_DL</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SOCKADDR_DL</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOCPARM_MASK</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x7f</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_VOID</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x20000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_OUT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x40000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_IN</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x80000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IOC_INOUT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="ident">IOC_IN</span> <span class="op">|</span> <span class="ident">IOC_OUT</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">WSABUF</span> {
-    <span class="ident">len</span>: <span class="ident">ULONG</span>,
-    <span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">CHAR</span>,
+<span class="kw">pub type </span>PSOCKADDR_DL = <span class="kw-2">*mut </span>SOCKADDR_DL;
+<span class="kw">pub const </span>IOCPARM_MASK: DWORD = <span class="number">0x7f</span>;
+<span class="kw">pub const </span>IOC_VOID: DWORD = <span class="number">0x20000000</span>;
+<span class="kw">pub const </span>IOC_OUT: DWORD = <span class="number">0x40000000</span>;
+<span class="kw">pub const </span>IOC_IN: DWORD = <span class="number">0x80000000</span>;
+<span class="kw">pub const </span>IOC_INOUT: DWORD = IOC_IN | IOC_OUT;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>WSABUF {
+    len: ULONG,
+    buf: <span class="kw-2">*mut </span>CHAR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPWSABUF</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSABUF</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">WSAMSG</span> {
-    <span class="ident">name</span>: <span class="ident">LPSOCKADDR</span>,
-    <span class="ident">namelen</span>: <span class="ident">INT</span>,
-    <span class="ident">lpBuffers</span>: <span class="ident">LPWSABUF</span>,
-    <span class="ident">dwBufferCount</span>: <span class="ident">ULONG</span>,
-    <span class="ident">Control</span>: <span class="ident">WSABUF</span>,
-    <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
+<span class="kw">pub type </span>LPWSABUF = <span class="kw-2">*mut </span>WSABUF;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>WSAMSG {
+    name: LPSOCKADDR,
+    namelen: INT,
+    lpBuffers: LPWSABUF,
+    dwBufferCount: ULONG,
+    Control: WSABUF,
+    dwFlags: ULONG,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PWSAMSG</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSAMSG</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPWSAMSG</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSAMSG</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">WSACMSGHDR</span> {
-    <span class="ident">cmsg_len</span>: <span class="ident">SIZE_T</span>,
-    <span class="ident">cmsg_level</span>: <span class="ident">INT</span>,
-    <span class="ident">cmsg_type</span>: <span class="ident">INT</span>,
+<span class="kw">pub type </span>PWSAMSG = <span class="kw-2">*mut </span>WSAMSG;
+<span class="kw">pub type </span>LPWSAMSG = <span class="kw-2">*mut </span>WSAMSG;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>WSACMSGHDR {
+    cmsg_len: SIZE_T,
+    cmsg_level: INT,
+    cmsg_type: INT,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PWSACMSGHDR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSACMSGHDR</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPWSACMSGHDR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSACMSGHDR</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CMSGHDR</span> <span class="op">=</span> <span class="ident">WSACMSGHDR</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCMSGHDR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">WSACMSGHDR</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MSG_TRUNC</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x0100</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MSG_CTRUNC</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x0200</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MSG_BCAST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x0400</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MSG_MCAST</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x0800</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_PASSIVE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000001</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_CANONNAME</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000002</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_NUMERICHOST</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000004</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_NUMERICSERV</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000008</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_DNS_ONLY</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000010</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_ALL</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000100</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_ADDRCONFIG</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000400</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_V4MAPPED</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00000800</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_NON_AUTHORITATIVE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00004000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_SECURE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00008000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_RETURN_PREFERRED_NAMES</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00010000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_FQDN</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00020000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_FILESERVER</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00040000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_DISABLE_IDN_ENCODING</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x00080000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_EXTENDED</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x80000000</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AI_RESOLUTION_HANDLE</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x40000000</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOA</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOA</span>,
+<span class="kw">pub type </span>PWSACMSGHDR = <span class="kw-2">*mut </span>WSACMSGHDR;
+<span class="kw">pub type </span>LPWSACMSGHDR = <span class="kw-2">*mut </span>WSACMSGHDR;
+<span class="kw">pub type </span>CMSGHDR = WSACMSGHDR;
+<span class="kw">pub type </span>PCMSGHDR = <span class="kw-2">*mut </span>WSACMSGHDR;
+<span class="kw">pub const </span>MSG_TRUNC: ULONG = <span class="number">0x0100</span>;
+<span class="kw">pub const </span>MSG_CTRUNC: ULONG = <span class="number">0x0200</span>;
+<span class="kw">pub const </span>MSG_BCAST: ULONG = <span class="number">0x0400</span>;
+<span class="kw">pub const </span>MSG_MCAST: ULONG = <span class="number">0x0800</span>;
+<span class="kw">pub const </span>AI_PASSIVE: c_int = <span class="number">0x00000001</span>;
+<span class="kw">pub const </span>AI_CANONNAME: c_int = <span class="number">0x00000002</span>;
+<span class="kw">pub const </span>AI_NUMERICHOST: c_int = <span class="number">0x00000004</span>;
+<span class="kw">pub const </span>AI_NUMERICSERV: c_int = <span class="number">0x00000008</span>;
+<span class="kw">pub const </span>AI_DNS_ONLY: c_int = <span class="number">0x00000010</span>;
+<span class="kw">pub const </span>AI_ALL: c_int = <span class="number">0x00000100</span>;
+<span class="kw">pub const </span>AI_ADDRCONFIG: c_int = <span class="number">0x00000400</span>;
+<span class="kw">pub const </span>AI_V4MAPPED: c_int = <span class="number">0x00000800</span>;
+<span class="kw">pub const </span>AI_NON_AUTHORITATIVE: c_int = <span class="number">0x00004000</span>;
+<span class="kw">pub const </span>AI_SECURE: c_int = <span class="number">0x00008000</span>;
+<span class="kw">pub const </span>AI_RETURN_PREFERRED_NAMES: c_int = <span class="number">0x00010000</span>;
+<span class="kw">pub const </span>AI_FQDN: c_int = <span class="number">0x00020000</span>;
+<span class="kw">pub const </span>AI_FILESERVER: c_int = <span class="number">0x00040000</span>;
+<span class="kw">pub const </span>AI_DISABLE_IDN_ENCODING: c_int = <span class="number">0x00080000</span>;
+<span class="kw">pub const </span>AI_EXTENDED: c_int = <span class="number">0x80000000</span>;
+<span class="kw">pub const </span>AI_RESOLUTION_HANDLE: c_int = <span class="number">0x40000000</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOA {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: <span class="kw-2">*mut </span>c_char,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOA,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOW</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOW</span>,
+<span class="kw">pub type </span>PADDRINFOA = <span class="kw-2">*mut </span>ADDRINFOA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOW {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: PWSTR,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOW,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOW</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEXA</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXA</span>,
+<span class="kw">pub type </span>PADDRINFOW = <span class="kw-2">*mut </span>ADDRINFOW;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEXA {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: <span class="kw-2">*mut </span>c_char,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEXA,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEXA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXA</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEXA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXA</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEXW</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXW</span>,
+<span class="kw">pub type </span>PADDRINFOEXA = <span class="kw-2">*mut </span>ADDRINFOEXA;
+<span class="kw">pub type </span>LPADDRINFOEXA = <span class="kw-2">*mut </span>ADDRINFOEXA;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEXW {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: PWSTR,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEXW,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEXW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXW</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEXW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEXW</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ADDRINFOEX_VERSION_2</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ADDRINFOEX_VERSION_3</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ADDRINFOEX_VERSION_4</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEX2A</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2W</span>,
-    <span class="ident">ai_version</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_fqdn</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
+<span class="kw">pub type </span>PADDRINFOEXW = <span class="kw-2">*mut </span>ADDRINFOEXW;
+<span class="kw">pub type </span>LPADDRINFOEXW = <span class="kw-2">*mut </span>ADDRINFOEXW;
+<span class="kw">pub const </span>ADDRINFOEX_VERSION_2: c_int = <span class="number">2</span>;
+<span class="kw">pub const </span>ADDRINFOEX_VERSION_3: c_int = <span class="number">3</span>;
+<span class="kw">pub const </span>ADDRINFOEX_VERSION_4: c_int = <span class="number">4</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEX2A {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: <span class="kw-2">*mut </span>c_char,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEX2W,
+    ai_version: c_int,
+    ai_fqdn: <span class="kw-2">*mut </span>c_char,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEX2A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEX2A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2A</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEX2W</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2W</span>,
-    <span class="ident">ai_version</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_fqdn</span>: <span class="ident">PWSTR</span>,
+<span class="kw">pub type </span>PADDRINFOEX2A = <span class="kw-2">*mut </span>ADDRINFOEX2A;
+<span class="kw">pub type </span>LPADDRINFOEX2A = <span class="kw-2">*mut </span>ADDRINFOEX2A;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEX2W {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: PWSTR,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEX2W,
+    ai_version: c_int,
+    ai_fqdn: PWSTR,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEX2W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEX2W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX2W</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEX3A</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3W</span>,
-    <span class="ident">ai_version</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_fqdn</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
-    <span class="ident">ai_interfaceindex</span>: <span class="ident">c_int</span>,
+<span class="kw">pub type </span>PADDRINFOEX2W = <span class="kw-2">*mut </span>ADDRINFOEX2W;
+<span class="kw">pub type </span>LPADDRINFOEX2W = <span class="kw-2">*mut </span>ADDRINFOEX2W;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEX3A {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: <span class="kw-2">*mut </span>c_char,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEX3W,
+    ai_version: c_int,
+    ai_fqdn: <span class="kw-2">*mut </span>c_char,
+    ai_interfaceindex: c_int,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEX3A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3A</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEX3A</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3A</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEX3W</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3W</span>,
-    <span class="ident">ai_version</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_fqdn</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_interfaceindex</span>: <span class="ident">c_int</span>,
+<span class="kw">pub type </span>PADDRINFOEX3A = <span class="kw-2">*mut </span>ADDRINFOEX3A;
+<span class="kw">pub type </span>LPADDRINFOEX3A = <span class="kw-2">*mut </span>ADDRINFOEX3A;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEX3W {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: PWSTR,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEX3W,
+    ai_version: c_int,
+    ai_fqdn: PWSTR,
+    ai_interfaceindex: c_int,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEX3W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3W</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEX3W</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX3W</span>;
-<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">ADDRINFOEX4</span> {
-    <span class="ident">ai_flags</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_family</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_socktype</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_protocol</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_addrlen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_canonname</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_addr</span>: <span class="kw-2">*mut</span> <span class="ident">SOCKADDR</span>,
-    <span class="ident">ai_blob</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="ident">ai_bloblen</span>: <span class="ident">size_t</span>,
-    <span class="ident">ai_provider</span>: <span class="ident">LPGUID</span>,
-    <span class="ident">ai_next</span>: <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX4</span>,
-    <span class="ident">ai_version</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_fqdn</span>: <span class="ident">PWSTR</span>,
-    <span class="ident">ai_interfaceindex</span>: <span class="ident">c_int</span>,
-    <span class="ident">ai_resolutionhandle</span>: <span class="ident">HANDLE</span>,
+<span class="kw">pub type </span>PADDRINFOEX3W = <span class="kw-2">*mut </span>ADDRINFOEX3W;
+<span class="kw">pub type </span>LPADDRINFOEX3W = <span class="kw-2">*mut </span>ADDRINFOEX3W;
+<span class="macro">STRUCT!</span>{<span class="kw">struct </span>ADDRINFOEX4 {
+    ai_flags: c_int,
+    ai_family: c_int,
+    ai_socktype: c_int,
+    ai_protocol: c_int,
+    ai_addrlen: size_t,
+    ai_canonname: PWSTR,
+    ai_addr: <span class="kw-2">*mut </span>SOCKADDR,
+    ai_blob: <span class="kw-2">*mut </span>c_void,
+    ai_bloblen: size_t,
+    ai_provider: LPGUID,
+    ai_next: <span class="kw-2">*mut </span>ADDRINFOEX4,
+    ai_version: c_int,
+    ai_fqdn: PWSTR,
+    ai_interfaceindex: c_int,
+    ai_resolutionhandle: HANDLE,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PADDRINFOEX4</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX4</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPADDRINFOEX4</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">ADDRINFOEX4</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_ALL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_SAP</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">1</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NDS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">2</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_PEER_BROWSE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">3</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_SLP</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">5</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_DHCP</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">6</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_TCPIP_LOCAL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_TCPIP_HOSTS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">11</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_DNS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">12</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NETBT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">13</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_WINS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">14</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NLA</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">15</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_BTH</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">16</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NBP</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">20</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_MS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">30</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_STDA</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">31</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NTDS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">32</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_EMAIL</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">37</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_PNRPNAME</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">38</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_PNRPCLOUD</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">39</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_X500</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">40</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NIS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">41</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NISPLUS</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">42</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_WRQ</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">50</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NS_NETDES</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">60</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_NOFQDN</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x01</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_NUMERICHOST</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x02</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_NAMEREQD</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x04</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_NUMERICSERV</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x08</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_DGRAM</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">0x10</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_MAXHOST</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1025</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NI_MAXSERV</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">32</span>;
+<span class="kw">pub type </span>PADDRINFOEX4 = <span class="kw-2">*mut </span>ADDRINFOEX4;
+<span class="kw">pub type </span>LPADDRINFOEX4 = <span class="kw-2">*mut </span>ADDRINFOEX4;
+<span class="kw">pub const </span>NS_ALL: DWORD = <span class="number">0</span>;
+<span class="kw">pub const </span>NS_SAP: DWORD = <span class="number">1</span>;
+<span class="kw">pub const </span>NS_NDS: DWORD = <span class="number">2</span>;
+<span class="kw">pub const </span>NS_PEER_BROWSE: DWORD = <span class="number">3</span>;
+<span class="kw">pub const </span>NS_SLP: DWORD = <span class="number">5</span>;
+<span class="kw">pub const </span>NS_DHCP: DWORD = <span class="number">6</span>;
+<span class="kw">pub const </span>NS_TCPIP_LOCAL: DWORD = <span class="number">10</span>;
+<span class="kw">pub const </span>NS_TCPIP_HOSTS: DWORD = <span class="number">11</span>;
+<span class="kw">pub const </span>NS_DNS: DWORD = <span class="number">12</span>;
+<span class="kw">pub const </span>NS_NETBT: DWORD = <span class="number">13</span>;
+<span class="kw">pub const </span>NS_WINS: DWORD = <span class="number">14</span>;
+<span class="kw">pub const </span>NS_NLA: DWORD = <span class="number">15</span>;
+<span class="kw">pub const </span>NS_BTH: DWORD = <span class="number">16</span>;
+<span class="kw">pub const </span>NS_NBP: DWORD = <span class="number">20</span>;
+<span class="kw">pub const </span>NS_MS: DWORD = <span class="number">30</span>;
+<span class="kw">pub const </span>NS_STDA: DWORD = <span class="number">31</span>;
+<span class="kw">pub const </span>NS_NTDS: DWORD = <span class="number">32</span>;
+<span class="kw">pub const </span>NS_EMAIL: DWORD = <span class="number">37</span>;
+<span class="kw">pub const </span>NS_PNRPNAME: DWORD = <span class="number">38</span>;
+<span class="kw">pub const </span>NS_PNRPCLOUD: DWORD = <span class="number">39</span>;
+<span class="kw">pub const </span>NS_X500: DWORD = <span class="number">40</span>;
+<span class="kw">pub const </span>NS_NIS: DWORD = <span class="number">41</span>;
+<span class="kw">pub const </span>NS_NISPLUS: DWORD = <span class="number">42</span>;
+<span class="kw">pub const </span>NS_WRQ: DWORD = <span class="number">50</span>;
+<span class="kw">pub const </span>NS_NETDES: DWORD = <span class="number">60</span>;
+<span class="kw">pub const </span>NI_NOFQDN: c_int = <span class="number">0x01</span>;
+<span class="kw">pub const </span>NI_NUMERICHOST: c_int = <span class="number">0x02</span>;
+<span class="kw">pub const </span>NI_NAMEREQD: c_int = <span class="number">0x04</span>;
+<span class="kw">pub const </span>NI_NUMERICSERV: c_int = <span class="number">0x08</span>;
+<span class="kw">pub const </span>NI_DGRAM: c_int = <span class="number">0x10</span>;
+<span class="kw">pub const </span>NI_MAXHOST: c_int = <span class="number">1025</span>;
+<span class="kw">pub const </span>NI_MAXSERV: c_int = <span class="number">32</span>;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
