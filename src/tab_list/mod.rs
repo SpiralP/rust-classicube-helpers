@@ -20,10 +20,12 @@ use crate::{
 pub struct TabList {
     entries: Rc<RefCell<HashMap<u8, Rc<TabListEntry>>>>,
 
+    #[allow(clippy::type_complexity)]
     added_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<TabListEntry>)>>>,
     #[allow(dead_code)]
     added_handler: tab_list::AddedEventHandler,
 
+    #[allow(clippy::type_complexity)]
     changed_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<TabListEntry>)>>>,
     #[allow(dead_code)]
     changed_handler: tab_list::ChangedEventHandler,
@@ -80,8 +82,8 @@ impl TabList {
                         warn!(?id, "ChangedEvent TabListEntry::from_id returned None");
                         return;
                     }
-                            Some(entry) => entry,
-                    });
+                    Some(entry) => entry,
+                });
                 let weak = Rc::downgrade(&entry);
                 {
                     let mut entries = entries.borrow_mut();

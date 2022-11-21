@@ -1,5 +1,6 @@
-use crate::make_event_handler;
 use std::os::raw::c_int;
+
+use crate::make_event_handler;
 
 make_event_handler!(
     /// Entity is spawned in the current world

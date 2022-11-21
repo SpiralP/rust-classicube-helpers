@@ -1,3 +1,6 @@
+// TODO remove when with_borrow_mut stabilizes
+#![allow(unstable_name_collisions)]
+
 pub mod async_manager;
 mod callback_handler;
 pub mod chat;
@@ -10,5 +13,6 @@ pub mod tab_list;
 pub mod tick;
 mod traits;
 
-pub use crate::{macros::*, traits::*};
 pub use tracing;
+
+pub use crate::{macros::*, traits::*};

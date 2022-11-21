@@ -1,9 +1,11 @@
-use crate::{callback_handler::CallbackHandler, CellGetSet};
-use classicube_sys::*;
 use std::{
     cell::{Cell, RefCell},
     rc::{Rc, Weak},
 };
+
+use classicube_sys::*;
+
+use crate::{callback_handler::CallbackHandler, CellGetSet};
 
 thread_local!(
     static CALLBACK_REGISTERED: Cell<bool> = Cell::new(false);

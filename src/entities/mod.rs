@@ -19,6 +19,7 @@ use crate::{
 pub struct Entities {
     entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
+    #[allow(clippy::type_complexity)]
     added_callbacks: Rc<RefCell<CallbackHandler<(u8, Weak<Entity>)>>>,
     #[allow(dead_code)]
     added_handler: AddedEventHandler,

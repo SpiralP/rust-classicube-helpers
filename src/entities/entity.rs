@@ -1,5 +1,6 @@
-use classicube_sys::{Entities, Matrix, Vec3};
 use std::{ffi::CStr, os::raw::c_char, ptr::NonNull};
+
+use classicube_sys::{Entities, Matrix, Vec3};
 
 /// 255 is self entity
 pub const ENTITY_SELF_ID: u8 = 255;

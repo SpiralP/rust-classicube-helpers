@@ -1,8 +1,3 @@
-use crate::{tick::TickEventHandler, WithInner};
-use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
-use futures::{future::Either, prelude::*};
-use futures_timer::Delay;
-use lazy_static::lazy_static;
 use std::{
     cell::{Cell, RefCell},
     future::Future,
@@ -12,8 +7,15 @@ use std::{
     task::{Context, Poll},
     time::Duration,
 };
+
+use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
+use futures::{future::Either, prelude::*};
+use futures_timer::Delay;
+use lazy_static::lazy_static;
 use tokio::task::JoinHandle;
 use tracing::{debug, Instrument};
+
+use crate::{tick::TickEventHandler, WithInner};
 
 thread_local!(
     static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = Default::default();
@@ -292,6 +294,7 @@ where
 fn test_async_manager() {
     fn logger(debug: bool, other_crates: bool) {
         use std::sync::Once;
+
         use tracing_subscriber::{filter::EnvFilter, prelude::*};
 
         static ONCE: Once = Once::new();
