@@ -42,26 +42,32 @@ thread_local!(
 pub fn initialize() {
     debug!("async_manager");
 
-    let async_dispatcher = Dispatcher::new();
-    let async_dispatcher_handle = async_dispatcher.get_handle();
-    ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
-        *cell.borrow_mut() = Some(async_dispatcher.get_handle_local());
-    });
-    ASYNC_DISPATCHER.with(|cell| {
-        *cell.borrow_mut() = Some(async_dispatcher);
-    });
+    {
+        debug!("async_dispatcher");
+        let async_dispatcher = Dispatcher::new();
+        let async_dispatcher_handle = async_dispatcher.get_handle();
+        ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
+            *cell.borrow_mut() = Some(async_dispatcher.get_handle_local());
+        });
+        ASYNC_DISPATCHER.with(|cell| {
+            *cell.borrow_mut() = Some(async_dispatcher);
+        });
 
-    *ASYNC_DISPATCHER_HANDLE.lock().unwrap() = Some(async_dispatcher_handle);
+        *ASYNC_DISPATCHER_HANDLE.lock().unwrap() = Some(async_dispatcher_handle);
+    }
+    {
+        debug!("tokio");
+        let rt = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap();
 
-    let rt = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap();
-
-    *TOKIO_RUNTIME.lock().unwrap() = Some(rt);
+        *TOKIO_RUNTIME.lock().unwrap() = Some(rt);
+    }
 
     #[cfg(not(test))]
     {
+        debug!("tick_handler");
         TICK_HANDLER.with(|cell| {
             let mut tick_handler = TickEventHandler::new();
             tick_handler.on(|_task| {
@@ -75,6 +81,8 @@ pub fn initialize() {
 
 #[tracing::instrument]
 pub fn shutdown() {
+    debug!("async_manager");
+
     {
         let mut option = TOKIO_RUNTIME.lock().unwrap();
         if option.is_some() {
