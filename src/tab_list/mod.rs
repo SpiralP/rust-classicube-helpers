@@ -1,12 +1,10 @@
 mod entry;
-
+use classicube_sys::{TabList, TABLIST_MAX_NAMES};
 use std::{
     cell::RefCell,
     collections::HashMap,
     rc::{Rc, Weak},
 };
-
-use classicube_sys::{TabList, TABLIST_MAX_NAMES};
 use tracing::warn;
 
 pub use self::entry::TabListEntry;

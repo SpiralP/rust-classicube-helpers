@@ -1,3 +1,8 @@
+use crate::{tick::TickEventHandler, WithInner};
+use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
+use futures::{future::Either, prelude::*};
+use futures_timer::Delay;
+use lazy_static::lazy_static;
 use std::{
     cell::{Cell, RefCell},
     future::Future,
@@ -7,15 +12,8 @@ use std::{
     task::{Context, Poll, Waker},
     time::Duration,
 };
-
-use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
-use futures::{future::Either, prelude::*};
-use futures_timer::Delay;
-use lazy_static::lazy_static;
 use tokio::task::{JoinError, JoinHandle};
 use tracing::{debug, warn, Instrument};
-
-use crate::{tick::TickEventHandler, WithInner};
 
 thread_local!(
     static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = RefCell::default();
@@ -55,6 +53,7 @@ pub fn initialize() {
 
         *ASYNC_DISPATCHER_HANDLE.lock().unwrap() = Some(async_dispatcher_handle);
     }
+
     {
         debug!("tokio");
         let rt = tokio::runtime::Builder::new_multi_thread()
@@ -65,7 +64,6 @@ pub fn initialize() {
         *TOKIO_RUNTIME.lock().unwrap() = Some(rt);
     }
 
-    #[cfg(not(test))]
     {
         debug!("tick_handler");
         TICK_HANDLER.with(|cell| {
@@ -107,7 +105,6 @@ pub fn shutdown() {
         }
     }
 
-    #[cfg(not(test))]
     {
         if TICK_HANDLER.with_inner(|_| ()).is_some() {
             debug!("tick_handler");
@@ -301,6 +298,8 @@ where
 
     handle.spawn(f.in_current_span());
 }
+
+crate::test_noop_fn!(ScheduledTask_Add);
 
 #[test]
 fn test_async_manager() {

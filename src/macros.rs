@@ -164,3 +164,21 @@ macro_rules! time_silent {
         res
     }};
 }
+
+#[macro_export]
+macro_rules! test_noop_fn {
+    ($name:tt) => {
+        #[cfg(test)]
+        #[no_mangle]
+        pub extern "C" fn $name() {}
+    };
+}
+
+#[macro_export]
+macro_rules! test_noop_static {
+    ($name:tt) => {
+        #[cfg(test)]
+        #[no_mangle]
+        pub static mut $name: () = ();
+    };
+}

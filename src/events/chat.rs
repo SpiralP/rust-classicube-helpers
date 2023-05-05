@@ -1,10 +1,8 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-use std::os::raw::c_int;
-
-use classicube_sys::{cc_string, MsgType};
-
 use crate::make_event_handler;
+use classicube_sys::{cc_string, MsgType};
+use std::os::raw::c_int;
 
 make_event_handler!(
     /// User changes whether system chat font used, and when the bitmapped font texture changes

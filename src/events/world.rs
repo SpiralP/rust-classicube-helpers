@@ -1,6 +1,5 @@
-use std::os::raw::{c_float, c_int};
-
 use crate::make_event_handler;
+use std::os::raw::{c_float, c_int};
 
 make_event_handler!(
     /// Player begins loading a new world

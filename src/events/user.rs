@@ -1,6 +1,5 @@
-use classicube_sys::{BlockID, IVec3};
-
 use crate::make_event_handler;
+use classicube_sys::{BlockID, IVec3};
 
 make_event_handler!(
     /// User changes a block

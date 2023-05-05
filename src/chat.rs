@@ -1,5 +1,6 @@
+use crate::CellGetSet;
+use classicube_sys::{Chat_Send, OwnedString};
 use std::cell::Cell;
-
 use tracing::info;
 
 thread_local!(
@@ -10,40 +11,30 @@ pub fn print<S: Into<String>>(s: S) {
     let s: String = s.into();
     info!("{}", s);
 
-    #[cfg(not(test))]
-    {
-        use crate::CellGetSet;
+    let s = if s.len() > 255 {
+        let mut s = s;
+        s.truncate(255);
+        s
+    } else {
+        s
+    };
 
-        let s = if s.len() > 255 {
-            let mut s = s;
-            s.truncate(255);
-            s
-        } else {
-            s
-        };
+    SIMULATING.set(true);
 
-        SIMULATING.set(true);
-
-        let owned_string = classicube_sys::OwnedString::new(s);
-
-        unsafe {
-            classicube_sys::Chat_Add(owned_string.as_cc_string());
-        }
-
-        SIMULATING.set(false);
+    let owned_string = OwnedString::new(s);
+    unsafe {
+        classicube_sys::Chat_Add(owned_string.as_cc_string());
     }
+
+    SIMULATING.set(false);
 }
 
 pub fn send<S: Into<String>>(s: S) {
     let s = s.into();
     info!("{}", s);
 
-    #[cfg(not(test))]
-    {
-        let owned_string = classicube_sys::OwnedString::new(s);
-
-        unsafe {
-            classicube_sys::Chat_Send(owned_string.as_cc_string(), 0);
-        }
+    let owned_string = OwnedString::new(s);
+    unsafe {
+        Chat_Send(owned_string.as_cc_string(), 0);
     }
 }
