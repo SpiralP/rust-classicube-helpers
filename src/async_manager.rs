@@ -4,7 +4,7 @@ use std::{
     pin::Pin,
     rc::Rc,
     sync::Mutex,
-    task::{Context, Poll},
+    task::{Context, Poll, Waker},
     time::Duration,
 };
 
@@ -12,30 +12,30 @@ use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
 use futures::{future::Either, prelude::*};
 use futures_timer::Delay;
 use lazy_static::lazy_static;
-use tokio::task::JoinHandle;
-use tracing::{debug, Instrument};
+use tokio::task::{JoinError, JoinHandle};
+use tracing::{debug, warn, Instrument};
 
 use crate::{tick::TickEventHandler, WithInner};
 
 thread_local!(
-    static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = Default::default();
+    static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = RefCell::default();
 );
 
 thread_local!(
     static ASYNC_DISPATCHER_LOCAL_HANDLE: RefCell<Option<LocalDispatcherHandle>> =
-        Default::default();
+        RefCell::default();
 );
 
 lazy_static! {
-    static ref ASYNC_DISPATCHER_HANDLE: Mutex<Option<DispatcherHandle>> = Default::default();
+    static ref ASYNC_DISPATCHER_HANDLE: Mutex<Option<DispatcherHandle>> = Mutex::default();
 }
 
 lazy_static! {
-    static ref TOKIO_RUNTIME: Mutex<Option<tokio::runtime::Runtime>> = Default::default();
+    static ref TOKIO_RUNTIME: Mutex<Option<tokio::runtime::Runtime>> = Mutex::default();
 }
 
 thread_local!(
-    static TICK_HANDLER: RefCell<Option<TickEventHandler>> = Default::default();
+    static TICK_HANDLER: RefCell<Option<TickEventHandler>> = RefCell::default();
 );
 
 #[tracing::instrument]
@@ -73,52 +73,74 @@ pub fn initialize() {
     }
 }
 
+#[tracing::instrument]
 pub fn shutdown() {
     {
         let mut option = TOKIO_RUNTIME.lock().unwrap();
         if option.is_some() {
-            debug!("shutdown tokio");
+            debug!("tokio");
             if let Some(rt) = option.take() {
                 rt.shutdown_timeout(Duration::from_millis(100));
             }
         } else {
-            debug!("tokio already shutdown?");
+            warn!("tokio already shutdown?");
         }
     }
 
     {
         if ASYNC_DISPATCHER.with_inner(|_| ()).is_some() {
-            debug!("shutdown async_dispatcher");
+            debug!("async_dispatcher");
 
             ASYNC_DISPATCHER_HANDLE.lock().unwrap().take();
             ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| cell.borrow_mut().take());
             ASYNC_DISPATCHER.with(|cell| cell.borrow_mut().take());
         } else {
-            debug!("async_dispatcher already shutdown?");
+            warn!("async_dispatcher already shutdown?");
         }
     }
 
     #[cfg(not(test))]
     {
         if TICK_HANDLER.with_inner(|_| ()).is_some() {
-            debug!("shutdown tick_handler");
+            debug!("tick_handler");
 
             TICK_HANDLER.with(|cell| cell.borrow_mut().take());
         } else {
-            debug!("tick_handler already shutdown?");
+            warn!("tick_handler already shutdown?");
+        }
+    }
+}
+
+#[derive(Default, Clone)]
+struct YieldedWaker {
+    waker: Rc<Cell<Option<Waker>>>,
+    woke: Rc<Cell<bool>>,
+}
+impl Future for YieldedWaker {
+    type Output = ();
+
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        if self.woke.get() {
+            Poll::Ready(())
+        } else {
+            self.waker.set(Some(cx.waker().clone()));
+            Poll::Pending
         }
     }
 }
 
 thread_local!(
-    static YIELDED_WAKERS: RefCell<Vec<Rc<Cell<bool>>>> = Default::default();
+    static YIELDED_WAKERS: RefCell<Vec<YieldedWaker>> = RefCell::default();
 );
 
 pub fn step() {
     YIELDED_WAKERS.with(move |cell| {
         let vec = &mut *cell.borrow_mut();
-        for waker in vec.drain(..) {
-            waker.set(true);
+        for state in vec.drain(..) {
+            state.woke.set(true);
+            if let Some(waker) = state.waker.take() {
+                waker.wake();
+            }
         }
     });
 
@@ -144,32 +166,15 @@ pub async fn sleep(duration: Duration) {
 }
 
 pub async fn yield_now() {
-    struct YieldNow {
-        waker: Rc<Cell<bool>>,
-    }
-
-    impl Future for YieldNow {
-        type Output = ();
-
-        fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-            cx.waker().wake_by_ref();
-            if self.waker.get() {
-                Poll::Ready(())
-            } else {
-                Poll::Pending
-            }
-        }
-    }
-
-    let waker = Rc::new(Cell::new(false));
+    let waker = YieldedWaker::default();
     {
         let waker = waker.clone();
-        YIELDED_WAKERS.with(move |cell| {
-            let vec = &mut *cell.borrow_mut();
+        YIELDED_WAKERS.with(move |ref_cell| {
+            let vec = &mut *ref_cell.borrow_mut();
             vec.push(waker);
         });
     }
-    YieldNow { waker }.await
+    waker.await;
 }
 
 pub async fn timeout<T, F>(duration: Duration, f: F) -> Option<T>
@@ -238,20 +243,19 @@ where
         .unwrap()
 }
 
-pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<F::Output>
+pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<Result<R, JoinError>>
 where
     F: FnOnce() -> R + Send + 'static,
     R: Send + 'static,
 {
     let span = tracing::Span::current();
-    TOKIO_RUNTIME
-        .with_inner(move |rt| {
-            rt.spawn_blocking(move || {
-                let _enter = span.enter();
-                f()
-            })
+    spawn(async move {
+        tokio::task::spawn_blocking(move || {
+            let _enter = span.enter();
+            f()
         })
-        .unwrap()
+        .await
+    })
 }
 
 pub fn spawn_on_main_thread<F>(f: F)
@@ -266,17 +270,17 @@ where
     handle.spawn(f.in_current_span());
 }
 
-pub fn run_on_main_thread<F, O>(f: F) -> impl Future<Output = F::Output>
+pub async fn run_on_main_thread<F, O>(f: F) -> O
 where
     F: Future<Output = O> + 'static + Send,
-    F::Output: Send + 'static + std::fmt::Debug,
+    O: 'static + Send + std::fmt::Debug,
 {
     let mut handle = {
         let mut handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
         handle.as_mut().expect("handle.as_mut()").clone()
     };
 
-    async move { handle.dispatch(f.in_current_span()).await }
+    handle.dispatch(f.in_current_span()).await
 }
 
 pub fn spawn_local_on_main_thread<F>(f: F)
@@ -292,38 +296,18 @@ where
 
 #[test]
 fn test_async_manager() {
-    fn logger(debug: bool, other_crates: bool) {
-        use std::sync::Once;
+    use tracing::info;
+    use tracing_subscriber::{filter::EnvFilter, prelude::*};
 
-        use tracing_subscriber::{filter::EnvFilter, prelude::*};
-
-        static ONCE: Once = Once::new();
-        ONCE.call_once(move || {
-            let level = if debug { "debug" } else { "info" };
-            let my_crate_name = env!("CARGO_PKG_NAME").replace('-', "_");
-
-            let mut filter = EnvFilter::from_default_env();
-
-            if other_crates {
-                filter = filter.add_directive(level.parse().unwrap());
-            } else {
-                filter =
-                    filter.add_directive(format!("{}={}", my_crate_name, level).parse().unwrap());
-            }
-
-            tracing_subscriber::fmt()
-                .with_env_filter(filter)
-                .with_target(false)
-                .with_thread_ids(false)
-                .with_thread_names(false)
-                .with_ansi(true)
-                .without_time()
-                .finish()
-                .init();
-        });
-    }
-
-    logger(true, true);
+    tracing_subscriber::fmt()
+        .with_env_filter(EnvFilter::from_default_env().add_directive("debug".parse().unwrap()))
+        .with_target(false)
+        .with_thread_ids(false)
+        .with_thread_names(false)
+        .with_ansi(true)
+        .without_time()
+        .finish()
+        .init();
 
     initialize();
 
@@ -331,17 +315,20 @@ fn test_async_manager() {
         #[tracing::instrument]
         fn test() {
             let a = tracing::info_span!("A");
-            let _ = a.enter();
+            let span = a.enter();
             spawn(async move {
-                let a = tracing::info_span!("B");
-                let _ = a.enter();
+                let b = tracing::info_span!("B");
+                let span = b.enter();
                 run_on_main_thread(async move {
-                    let a = tracing::info_span!("C");
-                    let _ = a.enter();
-                    debug!("HI!");
+                    let c = tracing::info_span!("C");
+                    let span = c.enter();
+                    info!("run_on_main_thread with instrument test:A:B:C");
+                    drop(span);
                 })
                 .await;
+                drop(span);
             });
+            drop(span);
         }
         test();
     }
@@ -349,17 +336,52 @@ fn test_async_manager() {
     {
         #[tracing::instrument]
         fn test() {
+            let a = tracing::info_span!("A");
+            let span = a.enter();
             spawn_blocking(|| {
-                debug!("OH");
+                let b = tracing::info_span!("B");
+                let span = b.enter();
+                info!("spawn_blocking with instrument test:A:B");
+                drop(span);
             });
+            drop(span);
         }
         test();
     }
 
-    for _ in 0..2 {
-        debug!("?");
+    {
+        #[tracing::instrument]
+        fn test() {
+            let a = tracing::info_span!("A");
+            let span = a.enter();
+            block_on_local(async move {
+                let b = tracing::info_span!("B");
+                let span = b.enter();
+                info!("block_on_local with instrument test:A:B");
+                spawn(async move {
+                    let c = tracing::info_span!("C");
+                    let span = c.enter();
+                    info!("block_on_local spawn with instrument test:A:B:C");
+                    drop(span);
+                });
+                drop(span);
+            });
+            drop(span);
+        }
+        test();
+    }
+
+    let stopped = std::sync::Arc::new(Mutex::new(false));
+    {
+        let stopped = stopped.clone();
+        spawn(async move {
+            sleep(Duration::from_secs(1)).await;
+            *stopped.lock().unwrap() = true;
+        });
+    }
+    while !*stopped.lock().unwrap() {
         step();
-        debug!("!");
+        std::thread::sleep(Duration::from_millis(10));
     }
 
     shutdown();
