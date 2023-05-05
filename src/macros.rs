@@ -28,6 +28,7 @@ macro_rules! make_event_handler {
             }
 
             impl [<$event_name EventHandler>] {
+                #[must_use]
                 pub fn new() -> Self {
                     Self {
                         registered: false,

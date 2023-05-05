@@ -1,5 +1,8 @@
 // TODO remove when with_borrow_mut stabilizes
 #![allow(unstable_name_collisions)]
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_safety_doc)]
+#![allow(clippy::missing_panics_doc)]
 
 pub mod async_manager;
 mod callback_handler;

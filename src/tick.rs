@@ -3,7 +3,7 @@ use std::{
     rc::{Rc, Weak},
 };
 
-use classicube_sys::*;
+use classicube_sys::{ScheduledTask, ScheduledTask_Add};
 
 use crate::{callback_handler::CallbackHandler, CellGetSet};
 
@@ -26,6 +26,7 @@ pub struct TickEventHandler {
 }
 
 impl TickEventHandler {
+    #[must_use]
     pub fn new() -> Self {
         Self {
             callback_handler: Rc::new(RefCell::new(CallbackHandler::new())),

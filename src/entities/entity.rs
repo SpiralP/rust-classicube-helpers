@@ -25,6 +25,7 @@ impl Entity {
         Some(Self { id, inner })
     }
 
+    #[must_use]
     pub fn get_inner(&self) -> &classicube_sys::Entity {
         self.inner
     }
@@ -38,36 +39,44 @@ impl Entity {
         self.inner
     }
 
+    #[must_use]
     pub fn get_id(&self) -> u8 {
         self.id
     }
 
+    #[must_use]
     pub fn get_position(&self) -> Vec3 {
         self.inner.Position
     }
 
+    #[must_use]
     pub fn get_transform(&self) -> Matrix {
         self.inner.Transform
     }
 
+    #[must_use]
     pub fn get_head(&self) -> [f32; 2] {
         [self.inner.Pitch, self.inner.Yaw]
     }
 
     /// [x, y, z], numbers are 0-360
+    #[must_use]
     pub fn get_rot(&self) -> [f32; 3] {
         [self.inner.RotX, self.inner.RotY, self.inner.RotZ]
     }
 
+    #[must_use]
     pub fn get_velocity(&self) -> Vec3 {
         self.inner.Velocity
     }
 
+    #[must_use]
     pub unsafe fn get_model(&self) -> Option<&classicube_sys::Model> {
         let mut model = NonNull::new(self.inner.Model)?;
         Some(model.as_mut())
     }
 
+    #[must_use]
     pub fn get_model_eye_y(&self) -> f32 {
         let model = unsafe { self.get_model().expect("Entity::get_model") };
         let get_eye_y = model.GetEyeY.expect("GetEyeY");
@@ -77,6 +86,7 @@ impl Entity {
         unsafe { get_eye_y(inner_ptr) }
     }
 
+    #[must_use]
     pub fn get_model_name_y(&self) -> f32 {
         let model = unsafe { self.get_model().expect("Entity::get_model") };
         let get_name_y = model.GetNameY.expect("GetNameY");
@@ -86,6 +96,7 @@ impl Entity {
         unsafe { get_name_y(inner_ptr) }
     }
 
+    #[must_use]
     pub fn get_model_scale(&self) -> Vec3 {
         self.inner.ModelScale
     }
@@ -95,10 +106,12 @@ impl Entity {
         c_str.to_string_lossy().to_string()
     }
 
+    #[must_use]
     pub fn get_eye_height(&self) -> f32 {
         self.get_model_eye_y() * self.get_model_scale().Y
     }
 
+    #[must_use]
     pub fn get_eye_position(&self) -> Vec3 {
         let mut pos = self.get_position();
         pos.Y += self.get_eye_height();

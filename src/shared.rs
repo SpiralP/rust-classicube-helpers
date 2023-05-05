@@ -192,7 +192,7 @@ fn test_shared() {
     let mod_thing: SyncShared<Box<dyn Module>> = SyncShared::new(Box::new(ModuleThing {}));
     list_of_sync_shareds.push(mod_thing);
 
-    for module in list_of_sync_shareds.iter_mut() {
+    for module in &mut list_of_sync_shareds {
         module.lock().load();
     }
 }

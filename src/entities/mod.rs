@@ -31,6 +31,7 @@ pub struct Entities {
 
 impl Entities {
     /// register event listeners, listeners will unregister on drop
+    #[must_use]
     pub fn new() -> Self {
         let mut entities = HashMap::with_capacity(256);
 
@@ -132,12 +133,14 @@ impl Entities {
         removed_callbacks.on(callback)
     }
 
+    #[must_use]
     pub fn get(&self, id: u8) -> Option<Weak<Entity>> {
         let entities = self.entities.borrow();
         let entity = entities.get(&id)?;
         Some(Rc::downgrade(entity))
     }
 
+    #[must_use]
     pub fn get_all(&self) -> Vec<(u8, Weak<Entity>)> {
         let entities = self.entities.borrow();
         entities

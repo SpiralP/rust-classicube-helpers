@@ -34,9 +34,11 @@ where
 #[test]
 fn test_with_inner_thread_local() {
     use std::cell::RefCell;
+
     thread_local!(
-        static THREAD_LOCAL: RefCell<Option<u8>> = Default::default();
+        static THREAD_LOCAL: RefCell<Option<u8>> = RefCell::default();
     );
+
     assert!(THREAD_LOCAL.with_inner(|o| o + 2).is_none());
     THREAD_LOCAL.with_borrow_mut(|option| {
         *option = Some(2);
@@ -53,9 +55,14 @@ fn test_with_inner_thread_local() {
 
 #[test]
 fn test_with_inner_static_mutex() {
-    lazy_static::lazy_static! {
-        static ref STATIC_MUTEX: std::sync::Mutex<Option<u8>> = Default::default();
+    use std::sync::Mutex;
+
+    use lazy_static::lazy_static;
+
+    lazy_static! {
+        static ref STATIC_MUTEX: Mutex<Option<u8>> = Mutex::default();
     };
+
     assert!(STATIC_MUTEX.with_inner(|o| o + 2).is_none());
     STATIC_MUTEX.with_borrow_mut(|option| {
         *option = Some(2);
@@ -72,9 +79,14 @@ fn test_with_inner_static_mutex() {
 
 #[test]
 fn test_with_inner_static_rwlock() {
-    lazy_static::lazy_static! {
-        static ref STATIC_RWLOCK: std::sync::RwLock<Option<u8>> = Default::default();
+    use std::sync::RwLock;
+
+    use lazy_static::lazy_static;
+
+    lazy_static! {
+        static ref STATIC_RWLOCK: RwLock<Option<u8>> = RwLock::default();
     };
+
     assert!(STATIC_RWLOCK.with_inner(|o| o + 2).is_none());
     STATIC_RWLOCK.with_borrow_mut(|option| {
         *option = Some(2);
@@ -87,14 +99,4 @@ fn test_with_inner_static_rwlock() {
         Some(4)
     );
     assert_eq!(STATIC_RWLOCK.with_inner(|o| o + 2), Some(6));
-}
-
-#[test]
-fn test_with_inner_must_use() {
-    thread_local!(
-        static THREAD_LOCAL: std::cell::RefCell<Option<u8>> = Default::default();
-    );
-
-    // make sure this warns!
-    THREAD_LOCAL.with_inner(|o| o + 2);
 }

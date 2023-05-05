@@ -15,7 +15,7 @@ use crate::{
     events::{net, tab_list},
 };
 
-/// safe access to TabList
+/// safe access to `TabList`
 #[derive(Default)]
 pub struct TabList {
     entries: Rc<RefCell<HashMap<u8, Rc<TabListEntry>>>>,
@@ -39,6 +39,7 @@ pub struct TabList {
 
 impl TabList {
     /// register event listeners, listeners will unregister on drop
+    #[must_use]
     pub fn new() -> Self {
         let entries = HashMap::with_capacity(256);
         let entries = Rc::new(RefCell::new(entries));
@@ -247,6 +248,7 @@ impl TabList {
             .map(|(entry, _name, _pos)| Rc::downgrade(*entry))
     }
 
+    #[must_use]
     pub fn find_entry_by_nick_name(&self, search: &str) -> Option<Weak<TabListEntry>> {
         let entries = self.entries.borrow();
         let option = entries.values().find(|entry| {
@@ -281,12 +283,14 @@ impl TabList {
         }
     }
 
+    #[must_use]
     pub fn get(&self, id: u8) -> Option<Weak<TabListEntry>> {
         let entries = self.entries.borrow();
         let entry = entries.get(&id)?;
         Some(Rc::downgrade(entry))
     }
 
+    #[must_use]
     pub fn get_all(&self) -> Vec<(u8, Weak<TabListEntry>)> {
         let entries = self.entries.borrow();
         entries

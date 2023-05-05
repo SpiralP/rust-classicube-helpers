@@ -17,6 +17,7 @@ impl TabListEntry {
     /// `Entity` cannot outlive the entity in-game.
     ///
     /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
+    #[must_use]
     pub unsafe fn from_id(id: u8) -> Option<Self> {
         let name_offset = &TabList.NameOffsets[id as usize];
         let group_rank = &TabList.GroupRanks[id as usize];
@@ -32,6 +33,7 @@ impl TabListEntry {
         })
     }
 
+    #[must_use]
     pub fn get_id(&self) -> u8 {
         self.id
     }
@@ -59,6 +61,7 @@ impl TabListEntry {
         .to_string()
     }
 
+    #[must_use]
     pub fn get_rank(&self) -> u8 {
         *self.group_rank
     }

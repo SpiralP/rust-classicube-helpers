@@ -10,10 +10,10 @@ where
     T: Copy,
 {
     fn get(&'static self) -> T {
-        self.with(|cell| cell.get())
+        self.with(Cell::get)
     }
 
     fn set(&'static self, value: T) {
-        self.with(|cell| cell.set(value))
+        self.with(|cell| cell.set(value));
     }
 }
