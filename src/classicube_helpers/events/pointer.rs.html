@@ -66,10 +66,8 @@
 <a href="#66" id="66">66</a>
 <a href="#67" id="67">67</a>
 <a href="#68" id="68">68</a>
-<a href="#69" id="69">69</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::os::raw::{c_float, c_int};
-
-<span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
+<span class="kw">use </span>std::os::raw::{c_float, c_int};
 
 <span class="macro">make_event_handler!</span>(
     <span class="doccomment">/// Pointer position changed (Arg is delta from last position)

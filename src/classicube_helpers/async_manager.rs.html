@@ -386,7 +386,19 @@
 <a href="#386" id="386">386</a>
 <a href="#387" id="387">387</a>
 <a href="#388" id="388">388</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::{
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{tick::TickEventHandler, WithInner};
+<span class="kw">use </span>async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
+<span class="kw">use </span>futures::{future::Either, prelude::<span class="kw-2">*</span>};
+<span class="kw">use </span>futures_timer::Delay;
+<span class="kw">use </span>lazy_static::lazy_static;
+<span class="kw">use </span>std::{
     cell::{Cell, RefCell},
     future::Future,
     pin::Pin,
@@ -395,15 +407,8 @@
     task::{Context, Poll, Waker},
     time::Duration,
 };
-
-<span class="kw">use </span>async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
-<span class="kw">use </span>futures::{future::Either, prelude::<span class="kw-2">*</span>};
-<span class="kw">use </span>futures_timer::Delay;
-<span class="kw">use </span>lazy_static::lazy_static;
 <span class="kw">use </span>tokio::task::{JoinError, JoinHandle};
 <span class="kw">use </span>tracing::{debug, warn, Instrument};
-
-<span class="kw">use crate</span>::{tick::TickEventHandler, WithInner};
 
 <span class="macro">thread_local!</span>(
     <span class="kw">static </span>ASYNC_DISPATCHER: RefCell&lt;<span class="prelude-ty">Option</span>&lt;Dispatcher&gt;&gt; = RefCell::default();
@@ -430,26 +435,32 @@
 </span><span class="kw">pub fn </span>initialize() {
     <span class="macro">debug!</span>(<span class="string">&quot;async_manager&quot;</span>);
 
-    <span class="kw">let </span>async_dispatcher = Dispatcher::new();
-    <span class="kw">let </span>async_dispatcher_handle = async_dispatcher.get_handle();
-    ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
-        <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher.get_handle_local());
-    });
-    ASYNC_DISPATCHER.with(|cell| {
-        <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher);
-    });
+    {
+        <span class="macro">debug!</span>(<span class="string">&quot;async_dispatcher&quot;</span>);
+        <span class="kw">let </span>async_dispatcher = Dispatcher::new();
+        <span class="kw">let </span>async_dispatcher_handle = async_dispatcher.get_handle();
+        ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
+            <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher.get_handle_local());
+        });
+        ASYNC_DISPATCHER.with(|cell| {
+            <span class="kw-2">*</span>cell.borrow_mut() = <span class="prelude-val">Some</span>(async_dispatcher);
+        });
 
-    <span class="kw-2">*</span>ASYNC_DISPATCHER_HANDLE.lock().unwrap() = <span class="prelude-val">Some</span>(async_dispatcher_handle);
+        <span class="kw-2">*</span>ASYNC_DISPATCHER_HANDLE.lock().unwrap() = <span class="prelude-val">Some</span>(async_dispatcher_handle);
+    }
 
-    <span class="kw">let </span>rt = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap();
+    {
+        <span class="macro">debug!</span>(<span class="string">&quot;tokio&quot;</span>);
+        <span class="kw">let </span>rt = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap();
 
-    <span class="kw-2">*</span>TOKIO_RUNTIME.lock().unwrap() = <span class="prelude-val">Some</span>(rt);
+        <span class="kw-2">*</span>TOKIO_RUNTIME.lock().unwrap() = <span class="prelude-val">Some</span>(rt);
+    }
 
-    <span class="attr">#[cfg(not(test))]
-    </span>{
+    {
+        <span class="macro">debug!</span>(<span class="string">&quot;tick_handler&quot;</span>);
         TICK_HANDLER.with(|cell| {
             <span class="kw">let </span><span class="kw-2">mut </span>tick_handler = TickEventHandler::new();
             tick_handler.on(|_task| {
@@ -463,6 +474,8 @@
 
 <span class="attr">#[tracing::instrument]
 </span><span class="kw">pub fn </span>shutdown() {
+    <span class="macro">debug!</span>(<span class="string">&quot;async_manager&quot;</span>);
+
     {
         <span class="kw">let </span><span class="kw-2">mut </span>option = TOKIO_RUNTIME.lock().unwrap();
         <span class="kw">if </span>option.is_some() {
@@ -487,8 +500,7 @@
         }
     }
 
-    <span class="attr">#[cfg(not(test))]
-    </span>{
+    {
         <span class="kw">if </span>TICK_HANDLER.with_inner(|<span class="kw">_</span>| ()).is_some() {
             <span class="macro">debug!</span>(<span class="string">&quot;tick_handler&quot;</span>);
 
@@ -540,7 +552,7 @@
         .unwrap();
 }
 
-<span class="attr">#[cfg(test)]
+<span class="doccomment">/// Run all tasks in the pool to completion.
 </span><span class="kw">pub fn </span>run() {
     ASYNC_DISPATCHER
         .with_inner_mut(|async_dispatcher| {
@@ -681,6 +693,8 @@
 
     handle.spawn(f.in_current_span());
 }
+
+<span class="macro">crate::test_noop_fn!</span>(ScheduledTask_Add);
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_async_manager() {

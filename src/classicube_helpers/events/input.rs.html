@@ -86,15 +86,11 @@
 <a href="#86" id="86">86</a>
 <a href="#87" id="87">87</a>
 <a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
 </pre><pre class="rust"><code><span class="attr">#![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-</span><span class="kw">use </span>std::os::raw::{c_float, c_int};
-
+</span><span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
 <span class="kw">use </span>classicube_sys::{cc_bool, cc_string, InputButtons};
-
-<span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
+<span class="kw">use </span>std::os::raw::{c_float, c_int};
 
 <span class="macro">make_event_handler!</span>(
     <span class="doccomment">/// Key input character is typed. Arg is a character

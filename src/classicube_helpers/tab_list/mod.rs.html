@@ -416,17 +416,13 @@
 <a href="#416" id="416">416</a>
 <a href="#417" id="417">417</a>
 <a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
 </pre><pre class="rust"><code><span class="kw">mod </span>entry;
-
+<span class="kw">use </span>classicube_sys::{TabList, TABLIST_MAX_NAMES};
 <span class="kw">use </span>std::{
     cell::RefCell,
     collections::HashMap,
     rc::{Rc, Weak},
 };
-
-<span class="kw">use </span>classicube_sys::{TabList, TABLIST_MAX_NAMES};
 <span class="kw">use </span>tracing::warn;
 
 <span class="kw">pub use </span><span class="self">self</span>::entry::TabListEntry;

@@ -72,15 +72,11 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
-<a href="#75" id="75">75</a>
-<a href="#76" id="76">76</a>
 </pre><pre class="rust"><code><span class="attr">#![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-</span><span class="kw">use </span>std::os::raw::c_int;
-
+</span><span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
 <span class="kw">use </span>classicube_sys::{cc_string, MsgType};
-
-<span class="kw">use </span><span class="kw">crate</span>::make_event_handler;
+<span class="kw">use </span>std::os::raw::c_int;
 
 <span class="macro">make_event_handler!</span>(
     <span class="doccomment">/// User changes whether system chat font used, and when the bitmapped font texture changes

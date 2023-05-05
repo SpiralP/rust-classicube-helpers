@@ -120,16 +120,12 @@
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
 <a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::{
+</pre><pre class="rust"><code><span class="kw">use crate</span>::{callback_handler::CallbackHandler, CellGetSet};
+<span class="kw">use </span>classicube_sys::{ScheduledTask, ScheduledTask_Add};
+<span class="kw">use </span>std::{
     cell::{Cell, RefCell},
     rc::{Rc, Weak},
 };
-
-<span class="kw">use </span>classicube_sys::{ScheduledTask, ScheduledTask_Add};
-
-<span class="kw">use crate</span>::{callback_handler::CallbackHandler, CellGetSet};
 
 <span class="macro">thread_local!</span>(
     <span class="kw">static </span>CALLBACK_REGISTERED: Cell&lt;bool&gt; = Cell::new(<span class="bool-val">false</span>);

@@ -121,13 +121,11 @@
 <a href="#121" id="121">121</a>
 <a href="#122" id="122">122</a>
 <a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::{
+</pre><pre class="rust"><code><span class="kw">use </span>classicube_sys::{Entities, Matrix, Vec3};
+<span class="kw">use </span>std::{
     ffi::CStr,
     ptr::{addr_of, NonNull},
 };
-
-<span class="kw">use </span>classicube_sys::{Entities, Matrix, Vec3};
 
 <span class="doccomment">/// 255 is self entity
 </span><span class="kw">pub const </span>ENTITY_SELF_ID: u8 = <span class="number">255</span>;

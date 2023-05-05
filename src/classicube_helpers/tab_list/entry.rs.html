@@ -67,12 +67,10 @@
 <a href="#67" id="67">67</a>
 <a href="#68" id="68">68</a>
 <a href="#69" id="69">69</a>
-<a href="#70" id="70">70</a>
 </pre><pre class="rust"><code><span class="attr">#![allow(clippy::used_underscore_binding)]
 
-</span><span class="kw">use </span>std::os::raw::c_int;
-
-<span class="kw">use </span>classicube_sys::{StringsBuffer_UNSAFE_Get, TabList};
+</span><span class="kw">use </span>classicube_sys::{StringsBuffer_UNSAFE_Get, TabList};
+<span class="kw">use </span>std::os::raw::c_int;
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>TabListEntry {
