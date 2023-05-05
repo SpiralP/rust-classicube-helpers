@@ -152,7 +152,7 @@ pub fn step() {
         .unwrap();
 }
 
-#[cfg(test)]
+/// Run all tasks in the pool to completion.
 pub fn run() {
     ASYNC_DISPATCHER
         .with_inner_mut(|async_dispatcher| {
