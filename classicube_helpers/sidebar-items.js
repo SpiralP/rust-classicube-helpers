@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"macro":[["time",""],["time_silent",""]],"mod":[["async_manager",""],["chat",""],["color",""],["entities",""],["events",""],["shared",""],["tab_list",""],["tick",""]],"trait":[["CellGetSet",""],["WithBorrow",""],["WithInner",""]]};
+window.SIDEBAR_ITEMS = {"macro":["time","time_silent"],"mod":["async_manager","chat","color","entities","events","shared","tab_list","tick"],"trait":["CellGetSet","WithBorrow","WithInner"]};

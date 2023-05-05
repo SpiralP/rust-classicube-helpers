@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AtlasChangedEvent",""],["AtlasChangedEventHandler","Terrain atlas (terrain.png) is changed"],["FileChangedEvent",""],["FileChangedEventHandler","File in a texture pack is changed (terrain.png, rain.png)"],["PackChangedEvent",""],["PackChangedEventHandler","Texture pack is changed"]]};
+window.SIDEBAR_ITEMS = {"struct":["AtlasChangedEvent","AtlasChangedEventHandler","FileChangedEvent","FileChangedEventHandler","PackChangedEvent","PackChangedEventHandler"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AddedEvent",""],["AddedEventHandler","Tab list entry is created"],["ChangedEvent",""],["ChangedEventHandler","Tab list entry is modified"],["RemovedEvent",""],["RemovedEventHandler","Tab list entry is removed"]]};
+window.SIDEBAR_ITEMS = {"struct":["AddedEvent","AddedEventHandler","ChangedEvent","ChangedEventHandler","RemovedEvent","RemovedEventHandler"]};

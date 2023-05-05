@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["remove_color",""]],"struct":[["TabList","safe access to TabList"],["TabListEntry",""]]};
+window.SIDEBAR_ITEMS = {"fn":["remove_color"],"struct":["TabList","TabListEntry"]};

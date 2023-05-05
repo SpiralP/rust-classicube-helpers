@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["AQUA",""],["BLACK",""],["BLUE",""],["GOLD",""],["GRAY",""],["GREEN",""],["LIME",""],["MAROON",""],["NAVY",""],["PINK",""],["PURPLE",""],["RED",""],["SILVER",""],["TEAL",""],["WHITE",""],["YELLOW",""]]};
+window.SIDEBAR_ITEMS = {"constant":["AQUA","BLACK","BLUE","GOLD","GRAY","GREEN","LIME","MAROON","NAVY","PINK","PURPLE","RED","SILVER","TEAL","WHITE","YELLOW"]};

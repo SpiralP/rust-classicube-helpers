@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["BlockDefChangedEvent",""],["BlockDefChangedEventHandler","Block definition is changed or removed"],["PermissionsChangedEvent",""],["PermissionsChangedEventHandler","Block permissions (can place/delete) for a block changes"]]};
+window.SIDEBAR_ITEMS = {"struct":["BlockDefChangedEvent","BlockDefChangedEventHandler","PermissionsChangedEvent","PermissionsChangedEventHandler"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["TcpListener","A structure representing a socket server"],["TcpStream","A non-blocking TCP stream between a local socket and a remote socket."],["UdpSocket","A User Datagram Protocol socket."]]};
+window.SIDEBAR_ITEMS = {"struct":["TcpListener","TcpStream","UdpSocket"]};

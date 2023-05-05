@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["DownEvent",""],["DownEventHandler","Left mouse or touch is pressed (Arg is index)"],["MovedEvent",""],["MovedEventHandler","Pointer position changed (Arg is delta from last position)"],["RawMovedEvent",""],["RawMovedEventHandler","Raw pointer position changed (Arg is delta)"],["UpEvent",""],["UpEventHandler","Left mouse or touch is released (Arg is index)"]]};
+window.SIDEBAR_ITEMS = {"struct":["DownEvent","DownEventHandler","MovedEvent","MovedEventHandler","RawMovedEvent","RawMovedEventHandler","UpEvent","UpEventHandler"]};

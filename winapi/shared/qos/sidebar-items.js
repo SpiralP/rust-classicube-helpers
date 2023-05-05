@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["FLOWSPEC",""]],"type":[["LPFLOWSPEC",""],["PFLOWSPEC",""],["SERVICETYPE",""]]};
+window.SIDEBAR_ITEMS = {"struct":["FLOWSPEC"],"type":["LPFLOWSPEC","PFLOWSPEC","SERVICETYPE"]};
