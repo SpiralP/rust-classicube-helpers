@@ -67,7 +67,7 @@ impl Entities {
                 }
 
                 let mut added_callbacks = added_callbacks.borrow_mut();
-                added_callbacks.handle_event((id, weak));
+                added_callbacks.handle_event(&(id, weak));
             });
         }
 
@@ -83,7 +83,7 @@ impl Entities {
                 }
 
                 let mut removed_callbacks = removed_callbacks.borrow_mut();
-                removed_callbacks.handle_event(*id);
+                removed_callbacks.handle_event(id);
             });
         }
 
@@ -107,8 +107,8 @@ impl Entities {
         for id in 0..ENTITIES_MAX_COUNT {
             unsafe {
                 if !Entities.List[id as usize].is_null() {
-                    if let Some(entity) = Entity::from_id(id as u8) {
-                        entities.insert(id as u8, Rc::new(entity));
+                    if let Some(entity) = Entity::from_id(u8::try_from(id).unwrap()) {
+                        entities.insert(u8::try_from(id).unwrap(), Rc::new(entity));
                     }
                 }
             }
@@ -121,7 +121,7 @@ impl Entities {
         F: 'static,
     {
         let mut added_callbacks = self.added_callbacks.borrow_mut();
-        added_callbacks.on(callback)
+        added_callbacks.on(callback);
     }
 
     pub fn on_removed<F>(&mut self, callback: F)
@@ -130,7 +130,7 @@ impl Entities {
         F: 'static,
     {
         let mut removed_callbacks = self.removed_callbacks.borrow_mut();
-        removed_callbacks.on(callback)
+        removed_callbacks.on(callback);
     }
 
     #[must_use]

@@ -16,7 +16,7 @@ make_event_handler!(
             name: key,
             rust_type: char,
             c_type: c_int,
-            to_rust: |key| key as u8 as char,
+            to_rust: |key| u8::try_from(key).unwrap() as char,
         },
     )
 );
@@ -31,7 +31,7 @@ make_event_handler!(
             name: key,
             rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| key as InputButtons,
+            to_rust: |key| InputButtons::try_from(key).unwrap(),
         },
         {
             name: repeating,
@@ -52,7 +52,7 @@ make_event_handler!(
             name: key,
             rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| key as InputButtons,
+            to_rust: |key| InputButtons::try_from(key).unwrap(),
         },
     )
 );

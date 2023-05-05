@@ -172,27 +172,29 @@ fn test_shared() {
         });
     });
 
-    trait Module {
-        fn load(&mut self);
-        fn unload(&mut self);
-    }
+    {
+        trait Module {
+            fn load(&mut self);
+            fn unload(&mut self);
+        }
 
-    struct ModuleThing {}
-    impl Module for ModuleThing {
-        fn load(&mut self) {}
+        struct ModuleThing {}
+        impl Module for ModuleThing {
+            fn load(&mut self) {}
 
-        fn unload(&mut self) {}
-    }
+            fn unload(&mut self) {}
+        }
 
-    let mut list_of_sync_shareds: Vec<Rc<Box<dyn Module>>> = Vec::new();
-    let mod_thing: Rc<Box<dyn Module>> = Rc::new(Box::new(ModuleThing {}));
-    list_of_sync_shareds.push(mod_thing);
+        let mut list_of_sync_shareds: Vec<Rc<Box<dyn Module>>> = Vec::new();
+        let mod_thing: Rc<Box<dyn Module>> = Rc::new(Box::new(ModuleThing {}));
+        list_of_sync_shareds.push(mod_thing);
 
-    let mut list_of_sync_shareds: Vec<SyncShared<Box<dyn Module>>> = Vec::new();
-    let mod_thing: SyncShared<Box<dyn Module>> = SyncShared::new(Box::new(ModuleThing {}));
-    list_of_sync_shareds.push(mod_thing);
+        let mut list_of_sync_shareds: Vec<SyncShared<Box<dyn Module>>> = Vec::new();
+        let mod_thing: SyncShared<Box<dyn Module>> = SyncShared::new(Box::new(ModuleThing {}));
+        list_of_sync_shareds.push(mod_thing);
 
-    for module in &mut list_of_sync_shareds {
-        module.lock().load();
+        for module in &mut list_of_sync_shareds {
+            module.lock().load();
+        }
     }
 }

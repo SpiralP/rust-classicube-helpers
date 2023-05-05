@@ -3,6 +3,7 @@
 #![warn(clippy::pedantic)]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::missing_panics_doc)]
+#![allow(clippy::module_name_repetitions)]
 
 pub mod async_manager;
 mod callback_handler;

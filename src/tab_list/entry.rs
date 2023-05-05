@@ -1,3 +1,5 @@
+#![allow(clippy::used_underscore_binding)]
+
 use std::os::raw::c_int;
 
 use classicube_sys::{StringsBuffer_UNSAFE_Get, TabList};

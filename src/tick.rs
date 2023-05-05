@@ -102,7 +102,7 @@ impl TickEventHandler {
                 if let Some(callback_handler) = weak_callback_handler.upgrade() {
                     callback_handler
                         .borrow_mut()
-                        .handle_event(TickEvent { task });
+                        .handle_event(&TickEvent { task });
                 }
             }
         });

@@ -68,7 +68,7 @@ macro_rules! make_event_handler {
 
                         ::classicube_sys::[<Event_Register $func_type>](
                             &mut ::classicube_sys::[<$event_type Events>].$event_name,
-                            ptr as *mut ::std::os::raw::c_void,
+                            ptr.cast(),
                             Some(Self::callback),
                         );
 
@@ -83,7 +83,7 @@ macro_rules! make_event_handler {
 
                         ::classicube_sys::[<Event_Unregister $func_type>](
                             &mut ::classicube_sys::[<$event_type Events>].$event_name,
-                            ptr as *mut ::std::os::raw::c_void,
+                            ptr.cast(),
                             Some(Self::callback),
                         );
 
@@ -95,7 +95,7 @@ macro_rules! make_event_handler {
                     obj: *mut ::std::os::raw::c_void,
                     $($name: $c_type, )*
                 ) {
-                    let event_handler = obj as *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]>;
+                    let event_handler = obj.cast::<$crate::callback_handler::CallbackHandler<[<$event_name Event>]>>();
                     let event_handler = unsafe { &mut *event_handler };
 
                     #[allow(clippy::redundant_closure_call)]
@@ -105,7 +105,7 @@ macro_rules! make_event_handler {
 
                     $crate::tracing::debug!("{} {:?}", stringify!([<$event_type>]), event);
 
-                    event_handler.handle_event(event);
+                    event_handler.handle_event(&event);
                 }
             }
 

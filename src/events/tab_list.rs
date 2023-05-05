@@ -12,7 +12,7 @@ make_event_handler!(
             name: id,
             rust_type: u8,
             c_type: c_int,
-            to_rust: |id| id as u8,
+            to_rust: |id| u8::try_from(id).unwrap(),
         },
     )
 );
@@ -27,7 +27,7 @@ make_event_handler!(
             name: id,
             rust_type: u8,
             c_type: c_int,
-            to_rust: |id| id as u8,
+            to_rust: |id| u8::try_from(id).unwrap(),
         },
     )
 );
@@ -42,7 +42,7 @@ make_event_handler!(
             name: id,
             rust_type: u8,
             c_type: c_int,
-            to_rust: |id| id as u8,
+            to_rust: |id| u8::try_from(id).unwrap(),
         },
     )
 );

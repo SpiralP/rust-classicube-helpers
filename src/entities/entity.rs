@@ -1,4 +1,7 @@
-use std::{ffi::CStr, os::raw::c_char, ptr::NonNull};
+use std::{
+    ffi::CStr,
+    ptr::{addr_of, NonNull},
+};
 
 use classicube_sys::{Entities, Matrix, Vec3};
 
@@ -101,8 +104,9 @@ impl Entity {
         self.inner.ModelScale
     }
 
+    #[must_use]
     pub fn get_display_name(&self) -> String {
-        let c_str = unsafe { CStr::from_ptr(&self.inner.NameRaw as *const c_char) };
+        let c_str = unsafe { CStr::from_ptr(addr_of!(self.inner.NameRaw).cast()) };
         c_str.to_string_lossy().to_string()
     }
 

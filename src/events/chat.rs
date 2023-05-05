@@ -32,7 +32,7 @@ make_event_handler!(
             name: message_type,
             rust_type: MsgType,
             c_type: c_int,
-            to_rust: |message_type| message_type as MsgType,
+            to_rust: |message_type| MsgType::try_from(message_type).unwrap(),
         },
     )
 );
@@ -55,7 +55,7 @@ make_event_handler!(
             name: message_type,
             rust_type: MsgType,
             c_type: c_int,
-            to_rust: |message_type| message_type as MsgType,
+            to_rust: |message_type| MsgType::try_from(message_type).unwrap(),
         },
     )
 );

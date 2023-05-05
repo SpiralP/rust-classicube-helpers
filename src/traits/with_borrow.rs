@@ -68,8 +68,9 @@ impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
 
 #[test]
 fn test_with_borrow_thread_local() {
+    use std::cell::RefCell;
     thread_local!(
-        static THREAD_LOCAL: std::cell::RefCell<u8> = Default::default();
+        static THREAD_LOCAL: RefCell<u8> = RefCell::default();
     );
     assert_eq!(
         THREAD_LOCAL.with_borrow_mut(|o| {
@@ -84,7 +85,7 @@ fn test_with_borrow_thread_local() {
 #[test]
 fn test_with_borrow_static_mutex() {
     lazy_static::lazy_static! {
-        static ref STATIC_MUTEX: Mutex<u8> = Default::default();
+        static ref STATIC_MUTEX: Mutex<u8> = Mutex::default();
     };
     assert_eq!(
         STATIC_MUTEX.with_borrow_mut(|o| {
@@ -99,7 +100,7 @@ fn test_with_borrow_static_mutex() {
 #[test]
 fn test_with_borrow_static_rwlock() {
     lazy_static::lazy_static! {
-        static ref STATIC_RWLOCK: RwLock<u8> = Default::default();
+        static ref STATIC_RWLOCK: RwLock<u8> = RwLock::default();
     };
     assert_eq!(
         STATIC_RWLOCK.with_borrow_mut(|o| {
@@ -113,7 +114,7 @@ fn test_with_borrow_static_rwlock() {
 
 #[test]
 fn test_with_borrow_non_static_mutex() {
-    let mutex: Mutex<u8> = Default::default();
+    let mutex: Mutex<u8> = Mutex::default();
     assert_eq!(
         mutex.with_borrow_mut(|o| {
             *o += 2;

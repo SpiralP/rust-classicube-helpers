@@ -22,13 +22,13 @@ impl<E> CallbackHandler<E> {
         self.callbacks.push(Box::new(callback));
     }
 
-    pub fn handle_event(&mut self, event: E) {
+    pub fn handle_event(&mut self, event: &E) {
         if self.simulating {
             return;
         }
         self.simulating = true;
         for callback in &mut self.callbacks {
-            callback(&event);
+            callback(event);
         }
         self.simulating = false;
     }

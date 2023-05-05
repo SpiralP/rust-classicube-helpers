@@ -66,7 +66,7 @@ impl TabList {
                 }
 
                 let mut added_callbacks = added_callbacks.borrow_mut();
-                added_callbacks.handle_event((id, weak));
+                added_callbacks.handle_event(&(id, weak));
             });
         }
 
@@ -92,7 +92,7 @@ impl TabList {
                 }
 
                 let mut changed_callbacks = changed_callbacks.borrow_mut();
-                changed_callbacks.handle_event((id, weak));
+                changed_callbacks.handle_event(&(id, weak));
             });
         }
 
@@ -108,7 +108,7 @@ impl TabList {
                 }
 
                 let mut removed_callbacks = removed_callbacks.borrow_mut();
-                removed_callbacks.handle_event(*id);
+                removed_callbacks.handle_event(id);
             });
         }
 
@@ -144,8 +144,8 @@ impl TabList {
         for id in 0..TABLIST_MAX_NAMES {
             unsafe {
                 if TabList.NameOffsets[id as usize] != 0 {
-                    if let Some(entry) = TabListEntry::from_id(id as u8) {
-                        entries.insert(id as u8, Rc::new(entry));
+                    if let Some(entry) = TabListEntry::from_id(u8::try_from(id).unwrap()) {
+                        entries.insert(u8::try_from(id).unwrap(), Rc::new(entry));
                     }
                 }
             }
@@ -158,7 +158,7 @@ impl TabList {
         F: 'static,
     {
         let mut added_callbacks = self.added_callbacks.borrow_mut();
-        added_callbacks.on(callback)
+        added_callbacks.on(callback);
     }
 
     pub fn on_changed<F>(&mut self, callback: F)
@@ -167,7 +167,7 @@ impl TabList {
         F: 'static,
     {
         let mut changed_callbacks = self.changed_callbacks.borrow_mut();
-        changed_callbacks.on(callback)
+        changed_callbacks.on(callback);
     }
 
     pub fn on_removed<F>(&mut self, callback: F)
@@ -176,7 +176,7 @@ impl TabList {
         F: 'static,
     {
         let mut removed_callbacks = self.removed_callbacks.borrow_mut();
-        removed_callbacks.on(callback)
+        removed_callbacks.on(callback);
     }
 
     pub fn on_disconnected<F>(&mut self, callback: F)
@@ -184,7 +184,7 @@ impl TabList {
         F: FnMut(&net::DisconnectedEvent),
         F: 'static,
     {
-        self.disconnected_handler.on(callback)
+        self.disconnected_handler.on(callback);
     }
 
     fn best_match(&self, search: &str) -> Option<Weak<TabListEntry>> {
