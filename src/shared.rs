@@ -118,7 +118,7 @@ fn test_shared() {
     {
         let mut shared = SyncShared::new(1);
         shared.with(|v| {
-            println!("{}", v);
+            println!("{v}");
         });
         let v = shared.lock();
         println!("{}", {
@@ -137,7 +137,7 @@ fn test_shared() {
             let mut shared = shared.clone();
             std::thread::spawn(move || {
                 shared.with(|v| {
-                    println!("{:?}", v);
+                    println!("{v:?}");
                 });
                 let v = shared.lock();
                 println!("{:?}", {
@@ -148,7 +148,7 @@ fn test_shared() {
         }
 
         shared.with(|v| {
-            println!("{:?}", v);
+            println!("{v:?}");
         });
         let v = shared.lock();
         println!("{:?}", {
@@ -161,7 +161,7 @@ fn test_shared() {
         let mut shared = FutureShared::new(3);
         shared
             .with(|v| {
-                println!("{}", v);
+                println!("{v}");
             })
             .await;
         let v = shared.lock().await;

@@ -72,7 +72,7 @@ impl TickEventHandler {
     }
 
     unsafe fn unregister_listener(&mut self) {
-        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+        _ = TICK_CALLBACK_HANDLERS.try_with(|callback_handlers| {
             let mut callback_handlers = callback_handlers.borrow_mut();
 
             let my_weak = Rc::downgrade(&self.callback_handler);
