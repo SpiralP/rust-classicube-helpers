@@ -194,7 +194,7 @@
     }
 
     <span class="kw">unsafe fn </span>unregister_listener(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        TICK_CALLBACK_HANDLERS.with(|callback_handlers| {
+        <span class="kw">_ </span>= TICK_CALLBACK_HANDLERS.try_with(|callback_handlers| {
             <span class="kw">let </span><span class="kw-2">mut </span>callback_handlers = callback_handlers.borrow_mut();
 
             <span class="kw">let </span>my_weak = Rc::downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>.callback_handler);
