@@ -84,7 +84,7 @@ impl Entity {
         let get_eye_y = model.GetEyeY.expect("GetEyeY");
 
         // it most likely doesn't mutate the Entity
-        let inner_ptr = self.inner as *const _ as *mut _;
+        let inner_ptr = (self.inner as *const classicube_sys::Entity).cast_mut();
         unsafe { get_eye_y(inner_ptr) }
     }
 
@@ -94,7 +94,7 @@ impl Entity {
         let get_name_y = model.GetNameY.expect("GetNameY");
 
         // it most likely doesn't mutate the Entity
-        let inner_ptr = self.inner as *const _ as *mut _;
+        let inner_ptr = (self.inner as *const classicube_sys::Entity).cast_mut();
         unsafe { get_name_y(inner_ptr) }
     }
 
