@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["cfgmgr32","fileapi","gl","handleapi","libloaderapi","minwinbase","processthreadsapi","reason","winbase","winnt","winreg","winsock2","ws2tcpip"]};

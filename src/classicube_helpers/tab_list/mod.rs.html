@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\tab_list\mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../classicube_helpers/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\tab_list\mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="classicube_helpers" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -416,7 +417,7 @@
 <a href="#416" id="416">416</a>
 <a href="#417" id="417">417</a>
 <a href="#418" id="418">418</a>
-</pre><pre class="rust"><code><span class="kw">mod </span>entry;
+</pre></div><pre class="rust"><code><span class="kw">mod </span>entry;
 <span class="kw">use </span>classicube_sys::{TabList, TABLIST_MAX_NAMES};
 <span class="kw">use </span>std::{
     cell::RefCell,
@@ -469,7 +470,7 @@
                 <span class="kw">let </span>id = <span class="kw-2">*</span>id;
                 <span class="kw">let </span>entry = Rc::new(<span class="kw">match unsafe </span>{ TabListEntry::from_id(id) } {
                     <span class="prelude-val">None </span>=&gt; {
-                        <span class="macro">warn!</span>(<span class="question-mark">?</span>id, <span class="string">&quot;AddedEvent TabListEntry::from_id returned None&quot;</span>);
+                        <span class="macro">warn!</span>(<span class="question-mark">?</span>id, <span class="string">"AddedEvent TabListEntry::from_id returned None"</span>);
                         <span class="kw">return</span>;
                     }
                     <span class="prelude-val">Some</span>(entry) =&gt; entry,
@@ -496,7 +497,7 @@
 
                 <span class="kw">let </span>entry = Rc::new(<span class="kw">match unsafe </span>{ TabListEntry::from_id(id) } {
                     <span class="prelude-val">None </span>=&gt; {
-                        <span class="macro">warn!</span>(<span class="question-mark">?</span>id, <span class="string">&quot;ChangedEvent TabListEntry::from_id returned None&quot;</span>);
+                        <span class="macro">warn!</span>(<span class="question-mark">?</span>id, <span class="string">"ChangedEvent TabListEntry::from_id returned None"</span>);
                         <span class="kw">return</span>;
                     }
                     <span class="prelude-val">Some</span>(entry) =&gt; entry,
@@ -571,7 +572,7 @@
     <span class="kw">pub fn </span>on_added&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F)
     <span class="kw">where
         </span>F: FnMut(<span class="kw-2">&amp;</span>(u8, Weak&lt;TabListEntry&gt;)),
-        F: <span class="lifetime">&#39;static</span>,
+        F: <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span><span class="kw-2">mut </span>added_callbacks = <span class="self">self</span>.added_callbacks.borrow_mut();
         added_callbacks.on(callback);
@@ -580,7 +581,7 @@
     <span class="kw">pub fn </span>on_changed&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F)
     <span class="kw">where
         </span>F: FnMut(<span class="kw-2">&amp;</span>(u8, Weak&lt;TabListEntry&gt;)),
-        F: <span class="lifetime">&#39;static</span>,
+        F: <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span><span class="kw-2">mut </span>changed_callbacks = <span class="self">self</span>.changed_callbacks.borrow_mut();
         changed_callbacks.on(callback);
@@ -589,7 +590,7 @@
     <span class="kw">pub fn </span>on_removed&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F)
     <span class="kw">where
         </span>F: FnMut(<span class="kw-2">&amp;</span>u8),
-        F: <span class="lifetime">&#39;static</span>,
+        F: <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span><span class="kw-2">mut </span>removed_callbacks = <span class="self">self</span>.removed_callbacks.borrow_mut();
         removed_callbacks.on(callback);
@@ -598,34 +599,34 @@
     <span class="kw">pub fn </span>on_disconnected&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F)
     <span class="kw">where
         </span>F: FnMut(<span class="kw-2">&amp;</span>net::DisconnectedEvent),
-        F: <span class="lifetime">&#39;static</span>,
+        F: <span class="lifetime">'static</span>,
     {
         <span class="self">self</span>.disconnected_handler.on(callback);
     }
 
     <span class="kw">fn </span>best_match(<span class="kw-2">&amp;</span><span class="self">self</span>, search: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Weak&lt;TabListEntry&gt;&gt; {
-        <span class="comment">// tablist doesn&#39;t include &lt;Local map chat&gt; or [xtitles], so match from right to left
+        <span class="comment">// tablist doesn't include &lt;Local map chat&gt; or [xtitles], so match from right to left
         </span><span class="kw">let </span>entries = <span class="self">self</span>.entries.borrow();
         <span class="kw">let </span><span class="kw-2">mut </span>positions: Vec&lt;<span class="kw">_</span>&gt; = entries
             .values()
             .filter_map(|entry| {
-                <span class="kw">let </span>nick_name = entry.get_nick_name().replace(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
+                <span class="kw">let </span>nick_name = entry.get_nick_name().replace(<span class="string">" &amp;7(AFK)"</span>, <span class="string">""</span>);
 
                 <span class="comment">// search: &amp;0&lt;Realm 7&amp;0&gt; &amp;dAdo&amp;elf Hit&amp;aler
                 // entry :               ^
                 // &amp;3[arsclacxe&amp;3] &amp;aPee&amp;2birb
                 //                 ^
-                // &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod&#39;s Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert
+                // &amp;x&lt;&amp;xVIP&amp;x&gt; &amp;x[&amp;lGod's Architect&amp;x] &amp;x[&amp;eΩ&amp;x] Kylbert
                 //                                     ^
                 // &amp;c[&amp;4Co&amp;4m&amp;6mmu&amp;4nist&amp;c] TEHNOOBSHOW
-                //                          ^ (notice the color is at &quot;&amp;c[&quot;)
+                //                          ^ (notice the color is at "&amp;c[")
                 // &amp;3SpiralP
                 // ^ (matched by exact)
                 // &amp;7S0m
                 // ^ (matched by exact)
 
                 // fn remove_beginning_color(s: &amp;str) -&gt; &amp;str {
-                //     if s.len() &gt;= 2 &amp;&amp; s.starts_with(&#39;&amp;&#39;) {
+                //     if s.len() &gt;= 2 &amp;&amp; s.starts_with('&amp;') {
                 //         let (_color, s) = s.split_at(2);
                 //         s
                 //     } else {
@@ -670,7 +671,7 @@
         <span class="kw">let </span>option = entries.values().find(|entry| {
             <span class="comment">// try exact nick_name match first
             // this should match if there are no &lt;Local&gt; or tags on the front
-            </span><span class="kw">let </span>nick_name = entry.get_nick_name().replace(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
+            </span><span class="kw">let </span>nick_name = entry.get_nick_name().replace(<span class="string">" &amp;7(AFK)"</span>, <span class="string">""</span>);
             nick_name == search ||
                 <span class="comment">// compare with colors removed
                 </span>remove_color(<span class="kw-2">&amp;</span>nick_name) == remove_color(search)
@@ -682,7 +683,7 @@
             <span class="kw">let </span>option = entries.values().find(|entry| {
                 <span class="comment">// try exact real_name match first
                 // this should match if there are no &lt;Local&gt; or tags on the front
-                </span><span class="kw">let </span>real_name = entry.get_real_name().replace(<span class="string">&quot; &amp;7(AFK)&quot;</span>, <span class="string">&quot;&quot;</span>);
+                </span><span class="kw">let </span>real_name = entry.get_real_name().replace(<span class="string">" &amp;7(AFK)"</span>, <span class="string">""</span>);
                 real_name == search ||
                     <span class="comment">// compare with colors removed
                     </span>remove_color(<span class="kw-2">&amp;</span>real_name) == remove_color(search)
@@ -716,7 +717,7 @@
     }
 }
 
-<span class="attr">#[cfg(all(windows, not(feature = <span class="string">&quot;ci&quot;</span>)))]
+<span class="attr">#[cfg(all(windows, not(feature = <span class="string">"ci"</span>)))]
 #[ignore]
 #[test]
 </span><span class="kw">fn </span>test_find_entry_by_nick_name() {
@@ -725,17 +726,17 @@
     <span class="kw">let </span>tab_list = TabList::new();
 
     <span class="kw">let </span>pairs = [
-        (<span class="string">&quot;goodlyay&quot;</span>, <span class="string">&quot;&amp;a&amp;f�&amp;a Goodly&quot;</span>),
-        (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;&amp;u&amp;bs&amp;fp&amp;6i&amp;fr&amp;ba&quot;</span>),
-        (<span class="string">&quot;&quot;</span>, <span class="string">&quot;&amp;9&amp;9\u{b}&amp;9 &amp;rSp&amp;9&amp;3a&amp;9c&amp;1e&quot;</span>),
-        (<span class="string">&quot;SpiralP2&quot;</span>, <span class="string">&quot;&amp;7SpiralP2    &amp;f0&quot;</span>),
+        (<span class="string">"goodlyay"</span>, <span class="string">"&amp;a&amp;f�&amp;a Goodly"</span>),
+        (<span class="string">"SpiralP"</span>, <span class="string">"&amp;u&amp;bs&amp;fp&amp;6i&amp;fr&amp;ba"</span>),
+        (<span class="string">""</span>, <span class="string">"&amp;9&amp;9\u{b}&amp;9 &amp;rSp&amp;9&amp;3a&amp;9c&amp;1e"</span>),
+        (<span class="string">"SpiralP2"</span>, <span class="string">"&amp;7SpiralP2    &amp;f0"</span>),
     ];
 
     <span class="kw">for </span>(i, (real_nick, nick_name)) <span class="kw">in </span>pairs.iter().enumerate() {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>player = OwnedString::new(<span class="kw-2">*</span>real_nick);
             <span class="kw">let </span>list = OwnedString::new(<span class="kw-2">*</span>nick_name);
-            <span class="kw">let </span>group = OwnedString::new(<span class="string">&quot;group&quot;</span>);
+            <span class="kw">let </span>group = OwnedString::new(<span class="string">"group"</span>);
             TabList_Set(
                 i <span class="kw">as _</span>,
                 player.as_cc_string(),
@@ -749,32 +750,32 @@
     }
 
     <span class="macro">println!</span>(
-        <span class="string">&quot;{:#?}&quot;</span>,
+        <span class="string">"{:#?}"</span>,
         tab_list
-            .find_entry_by_nick_name(<span class="string">&quot;&amp;7&lt;Local&gt;&amp;u&amp;u[&amp;9Agg.Boo&amp;9&amp;u] &amp;bs&amp;fp&amp;6i&amp;fr&amp;ba&quot;</span>)
+            .find_entry_by_nick_name(<span class="string">"&amp;7&lt;Local&gt;&amp;u&amp;u[&amp;9Agg.Boo&amp;9&amp;u] &amp;bs&amp;fp&amp;6i&amp;fr&amp;ba"</span>)
             .unwrap()
     );
 
     <span class="macro">println!</span>(
-        <span class="string">&quot;{:#?}&quot;</span>,
+        <span class="string">"{:#?}"</span>,
         tab_list
-            .find_entry_by_nick_name(<span class="string">&quot;&amp;9[&amp;b� &amp;rBi&amp;9r&amp;1d &amp;b�&amp;9] &amp;9\u{b}&amp;9 &amp;rSp&amp;3a&amp;9c&amp;1e&quot;</span>)
+            .find_entry_by_nick_name(<span class="string">"&amp;9[&amp;b� &amp;rBi&amp;9r&amp;1d &amp;b�&amp;9] &amp;9\u{b}&amp;9 &amp;rSp&amp;3a&amp;9c&amp;1e"</span>)
             .unwrap()
     );
 }
 
-<span class="attr">#[cfg(all(windows, not(feature = <span class="string">&quot;ci&quot;</span>)))]
+<span class="attr">#[cfg(all(windows, not(feature = <span class="string">"ci"</span>)))]
 #[ignore]
 #[test]
 </span><span class="kw">fn </span>test_match_names() {
-    <span class="kw">let </span>search = <span class="string">&quot;NotSpiralP&quot;</span>;
-    <span class="kw">let </span>names = <span class="macro">vec!</span>[<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;SpiralP2&quot;</span>, <span class="string">&quot;NotSpiralP&quot;</span>, <span class="string">&quot;SpiralP2&quot;</span>];
+    <span class="kw">let </span>search = <span class="string">"NotSpiralP"</span>;
+    <span class="kw">let </span>names = <span class="macro">vec!</span>[<span class="string">"hello"</span>, <span class="string">"SpiralP"</span>, <span class="string">"SpiralP2"</span>, <span class="string">"NotSpiralP"</span>, <span class="string">"SpiralP2"</span>];
 
     <span class="kw">let </span><span class="kw-2">mut </span>positions: Vec&lt;<span class="kw">_</span>&gt; = names
         .iter()
         .filter_map(|nick_name| {
             <span class="kw">fn </span>remove_beginning_color(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="kw-2">&amp;</span>str {
-                <span class="kw">if </span>s.len() &gt;= <span class="number">2 </span>&amp;&amp; s.starts_with(<span class="string">&#39;&amp;&#39;</span>) {
+                <span class="kw">if </span>s.len() &gt;= <span class="number">2 </span>&amp;&amp; s.starts_with(<span class="string">'&amp;'</span>) {
                     <span class="kw">let </span>(_color, s) = s.split_at(<span class="number">2</span>);
                     s
                 } <span class="kw">else </span>{
@@ -798,7 +799,7 @@
             .unwrap()
             .then_with(|| name2.len().partial_cmp(<span class="kw-2">&amp;</span>name1.len()).unwrap())
     });
-    <span class="macro">println!</span>(<span class="string">&quot;{:#?}&quot;</span>, positions);
+    <span class="macro">println!</span>(<span class="string">"{:#?}"</span>, positions);
 }
 
 <span class="kw">pub fn </span>remove_color&lt;T: AsRef&lt;str&gt;&gt;(text: T) -&gt; String {
@@ -807,8 +808,8 @@
     text.as_ref()
         .chars()
         .filter(|<span class="kw-2">&amp;</span>c| {
-            <span class="kw">if </span>c == <span class="string">&#39;&amp;&#39; </span>{
-                <span class="comment">// we remove all amps but they&#39;re kept in chat if repeated
+            <span class="kw">if </span>c == <span class="string">'&amp;' </span>{
+                <span class="comment">// we remove all amps but they're kept in chat if repeated
                 </span>found_ampersand = <span class="bool-val">true</span>;
                 <span class="bool-val">false
             </span>} <span class="kw">else if </span>found_ampersand {
@@ -824,15 +825,14 @@
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_remove_color() {
     <span class="kw">let </span>pairs = [
-        (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;SpiralP&quot;</span>),
-        (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;SpiralP&quot;</span>),
-        (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;SpiralP&quot;</span>),
-        (<span class="string">&quot;SpiralP&quot;</span>, <span class="string">&quot;&amp;bS&amp;fp&amp;6i&amp;fr&amp;balP&quot;</span>),
+        (<span class="string">"SpiralP"</span>, <span class="string">"SpiralP"</span>),
+        (<span class="string">"SpiralP"</span>, <span class="string">"SpiralP"</span>),
+        (<span class="string">"SpiralP"</span>, <span class="string">"SpiralP"</span>),
+        (<span class="string">"SpiralP"</span>, <span class="string">"&amp;bS&amp;fp&amp;6i&amp;fr&amp;balP"</span>),
     ];
 
     <span class="kw">for </span>(a, b) <span class="kw">in </span><span class="kw-2">&amp;</span>pairs {
         <span class="macro">assert_eq!</span>(remove_color(b), <span class="kw-2">*</span>a);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="classicube_helpers" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

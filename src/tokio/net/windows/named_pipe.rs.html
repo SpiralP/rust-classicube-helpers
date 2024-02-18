@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\tokio-1.28.1\src\net\windows\named_pipe.rs`."><title>named_pipe.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../..\../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../..\../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../..\../static.files/ayu-be46fdc453a55015.css"><script src="../../..\../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../..\../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../..\../source-files.js"></script><script defer src="../../..\../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../..\../tokio/index.html"><img class="rust-logo" src="../../..\../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../..\../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../..\../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../..\../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\tokio-1.36.0\src\net\windows\named_pipe.rs`."><title>named_pipe.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../..\../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../..\../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../..\../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../..\../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2688,11 +2689,7 @@
 <a href="#2688" id="2688">2688</a>
 <a href="#2689" id="2689">2689</a>
 <a href="#2690" id="2690">2690</a>
-<a href="#2691" id="2691">2691</a>
-<a href="#2692" id="2692">2692</a>
-<a href="#2693" id="2693">2693</a>
-<a href="#2694" id="2694">2694</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Tokio support for [Windows named pipes].
+</pre></div><pre class="rust"><code><span class="doccomment">//! Tokio support for [Windows named pipes].
 //!
 //! [Windows named pipes]: https://docs.microsoft.com/en-us/windows/win32/ipc/named-pipes
 
@@ -2704,9 +2701,7 @@
 <span class="kw">use </span>std::task::{Context, Poll};
 
 <span class="kw">use </span><span class="kw">crate</span>::io::{AsyncRead, AsyncWrite, Interest, PollEvented, ReadBuf, Ready};
-<span class="attr">#[cfg(not(tokio_no_as_fd))]
-</span><span class="kw">use </span><span class="kw">crate</span>::os::windows::io::{AsHandle, BorrowedHandle};
-<span class="kw">use </span><span class="kw">crate</span>::os::windows::io::{AsRawHandle, FromRawHandle, RawHandle};
+<span class="kw">use </span><span class="kw">crate</span>::os::windows::io::{AsHandle, AsRawHandle, BorrowedHandle, FromRawHandle, RawHandle};
 
 <span class="macro">cfg_io_util! </span>{
     <span class="kw">use </span>bytes::BufMut;
@@ -2725,7 +2720,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">use </span>mio::windows <span class="kw">as </span>mio_windows;
 }
 
-<span class="comment">// NB: none of these shows up in public API, so don&#39;t document them.
+<span class="comment">// NB: none of these shows up in public API, so don't document them.
 </span><span class="attr">#[cfg(docsrs)]
 </span><span class="kw">mod </span>doc {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">mod </span>mio_windows {
@@ -2754,7 +2749,7 @@
 /// use std::io;
 /// use tokio::net::windows::named_pipe::ServerOptions;
 ///
-/// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\named-pipe-idiomatic-server&quot;;
+/// const PIPE_NAME: &amp;str = r"\\.\pipe\named-pipe-idiomatic-server";
 ///
 /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
 /// // The first server needs to be constructed early so that clients can
@@ -2775,7 +2770,7 @@
 ///
 ///         // Construct the next server to be connected before sending the one
 ///         // we already have of onto a task. This ensures that the server
-///         // isn&#39;t closed (after it&#39;s done in the task) before a new one is
+///         // isn't closed (after it's done in the task) before a new one is
 ///         // available. Otherwise the client might error with
 ///         // `io::ErrorKind::NotFound`.
 ///         server = ServerOptions::new().create(PIPE_NAME)?;
@@ -2833,7 +2828,7 @@
     /// ```no_run
     /// use tokio::net::windows::named_pipe::{PipeEnd, PipeMode, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-info&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-info";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let server = ServerOptions::new()
@@ -2849,7 +2844,7 @@
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;PipeInfo&gt; {
-        <span class="comment">// Safety: we&#39;re ensuring the lifetime of the named pipe.
+        <span class="comment">// Safety: we're ensuring the lifetime of the named pipe.
         </span><span class="kw">unsafe </span>{ named_pipe_info(<span class="self">self</span>.io.as_raw_handle()) }
     }
 
@@ -2872,7 +2867,7 @@
     /// ```no_run
     /// use tokio::net::windows::named_pipe::ServerOptions;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\mynamedpipe&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\mynamedpipe";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let pipe = ServerOptions::new().create(PIPE_NAME)?;
@@ -2903,7 +2898,7 @@
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     /// use windows_sys::Win32::Foundation::ERROR_PIPE_NOT_CONNECTED;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-disconnect&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-disconnect";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let server = ServerOptions::new()
@@ -2920,7 +2915,7 @@
     ///
     /// // Write fails with an OS-specific error after client has been
     /// // disconnected.
-    /// let e = client.write(b&quot;ping&quot;).await.unwrap_err();
+    /// let e = client.write(b"ping").await.unwrap_err();
     /// assert_eq!(e.raw_os_error(), Some(ERROR_PIPE_NOT_CONNECTED as i32));
     /// # Ok(()) }
     /// ```
@@ -2951,7 +2946,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-ready&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-ready";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -2967,7 +2962,7 @@
     ///             // if the readiness event is a false positive.
     ///             match server.try_read(&amp;mut data) {
     ///                 Ok(n) =&gt; {
-    ///                     println!(&quot;read {} bytes&quot;, n);
+    ///                     println!("read {} bytes", n);
     ///                 }
     ///                 Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                     continue;
@@ -2981,9 +2976,9 @@
     ///         if ready.is_writable() {
     ///             // Try to write data, this may still fail with `WouldBlock`
     ///             // if the readiness event is a false positive.
-    ///             match server.try_write(b&quot;hello world&quot;) {
+    ///             match server.try_write(b"hello world") {
     ///                 Ok(n) =&gt; {
-    ///                     println!(&quot;write {} bytes&quot;, n);
+    ///                     println!("write {} bytes", n);
     ///                 }
     ///                 Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                     continue;
@@ -3013,7 +3008,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-readable&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-readable";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3042,7 +3037,7 @@
     ///         }
     ///     }
     ///
-    ///     println!(&quot;GOT = {:?}&quot;, msg);
+    ///     println!("GOT = {:?}", msg);
     ///     Ok(())
     /// }
     /// ```
@@ -3079,7 +3074,7 @@
     /// This function may encounter any standard I/O error except `WouldBlock`.
     ///
     /// [`readable`]: method@Self::readable
-    </span><span class="kw">pub fn </span>poll_read_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    </span><span class="kw">pub fn </span>poll_read_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.io.registration().poll_read_ready(cx).map_ok(|<span class="kw">_</span>| ())
     }
 
@@ -3101,7 +3096,7 @@
     /// If data is successfully read, `Ok(n)` is returned, where `n` is the
     /// number of bytes read. If `n` is `0`, then it can indicate one of two scenarios:
     ///
-    /// 1. The pipe&#39;s read half is closed and will no longer yield data.
+    /// 1. The pipe's read half is closed and will no longer yield data.
     /// 2. The specified buffer was 0 bytes in length.
     ///
     /// If the pipe is not ready to read data,
@@ -3114,7 +3109,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-try-read&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-try-read";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3134,7 +3129,7 @@
     ///         match server.try_read(&amp;mut buf) {
     ///             Ok(0) =&gt; break,
     ///             Ok(n) =&gt; {
-    ///                 println!(&quot;read {} bytes&quot;, n);
+    ///                 println!("read {} bytes", n);
     ///             }
     ///             Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                 continue;
@@ -3176,7 +3171,7 @@
     /// # Return
     ///
     /// If data is successfully read, `Ok(n)` is returned, where `n` is the
-    /// number of bytes read. `Ok(0)` indicates the pipe&#39;s read half is closed
+    /// number of bytes read. `Ok(0)` indicates the pipe's read half is closed
     /// and will no longer yield data. If the pipe is not ready to read data
     /// `Err(io::ErrorKind::WouldBlock)` is returned.
     ///
@@ -3187,7 +3182,7 @@
     /// use std::error::Error;
     /// use std::io::{self, IoSliceMut};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-try-read-vectored&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-try-read-vectored";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3212,7 +3207,7 @@
     ///         match server.try_read_vectored(&amp;mut bufs) {
     ///             Ok(0) =&gt; break,
     ///             Ok(n) =&gt; {
-    ///                 println!(&quot;read {} bytes&quot;, n);
+    ///                 println!("read {} bytes", n);
     ///             }
     ///             Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                 continue;
@@ -3226,7 +3221,7 @@
     ///     Ok(())
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>try_read_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[io::IoSliceMut&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+    </span><span class="kw">pub fn </span>try_read_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[io::IoSliceMut&lt;<span class="lifetime">'_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
         <span class="self">self</span>.io
             .registration()
             .try_io(Interest::READABLE, || (<span class="kw-2">&amp;*</span><span class="self">self</span>.io).read_vectored(bufs))
@@ -3234,7 +3229,7 @@
 
     <span class="macro">cfg_io_util! </span>{
         <span class="doccomment">/// Tries to read data from the stream into the provided buffer, advancing the
-        /// buffer&#39;s internal cursor, returning how many bytes were read.
+        /// buffer's internal cursor, returning how many bytes were read.
         ///
         /// Receives any pending data from the pipe but does not wait for new data
         /// to arrive. On success, returns the number of bytes read. Because
@@ -3249,7 +3244,7 @@
         /// # Return
         ///
         /// If data is successfully read, `Ok(n)` is returned, where `n` is the
-        /// number of bytes read. `Ok(0)` indicates the stream&#39;s read half is closed
+        /// number of bytes read. `Ok(0)` indicates the stream's read half is closed
         /// and will no longer yield data. If the stream is not ready to read data
         /// `Err(io::ErrorKind::WouldBlock)` is returned.
         ///
@@ -3260,7 +3255,7 @@
         /// use std::error::Error;
         /// use std::io;
         ///
-        /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-readable&quot;;
+        /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-readable";
         ///
         /// #[tokio::main]
         /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3277,7 +3272,7 @@
         ///         match server.try_read_buf(&amp;mut buf) {
         ///             Ok(0) =&gt; break,
         ///             Ok(n) =&gt; {
-        ///                 println!(&quot;read {} bytes&quot;, n);
+        ///                 println!("read {} bytes", n);
         ///             }
         ///             Err(ref e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
         ///                 continue;
@@ -3324,7 +3319,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-writable&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-writable";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3337,7 +3332,7 @@
     ///
     ///         // Try to write data, this may still fail with `WouldBlock`
     ///         // if the readiness event is a false positive.
-    ///         match server.try_write(b&quot;hello world&quot;) {
+    ///         match server.try_write(b"hello world") {
     ///             Ok(n) =&gt; {
     ///                 break;
     ///             }
@@ -3386,7 +3381,7 @@
     /// This function may encounter any standard I/O error except `WouldBlock`.
     ///
     /// [`writable`]: method@Self::writable
-    </span><span class="kw">pub fn </span>poll_write_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    </span><span class="kw">pub fn </span>poll_write_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.io.registration().poll_write_ready(cx).map_ok(|<span class="kw">_</span>| ())
     }
 
@@ -3411,7 +3406,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-try-write&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-try-write";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3424,7 +3419,7 @@
     ///
     ///         // Try to write data, this may still fail with `WouldBlock`
     ///         // if the readiness event is a false positive.
-    ///         match server.try_write(b&quot;hello world&quot;) {
+    ///         match server.try_write(b"hello world") {
     ///             Ok(n) =&gt; {
     ///                 break;
     ///             }
@@ -3471,14 +3466,14 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-server-try-write-vectored&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-server-try-write-vectored";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
     ///     let server = named_pipe::ServerOptions::new()
     ///         .create(PIPE_NAME)?;
     ///
-    ///     let bufs = [io::IoSlice::new(b&quot;hello &quot;), io::IoSlice::new(b&quot;world&quot;)];
+    ///     let bufs = [io::IoSlice::new(b"hello "), io::IoSlice::new(b"world")];
     ///
     ///     loop {
     ///         // Wait for the pipe to be writable
@@ -3502,7 +3497,7 @@
     ///     Ok(())
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>try_write_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+    </span><span class="kw">pub fn </span>try_write_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">'_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
         <span class="self">self</span>.io
             .registration()
             .try_io(Interest::WRITABLE, || (<span class="kw-2">&amp;*</span><span class="self">self</span>.io).write_vectored(buf))
@@ -3585,8 +3580,8 @@
 <span class="kw">impl </span>AsyncRead <span class="kw">for </span>NamedPipeServer {
     <span class="kw">fn </span>poll_read(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
-        buf: <span class="kw-2">&amp;mut </span>ReadBuf&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        buf: <span class="kw-2">&amp;mut </span>ReadBuf&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.io.poll_read(cx, buf) }
     }
@@ -3595,7 +3590,7 @@
 <span class="kw">impl </span>AsyncWrite <span class="kw">for </span>NamedPipeServer {
     <span class="kw">fn </span>poll_write(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="self">self</span>.io.poll_write(cx, buf)
@@ -3603,17 +3598,17 @@
 
     <span class="kw">fn </span>poll_write_vectored(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
-        bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">'_</span>&gt;],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="self">self</span>.io.poll_write_vectored(cx, bufs)
     }
 
-    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         Poll::Ready(<span class="prelude-val">Ok</span>(()))
     }
 
-    <span class="kw">fn </span>poll_shutdown(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_shutdown(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.poll_flush(cx)
     }
 }
@@ -3624,9 +3619,8 @@
     }
 }
 
-<span class="attr">#[cfg(not(tokio_no_as_fd))]
-</span><span class="kw">impl </span>AsHandle <span class="kw">for </span>NamedPipeServer {
-    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BorrowedHandle&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>AsHandle <span class="kw">for </span>NamedPipeServer {
+    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BorrowedHandle&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">unsafe </span>{ BorrowedHandle::borrow_raw(<span class="self">self</span>.as_raw_handle()) }
     }
 }
@@ -3650,7 +3644,7 @@
 /// use tokio::time;
 /// use windows_sys::Win32::Foundation::ERROR_PIPE_BUSY;
 ///
-/// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\named-pipe-idiomatic-client&quot;;
+/// const PIPE_NAME: &amp;str = r"\\.\pipe\named-pipe-idiomatic-client";
 ///
 /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
 /// let client = loop {
@@ -3707,7 +3701,7 @@
     /// ```no_run
     /// use tokio::net::windows::named_pipe::{ClientOptions, PipeEnd, PipeMode};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-info&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-info";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let client = ClientOptions::new()
@@ -3721,7 +3715,7 @@
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;PipeInfo&gt; {
-        <span class="comment">// Safety: we&#39;re ensuring the lifetime of the named pipe.
+        <span class="comment">// Safety: we're ensuring the lifetime of the named pipe.
         </span><span class="kw">unsafe </span>{ named_pipe_info(<span class="self">self</span>.io.as_raw_handle()) }
     }
 
@@ -3748,7 +3742,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-ready&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-ready";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3763,7 +3757,7 @@
     ///             // if the readiness event is a false positive.
     ///             match client.try_read(&amp;mut data) {
     ///                 Ok(n) =&gt; {
-    ///                     println!(&quot;read {} bytes&quot;, n);
+    ///                     println!("read {} bytes", n);
     ///                 }
     ///                 Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                     continue;
@@ -3777,9 +3771,9 @@
     ///         if ready.is_writable() {
     ///             // Try to write data, this may still fail with `WouldBlock`
     ///             // if the readiness event is a false positive.
-    ///             match client.try_write(b&quot;hello world&quot;) {
+    ///             match client.try_write(b"hello world") {
     ///                 Ok(n) =&gt; {
-    ///                     println!(&quot;write {} bytes&quot;, n);
+    ///                     println!("write {} bytes", n);
     ///                 }
     ///                 Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                     continue;
@@ -3809,7 +3803,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-readable&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-readable";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3837,7 +3831,7 @@
     ///         }
     ///     }
     ///
-    ///     println!(&quot;GOT = {:?}&quot;, msg);
+    ///     println!("GOT = {:?}", msg);
     ///     Ok(())
     /// }
     /// ```
@@ -3874,7 +3868,7 @@
     /// This function may encounter any standard I/O error except `WouldBlock`.
     ///
     /// [`readable`]: method@Self::readable
-    </span><span class="kw">pub fn </span>poll_read_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    </span><span class="kw">pub fn </span>poll_read_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.io.registration().poll_read_ready(cx).map_ok(|<span class="kw">_</span>| ())
     }
 
@@ -3896,7 +3890,7 @@
     /// If data is successfully read, `Ok(n)` is returned, where `n` is the
     /// number of bytes read. If `n` is `0`, then it can indicate one of two scenarios:
     ///
-    /// 1. The pipe&#39;s read half is closed and will no longer yield data.
+    /// 1. The pipe's read half is closed and will no longer yield data.
     /// 2. The specified buffer was 0 bytes in length.
     ///
     /// If the pipe is not ready to read data,
@@ -3909,7 +3903,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-try-read&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-try-read";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -3928,7 +3922,7 @@
     ///         match client.try_read(&amp;mut buf) {
     ///             Ok(0) =&gt; break,
     ///             Ok(n) =&gt; {
-    ///                 println!(&quot;read {} bytes&quot;, n);
+    ///                 println!("read {} bytes", n);
     ///             }
     ///             Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                 continue;
@@ -3970,7 +3964,7 @@
     /// # Return
     ///
     /// If data is successfully read, `Ok(n)` is returned, where `n` is the
-    /// number of bytes read. `Ok(0)` indicates the pipe&#39;s read half is closed
+    /// number of bytes read. `Ok(0)` indicates the pipe's read half is closed
     /// and will no longer yield data. If the pipe is not ready to read data
     /// `Err(io::ErrorKind::WouldBlock)` is returned.
     ///
@@ -3981,7 +3975,7 @@
     /// use std::error::Error;
     /// use std::io::{self, IoSliceMut};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-try-read-vectored&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-try-read-vectored";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -4005,7 +3999,7 @@
     ///         match client.try_read_vectored(&amp;mut bufs) {
     ///             Ok(0) =&gt; break,
     ///             Ok(n) =&gt; {
-    ///                 println!(&quot;read {} bytes&quot;, n);
+    ///                 println!("read {} bytes", n);
     ///             }
     ///             Err(e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
     ///                 continue;
@@ -4019,7 +4013,7 @@
     ///     Ok(())
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>try_read_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[io::IoSliceMut&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+    </span><span class="kw">pub fn </span>try_read_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[io::IoSliceMut&lt;<span class="lifetime">'_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
         <span class="self">self</span>.io
             .registration()
             .try_io(Interest::READABLE, || (<span class="kw-2">&amp;*</span><span class="self">self</span>.io).read_vectored(bufs))
@@ -4027,7 +4021,7 @@
 
     <span class="macro">cfg_io_util! </span>{
         <span class="doccomment">/// Tries to read data from the stream into the provided buffer, advancing the
-        /// buffer&#39;s internal cursor, returning how many bytes were read.
+        /// buffer's internal cursor, returning how many bytes were read.
         ///
         /// Receives any pending data from the pipe but does not wait for new data
         /// to arrive. On success, returns the number of bytes read. Because
@@ -4042,7 +4036,7 @@
         /// # Return
         ///
         /// If data is successfully read, `Ok(n)` is returned, where `n` is the
-        /// number of bytes read. `Ok(0)` indicates the stream&#39;s read half is closed
+        /// number of bytes read. `Ok(0)` indicates the stream's read half is closed
         /// and will no longer yield data. If the stream is not ready to read data
         /// `Err(io::ErrorKind::WouldBlock)` is returned.
         ///
@@ -4053,7 +4047,7 @@
         /// use std::error::Error;
         /// use std::io;
         ///
-        /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-readable&quot;;
+        /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-readable";
         ///
         /// #[tokio::main]
         /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -4070,7 +4064,7 @@
         ///         match client.try_read_buf(&amp;mut buf) {
         ///             Ok(0) =&gt; break,
         ///             Ok(n) =&gt; {
-        ///                 println!(&quot;read {} bytes&quot;, n);
+        ///                 println!("read {} bytes", n);
         ///             }
         ///             Err(ref e) if e.kind() == io::ErrorKind::WouldBlock =&gt; {
         ///                 continue;
@@ -4117,7 +4111,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-writable&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-writable";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -4129,7 +4123,7 @@
     ///
     ///         // Try to write data, this may still fail with `WouldBlock`
     ///         // if the readiness event is a false positive.
-    ///         match client.try_write(b&quot;hello world&quot;) {
+    ///         match client.try_write(b"hello world") {
     ///             Ok(n) =&gt; {
     ///                 break;
     ///             }
@@ -4178,7 +4172,7 @@
     /// This function may encounter any standard I/O error except `WouldBlock`.
     ///
     /// [`writable`]: method@Self::writable
-    </span><span class="kw">pub fn </span>poll_write_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    </span><span class="kw">pub fn </span>poll_write_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.io.registration().poll_write_ready(cx).map_ok(|<span class="kw">_</span>| ())
     }
 
@@ -4203,7 +4197,7 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-try-write&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-try-write";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
@@ -4215,7 +4209,7 @@
     ///
     ///         // Try to write data, this may still fail with `WouldBlock`
     ///         // if the readiness event is a false positive.
-    ///         match client.try_write(b&quot;hello world&quot;) {
+    ///         match client.try_write(b"hello world") {
     ///             Ok(n) =&gt; {
     ///                 break;
     ///             }
@@ -4262,13 +4256,13 @@
     /// use std::error::Error;
     /// use std::io;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-try-write-vectored&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-try-write-vectored";
     ///
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
     ///     let client = named_pipe::ClientOptions::new().open(PIPE_NAME)?;
     ///
-    ///     let bufs = [io::IoSlice::new(b&quot;hello &quot;), io::IoSlice::new(b&quot;world&quot;)];
+    ///     let bufs = [io::IoSlice::new(b"hello "), io::IoSlice::new(b"world")];
     ///
     ///     loop {
     ///         // Wait for the pipe to be writable
@@ -4292,7 +4286,7 @@
     ///     Ok(())
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>try_write_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+    </span><span class="kw">pub fn </span>try_write_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">'_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
         <span class="self">self</span>.io
             .registration()
             .try_io(Interest::WRITABLE, || (<span class="kw-2">&amp;*</span><span class="self">self</span>.io).write_vectored(buf))
@@ -4375,8 +4369,8 @@
 <span class="kw">impl </span>AsyncRead <span class="kw">for </span>NamedPipeClient {
     <span class="kw">fn </span>poll_read(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
-        buf: <span class="kw-2">&amp;mut </span>ReadBuf&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        buf: <span class="kw-2">&amp;mut </span>ReadBuf&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.io.poll_read(cx, buf) }
     }
@@ -4385,7 +4379,7 @@
 <span class="kw">impl </span>AsyncWrite <span class="kw">for </span>NamedPipeClient {
     <span class="kw">fn </span>poll_write(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="self">self</span>.io.poll_write(cx, buf)
@@ -4393,17 +4387,17 @@
 
     <span class="kw">fn </span>poll_write_vectored(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
-        bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;],
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">'_</span>&gt;],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="self">self</span>.io.poll_write_vectored(cx, bufs)
     }
 
-    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         Poll::Ready(<span class="prelude-val">Ok</span>(()))
     }
 
-    <span class="kw">fn </span>poll_shutdown(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_shutdown(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="self">self</span>.poll_flush(cx)
     }
 }
@@ -4414,9 +4408,8 @@
     }
 }
 
-<span class="attr">#[cfg(not(tokio_no_as_fd))]
-</span><span class="kw">impl </span>AsHandle <span class="kw">for </span>NamedPipeClient {
-    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BorrowedHandle&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>AsHandle <span class="kw">for </span>NamedPipeClient {
+    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; BorrowedHandle&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">unsafe </span>{ BorrowedHandle::borrow_raw(<span class="self">self</span>.as_raw_handle()) }
     }
 }
@@ -4451,7 +4444,7 @@
     /// ```
     /// use tokio::net::windows::named_pipe::ServerOptions;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-new&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-new";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let server = ServerOptions::new().create(PIPE_NAME)?;
@@ -4503,7 +4496,7 @@
     /// use std::io;
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-inbound-err1&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-inbound-err1";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let _server = ServerOptions::new()
@@ -4526,7 +4519,7 @@
     /// use tokio::io::AsyncWriteExt;
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-inbound-err2&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-inbound-err2";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let server = ServerOptions::new()
@@ -4539,7 +4532,7 @@
     ///
     /// server.connect().await?;
     ///
-    /// let e = client.write(b&quot;ping&quot;).await.unwrap_err();
+    /// let e = client.write(b"ping").await.unwrap_err();
     /// assert_eq!(e.kind(), io::ErrorKind::PermissionDenied);
     /// # Ok(()) }
     /// ```
@@ -4554,7 +4547,7 @@
     /// use tokio::io::{AsyncReadExt, AsyncWriteExt};
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-inbound&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-inbound";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let mut server = ServerOptions::new()
@@ -4567,7 +4560,7 @@
     ///
     /// server.connect().await?;
     ///
-    /// let write = server.write_all(b&quot;ping&quot;);
+    /// let write = server.write_all(b"ping");
     ///
     /// let mut buf = [0u8; 4];
     /// let read = client.read_exact(&amp;mut buf);
@@ -4575,7 +4568,7 @@
     /// let ((), read) = tokio::try_join!(write, read)?;
     ///
     /// assert_eq!(read, 4);
-    /// assert_eq!(&amp;buf[..], b&quot;ping&quot;);
+    /// assert_eq!(&amp;buf[..], b"ping");
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>access_inbound(<span class="kw-2">&amp;mut </span><span class="self">self</span>, allowed: bool) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
@@ -4599,7 +4592,7 @@
     /// use std::io;
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-outbound-err1&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-outbound-err1";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let server = ServerOptions::new()
@@ -4622,7 +4615,7 @@
     /// use tokio::io::AsyncReadExt;
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-outbound-err2&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-outbound-err2";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let server = ServerOptions::new()
@@ -4650,7 +4643,7 @@
     /// use tokio::io::{AsyncReadExt, AsyncWriteExt};
     /// use tokio::net::windows::named_pipe::{ClientOptions, ServerOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-access-outbound&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-access-outbound";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let mut server = ServerOptions::new()
@@ -4663,17 +4656,17 @@
     ///
     /// server.connect().await?;
     ///
-    /// let write = client.write_all(b&quot;ping&quot;);
+    /// let write = client.write_all(b"ping");
     ///
     /// let mut buf = [0u8; 4];
     /// let read = server.read_exact(&amp;mut buf);
     ///
     /// let ((), read) = tokio::try_join!(write, read)?;
     ///
-    /// println!(&quot;done reading and writing&quot;);
+    /// println!("done reading and writing");
     ///
     /// assert_eq!(read, 4);
-    /// assert_eq!(&amp;buf[..], b&quot;ping&quot;);
+    /// assert_eq!(&amp;buf[..], b"ping");
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>access_outbound(<span class="kw-2">&amp;mut </span><span class="self">self</span>, allowed: bool) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
@@ -4703,14 +4696,14 @@
     /// use std::io;
     /// use tokio::net::windows::named_pipe::ServerOptions;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-first-instance-error&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-first-instance-error";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let server1 = ServerOptions::new()
     ///     .first_pipe_instance(true)
     ///     .create(PIPE_NAME)?;
     ///
-    /// // Second server errs, since it&#39;s not the first instance.
+    /// // Second server errs, since it's not the first instance.
     /// let e = ServerOptions::new()
     ///     .first_pipe_instance(true)
     ///     .create(PIPE_NAME)
@@ -4726,7 +4719,7 @@
     /// use std::io;
     /// use tokio::net::windows::named_pipe::ServerOptions;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-first-instance&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-first-instance";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let mut builder = ServerOptions::new();
@@ -4737,7 +4730,7 @@
     /// assert_eq!(e.kind(), io::ErrorKind::PermissionDenied);
     /// drop(server);
     ///
-    /// // OK: since, we&#39;ve closed the other instance.
+    /// // OK: since, we've closed the other instance.
     /// let _server2 = builder.create(PIPE_NAME)?;
     /// # Ok(()) }
     /// ```
@@ -4749,7 +4742,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Requests permission to modify the pipe&#39;s discretionary access control list.
+    <span class="doccomment">/// Requests permission to modify the pipe's discretionary access control list.
     ///
     /// This corresponds to setting [`WRITE_DAC`] in dwOpenMode.
     ///
@@ -4757,15 +4750,15 @@
     ///
     /// ```
     /// use std::{io, os::windows::prelude::AsRawHandle, ptr};
-    </span><span class="comment">//
-    </span><span class="doccomment">/// use tokio::net::windows::named_pipe::ServerOptions;
+    ///
+    /// use tokio::net::windows::named_pipe::ServerOptions;
     /// use windows_sys::{
     ///     Win32::Foundation::ERROR_SUCCESS,
     ///     Win32::Security::DACL_SECURITY_INFORMATION,
     ///     Win32::Security::Authorization::{SetSecurityInfo, SE_KERNEL_OBJECT},
     /// };
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\write_dac_pipe&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\write_dac_pipe";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let mut pipe_template = ServerOptions::new();
@@ -4792,15 +4785,15 @@
     ///
     /// ```
     /// use std::{io, os::windows::prelude::AsRawHandle, ptr};
-    </span><span class="comment">//
-    </span><span class="doccomment">/// use tokio::net::windows::named_pipe::ServerOptions;
+    ///
+    /// use tokio::net::windows::named_pipe::ServerOptions;
     /// use windows_sys::{
     ///     Win32::Foundation::ERROR_ACCESS_DENIED,
     ///     Win32::Security::DACL_SECURITY_INFORMATION,
     ///     Win32::Security::Authorization::{SetSecurityInfo, SE_KERNEL_OBJECT},
     /// };
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\write_dac_pipe_fail&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\write_dac_pipe_fail";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let mut pipe_template = ServerOptions::new();
@@ -4831,7 +4824,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Requests permission to modify the pipe&#39;s owner.
+    <span class="doccomment">/// Requests permission to modify the pipe's owner.
     ///
     /// This corresponds to setting [`WRITE_OWNER`] in dwOpenMode.
     ///
@@ -4841,7 +4834,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Requests permission to modify the pipe&#39;s system access control list.
+    <span class="doccomment">/// Requests permission to modify the pipe's system access control list.
     ///
     /// This corresponds to setting [`ACCESS_SYSTEM_SECURITY`] in dwOpenMode.
     ///
@@ -4882,7 +4875,7 @@
     /// use tokio::net::windows::named_pipe::{ServerOptions, ClientOptions};
     /// use windows_sys::Win32::Foundation::ERROR_PIPE_BUSY;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-max-instances&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-max-instances";
     ///
     /// # #[tokio::main] async fn main() -&gt; io::Result&lt;()&gt; {
     /// let mut server = ServerOptions::new();
@@ -4918,7 +4911,7 @@
     /// ```
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>max_instances(<span class="kw-2">&amp;mut </span><span class="self">self</span>, instances: usize) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="macro">assert!</span>(instances &lt; <span class="number">255</span>, <span class="string">&quot;cannot specify more than 254 instances&quot;</span>);
+        <span class="macro">assert!</span>(instances &lt; <span class="number">255</span>, <span class="string">"cannot specify more than 254 instances"</span>);
         <span class="self">self</span>.max_instances = instances <span class="kw">as </span>u32;
         <span class="self">self
     </span>}
@@ -4962,14 +4955,14 @@
     /// ```
     /// use tokio::net::windows::named_pipe::ServerOptions;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-create&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-create";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let server = ServerOptions::new().create(PIPE_NAME)?;
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>create(<span class="kw-2">&amp;</span><span class="self">self</span>, addr: <span class="kw">impl </span>AsRef&lt;OsStr&gt;) -&gt; io::Result&lt;NamedPipeServer&gt; {
-        <span class="comment">// Safety: We&#39;re calling create_with_security_attributes_raw w/ a null
+        <span class="comment">// Safety: We're calling create_with_security_attributes_raw w/ a null
         // pointer which disables it.
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.create_with_security_attributes_raw(addr, ptr::null_mut()) }
     }
@@ -5077,7 +5070,7 @@
     /// ```
     /// use tokio::net::windows::named_pipe::{ServerOptions, ClientOptions};
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\tokio-named-pipe-client-new&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\tokio-named-pipe-client-new";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// // Server must be created in order for the client creation to succeed.
@@ -5187,7 +5180,7 @@
     /// use tokio::time;
     /// use windows_sys::Win32::Foundation::ERROR_PIPE_BUSY;
     ///
-    /// const PIPE_NAME: &amp;str = r&quot;\\.\pipe\mynamedpipe&quot;;
+    /// const PIPE_NAME: &amp;str = r"\\.\pipe\mynamedpipe";
     ///
     /// # #[tokio::main] async fn main() -&gt; std::io::Result&lt;()&gt; {
     /// let client = loop {
@@ -5204,7 +5197,7 @@
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>open(<span class="kw-2">&amp;</span><span class="self">self</span>, addr: <span class="kw">impl </span>AsRef&lt;OsStr&gt;) -&gt; io::Result&lt;NamedPipeClient&gt; {
-        <span class="comment">// Safety: We&#39;re calling open_with_security_attributes_raw w/ a null
+        <span class="comment">// Safety: We're calling open_with_security_attributes_raw w/ a null
         // pointer which disables it.
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.open_with_security_attributes_raw(addr, ptr::null_mut()) }
     }
@@ -5243,7 +5236,7 @@
         };
 
         <span class="comment">// NB: We could use a platform specialized `OpenOptions` here, but since
-        // we have access to windows_sys it ultimately doesn&#39;t hurt to use
+        // we have access to windows_sys it ultimately doesn't hurt to use
         // `CreateFile` explicitly since it allows the use of our already
         // well-structured wide `addr` to pass into CreateFileW.
         </span><span class="kw">let </span>h = windows_sys::CreateFileW(
@@ -5386,5 +5379,4 @@
         max_instances,
     })
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

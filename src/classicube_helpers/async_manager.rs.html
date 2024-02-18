@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\async_manager.rs`."><title>async_manager.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../classicube_helpers/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src\async_manager.rs`."><title>async_manager.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="classicube_helpers" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -393,7 +394,7 @@
 <a href="#393" id="393">393</a>
 <a href="#394" id="394">394</a>
 <a href="#395" id="395">395</a>
-</pre><pre class="rust"><code><span class="kw">use crate</span>::{tick::TickEventHandler, WithInner};
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{tick::TickEventHandler, WithInner};
 <span class="kw">use </span>async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
 <span class="kw">use </span>futures::{future::Either, prelude::<span class="kw-2">*</span>};
 <span class="kw">use </span>futures_timer::Delay;
@@ -433,10 +434,10 @@
 
 <span class="attr">#[tracing::instrument]
 </span><span class="kw">pub fn </span>initialize() {
-    <span class="macro">debug!</span>(<span class="string">&quot;async_manager&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"async_manager"</span>);
 
     {
-        <span class="macro">debug!</span>(<span class="string">&quot;async_dispatcher&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"async_dispatcher"</span>);
         <span class="kw">let </span>async_dispatcher = Dispatcher::new();
         <span class="kw">let </span>async_dispatcher_handle = async_dispatcher.get_handle();
         ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| {
@@ -450,7 +451,7 @@
     }
 
     {
-        <span class="macro">debug!</span>(<span class="string">&quot;tokio&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"tokio"</span>);
         <span class="kw">let </span>rt = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()
@@ -460,7 +461,7 @@
     }
 
     {
-        <span class="macro">debug!</span>(<span class="string">&quot;tick_handler&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"tick_handler"</span>);
         TICK_HANDLER.with(|cell| {
             <span class="kw">let </span><span class="kw-2">mut </span>tick_handler = TickEventHandler::new();
             tick_handler.on(|_task| {
@@ -474,39 +475,39 @@
 
 <span class="attr">#[tracing::instrument]
 </span><span class="kw">pub fn </span>shutdown() {
-    <span class="macro">debug!</span>(<span class="string">&quot;async_manager&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"async_manager"</span>);
 
     {
         <span class="kw">let </span><span class="kw-2">mut </span>option = TOKIO_RUNTIME.lock().unwrap();
         <span class="kw">if </span>option.is_some() {
-            <span class="macro">debug!</span>(<span class="string">&quot;tokio&quot;</span>);
+            <span class="macro">debug!</span>(<span class="string">"tokio"</span>);
             <span class="kw">if let </span><span class="prelude-val">Some</span>(rt) = option.take() {
                 rt.shutdown_timeout(Duration::from_millis(<span class="number">100</span>));
             }
         } <span class="kw">else </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;tokio already shutdown?&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"tokio already shutdown?"</span>);
         }
     }
 
     {
         <span class="kw">if </span>ASYNC_DISPATCHER.with_inner(|<span class="kw">_</span>| ()).is_some() {
-            <span class="macro">debug!</span>(<span class="string">&quot;async_dispatcher&quot;</span>);
+            <span class="macro">debug!</span>(<span class="string">"async_dispatcher"</span>);
 
             ASYNC_DISPATCHER_HANDLE.lock().unwrap().take();
             ASYNC_DISPATCHER_LOCAL_HANDLE.with(|cell| cell.borrow_mut().take());
             ASYNC_DISPATCHER.with(|cell| cell.borrow_mut().take());
         } <span class="kw">else </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;async_dispatcher already shutdown?&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"async_dispatcher already shutdown?"</span>);
         }
     }
 
     {
         <span class="kw">if </span>TICK_HANDLER.with_inner(|<span class="kw">_</span>| ()).is_some() {
-            <span class="macro">debug!</span>(<span class="string">&quot;tick_handler&quot;</span>);
+            <span class="macro">debug!</span>(<span class="string">"tick_handler"</span>);
 
             TICK_HANDLER.with(|cell| cell.borrow_mut().take());
         } <span class="kw">else </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;tick_handler already shutdown?&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"tick_handler already shutdown?"</span>);
         }
     }
 }
@@ -519,7 +520,7 @@
 <span class="kw">impl </span>Future <span class="kw">for </span>YieldedWaker {
     <span class="kw">type </span>Output = ();
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">if </span><span class="self">self</span>.woke.get() {
             Poll::Ready(())
         } <span class="kw">else </span>{
@@ -584,7 +585,7 @@
     <span class="kw">let </span>delay = Delay::new(duration);
 
     <span class="kw">match </span>future::select(delay, f.boxed()).<span class="kw">await </span>{
-        Either::Left((<span class="kw">_</span>, _f)) =&gt; <span class="prelude-val">None</span>,
+        Either::Left(((), _f)) =&gt; <span class="prelude-val">None</span>,
         Either::Right((r, _delay)) =&gt; <span class="prelude-val">Some</span>(r),
     }
 }
@@ -596,7 +597,7 @@
     <span class="kw">let </span>delay = Delay::new(duration);
 
     <span class="kw">match </span>future::select(delay, f.boxed_local()).<span class="kw">await </span>{
-        Either::Left((<span class="kw">_</span>, _f)) =&gt; <span class="prelude-val">None</span>,
+        Either::Left(((), _f)) =&gt; <span class="prelude-val">None</span>,
         Either::Right((r, _delay)) =&gt; <span class="prelude-val">Some</span>(r),
     }
 }
@@ -606,7 +607,7 @@
 /// This will continue to call the same executor so `cef_step()` will still be called!
 </span><span class="kw">pub fn </span>block_on_local&lt;F&gt;(f: F)
 <span class="kw">where
-    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static</span>,
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">'static</span>,
 {
     <span class="kw">let </span>shared = f.in_current_span().shared();
 
@@ -619,7 +620,7 @@
 
     <span class="kw">loop </span>{
         <span class="kw">match </span>shared.peek() {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; {
+            <span class="prelude-val">Some</span>(()) =&gt; {
                 <span class="kw">return</span>;
             }
 
@@ -628,15 +629,15 @@
             }
         }
 
-        <span class="comment">// don&#39;t burn anything
+        <span class="comment">// don't burn anything
         </span>std::thread::sleep(Duration::from_millis(<span class="number">16</span>));
     }
 }
 
 <span class="kw">pub fn </span>spawn&lt;F&gt;(f: F) -&gt; JoinHandle&lt;F::Output&gt;
 <span class="kw">where
-    </span>F: Future + Send + <span class="lifetime">&#39;static</span>,
-    F::Output: Send + <span class="lifetime">&#39;static</span>,
+    </span>F: Future + Send + <span class="lifetime">'static</span>,
+    F::Output: Send + <span class="lifetime">'static</span>,
 {
     TOKIO_RUNTIME
         .with_inner(<span class="kw">move </span>|rt| rt.spawn(f.in_current_span()))
@@ -645,8 +646,8 @@
 
 <span class="kw">pub fn </span>spawn_blocking&lt;F, R&gt;(f: F) -&gt; JoinHandle&lt;<span class="prelude-ty">Result</span>&lt;R, JoinError&gt;&gt;
 <span class="kw">where
-    </span>F: FnOnce() -&gt; R + Send + <span class="lifetime">&#39;static</span>,
-    R: Send + <span class="lifetime">&#39;static</span>,
+    </span>F: FnOnce() -&gt; R + Send + <span class="lifetime">'static</span>,
+    R: Send + <span class="lifetime">'static</span>,
 {
     <span class="kw">let </span>span = tracing::Span::current();
     spawn(<span class="kw">async move </span>{
@@ -660,11 +661,11 @@
 
 <span class="kw">pub fn </span>spawn_on_main_thread&lt;F&gt;(f: F)
 <span class="kw">where
-    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static </span>+ Send,
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">'static </span>+ Send,
 {
     <span class="kw">let </span><span class="kw-2">mut </span>handle = {
         <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
-        handle.as_mut().expect(<span class="string">&quot;handle.as_mut()&quot;</span>).clone()
+        handle.as_mut().expect(<span class="string">"handle.as_mut()"</span>).clone()
     };
 
     handle.spawn(f.in_current_span());
@@ -672,12 +673,12 @@
 
 <span class="kw">pub async fn </span>run_on_main_thread&lt;F, O&gt;(f: F) -&gt; O
 <span class="kw">where
-    </span>F: Future&lt;Output = O&gt; + <span class="lifetime">&#39;static </span>+ Send,
-    O: <span class="lifetime">&#39;static </span>+ Send + std::fmt::Debug,
+    </span>F: Future&lt;Output = O&gt; + <span class="lifetime">'static </span>+ Send,
+    O: <span class="lifetime">'static </span>+ Send + std::fmt::Debug,
 {
     <span class="kw">let </span><span class="kw-2">mut </span>handle = {
         <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_HANDLE.lock().unwrap();
-        handle.as_mut().expect(<span class="string">&quot;handle.as_mut()&quot;</span>).clone()
+        handle.as_mut().expect(<span class="string">"handle.as_mut()"</span>).clone()
     };
 
     handle.dispatch(f.in_current_span()).<span class="kw">await
@@ -685,11 +686,11 @@
 
 <span class="kw">pub fn </span>spawn_local_on_main_thread&lt;F&gt;(f: F)
 <span class="kw">where
-    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">&#39;static</span>,
+    </span>F: Future&lt;Output = ()&gt; + <span class="lifetime">'static</span>,
 {
     <span class="kw">let </span><span class="kw-2">mut </span>handle = ASYNC_DISPATCHER_LOCAL_HANDLE
         .with_inner(Clone::clone)
-        .expect(<span class="string">&quot;ASYNC_DISPATCHER_LOCAL_HANDLE is None&quot;</span>);
+        .expect(<span class="string">"ASYNC_DISPATCHER_LOCAL_HANDLE is None"</span>);
 
     handle.spawn(f.in_current_span());
 }
@@ -702,7 +703,7 @@
     <span class="kw">use </span>tracing_subscriber::{filter::EnvFilter, prelude::<span class="kw-2">*</span>};
 
     tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env().add_directive(<span class="string">&quot;debug&quot;</span>.parse().unwrap()))
+        .with_env_filter(EnvFilter::from_default_env().add_directive(<span class="string">"debug"</span>.parse().unwrap()))
         .with_target(<span class="bool-val">false</span>)
         .with_thread_ids(<span class="bool-val">false</span>)
         .with_thread_names(<span class="bool-val">false</span>)
@@ -716,15 +717,15 @@
     {
         <span class="attr">#[tracing::instrument]
         </span><span class="kw">fn </span>test() {
-            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
+            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">"A"</span>);
             <span class="kw">let </span>span = a.enter();
             spawn(<span class="kw">async move </span>{
-                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">"B"</span>);
                 <span class="kw">let </span>span = b.enter();
                 run_on_main_thread(<span class="kw">async move </span>{
-                    <span class="kw">let </span>c = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+                    <span class="kw">let </span>c = <span class="macro">tracing::info_span!</span>(<span class="string">"C"</span>);
                     <span class="kw">let </span>span = c.enter();
-                    <span class="macro">info!</span>(<span class="string">&quot;run_on_main_thread with instrument test:A:B:C&quot;</span>);
+                    <span class="macro">info!</span>(<span class="string">"run_on_main_thread with instrument test:A:B:C"</span>);
                     drop(span);
                 })
                 .<span class="kw">await</span>;
@@ -738,12 +739,12 @@
     {
         <span class="attr">#[tracing::instrument]
         </span><span class="kw">fn </span>test() {
-            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
+            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">"A"</span>);
             <span class="kw">let </span>span = a.enter();
             spawn_blocking(|| {
-                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">"B"</span>);
                 <span class="kw">let </span>span = b.enter();
-                <span class="macro">info!</span>(<span class="string">&quot;spawn_blocking with instrument test:A:B&quot;</span>);
+                <span class="macro">info!</span>(<span class="string">"spawn_blocking with instrument test:A:B"</span>);
                 drop(span);
             });
             drop(span);
@@ -754,16 +755,16 @@
     {
         <span class="attr">#[tracing::instrument]
         </span><span class="kw">fn </span>test() {
-            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;A&quot;</span>);
+            <span class="kw">let </span>a = <span class="macro">tracing::info_span!</span>(<span class="string">"A"</span>);
             <span class="kw">let </span>span = a.enter();
             block_on_local(<span class="kw">async move </span>{
-                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;B&quot;</span>);
+                <span class="kw">let </span>b = <span class="macro">tracing::info_span!</span>(<span class="string">"B"</span>);
                 <span class="kw">let </span>span = b.enter();
-                <span class="macro">info!</span>(<span class="string">&quot;block_on_local with instrument test:A:B&quot;</span>);
+                <span class="macro">info!</span>(<span class="string">"block_on_local with instrument test:A:B"</span>);
                 spawn(<span class="kw">async move </span>{
-                    <span class="kw">let </span>c = <span class="macro">tracing::info_span!</span>(<span class="string">&quot;C&quot;</span>);
+                    <span class="kw">let </span>c = <span class="macro">tracing::info_span!</span>(<span class="string">"C"</span>);
                     <span class="kw">let </span>span = c.enter();
-                    <span class="macro">info!</span>(<span class="string">&quot;block_on_local spawn with instrument test:A:B:C&quot;</span>);
+                    <span class="macro">info!</span>(<span class="string">"block_on_local spawn with instrument test:A:B:C"</span>);
                     drop(span);
                 });
                 drop(span);
@@ -788,5 +789,4 @@
 
     shutdown();
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="classicube_helpers" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\git\checkouts\rust-classicube-sys-db50d2c321df658a\d55283a\src\screen\mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../classicube_sys/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\classicube-sys-3.0.2+classicube.1.3.6\src\screen\mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -265,7 +266,7 @@
 <a href="#265" id="265">265</a>
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
-</pre><pre class="rust"><code><span class="kw">mod </span>priority;
+</pre></div><pre class="rust"><code><span class="kw">mod </span>priority;
 
 <span class="kw">use </span>core::{mem, pin::Pin};
 
@@ -339,7 +340,7 @@
     }
 
     <span class="doccomment">/// Initialises persistent state.
-    </span><span class="kw">pub fn </span>on_init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>on_init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().Init = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
@@ -347,14 +348,14 @@
     <span class="doccomment">/// Updates this screen, called every frame just before Render().
     </span><span class="kw">pub fn </span>on_update(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f64),
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f64),
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().Update = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Frees/releases persistent state.
-    </span><span class="kw">pub fn </span>on_free(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>on_free(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().Free = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
@@ -362,14 +363,14 @@
     <span class="doccomment">/// Draws this screen and its widgets on screen.
     </span><span class="kw">pub fn </span>on_render(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f64),
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f64),
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().Render = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Builds the vertex mesh for all the widgets in the screen.
-    </span><span class="kw">pub fn </span>on_build_mesh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>on_build_mesh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().BuildMesh = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
@@ -377,7 +378,7 @@
     <span class="doccomment">/// Returns non-zero if an input press is handled.
     </span><span class="kw">pub fn </span>on_handles_input_down(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, key: c_int) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, key: c_int) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesInputDown = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -386,7 +387,7 @@
     <span class="doccomment">/// Returns non-zero if an input release is handled.
     </span><span class="kw">pub fn </span>on_on_input_up(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, key: c_int),
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, key: c_int),
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().OnInputUp = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -395,7 +396,7 @@
     <span class="doccomment">/// Returns non-zero if a key character press is handled.
     </span><span class="kw">pub fn </span>on_handles_key_press(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, keyChar: c_char) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, keyChar: c_char) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesKeyPress = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -405,7 +406,7 @@
     /// Currently only raised by on-screen keyboard in web client.
     </span><span class="kw">pub fn </span>on_handles_text_changed(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, str: <span class="kw-2">*const </span>cc_string) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, str: <span class="kw-2">*const </span>cc_string) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesTextChanged = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -414,7 +415,7 @@
     <span class="doccomment">/// Returns non-zero if a pointer press is handled.
     </span><span class="kw">pub fn </span>on_handles_pointer_down(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesPointerDown = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -423,7 +424,7 @@
     <span class="doccomment">/// Returns non-zero if a pointer release is handled.
     </span><span class="kw">pub fn </span>on_on_pointer_up(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int),
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int),
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().OnPointerUp = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -432,7 +433,7 @@
     <span class="doccomment">/// Returns non-zero if a pointer movement is handled.
     </span><span class="kw">pub fn </span>on_handles_pointer_move(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, id: c_int, x: c_int, y: c_int) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesPointerMove = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -441,20 +442,20 @@
     <span class="doccomment">/// Returns non-zero if a mouse wheel scroll is handled.
     </span><span class="kw">pub fn </span>on_handles_mouse_scroll(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f32) -&gt; c_int,
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void, delta: f32) -&gt; c_int,
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().HandlesMouseScroll = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Positions widgets on screen. Typically called on window resize.
-    </span><span class="kw">pub fn </span>on_layout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>on_layout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().Layout = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Destroys graphics resources. (textures, vertex buffers, etc)
-    </span><span class="kw">pub fn </span>on_context_lost(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>on_context_lost(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().ContextLost = <span class="prelude-val">Some</span>(f);
         <span class="self">self
     </span>}
@@ -462,7 +463,7 @@
     <span class="doccomment">/// Allocates graphics resources. (textures, vertex buffers, etc)
     </span><span class="kw">pub fn </span>on_context_recreated(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        f: <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void),
+        f: <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(elem: <span class="kw-2">*mut </span>c_void),
     ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.vtable.as_mut().ContextRecreated = <span class="prelude-val">Some</span>(f);
         <span class="self">self
@@ -483,22 +484,22 @@
 }
 
 <span class="comment">// default noop functions
-</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>Init(_elem: <span class="kw-2">*mut </span>c_void) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>Update(_elem: <span class="kw-2">*mut </span>c_void, _delta: f64) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>Free(_elem: <span class="kw-2">*mut </span>c_void) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>Render(_elem: <span class="kw-2">*mut </span>c_void, _delta: f64) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>BuildMesh(_elem: <span class="kw-2">*mut </span>c_void) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesInputDown(_elem: <span class="kw-2">*mut </span>c_void, _key: c_int) -&gt; c_int {
+</span><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>Init(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>Update(_elem: <span class="kw-2">*mut </span>c_void, _delta: f64) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>Free(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>Render(_elem: <span class="kw-2">*mut </span>c_void, _delta: f64) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>BuildMesh(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesInputDown(_elem: <span class="kw-2">*mut </span>c_void, _key: c_int) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>OnInputUp(_elem: <span class="kw-2">*mut </span>c_void, _key: c_int) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesKeyPress(_elem: <span class="kw-2">*mut </span>c_void, _keyChar: c_char) -&gt; c_int {
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>OnInputUp(_elem: <span class="kw-2">*mut </span>c_void, _key: c_int) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesKeyPress(_elem: <span class="kw-2">*mut </span>c_void, _keyChar: c_char) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesTextChanged(_elem: <span class="kw-2">*mut </span>c_void, _str: <span class="kw-2">*const </span>cc_string) -&gt; c_int {
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesTextChanged(_elem: <span class="kw-2">*mut </span>c_void, _str: <span class="kw-2">*const </span>cc_string) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesPointerDown(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesPointerDown(
     _elem: <span class="kw-2">*mut </span>c_void,
     _id: c_int,
     _x: c_int,
@@ -506,8 +507,8 @@
 ) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>OnPointerUp(_elem: <span class="kw-2">*mut </span>c_void, _id: c_int, _x: c_int, _y: c_int) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesPointerMove(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>OnPointerUp(_elem: <span class="kw-2">*mut </span>c_void, _id: c_int, _x: c_int, _y: c_int) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesPointerMove(
     _elem: <span class="kw-2">*mut </span>c_void,
     _id: c_int,
     _x: c_int,
@@ -515,16 +516,16 @@
 ) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>HandlesMouseScroll(_elem: <span class="kw-2">*mut </span>c_void, _delta: f32) -&gt; c_int {
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>HandlesMouseScroll(_elem: <span class="kw-2">*mut </span>c_void, _delta: f32) -&gt; c_int {
     <span class="number">0
 </span>}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>Layout(_elem: <span class="kw-2">*mut </span>c_void) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>ContextLost(_elem: <span class="kw-2">*mut </span>c_void) {}
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>ContextRecreated(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>Layout(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>ContextLost(_elem: <span class="kw-2">*mut </span>c_void) {}
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>ContextRecreated(_elem: <span class="kw-2">*mut </span>c_void) {}
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_screen() {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>init(_elem: <span class="kw-2">*mut </span>c_void) {
+    <span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>init(_elem: <span class="kw-2">*mut </span>c_void) {
         <span class="comment">//
     </span>}
 
@@ -532,5 +533,4 @@
     <span class="kw">let </span><span class="kw-2">mut </span>screen = OwnedScreen::new();
     screen.on_init(init);
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

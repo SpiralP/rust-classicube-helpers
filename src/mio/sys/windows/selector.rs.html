@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\mio-0.8.6\src\sys\windows\selector.rs`."><title>selector.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../..\../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../..\../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../..\../static.files/ayu-be46fdc453a55015.css"><script src="../../..\../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../..\../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../..\../source-files.js"></script><script defer src="../../..\../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../..\../mio/index.html"><img class="rust-logo" src="../../..\../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../..\../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../..\../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../..\../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\mio-0.8.10\src\sys\windows\selector.rs`."><title>selector.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="mio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../..\../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../..\../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../..\../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../..\../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -739,18 +740,7 @@
 <a href="#739" id="739">739</a>
 <a href="#740" id="740">740</a>
 <a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
-<a href="#748" id="748">748</a>
-<a href="#749" id="749">749</a>
-<a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::afd::{<span class="self">self</span>, Afd, AfdPollInfo};
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::afd::{<span class="self">self</span>, Afd, AfdPollInfo};
 <span class="kw">use </span><span class="kw">super</span>::io_status_block::IoStatusBlock;
 <span class="kw">use </span><span class="kw">super</span>::Event;
 <span class="kw">use </span><span class="kw">crate</span>::sys::Events;
@@ -782,7 +772,7 @@
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">struct </span>AfdGroup {
-    <span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;net&quot;</span>), allow(dead_code))]
+    <span class="attr">#[cfg_attr(not(feature = <span class="string">"net"</span>), allow(dead_code))]
     </span>cp: Arc&lt;CompletionPort&gt;,
     afd_group: Mutex&lt;Vec&lt;Arc&lt;Afd&gt;&gt;&gt;,
 }
@@ -819,7 +809,7 @@
             <span class="kw">match </span>afd_group.last() {
                 <span class="prelude-val">Some</span>(arc) =&gt; <span class="prelude-val">Ok</span>(arc.clone()),
                 <span class="prelude-val">None </span>=&gt; <span class="macro">unreachable!</span>(
-                    <span class="string">&quot;Cannot acquire afd, {:#?}, afd_group: {:#?}&quot;</span>,
+                    <span class="string">"Cannot acquire afd, {:#?}, afd_group: {:#?}"</span>,
                     <span class="self">self</span>, afd_group
                 ),
             }
@@ -874,12 +864,12 @@
             <span class="kw">if </span>(<span class="self">self</span>.user_evts &amp; afd::KNOWN_EVENTS &amp; !<span class="self">self</span>.pending_evts) == <span class="number">0 </span>{
                 <span class="comment">/* All the events the user is interested in are already being monitored by
                  * the pending poll operation. It might spuriously complete because of an
-                 * event that we&#39;re no longer interested in; when that happens we&#39;ll submit
+                 * event that we're no longer interested in; when that happens we'll submit
                  * a new poll operation with the updated event mask. */
             </span>} <span class="kw">else </span>{
-                <span class="comment">/* A poll operation is already pending, but it&#39;s not monitoring for all the
+                <span class="comment">/* A poll operation is already pending, but it's not monitoring for all the
                  * events that the user is interested in. Therefore, cancel the pending
-                 * poll operation; when we receive it&#39;s completion package, a new poll
+                 * poll operation; when we receive it's completion package, a new poll
                  * operation will be submitted with the correct event mask. */
                 </span><span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <span class="self">self</span>.cancel() {
                     <span class="self">self</span>.error = e.raw_os_error();
@@ -888,8 +878,8 @@
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
         } <span class="kw">else if let </span>SockPollStatus::Cancelled = <span class="self">self</span>.poll_status {
-            <span class="comment">/* The poll operation has already been cancelled, we&#39;re still waiting for
-             * it to return. For now, there&#39;s nothing that needs to be done. */
+            <span class="comment">/* The poll operation has already been cancelled, we're still waiting for
+             * it to return. For now, there's nothing that needs to be done. */
         </span>} <span class="kw">else if let </span>SockPollStatus::Idle = <span class="self">self</span>.poll_status {
             <span class="comment">/* No poll operation is pending; start one. */
             </span><span class="self">self</span>.poll_info.exclusive = <span class="number">0</span>;
@@ -911,11 +901,11 @@
                 <span class="kw">if </span>code == ERROR_IO_PENDING <span class="kw">as </span>i32 {
                     <span class="comment">/* Overlapped poll operation in progress; this is expected. */
                 </span>} <span class="kw">else </span>{
-                    <span class="comment">// Since the operation failed it means the kernel won&#39;t be
+                    <span class="comment">// Since the operation failed it means the kernel won't be
                     // using the memory any more.
                     </span>drop(from_overlapped(overlapped_ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>));
                     <span class="kw">if </span>code == ERROR_INVALID_HANDLE <span class="kw">as </span>i32 {
-                        <span class="comment">/* Socket closed; it&#39;ll be dropped. */
+                        <span class="comment">/* Socket closed; it'll be dropped. */
                         </span><span class="self">self</span>.mark_delete();
                         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                     } <span class="kw">else </span>{
@@ -928,7 +918,7 @@
             <span class="self">self</span>.poll_status = SockPollStatus::Pending;
             <span class="self">self</span>.pending_evts = <span class="self">self</span>.user_evts;
         } <span class="kw">else </span>{
-            <span class="macro">unreachable!</span>(<span class="string">&quot;Invalid poll status during update, {:#?}&quot;</span>, <span class="self">self</span>)
+            <span class="macro">unreachable!</span>(<span class="string">"Invalid poll status during update, {:#?}"</span>, <span class="self">self</span>)
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -937,7 +927,7 @@
     <span class="kw">fn </span>cancel(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
         <span class="kw">match </span><span class="self">self</span>.poll_status {
             SockPollStatus::Pending =&gt; {}
-            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Invalid poll status during cancel, {:#?}&quot;</span>, <span class="self">self</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">"Invalid poll status during cancel, {:#?}"</span>, <span class="self">self</span>),
         };
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.afd.cancel(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.iosb)<span class="question-mark">?</span>;
@@ -963,7 +953,7 @@
                 <span class="comment">/* The overlapped request itself failed in an unexpected way. */
                 </span>afd_events = afd::POLL_CONNECT_FAIL;
             } <span class="kw">else if </span><span class="self">self</span>.poll_info.number_of_handles &lt; <span class="number">1 </span>{
-                <span class="comment">/* This poll operation succeeded but didn&#39;t report any socket events. */
+                <span class="comment">/* This poll operation succeeded but didn't report any socket events. */
             </span>} <span class="kw">else if </span><span class="self">self</span>.poll_info.handles[<span class="number">0</span>].events &amp; afd::POLL_LOCAL_CLOSE != <span class="number">0 </span>{
                 <span class="comment">/* The poll operation reported that the socket was closed. */
                 </span><span class="self">self</span>.mark_delete();
@@ -1069,7 +1059,7 @@
 </span><span class="attr">#[cfg(debug_assertions)]
 </span><span class="kw">static </span>NEXT_ID: AtomicUsize = AtomicUsize::new(<span class="number">0</span>);
 
-<span class="doccomment">/// Windows implementaion of `sys::Selector`
+<span class="doccomment">/// Windows implementation of `sys::Selector`
 ///
 /// Edge-triggered event notification is simulated by resetting internal event flag of each socket state `SockState`
 /// and setting all events back by intercepting all requests that could cause `io::ErrorKind::WouldBlock` happening.
@@ -1080,8 +1070,6 @@
     <span class="attr">#[cfg(debug_assertions)]
     </span>id: usize,
     <span class="kw">pub</span>(<span class="kw">super</span>) inner: Arc&lt;SelectorInner&gt;,
-    <span class="attr">#[cfg(debug_assertions)]
-    </span>has_waker: AtomicBool,
 }
 
 <span class="kw">impl </span>Selector {
@@ -1093,8 +1081,6 @@
                 <span class="attr">#[cfg(debug_assertions)]
                 </span>id,
                 inner: Arc::new(inner),
-                <span class="attr">#[cfg(debug_assertions)]
-                </span>has_waker: AtomicBool::new(<span class="bool-val">false</span>),
             }
         })
     }
@@ -1104,8 +1090,6 @@
             <span class="attr">#[cfg(debug_assertions)]
             </span>id: <span class="self">self</span>.id,
             inner: Arc::clone(<span class="kw-2">&amp;</span><span class="self">self</span>.inner),
-            <span class="attr">#[cfg(debug_assertions)]
-            </span>has_waker: AtomicBool::new(<span class="self">self</span>.has_waker.load(Ordering::Acquire)),
         })
     }
 
@@ -1117,16 +1101,11 @@
         <span class="self">self</span>.inner.select(events, timeout)
     }
 
-    <span class="attr">#[cfg(debug_assertions)]
-    </span><span class="kw">pub fn </span>register_waker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.has_waker.swap(<span class="bool-val">true</span>, Ordering::AcqRel)
-    }
-
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>clone_port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;CompletionPort&gt; {
         <span class="self">self</span>.inner.cp.clone()
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;os-ext&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"os-ext"</span>)]
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>same_port(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Arc&lt;CompletionPort&gt;) -&gt; bool {
         Arc::ptr_eq(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.cp, other)
     }
@@ -1343,7 +1322,7 @@
             }
 
             <span class="comment">// FIXME: a sock which has_error true should not be re-added to
-            // the update queue because it&#39;s already there.
+            // the update queue because it's already there.
             </span><span class="self">self</span>.queue_state(state);
             <span class="kw">unsafe </span>{ <span class="self">self</span>.update_sockets_events_if_polling() }
         }
@@ -1355,10 +1334,10 @@
         /// Since it is not possible to modify or synchronously cancel an AFD_POLL
         /// operation, and there can be only one active AFD_POLL operation per
         /// (socket, completion port) pair at any time, it is expensive to change
-        /// a socket&#39;s event registration after it has been submitted to the kernel.
+        /// a socket's event registration after it has been submitted to the kernel.
         ///
         /// Therefore, if no other threads are polling when interest in a socket
-        /// event is (re)registered, the socket is added to the &#39;update queue&#39;, but
+        /// event is (re)registered, the socket is added to the 'update queue', but
         /// the actual syscall to start the IOCTL_AFD_POLL operation is deferred
         /// until just before the GetQueuedCompletionStatusEx() syscall is made.
         ///
@@ -1427,8 +1406,8 @@
             SIO_BSP_HANDLE,
         ] {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(base_socket) = try_get_base_socket(raw_socket, ioctl) {
-                <span class="comment">// Since we know now that we&#39;re dealing with an LSP (otherwise
-                // SIO_BASE_HANDLE would&#39;t have failed), only return any result
+                <span class="comment">// Since we know now that we're dealing with an LSP (otherwise
+                // SIO_BASE_HANDLE would't have failed), only return any result
                 // when it is different from the original `raw_socket`.
                 </span><span class="kw">if </span>base_socket != raw_socket {
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(base_socket);
@@ -1502,5 +1481,4 @@
         flags
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="mio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>
