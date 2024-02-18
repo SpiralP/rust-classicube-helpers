@@ -7,7 +7,7 @@ publish = false
 
 [dependencies]
 async-dispatcher = { git = "https://github.com/SpiralP/rust-async-dispatcher.git" }
-classicube-sys = { git = "https://github.com/SpiralP/rust-classicube-sys.git" }
+classicube-sys = "3"
 futures = "0.3"
 futures-timer = "3"
 lazy_static = "1"
