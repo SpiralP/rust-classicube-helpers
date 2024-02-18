@@ -1,5 +1,3 @@
-// TODO remove when with_borrow_mut stabilizes
-#![allow(unstable_name_collisions)]
 #![warn(clippy::pedantic)]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::missing_panics_doc)]
@@ -17,6 +15,5 @@ pub mod tab_list;
 pub mod tick;
 mod traits;
 
+pub use crate::traits::*;
 pub use tracing;
-
-pub use crate::{macros::*, traits::*};

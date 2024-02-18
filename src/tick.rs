@@ -1,4 +1,4 @@
-use crate::{callback_handler::CallbackHandler, CellGetSet};
+use crate::callback_handler::CallbackHandler;
 use classicube_sys::{ScheduledTask, ScheduledTask_Add};
 use std::{
     cell::{Cell, RefCell},

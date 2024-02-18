@@ -189,7 +189,7 @@ where
     let delay = Delay::new(duration);
 
     match future::select(delay, f.boxed()).await {
-        Either::Left((_, _f)) => None,
+        Either::Left(((), _f)) => None,
         Either::Right((r, _delay)) => Some(r),
     }
 }
@@ -201,7 +201,7 @@ where
     let delay = Delay::new(duration);
 
     match future::select(delay, f.boxed_local()).await {
-        Either::Left((_, _f)) => None,
+        Either::Left(((), _f)) => None,
         Either::Right((r, _delay)) => Some(r),
     }
 }
@@ -224,7 +224,7 @@ where
 
     loop {
         match shared.peek() {
-            Some(_) => {
+            Some(()) => {
                 return;
             }
 

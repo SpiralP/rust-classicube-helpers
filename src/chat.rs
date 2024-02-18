@@ -1,4 +1,3 @@
-use crate::CellGetSet;
 use classicube_sys::{Chat_Send, OwnedString};
 use std::cell::Cell;
 use tracing::info;
