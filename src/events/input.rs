@@ -5,7 +5,7 @@ use classicube_sys::{cc_bool, cc_string, InputButtons};
 use std::os::raw::{c_float, c_int};
 
 make_event_handler!(
-    /// Key input character is typed. Arg is a character
+    /// Key input character is typed. Arg is a unicode character
     Input,
     Press,
     Int,
@@ -14,7 +14,7 @@ make_event_handler!(
             name: key,
             rust_type: char,
             c_type: c_int,
-            to_rust: |key| u8::try_from(key).unwrap() as char,
+            to_rust: |key| char::from_u32(u32::try_from(key).expect("u32::try_from(key)")).expect("char::from_u32(key)"),
         },
     )
 );
@@ -29,7 +29,7 @@ make_event_handler!(
             name: key,
             rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| InputButtons::try_from(key).unwrap(),
+            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
         },
         {
             name: repeating,
@@ -50,7 +50,7 @@ make_event_handler!(
             name: key,
             rust_type: InputButtons,
             c_type: c_int,
-            to_rust: |key| InputButtons::try_from(key).unwrap(),
+            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
         },
     )
 );
@@ -71,7 +71,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// HTML text input changed
+    /// Text in the on-screen input keyboard changed (for Mobile)
     Input,
     TextChanged,
     String,
@@ -81,7 +81,7 @@ make_event_handler!(
             rust_type: String,
             c_type: *const cc_string,
             to_rust: |s_ptr: *const cc_string| {
-                unsafe { s_ptr.as_ref().unwrap() }.to_string()
+                unsafe { s_ptr.as_ref().expect("s_ptr.as_ref()") }.to_string()
             },
         },
     )
