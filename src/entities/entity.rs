@@ -1,8 +1,9 @@
-use classicube_sys::{Entities, Matrix, Vec3};
 use std::{
     ffi::CStr,
     ptr::{addr_of, NonNull},
 };
+
+use classicube_sys::{Entities, Matrix, Vec3};
 
 /// 255 is self entity
 pub const ENTITY_SELF_ID: u8 = 255;

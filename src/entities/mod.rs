@@ -1,10 +1,11 @@
 mod entity;
-use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
 use std::{
     cell::RefCell,
     collections::HashMap,
     rc::{Rc, Weak},
 };
+
+use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
 use tracing::warn;
 
 pub use self::entity::{Entity, ENTITY_SELF_ID};

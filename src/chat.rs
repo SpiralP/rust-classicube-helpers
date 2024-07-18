@@ -1,9 +1,10 @@
-use classicube_sys::{Chat_Send, OwnedString};
 use std::cell::Cell;
+
+use classicube_sys::{Chat_Send, OwnedString};
 use tracing::info;
 
 thread_local!(
-    static SIMULATING: Cell<bool> = Cell::new(false);
+    static SIMULATING: Cell<bool> = const { Cell::new(false) };
 );
 
 pub fn print<S: Into<String>>(s: S) {

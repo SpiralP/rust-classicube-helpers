@@ -1,17 +1,19 @@
-use crate::callback_handler::CallbackHandler;
-use classicube_sys::{ScheduledTask, ScheduledTask_Add};
 use std::{
     cell::{Cell, RefCell},
     rc::{Rc, Weak},
 };
 
+use classicube_sys::{ScheduledTask, ScheduledTask_Add};
+
+use crate::callback_handler::CallbackHandler;
+
 thread_local!(
-    static CALLBACK_REGISTERED: Cell<bool> = Cell::new(false);
+    static CALLBACK_REGISTERED: Cell<bool> = const { Cell::new(false) };
 );
 
 thread_local!(
     static TICK_CALLBACK_HANDLERS: RefCell<Vec<Weak<RefCell<CallbackHandler<TickEvent>>>>> =
-        RefCell::new(Vec::new());
+        const { RefCell::new(Vec::new()) };
 );
 
 #[derive(Debug)]

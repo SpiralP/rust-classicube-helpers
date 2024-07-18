@@ -1,8 +1,10 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-use crate::make_event_handler;
-use classicube_sys::{cc_bool, cc_string, InputButtons};
 use std::os::raw::{c_float, c_int};
+
+use classicube_sys::{cc_bool, cc_string, InputButtons};
+
+use crate::make_event_handler;
 
 make_event_handler!(
     /// Key input character is typed. Arg is a unicode character

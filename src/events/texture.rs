@@ -1,7 +1,8 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-use crate::make_event_handler;
 use classicube_sys::{cc_string, Stream};
+
+use crate::make_event_handler;
 
 make_event_handler!(
     /// Terrain atlas (terrain.png) is changed

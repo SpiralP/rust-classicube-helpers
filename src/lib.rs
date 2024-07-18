@@ -15,5 +15,6 @@ pub mod tab_list;
 pub mod tick;
 mod traits;
 
-pub use crate::traits::*;
 pub use tracing;
+
+pub use crate::traits::*;

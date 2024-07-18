@@ -1,8 +1,3 @@
-use crate::{tick::TickEventHandler, WithInner};
-use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
-use futures::{future::Either, prelude::*};
-use futures_timer::Delay;
-use lazy_static::lazy_static;
 use std::{
     cell::{Cell, RefCell},
     future::Future,
@@ -12,8 +7,15 @@ use std::{
     task::{Context, Poll, Waker},
     time::Duration,
 };
+
+use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
+use futures::{future::Either, prelude::*};
+use futures_timer::Delay;
+use lazy_static::lazy_static;
 use tokio::task::{JoinError, JoinHandle};
 use tracing::{debug, warn, Instrument};
+
+use crate::{tick::TickEventHandler, WithInner};
 
 thread_local!(
     static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = RefCell::default();

@@ -1,10 +1,11 @@
-use futures::lock::Mutex as FutureMutex;
 use std::{
     cell::RefCell,
     ops::DerefMut,
     rc::Rc,
     sync::{Arc, Mutex},
 };
+
+use futures::lock::Mutex as FutureMutex;
 
 pub struct SyncShared<T: ?Sized> {
     inner: Rc<RefCell<T>>,
