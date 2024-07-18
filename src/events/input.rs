@@ -2,7 +2,7 @@
 
 use std::os::raw::{c_float, c_int};
 
-use classicube_sys::{cc_bool, cc_string, InputButtons};
+use classicube_sys::{cc_bool, cc_string, InputButtons, InputDevice};
 
 use crate::make_event_handler;
 
@@ -22,7 +22,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// Key or button is pressed. Arg is a member of Key enumeration
+    /// Key or button is pressed. Arg is input button state.
     Input,
     Down,
     Input,
@@ -39,20 +39,38 @@ make_event_handler!(
             c_type: cc_bool,
             to_rust: |repeating| repeating != 0,
         },
+        {
+            name: device,
+            rust_type: *mut InputDevice,
+            c_type: *mut InputDevice,
+            to_rust: |device| device,
+        },
     )
 );
 
 make_event_handler!(
-    /// Key or button is released. Arg is a member of Key enumeration
+    /// Key or button is released. Arg is input button state.
     Input,
     Up,
-    Int,
+    Input,
     (
         {
             name: key,
             rust_type: InputButtons,
             c_type: c_int,
             to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
+        },
+        {
+            name: repeating,
+            rust_type: bool,
+            c_type: cc_bool,
+            to_rust: |repeating| repeating != 0,
+        },
+        {
+            name: device,
+            rust_type: *mut InputDevice,
+            c_type: *mut InputDevice,
+            to_rust: |device| device,
         },
     )
 );
