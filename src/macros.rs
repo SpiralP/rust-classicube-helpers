@@ -24,7 +24,7 @@ macro_rules! make_event_handler {
             $(#[$attr])*
             pub struct [<$event_name EventHandler>] {
                 registered: bool,
-                callback_handler: ::std::pin::Pin<Box<$crate::callback_handler::CallbackHandler<[<$event_name Event>]>>>,
+                callback_handler: Box<$crate::callback_handler::CallbackHandler<[<$event_name Event>]>>,
             }
 
             impl [<$event_name EventHandler>] {
@@ -32,7 +32,7 @@ macro_rules! make_event_handler {
                 pub fn new() -> Self {
                     Self {
                         registered: false,
-                        callback_handler: Box::pin($crate::callback_handler::CallbackHandler::new()),
+                        callback_handler: Box::new($crate::callback_handler::CallbackHandler::new()),
                     }
                 }
 
@@ -64,7 +64,7 @@ macro_rules! make_event_handler {
                 unsafe fn register_listener(&mut self) {
                     if !self.registered {
                         let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
-                            self.callback_handler.as_mut().get_unchecked_mut();
+                            self.callback_handler.as_mut();
 
                         ::classicube_sys::[<Event_Register $func_type>](
                             &mut ::classicube_sys::[<$event_type Events>].$event_name,
@@ -79,7 +79,7 @@ macro_rules! make_event_handler {
                 unsafe fn unregister_listener(&mut self) {
                     if self.registered {
                         let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
-                            self.callback_handler.as_mut().get_unchecked_mut();
+                            self.callback_handler.as_mut();
 
                         ::classicube_sys::[<Event_Unregister $func_type>](
                             &mut ::classicube_sys::[<$event_type Events>].$event_name,
