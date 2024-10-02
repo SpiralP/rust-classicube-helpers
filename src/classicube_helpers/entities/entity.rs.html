@@ -117,17 +117,12 @@
 <a href="#117" id="117">117</a>
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
-<a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     ffi::CStr,
     ptr::{addr_of, NonNull},
 };
 
-<span class="kw">use </span>classicube_sys::{Entities, Matrix, Vec3};
+<span class="kw">use </span>classicube_sys::{Entities, Vec3};
 
 <span class="doccomment">/// 255 is self entity
 </span><span class="kw">pub const </span>ENTITY_SELF_ID: u8 = <span class="number">255</span>;
@@ -174,11 +169,6 @@
     <span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>get_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
         <span class="self">self</span>.inner.Position
-    }
-
-    <span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>get_transform(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Matrix {
-        <span class="self">self</span>.inner.Transform
     }
 
     <span class="attr">#[must_use]
@@ -236,13 +226,13 @@
 
     <span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>get_eye_height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
-        <span class="self">self</span>.get_model_eye_y() * <span class="self">self</span>.get_model_scale().Y
+        <span class="self">self</span>.get_model_eye_y() * <span class="self">self</span>.get_model_scale().y
     }
 
     <span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>get_eye_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
         <span class="kw">let </span><span class="kw-2">mut </span>pos = <span class="self">self</span>.get_position();
-        pos.Y += <span class="self">self</span>.get_eye_height();
+        pos.y += <span class="self">self</span>.get_eye_height();
         pos
     }
 }

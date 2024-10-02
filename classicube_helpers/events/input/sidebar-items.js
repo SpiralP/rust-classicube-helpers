@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["DownEvent","DownEventHandler","PressEvent","PressEventHandler","TextChangedEvent","TextChangedEventHandler","UpEvent","UpEventHandler","WheelEvent","WheelEventHandler"]};
+window.SIDEBAR_ITEMS = {"struct":["Down2Event","Down2EventHandler","PressEvent","PressEventHandler","TextChangedEvent","TextChangedEventHandler","Up2Event","Up2EventHandler","WheelEvent","WheelEventHandler"]};

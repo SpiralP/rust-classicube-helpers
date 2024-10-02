@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\classicube-sys-3.0.5+classicube.1.3.6\src\vectors\ivec\mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../..\../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\classicube-sys-4.0.0+classicube.1.3.7\src\vectors\ivec\mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../..\../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -90,11 +90,11 @@
 
 <span class="kw">impl </span>IVec3 {
     <span class="kw">pub const fn </span>new(x: c_int, y: c_int, z: c_int) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ X: x, Y: y, Z: z }
+        <span class="self">Self </span>{ x, y, z }
     }
 
     <span class="kw">pub const fn </span>zero() -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ X: <span class="number">0</span>, Y: <span class="number">0</span>, Z: <span class="number">0 </span>}
+        <span class="self">Self </span>{ x: <span class="number">0</span>, y: <span class="number">0</span>, z: <span class="number">0 </span>}
     }
 
     <span class="kw">pub fn </span>set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, x: c_int, y: c_int, z: c_int) {
@@ -139,27 +139,27 @@
 <span class="doccomment">/// Returns a vector with all components set to Int32_MaxValue.
 </span><span class="kw">pub const fn </span>IVec3_MaxValue() -&gt; IVec3 {
     IVec3 {
-        X: Int32_MaxValue,
-        Y: Int32_MaxValue,
-        Z: Int32_MaxValue,
+        x: Int32_MaxValue,
+        y: Int32_MaxValue,
+        z: Int32_MaxValue,
     }
 }
 
 <span class="kw">pub fn </span>IVec3_ToVec3(result: <span class="kw-2">&amp;mut </span>Vec3, a: <span class="kw-2">&amp;</span>IVec3) {
-    result.X = a.X <span class="kw">as _</span>;
-    result.Y = a.Y <span class="kw">as _</span>;
-    result.Z = a.Z <span class="kw">as _</span>;
+    result.x = a.x <span class="kw">as _</span>;
+    result.y = a.y <span class="kw">as _</span>;
+    result.z = a.z <span class="kw">as _</span>;
 }
 
 <span class="kw">pub fn </span>IVec3_Min(result: <span class="kw-2">&amp;mut </span>IVec3, a: <span class="kw-2">&amp;</span>IVec3, b: <span class="kw-2">&amp;</span>IVec3) {
-    result.X = a.X.min(b.X);
-    result.Y = a.Y.min(b.Y);
-    result.Z = a.Z.min(b.Z);
+    result.x = a.x.min(b.x);
+    result.y = a.y.min(b.y);
+    result.z = a.z.min(b.z);
 }
 
 <span class="kw">pub fn </span>IVec3_Max(result: <span class="kw-2">&amp;mut </span>IVec3, a: <span class="kw-2">&amp;</span>IVec3, b: <span class="kw-2">&amp;</span>IVec3) {
-    result.X = a.X.max(b.X);
-    result.Y = a.Y.max(b.Y);
-    result.Z = a.Z.max(b.Z);
+    result.x = a.x.max(b.x);
+    result.y = a.y.max(b.y);
+    result.z = a.z.max(b.z);
 }
 </code></pre></div></section></main></body></html>

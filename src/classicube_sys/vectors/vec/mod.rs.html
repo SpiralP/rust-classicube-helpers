@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\classicube-sys-3.0.5+classicube.1.3.6\src\vectors\vec\mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../..\../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\classicube-sys-4.0.0+classicube.1.3.7\src\vectors\vec\mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../..\../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../..\../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../..\../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../..\../" data-static-root-path="../../..\../static.files/" data-current-crate="classicube_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../..\../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../..\../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../..\../src-files.js"></script><script defer src="../../..\../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../..\../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../..\../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../..\../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -201,14 +201,14 @@
 
 <span class="kw">impl </span>Vec3 {
     <span class="kw">pub const fn </span>new(x: c_float, y: c_float, z: c_float) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ X: x, Y: y, Z: z }
+        <span class="self">Self </span>{ x, y, z }
     }
 
     <span class="kw">pub const fn </span>zero() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            X: <span class="number">0.0</span>,
-            Y: <span class="number">0.0</span>,
-            Z: <span class="number">0.0</span>,
+            x: <span class="number">0.0</span>,
+            y: <span class="number">0.0</span>,
+            z: <span class="number">0.0</span>,
         }
     }
 
@@ -288,67 +288,67 @@
 
 <span class="kw">pub const fn </span>Vec3_BigPos() -&gt; Vec3 {
     Vec3 {
-        X: <span class="number">1e25_f32</span>,
-        Y: <span class="number">1e25_f32</span>,
-        Z: <span class="number">1e25_f32</span>,
+        x: <span class="number">1e25_f32</span>,
+        y: <span class="number">1e25_f32</span>,
+        z: <span class="number">1e25_f32</span>,
     }
 }
 
 <span class="kw">pub const fn </span>Vec3_Create3(x: c_float, y: c_float, z: c_float) -&gt; Vec3 {
-    Vec3 { X: x, Y: y, Z: z }
+    Vec3 { x, y, z }
 }
 
 <span class="doccomment">/// Returns the squared length of the vector.
 /// Squared length can be used for comparison, to avoid a costly sqrt()
 /// However, you must sqrt() this when adding lengths.
 </span><span class="kw">pub fn </span>Vec3_LengthSquared(v: <span class="kw-2">&amp;</span>Vec3) -&gt; c_float {
-    v.X * v.X + v.Y * v.Y + v.Z * v.Z
+    v.x * v.x + v.y * v.y + v.z * v.z
 }
 
 <span class="doccomment">/// Linearly interpolates components of two vectors.
 </span><span class="kw">pub fn </span>Vec3_Lerp(result: <span class="kw-2">&amp;mut </span>Vec3, a: <span class="kw-2">&amp;</span>Vec3, b: <span class="kw-2">&amp;</span>Vec3, blend: c_float) {
-    result.X = blend * (b.X - a.X) + a.X;
-    result.Y = blend * (b.Y - a.Y) + a.Y;
-    result.Z = blend * (b.Z - a.Z) + a.Z;
+    result.x = blend * (b.x - a.x) + a.x;
+    result.y = blend * (b.y - a.y) + a.y;
+    result.z = blend * (b.z - a.z) + a.z;
 }
 
 <span class="doccomment">/// Scales all components of a vector to lie in [-1, 1]
 </span><span class="kw">pub fn </span>Vec3_Normalize(result: <span class="kw-2">&amp;mut </span>Vec3, a: <span class="kw-2">&amp;</span>Vec3) {
-    <span class="kw">let </span>lenSquared = a.X * a.X + a.Y * a.Y + a.Z * a.Z;
+    <span class="kw">let </span>lenSquared = a.x * a.x + a.y * a.y + a.z * a.z;
     <span class="kw">let </span>scale = <span class="number">1.0 </span>/ sqrtf(lenSquared);
-    result.X = a.X * scale;
-    result.Y = a.Y * scale;
-    result.Z = a.Z * scale;
+    result.x = a.x * scale;
+    result.y = a.y * scale;
+    result.z = a.z * scale;
 }
 
 <span class="doccomment">/// Transforms a vector by the given matrix.
 </span><span class="kw">pub fn </span>Vec3_Transform(result: <span class="kw-2">&amp;mut </span>Vec3, a: <span class="kw-2">&amp;</span>Vec3, mat: <span class="kw-2">&amp;</span>Matrix) {
-    <span class="comment">// a could be pointing to result - can't directly assign X/Y/Z therefore
-    </span><span class="kw">let </span>x = a.X * mat.row1.X + a.Y * mat.row2.X + a.Z * mat.row3.X + mat.row4.X;
-    <span class="kw">let </span>y = a.X * mat.row1.Y + a.Y * mat.row2.Y + a.Z * mat.row3.Y + mat.row4.Y;
-    <span class="kw">let </span>z = a.X * mat.row1.Z + a.Y * mat.row2.Z + a.Z * mat.row3.Z + mat.row4.Z;
-    result.X = x;
-    result.Y = y;
-    result.Z = z;
+    <span class="comment">// a could be pointing to result - can't directly assign x/y/z therefore
+    </span><span class="kw">let </span>x = a.x * mat.row1.x + a.y * mat.row2.x + a.z * mat.row3.x + mat.row4.x;
+    <span class="kw">let </span>y = a.x * mat.row1.y + a.y * mat.row2.y + a.z * mat.row3.y + mat.row4.y;
+    <span class="kw">let </span>z = a.x * mat.row1.z + a.y * mat.row2.z + a.z * mat.row3.z + mat.row4.z;
+    result.x = x;
+    result.y = y;
+    result.z = z;
 }
 
-<span class="doccomment">/// Same as Vec3_Transform, but faster since X and Z are assumed as 0.
+<span class="doccomment">/// Same as Vec3_Transform, but faster since x and z are assumed as 0.
 </span><span class="kw">pub fn </span>Vec3_TransformY(result: <span class="kw-2">&amp;mut </span>Vec3, y: c_float, mat: <span class="kw-2">&amp;</span>Matrix) {
-    result.X = y * mat.row2.X + mat.row4.X;
-    result.Y = y * mat.row2.Y + mat.row4.Y;
-    result.Z = y * mat.row2.Z + mat.row4.Z;
+    result.x = y * mat.row2.x + mat.row4.x;
+    result.y = y * mat.row2.y + mat.row4.y;
+    result.z = y * mat.row2.z + mat.row4.z;
 }
 
 <span class="kw">pub fn </span>Vec3_RotateX(v: Vec3, angle: c_float) -&gt; Vec3 {
     <span class="kw">let </span>cosA = cosf(angle);
     <span class="kw">let </span>sinA = sinf(angle);
-    Vec3_Create3(v.X, cosA * v.Y + sinA * v.Z, -sinA * v.Y + cosA * v.Z)
+    Vec3_Create3(v.x, cosA * v.y + sinA * v.z, -sinA * v.y + cosA * v.z)
 }
 
 <span class="kw">pub fn </span>Vec3_RotateY(v: Vec3, angle: c_float) -&gt; Vec3 {
     <span class="kw">let </span>cosA = cosf(angle);
     <span class="kw">let </span>sinA = sinf(angle);
-    Vec3_Create3(cosA * v.X - sinA * v.Z, v.Y, sinA * v.X + cosA * v.Z)
+    Vec3_Create3(cosA * v.x - sinA * v.z, v.y, sinA * v.x + cosA * v.z)
 }
 
 <span class="kw">pub fn </span>Vec3_RotateY3(x: c_float, y: c_float, z: c_float, angle: c_float) -&gt; Vec3 {
@@ -360,21 +360,21 @@
 <span class="kw">pub fn </span>Vec3_RotateZ(v: Vec3, angle: c_float) -&gt; Vec3 {
     <span class="kw">let </span>cosA = cosf(angle);
     <span class="kw">let </span>sinA = sinf(angle);
-    Vec3_Create3(cosA * v.X + sinA * v.Y, -sinA * v.X + cosA * v.Y, v.Z)
+    Vec3_Create3(cosA * v.x + sinA * v.y, -sinA * v.x + cosA * v.y, v.z)
 }
 
 <span class="doccomment">/// Whether all of the components of the two vectors are equal.
 </span><span class="kw">pub fn </span>Vec3_Equals(a: <span class="kw-2">&amp;</span>Vec3, b: <span class="kw-2">&amp;</span>Vec3) -&gt; bool {
     <span class="attr">#[allow(clippy::float_cmp)]
     </span>{
-        a.X == b.X &amp;&amp; a.Y == b.Y &amp;&amp; a.Z == b.Z
+        a.x == b.x &amp;&amp; a.y == b.y &amp;&amp; a.z == b.z
     }
 }
 
 <span class="kw">pub fn </span>IVec3_Floor(result: <span class="kw-2">&amp;mut </span>IVec3, a: <span class="kw-2">&amp;</span>Vec3) {
-    result.X = floorf(a.X) <span class="kw">as _</span>;
-    result.Y = floorf(a.Y) <span class="kw">as _</span>;
-    result.Z = floorf(a.Z) <span class="kw">as _</span>;
+    result.x = floorf(a.x) <span class="kw">as _</span>;
+    result.y = floorf(a.y) <span class="kw">as _</span>;
+    result.z = floorf(a.z) <span class="kw">as _</span>;
 }
 
 <span class="doccomment">/// Returns a normalised vector facing in the direction described by the given yaw and pitch.
