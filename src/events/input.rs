@@ -2,7 +2,7 @@
 
 use std::os::raw::{c_float, c_int};
 
-use classicube_sys::{cc_bool, cc_string, InputButtons};
+use classicube_sys::{cc_bool, cc_string, InputButtons, InputDevice};
 
 use crate::make_event_handler;
 
@@ -17,42 +17,6 @@ make_event_handler!(
             rust_type: char,
             c_type: c_int,
             to_rust: |key| char::from_u32(u32::try_from(key).expect("u32::try_from(key)")).expect("char::from_u32(key)"),
-        },
-    )
-);
-
-make_event_handler!(
-    /// Key or button is pressed. Arg is a member of Key enumeration
-    Input,
-    Down,
-    Input,
-    (
-        {
-            name: key,
-            rust_type: InputButtons,
-            c_type: c_int,
-            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
-        },
-        {
-            name: repeating,
-            rust_type: bool,
-            c_type: cc_bool,
-            to_rust: |repeating| repeating != 0,
-        },
-    )
-);
-
-make_event_handler!(
-    /// Key or button is released. Arg is a member of Key enumeration
-    Input,
-    Up,
-    Int,
-    (
-        {
-            name: key,
-            rust_type: InputButtons,
-            c_type: c_int,
-            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
         },
     )
 );
@@ -85,6 +49,60 @@ make_event_handler!(
             to_rust: |s_ptr: *const cc_string| {
                 unsafe { s_ptr.as_ref().expect("s_ptr.as_ref()") }.to_string()
             },
+        },
+    )
+);
+
+make_event_handler!(
+    /// Key or button is pressed. Args are input button and device state.
+    Input,
+    Up2,
+    Input,
+    (
+        {
+            name: key,
+            rust_type: InputButtons,
+            c_type: c_int,
+            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
+        },
+        {
+            name: repeating,
+            rust_type: bool,
+            c_type: cc_bool,
+            to_rust: |repeating| repeating != 0,
+        },
+        {
+            name: device,
+            rust_type: *mut InputDevice,
+            c_type: *mut InputDevice,
+            to_rust: |device| device,
+        },
+    )
+);
+
+make_event_handler!(
+    /// Key or button is released. Args are input button and device state.
+    Input,
+    Down2,
+    Input,
+    (
+        {
+            name: key,
+            rust_type: InputButtons,
+            c_type: c_int,
+            to_rust: |key| InputButtons::try_from(key).expect("InputButtons::try_from(key)"),
+        },
+        {
+            name: repeating,
+            rust_type: bool,
+            c_type: cc_bool,
+            to_rust: |repeating| repeating != 0,
+        },
+        {
+            name: device,
+            rust_type: *mut InputDevice,
+            c_type: *mut InputDevice,
+            to_rust: |device| device,
         },
     )
 );

@@ -3,7 +3,7 @@ use std::{
     ptr::{addr_of, NonNull},
 };
 
-use classicube_sys::{Entities, Matrix, Vec3};
+use classicube_sys::{Entities, Vec3};
 
 /// 255 is self entity
 pub const ENTITY_SELF_ID: u8 = 255;
@@ -50,11 +50,6 @@ impl Entity {
     #[must_use]
     pub fn get_position(&self) -> Vec3 {
         self.inner.Position
-    }
-
-    #[must_use]
-    pub fn get_transform(&self) -> Matrix {
-        self.inner.Transform
     }
 
     #[must_use]
@@ -112,13 +107,13 @@ impl Entity {
 
     #[must_use]
     pub fn get_eye_height(&self) -> f32 {
-        self.get_model_eye_y() * self.get_model_scale().Y
+        self.get_model_eye_y() * self.get_model_scale().y
     }
 
     #[must_use]
     pub fn get_eye_position(&self) -> Vec3 {
         let mut pos = self.get_position();
-        pos.Y += self.get_eye_height();
+        pos.y += self.get_eye_height();
         pos
     }
 }
