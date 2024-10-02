@@ -20,3 +20,9 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [features]
 ci = []
+
+
+[package.metadata.release]
+pre-release-commit-message = "Release {{version}}"
+tag-message = "Release version {{version}}"
+metadata = "required"
