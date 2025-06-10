@@ -7,11 +7,16 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read # for checkout
 
 jobs:
+  linux_nix:
+    uses: SpiralP/github-reusable-workflows/.github/workflows/build.yml@f9dc1f800ad9c50771bbbee75e5d2d44ebfb64af # main
+
   windows:
     runs-on: windows-latest
+    permissions:
+      contents: write # for publishing docs
 
     steps:
       - uses: actions/checkout@v2
