@@ -39,7 +39,7 @@ jobs:
           override: true
 
       - name: setup-msbuild
-        uses: microsoft/setup-msbuild@34cfbaee7f672c76950673338facd8a73f637506 # v1.1
+        uses: microsoft/setup-msbuild@ede762b26a2de8d110bb5a3db4d7e0e080c0e917 # v1.3
 
       - name: Build
         uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
