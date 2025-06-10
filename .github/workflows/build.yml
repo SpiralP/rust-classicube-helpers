@@ -7,11 +7,13 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read # for checkout
 
 jobs:
   windows:
     runs-on: windows-latest
+    permissions:
+      contents: write # for publishing docs
 
     steps:
       - uses: actions/checkout@v2
