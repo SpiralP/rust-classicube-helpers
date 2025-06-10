@@ -19,7 +19,7 @@ jobs:
       contents: write # for publishing docs
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
 
       - name: Install deps
         run: |
@@ -33,28 +33,28 @@ jobs:
           echo "LIBCLANG_PATH=$HOME\scoop\apps\llvm\current\bin" >> $env:GITHUB_ENV
 
       - name: Install rust stable
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           override: true
 
       - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@34cfbaee7f672c76950673338facd8a73f637506 # v1.1
 
       - name: Build
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: build
 
       - name: Build docs
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         if: github.ref == 'refs/heads/main'
         with:
           command: doc
           args: --all-features
 
       - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
           force_orphan: true
 
       - name: Test
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: test
           args: --features ci -- --nocapture
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
 
       - name: Install deps
         run: |
@@ -80,18 +80,18 @@ jobs:
           sudo apt-get -y install mesa-common-dev libopenal-dev libcurl4-openssl-dev libgl1-mesa-dev
 
       - name: Install rust stable
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           override: true
 
       - name: Build
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: build
 
       - name: Test
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: test
           args: --features ci -- --nocapture
@@ -100,7 +100,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
 
       - name: Install deps
         run: |
@@ -108,18 +108,18 @@ jobs:
           echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
 
       - name: Install rust stable
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           override: true
 
       - name: Build
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: build
 
       - name: Test
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
         with:
           command: test
           args: --features ci -- --nocapture
