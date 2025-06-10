@@ -6,7 +6,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-async-dispatcher = { git = "https://github.com/SpiralP/rust-async-dispatcher.git" }
+async-dispatcher = { git = "https://github.com/SpiralP/rust-async-dispatcher.git", branch = "main" }
 classicube-sys = "4"
 futures = "0.3"
 futures-timer = "3"
