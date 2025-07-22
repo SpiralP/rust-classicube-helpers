@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["remove_color"],"struct":["TabList","TabListEntry"]};

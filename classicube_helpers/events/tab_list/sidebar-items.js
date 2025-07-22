@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["AddedEvent","AddedEventHandler","ChangedEvent","ChangedEventHandler","RemovedEvent","RemovedEventHandler"]};
