@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ChatReceivedEvent","ChatReceivedEventHandler","ChatSendingEvent","ChatSendingEventHandler","ColCodeChangedEvent","ColCodeChangedEventHandler","FontChangedEvent","FontChangedEventHandler"]};
