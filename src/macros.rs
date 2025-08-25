@@ -256,6 +256,7 @@ macro_rules! time_silent {
 macro_rules! test_noop_fn {
     ($name:tt) => {
         #[cfg(test)]
+        #[allow(non_snake_case)]
         #[unsafe(no_mangle)]
         pub extern "C" fn $name() {}
     };
@@ -265,6 +266,7 @@ macro_rules! test_noop_fn {
 macro_rules! test_noop_static {
     ($name:tt) => {
         #[cfg(test)]
+        #[allow(non_upper_case_globals)]
         #[unsafe(no_mangle)]
         pub static mut $name: () = ();
     };
