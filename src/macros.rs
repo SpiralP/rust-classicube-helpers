@@ -57,7 +57,7 @@ macro_rules! make_event_handler {
                 ) {
                     unsafe {
                         ::classicube_sys::[<Event_Raise $func_type>](
-                            &mut ::classicube_sys::[<$event_type Events>].$event_name,
+                            &mut *&raw mut ::classicube_sys::[<$event_type Events>].$event_name,
                             $($name, )*
                         );
                     }
@@ -65,7 +65,7 @@ macro_rules! make_event_handler {
 
                 #[must_use]
                 pub fn index(&self) -> Option<usize> {
-                    let event = unsafe { & ::classicube_sys::[<$event_type Events>].$event_name };
+                    let event = unsafe { &*&raw const ::classicube_sys::[<$event_type Events>].$event_name };
                     let ptr: *const $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
                         self.callback_handler.as_ref();
                     let ptr: *const ::std::os::raw::c_void = ptr.cast();
@@ -74,7 +74,7 @@ macro_rules! make_event_handler {
                     for i in 0..event.Count as usize {
                         let handler = event.Handlers[i];
                         let obj: *const ::std::os::raw::c_void = event.Objs[i].cast();
-                        #[allow(clippy::fn_address_comparisons)]
+                        #[allow(unpredictable_function_pointer_comparisons)]
                         if handler
                             .map(|handler| handler == Self::callback)
                             .unwrap_or(false)
@@ -92,7 +92,7 @@ macro_rules! make_event_handler {
                 pub fn reorder(&self, new_index: usize) -> Option<()> {
                     let old_index = self.index()?;
 
-                    let event = unsafe { &mut ::classicube_sys::[<$event_type Events>].$event_name };
+                    let event = unsafe { &mut *&raw mut ::classicube_sys::[<$event_type Events>].$event_name };
                     #[allow(clippy::cast_sign_loss)]
                     let count = event.Count as usize;
 
@@ -106,15 +106,17 @@ macro_rules! make_event_handler {
 
                 unsafe fn register_listener(&mut self) {
                     if !self.registered {
-                        let handlers = &mut ::classicube_sys::[<$event_type Events>].$event_name;
+                        let handlers = unsafe { &mut *&raw mut ::classicube_sys::[<$event_type Events>].$event_name };
                         let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
                             self.callback_handler.as_mut();
 
-                        ::classicube_sys::[<Event_Register $func_type>](
-                            handlers,
-                            ptr.cast(),
-                            Some(Self::callback),
-                        );
+                        unsafe {
+                            ::classicube_sys::[<Event_Register $func_type>](
+                                handlers,
+                                ptr.cast(),
+                                Some(Self::callback),
+                            );
+                        }
 
                         self.registered = true;
                     }
@@ -125,11 +127,13 @@ macro_rules! make_event_handler {
                         let ptr: *mut $crate::callback_handler::CallbackHandler<[<$event_name Event>]> =
                             self.callback_handler.as_mut();
 
-                        ::classicube_sys::[<Event_Unregister $func_type>](
-                            &mut ::classicube_sys::[<$event_type Events>].$event_name,
-                            ptr.cast(),
-                            Some(Self::callback),
-                        );
+                        unsafe {
+                            ::classicube_sys::[<Event_Unregister $func_type>](
+                                &mut *&raw mut ::classicube_sys::[<$event_type Events>].$event_name,
+                                ptr.cast(),
+                                Some(Self::callback),
+                            );
+                        }
 
                         self.registered = false;
                     }
@@ -252,7 +256,7 @@ macro_rules! time_silent {
 macro_rules! test_noop_fn {
     ($name:tt) => {
         #[cfg(test)]
-        #[no_mangle]
+        #[unsafe(no_mangle)]
         pub extern "C" fn $name() {}
     };
 }
@@ -261,7 +265,7 @@ macro_rules! test_noop_fn {
 macro_rules! test_noop_static {
     ($name:tt) => {
         #[cfg(test)]
-        #[no_mangle]
+        #[unsafe(no_mangle)]
         pub static mut $name: () = ();
     };
 }

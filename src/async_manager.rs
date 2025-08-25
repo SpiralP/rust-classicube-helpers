@@ -3,7 +3,7 @@ use std::{
     future::Future,
     pin::Pin,
     rc::Rc,
-    sync::Mutex,
+    sync::{LazyLock, Mutex},
     task::{Context, Poll, Waker},
     time::Duration,
 };
@@ -11,11 +11,10 @@ use std::{
 use async_dispatcher::{Dispatcher, DispatcherHandle, LocalDispatcherHandle};
 use futures::{future::Either, prelude::*};
 use futures_timer::Delay;
-use lazy_static::lazy_static;
 use tokio::task::{JoinError, JoinHandle};
-use tracing::{debug, warn, Instrument};
+use tracing::{Instrument, debug, warn};
 
-use crate::{tick::TickEventHandler, WithInner};
+use crate::{WithInner, tick::TickEventHandler};
 
 thread_local!(
     static ASYNC_DISPATCHER: RefCell<Option<Dispatcher>> = RefCell::default();
@@ -26,13 +25,11 @@ thread_local!(
         RefCell::default();
 );
 
-lazy_static! {
-    static ref ASYNC_DISPATCHER_HANDLE: Mutex<Option<DispatcherHandle>> = Mutex::default();
-}
+static ASYNC_DISPATCHER_HANDLE: LazyLock<Mutex<Option<DispatcherHandle>>> =
+    LazyLock::new(Mutex::default);
 
-lazy_static! {
-    static ref TOKIO_RUNTIME: Mutex<Option<tokio::runtime::Runtime>> = Mutex::default();
-}
+static TOKIO_RUNTIME: LazyLock<Mutex<Option<tokio::runtime::Runtime>>> =
+    LazyLock::new(Mutex::default);
 
 thread_local!(
     static TICK_HANDLER: RefCell<Option<TickEventHandler>> = RefCell::default();

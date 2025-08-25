@@ -1,6 +1,6 @@
 use std::{
     ffi::CStr,
-    ptr::{addr_of, NonNull},
+    ptr::{self, NonNull, addr_of},
 };
 
 use classicube_sys::{Entities, Vec3};
@@ -23,9 +23,11 @@ impl Entity {
     ///
     /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
     pub unsafe fn from_id(id: u8) -> Option<Self> {
-        let mut ptr = NonNull::new(Entities.List[id as usize])?;
-        let inner = ptr.as_mut();
-        Some(Self { id, inner })
+        unsafe {
+            let mut ptr = NonNull::new(Entities.List[id as usize])?;
+            let inner = ptr.as_mut();
+            Some(Self { id, inner })
+        }
     }
 
     #[must_use]
@@ -70,8 +72,10 @@ impl Entity {
 
     #[must_use]
     pub unsafe fn get_model(&self) -> Option<&classicube_sys::Model> {
-        let mut model = NonNull::new(self.inner.Model)?;
-        Some(model.as_mut())
+        unsafe {
+            let mut model = NonNull::new(self.inner.Model)?;
+            Some(model.as_mut())
+        }
     }
 
     #[must_use]
@@ -80,7 +84,7 @@ impl Entity {
         let get_eye_y = model.GetEyeY.expect("GetEyeY");
 
         // it most likely doesn't mutate the Entity
-        let inner_ptr = (self.inner as *const classicube_sys::Entity).cast_mut();
+        let inner_ptr = ptr::from_ref::<classicube_sys::Entity>(self.inner).cast_mut();
         unsafe { get_eye_y(inner_ptr) }
     }
 
@@ -90,7 +94,7 @@ impl Entity {
         let get_name_y = model.GetNameY.expect("GetNameY");
 
         // it most likely doesn't mutate the Entity
-        let inner_ptr = (self.inner as *const classicube_sys::Entity).cast_mut();
+        let inner_ptr = ptr::from_ref::<classicube_sys::Entity>(self.inner).cast_mut();
         unsafe { get_name_y(inner_ptr) }
     }
 

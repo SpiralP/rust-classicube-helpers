@@ -130,7 +130,6 @@ dependencies = [
  "classicube-sys",
  "futures",
  "futures-timer",
- "lazy_static",
  "paste",
  "tokio",
  "tracing",

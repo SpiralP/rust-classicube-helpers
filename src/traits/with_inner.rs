@@ -55,13 +55,9 @@ fn test_with_inner_thread_local() {
 
 #[test]
 fn test_with_inner_static_mutex() {
-    use std::sync::Mutex;
+    use std::sync::{LazyLock, Mutex};
 
-    use lazy_static::lazy_static;
-
-    lazy_static! {
-        static ref STATIC_MUTEX: Mutex<Option<u8>> = Mutex::default();
-    };
+    static STATIC_MUTEX: LazyLock<Mutex<Option<u8>>> = LazyLock::new(Mutex::default);
 
     assert!(STATIC_MUTEX.with_inner(|o| o + 2).is_none());
     STATIC_MUTEX.with_borrow_mut(|option| {
@@ -79,13 +75,9 @@ fn test_with_inner_static_mutex() {
 
 #[test]
 fn test_with_inner_static_rwlock() {
-    use std::sync::RwLock;
+    use std::sync::{LazyLock, RwLock};
 
-    use lazy_static::lazy_static;
-
-    lazy_static! {
-        static ref STATIC_RWLOCK: RwLock<Option<u8>> = RwLock::default();
-    };
+    static STATIC_RWLOCK: LazyLock<RwLock<Option<u8>>> = LazyLock::new(RwLock::default);
 
     assert!(STATIC_RWLOCK.with_inner(|o| o + 2).is_none());
     STATIC_RWLOCK.with_borrow_mut(|option| {

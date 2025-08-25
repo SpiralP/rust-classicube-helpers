@@ -30,7 +30,7 @@ impl<O> WithBorrow<'static, O> for LocalKey<RefCell<O>> {
     }
 }
 
-impl<'a, O> WithBorrow<'a, O> for Mutex<O> {
+impl<O> WithBorrow<'_, O> for Mutex<O> {
     fn with_borrow<F, R>(&self, f: F) -> R
     where
         F: FnOnce(&O) -> R,
@@ -48,7 +48,7 @@ impl<'a, O> WithBorrow<'a, O> for Mutex<O> {
     }
 }
 
-impl<'a, O> WithBorrow<'a, O> for RwLock<O> {
+impl<O> WithBorrow<'_, O> for RwLock<O> {
     fn with_borrow<F, R>(&self, f: F) -> R
     where
         F: FnOnce(&O) -> R,
@@ -84,9 +84,10 @@ fn test_with_borrow_thread_local() {
 
 #[test]
 fn test_with_borrow_static_mutex() {
-    lazy_static::lazy_static! {
-        static ref STATIC_MUTEX: Mutex<u8> = Mutex::default();
-    };
+    use std::sync::LazyLock;
+
+    static STATIC_MUTEX: LazyLock<Mutex<u8>> = LazyLock::new(Mutex::default);
+
     assert_eq!(
         STATIC_MUTEX.with_borrow_mut(|o| {
             *o += 2;
@@ -99,9 +100,10 @@ fn test_with_borrow_static_mutex() {
 
 #[test]
 fn test_with_borrow_static_rwlock() {
-    lazy_static::lazy_static! {
-        static ref STATIC_RWLOCK: RwLock<u8> = RwLock::default();
-    };
+    use std::sync::LazyLock;
+
+    static STATIC_RWLOCK: LazyLock<RwLock<u8>> = LazyLock::new(RwLock::default);
+
     assert_eq!(
         STATIC_RWLOCK.with_borrow_mut(|o| {
             *o += 2;

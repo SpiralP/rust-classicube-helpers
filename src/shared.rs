@@ -196,5 +196,8 @@ fn test_shared() {
         for module in &mut list_of_sync_shareds {
             module.lock().load();
         }
+        for module in &mut list_of_sync_shareds {
+            module.lock().unload();
+        }
     }
 }

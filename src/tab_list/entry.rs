@@ -21,18 +21,20 @@ impl TabListEntry {
     /// `Entities` will use `Weak` to make sure this dies when the entity is removed.
     #[must_use]
     pub unsafe fn from_id(id: u8) -> Option<Self> {
-        let name_offset = &TabList.NameOffsets[id as usize];
-        let group_rank = &TabList.GroupRanks[id as usize];
+        unsafe {
+            let name_offset = &TabList.NameOffsets[id as usize];
+            let group_rank = &TabList.GroupRanks[id as usize];
 
-        if *name_offset == 0 || *group_rank == 0 || TabList._buffer.count == 0 {
-            return None;
+            if *name_offset == 0 || *group_rank == 0 || TabList._buffer.count == 0 {
+                return None;
+            }
+
+            Some(Self {
+                id,
+                name_offset,
+                group_rank,
+            })
         }
-
-        Some(Self {
-            id,
-            name_offset,
-            group_rank,
-        })
     }
 
     #[must_use]
@@ -43,7 +45,7 @@ impl TabListEntry {
     /// or "Player"
     pub fn get_real_name(&self) -> String {
         unsafe {
-            StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(*self.name_offset - 3))
+            StringsBuffer_UNSAFE_Get(&raw mut TabList._buffer, c_int::from(*self.name_offset - 3))
         }
         .to_string()
     }
@@ -51,14 +53,14 @@ impl TabListEntry {
     /// or "Text" or "list"
     pub fn get_nick_name(&self) -> String {
         unsafe {
-            StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(*self.name_offset - 2))
+            StringsBuffer_UNSAFE_Get(&raw mut TabList._buffer, c_int::from(*self.name_offset - 2))
         }
         .to_string()
     }
 
     pub fn get_group(&self) -> String {
         unsafe {
-            StringsBuffer_UNSAFE_Get(&mut TabList._buffer, c_int::from(*self.name_offset - 1))
+            StringsBuffer_UNSAFE_Get(&raw mut TabList._buffer, c_int::from(*self.name_offset - 1))
         }
         .to_string()
     }
