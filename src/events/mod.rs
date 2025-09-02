@@ -1,5 +1,6 @@
 pub mod block;
 pub mod chat;
+pub mod controller;
 pub mod entity;
 pub mod gfx;
 pub mod input;

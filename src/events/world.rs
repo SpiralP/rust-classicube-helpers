@@ -1,5 +1,7 @@
 use std::os::raw::{c_float, c_int};
 
+use classicube_sys::{cc_bool, cc_uint8};
+
 use crate::make_event_handler;
 
 make_event_handler!(
@@ -43,6 +45,27 @@ make_event_handler!(
             name: var,
             rust_type: c_int,
             c_type: c_int,
+            to_rust: |a| a,
+        },
+    )
+);
+
+make_event_handler!(
+    /// Lighting mode changed.
+    World,
+    LightingModeChanged,
+    LightingMode,
+    (
+        {
+            name: old_mode,
+            rust_type: cc_uint8,
+            c_type: cc_uint8,
+            to_rust: |a| a,
+        },
+        {
+            name: from_server,
+            rust_type: cc_bool,
+            c_type: cc_bool,
             to_rust: |a| a,
         },
     )
