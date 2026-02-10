@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ENTITY_SELF_ID"],"struct":["Entities","Entity"]};
