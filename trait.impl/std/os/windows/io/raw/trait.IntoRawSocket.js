@@ -1,0 +1,9 @@
+(function() {
+    const implementors = Object.fromEntries([["mio",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.0/std/os/windows/io/raw/trait.IntoRawSocket.html\" title=\"trait std::os::windows::io::raw::IntoRawSocket\">IntoRawSocket</a> for <a class=\"struct\" href=\"mio/net/struct.TcpListener.html\" title=\"struct mio::net::TcpListener\">TcpListener</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.0/std/os/windows/io/raw/trait.IntoRawSocket.html\" title=\"trait std::os::windows::io::raw::IntoRawSocket\">IntoRawSocket</a> for <a class=\"struct\" href=\"mio/net/struct.TcpStream.html\" title=\"struct mio::net::TcpStream\">TcpStream</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.0/std/os/windows/io/raw/trait.IntoRawSocket.html\" title=\"trait std::os::windows::io::raw::IntoRawSocket\">IntoRawSocket</a> for <a class=\"struct\" href=\"mio/net/struct.UdpSocket.html\" title=\"struct mio::net::UdpSocket\">UdpSocket</a>",0]]],["socket2",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.0/std/os/windows/io/raw/trait.IntoRawSocket.html\" title=\"trait std::os::windows::io::raw::IntoRawSocket\">IntoRawSocket</a> for <a class=\"struct\" href=\"socket2/struct.Socket.html\" title=\"struct socket2::Socket\">Socket</a>",0]]],["tokio",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.94.0/std/os/windows/io/raw/trait.IntoRawSocket.html\" title=\"trait std::os::windows::io::raw::IntoRawSocket\">IntoRawSocket</a> for <a class=\"struct\" href=\"tokio/net/struct.TcpSocket.html\" title=\"struct tokio::net::TcpSocket\">TcpSocket</a>",0]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":59,"fragment_lengths":[939,312,324]}
