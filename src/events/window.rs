@@ -41,7 +41,7 @@ make_event_handler!(
 );
 
 make_event_handler!(
-    /// Window has been created, Window_Handle is valid now.
+    /// Window has been created, `Window_Handle` is valid now.
     Window,
     Created,
     Void,

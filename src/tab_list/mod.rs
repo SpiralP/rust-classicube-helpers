@@ -5,7 +5,7 @@ use std::{
     rc::{Rc, Weak},
 };
 
-use classicube_sys::{TabList, TABLIST_MAX_NAMES};
+use classicube_sys::{TABLIST_MAX_NAMES, TabList};
 use tracing::warn;
 
 pub use self::entry::TabListEntry;
@@ -142,10 +142,10 @@ impl TabList {
 
         for id in 0..TABLIST_MAX_NAMES {
             unsafe {
-                if TabList.NameOffsets[id as usize] != 0 {
-                    if let Some(entry) = TabListEntry::from_id(u8::try_from(id).unwrap()) {
-                        entries.insert(u8::try_from(id).unwrap(), Rc::new(entry));
-                    }
+                if TabList.NameOffsets[id as usize] != 0
+                    && let Some(entry) = TabListEntry::from_id(u8::try_from(id).unwrap())
+                {
+                    entries.insert(u8::try_from(id).unwrap(), Rc::new(entry));
                 }
             }
         }

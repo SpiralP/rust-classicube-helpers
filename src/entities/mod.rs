@@ -5,10 +5,10 @@ use std::{
     rc::{Rc, Weak},
 };
 
-use classicube_sys::{Entities, ENTITIES_MAX_COUNT};
+use classicube_sys::{ENTITIES_MAX_COUNT, Entities};
 use tracing::warn;
 
-pub use self::entity::{Entity, ENTITY_SELF_ID};
+pub use self::entity::{ENTITY_SELF_ID, Entity};
 use crate::{
     callback_handler::CallbackHandler,
     events::entity::{AddedEvent, AddedEventHandler, RemovedEvent, RemovedEventHandler},
@@ -105,10 +105,10 @@ impl Entities {
 
         for id in 0..ENTITIES_MAX_COUNT {
             unsafe {
-                if !Entities.List[id as usize].is_null() {
-                    if let Some(entity) = Entity::from_id(u8::try_from(id).unwrap()) {
-                        entities.insert(u8::try_from(id).unwrap(), Rc::new(entity));
-                    }
+                if !Entities.List[id as usize].is_null()
+                    && let Some(entity) = Entity::from_id(u8::try_from(id).unwrap())
+                {
+                    entities.insert(u8::try_from(id).unwrap(), Rc::new(entity));
                 }
             }
         }
