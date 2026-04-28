@@ -1,9 +1,21 @@
-name: Rust
+name: build
 
-on: [push]
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches-ignore: [ main, master ]
+  workflow_call:
+    inputs:
+      release:
+        default: false
+        description: Build in release mode.
+        required: false
+        type: boolean
+  workflow_dispatch:
 
 concurrency:
-  group: ${{ github.ref }}
+  group: build-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -14,112 +26,85 @@ jobs:
     uses: SpiralP/github-reusable-workflows/.github/workflows/build.yml@4c45b82d0802754ff04dadb453d3b49fe1c8f406 # main
 
   windows:
-    runs-on: windows-latest
-    permissions:
-      contents: write # for publishing docs
+    name: Build & Test Windows ${{ matrix.config.arch }}
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - arch: x86_64
+            target: x86_64-pc-windows-msvc
+          # - arch: i686
+          #   target: i686-pc-windows-msvc
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Install deps
-        run: |
-          iwr -useb get.scoop.sh -outfile install-scoop.ps1
-          .\install-scoop.ps1 -RunAsAdmin
-          rm install-scoop.ps1
-          echo "$HOME\scoop\shims" >> $env:GITHUB_PATH
-          echo "C:\ProgramData\scoop\shims" >> $env:GITHUB_PATH
-          scoop install aria2
-          scoop install llvm
-          echo "LIBCLANG_PATH=$HOME\scoop\apps\llvm\current\bin" >> $env:GITHUB_ENV
+      - name: Add rust target
+        run: rustup target add ${{ matrix.config.target }}
 
-      - name: Install rust stable
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
+      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
-          toolchain: stable
-          override: true
-
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@ede762b26a2de8d110bb5a3db4d7e0e080c0e917 # v1.3
+          key: ${{ matrix.config.target }}
 
       - name: Build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: build
-
-      - name: Build docs
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        if: github.ref == 'refs/heads/main'
-        with:
-          command: doc
-          args: --all-features
-
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/doc
-          force_orphan: true
+        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
 
       - name: Test
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: test
-          args: --features ci -- --nocapture
+        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
 
   linux:
-    runs-on: ubuntu-latest
+    name: Build & Test Linux ${{ matrix.config.arch }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - arch: x86_64
+            target: x86_64-unknown-linux-gnu
+          # - arch: i686
+          #   target: i686-unknown-linux-gnu
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Install deps
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install clang llvm
-          sudo apt-get -y install mesa-common-dev libopenal-dev libcurl4-openssl-dev libgl1-mesa-dev
+      - name: Add rust target
+        run: rustup target add ${{ matrix.config.target }}
 
-      - name: Install rust stable
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
+      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
-          toolchain: stable
-          override: true
+          key: ${{ matrix.config.target }}
 
       - name: Build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: build
+        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
 
       - name: Test
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: test
-          args: --features ci -- --nocapture
+        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
 
   mac:
-    runs-on: macos-latest
+    name: Build & Test macOS ${{ matrix.config.arch }}
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - arch: aarch64
+            target: aarch64-apple-darwin
+          # - arch: x86_64
+          #   target: x86_64-apple-darwin
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Install deps
-        run: |
-          brew install llvm
-          echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
+      - name: Add rust target
+        run: rustup target add ${{ matrix.config.target }}
 
-      - name: Install rust stable
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
+      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
-          toolchain: stable
-          override: true
+          key: ${{ matrix.config.target }}
 
       - name: Build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: build
+        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
 
       - name: Test
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
-        with:
-          command: test
-          args: --features ci -- --nocapture
+        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
