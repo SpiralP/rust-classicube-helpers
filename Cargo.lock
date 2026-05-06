@@ -14,7 +14,7 @@ dependencies = [
 [[package]]
 name = "async-dispatcher"
 version = "0.1.0"
-source = "git+https://github.com/SpiralP/rust-async-dispatcher.git?branch=main#f0e86ff7a59f895eda4bd12cabf238ebe601a7e4"
+source = "git+https://github.com/SpiralP/rust-async-dispatcher.git?branch=main#e31354a7739f18ce65f149941541dbb31d35a578"
 dependencies = [
  "futures",
 ]
