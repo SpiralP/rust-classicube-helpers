@@ -1,0 +1,2 @@
+createSrcSidebar('[["classicube_helpers",["",[["entities",[],["entity.rs","mod.rs"]],["events",[],["block.rs","chat.rs","controller.rs","entity.rs","gfx.rs","input.rs","mod.rs","net.rs","pointer.rs","tab_list.rs","texture.rs","user.rs","window.rs","world.rs"]],["tab_list",[],["entry.rs","mod.rs"]],["traits",[],["cell.rs","mod.rs","with_borrow.rs","with_inner.rs"]]],["async_manager.rs","callback_handler.rs","chat.rs","color.rs","lib.rs","macros.rs","shared.rs","tick.rs"]]]]');
+//{"start":19,"fragment_lengths":[457]}

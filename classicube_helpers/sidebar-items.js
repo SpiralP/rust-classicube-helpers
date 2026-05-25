@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["test_noop_fn","test_noop_static","time","time_silent"],"mod":["async_manager","chat","color","entities","events","shared","tab_list","tick"],"trait":["CellGetSet","WithBorrow","WithInner"]};

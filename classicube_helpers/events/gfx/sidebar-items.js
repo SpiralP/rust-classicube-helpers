@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ContextLostEvent","ContextLostEventHandler","ContextRecreatedEvent","ContextRecreatedEventHandler","LowVRAMDetectedEvent","LowVRAMDetectedEventHandler","ProjectionChangedEvent","ProjectionChangedEventHandler","ViewDistanceChangedEvent","ViewDistanceChangedEventHandler"]};
