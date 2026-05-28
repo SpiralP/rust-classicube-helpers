@@ -2,7 +2,7 @@
 
 use std::os::raw::c_int;
 
-use classicube_sys::{cc_string, MsgType};
+use classicube_sys::{MsgType, cc_string};
 
 use crate::make_event_handler;
 

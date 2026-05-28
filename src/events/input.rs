@@ -2,7 +2,7 @@
 
 use std::os::raw::{c_float, c_int};
 
-use classicube_sys::{cc_bool, cc_string, InputButtons, InputDevice};
+use classicube_sys::{InputButtons, InputDevice, cc_bool, cc_string};
 
 use crate::make_event_handler;
 

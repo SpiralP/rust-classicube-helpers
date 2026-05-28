@@ -1,6 +1,6 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 
-use classicube_sys::{cc_string, Stream};
+use classicube_sys::{Stream, cc_string};
 
 use crate::make_event_handler;
 

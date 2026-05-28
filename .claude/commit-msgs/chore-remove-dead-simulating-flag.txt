@@ -1,0 +1,5 @@
+chore: remove unused SIMULATING flag from chat::print
+
+The thread-local was set around Chat_Add but never read — no public
+getter, no internal consumer. Likely intended as a feedback-loop
+guard for ChatReceived listeners, but it was never wired up.
