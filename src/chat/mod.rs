@@ -1,0 +1,91 @@
+use classicube_sys::{Chat_Add, Chat_Send, OwnedString};
+use tracing::info;
+
+#[cfg(test)]
+mod tests;
+
+// TEXTGROUPWIDGET_LEN = STRING_SIZE + STRING_SIZE / 2 = 64 + 32
+const TEXTGROUPWIDGET_LEN: usize = 96;
+
+/// Returns the last `&X` color code character in `text`, scanning backward.
+/// Returns `None` if there is no color code.
+fn last_color(text: &[char]) -> Option<char> {
+    let mut i = text.len();
+    while i >= 2 {
+        i -= 1;
+        if text[i - 1] == '&' && text[i].is_ascii_hexdigit() {
+            return Some(text[i]);
+        }
+    }
+    None
+}
+
+/// Word-wrap `text` into lines of at most `limit` characters, splitting at the
+/// last space within the limit (hard-cut at `limit` if there is none).
+/// Continuation lines are prefixed with `&f> ` followed by the color code
+/// active at the end of the previous line (if it is not the default white).
+#[must_use]
+pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
+    let chars: Vec<char> = text.chars().collect();
+    let mut lines = Vec::new();
+    let mut start = 0;
+    let mut carry: Option<char> = None;
+    let mut first = true;
+
+    while start < chars.len() {
+        let end = if chars.len() - start <= limit {
+            chars.len()
+        } else {
+            let window_end = start + limit;
+            match chars[start..window_end].iter().rposition(|&c| c == ' ') {
+                Some(rel) if rel > 0 => start + rel + 1,
+                _ => window_end,
+            }
+        };
+
+        let segment: String = chars[start..end].iter().collect();
+        lines.push(if first {
+            segment
+        } else {
+            match carry {
+                Some(c) => format!("> &{c}{segment}"),
+                None => format!("> {segment}"),
+            }
+        });
+        first = false;
+
+        if let Some(code) = last_color(&chars[start..end]) {
+            carry = if matches!(code, 'f' | 'F') {
+                None
+            } else {
+                Some(code)
+            };
+        }
+
+        start = end;
+    }
+
+    lines
+}
+
+pub fn print<S: Into<String>>(s: S) {
+    let s: String = s.into();
+    info!("{}", s);
+
+    for line in wordwrap(&s, TEXTGROUPWIDGET_LEN) {
+        let owned_string = OwnedString::new(line);
+        unsafe {
+            Chat_Add(owned_string.as_cc_string());
+        }
+    }
+}
+
+pub fn send<S: Into<String>>(s: S) {
+    let s = s.into();
+    info!("{}", s);
+
+    let owned_string = OwnedString::new(s);
+    unsafe {
+        Chat_Send(owned_string.as_cc_string(), 0);
+    }
+}
