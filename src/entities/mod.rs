@@ -16,6 +16,10 @@ use crate::{
 
 /// safe access to entities list and entity events
 pub struct Entities {
+    #[expect(
+        clippy::struct_field_names,
+        reason = "field genuinely holds the entities map"
+    )]
     entities: Rc<RefCell<HashMap<u8, Rc<Entity>>>>,
 
     #[allow(clippy::type_complexity)]

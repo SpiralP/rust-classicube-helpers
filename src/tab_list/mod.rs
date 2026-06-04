@@ -2,6 +2,7 @@ mod entry;
 use std::{
     cell::RefCell,
     collections::HashMap,
+    mem,
     rc::{Rc, Weak},
 };
 
@@ -394,11 +395,8 @@ pub fn remove_color<T: AsRef<str>>(text: T) -> String {
                 // we remove all amps but they're kept in chat if repeated
                 found_ampersand = true;
                 false
-            } else if found_ampersand {
-                found_ampersand = false;
-                false
             } else {
-                true
+                !mem::take(&mut found_ampersand)
             }
         })
         .collect()
