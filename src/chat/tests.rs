@@ -123,3 +123,57 @@ fn carry_persists_across_multiple_lines() {
         assert!(line.starts_with("> &a"), "expected '> &a' on: {line}");
     }
 }
+
+// --------------- wordwrap: \n newline handling ---------------
+
+#[test]
+fn newline_splits_into_separate_lines() {
+    assert_eq!(
+        wordwrap("hello\nworld", 96),
+        vec!["hello".to_string(), "world".to_string()]
+    );
+}
+
+#[test]
+fn newline_no_continuation_prefix() {
+    // A hard \n starts a fresh line, not a soft-wrap continuation.
+    let result = wordwrap("hello\nworld", 96);
+    assert_eq!(result.len(), 2);
+    assert!(
+        !result[1].starts_with("> "),
+        "expected no '> ' prefix after \\n, got: {}",
+        result[1]
+    );
+}
+
+#[test]
+fn consecutive_newlines_collapse() {
+    assert_eq!(
+        wordwrap("a\n\nb", 96),
+        vec!["a".to_string(), "b".to_string()]
+    );
+}
+
+#[test]
+fn trailing_newline_collapsed() {
+    assert_eq!(wordwrap("foo\n", 96), vec!["foo".to_string()]);
+}
+
+#[test]
+fn newline_resets_color_carry() {
+    // The &a color from the first segment must not bleed into the second.
+    let result = wordwrap("&ahello\nworld", 96);
+    assert_eq!(result, vec!["&ahello".to_string(), "world".to_string()]);
+}
+
+#[test]
+fn newline_then_long_line_wraps() {
+    // The segment after \n is still soft-wrapped with "> " within itself.
+    let s = format!("short\n{}", "x".repeat(12));
+    let result = wordwrap(&s, 10);
+    // "short" + hard-cut 10 x's + "> " + 2 x's
+    assert_eq!(result.len(), 3, "got: {result:?}");
+    assert_eq!(result[0], "short");
+    assert_eq!(result[1], "x".repeat(10));
+    assert_eq!(result[2], format!("> {}", "x".repeat(2)));
+}

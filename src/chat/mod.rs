@@ -20,14 +20,12 @@ fn last_color(text: &[char]) -> Option<char> {
     None
 }
 
-/// Word-wrap `text` into lines of at most `limit` characters, splitting at the
-/// last space within the limit (hard-cut at `limit` if there is none).
-/// Continuation lines are prefixed with `&f> ` followed by the color code
-/// active at the end of the previous line (if it is not the default white).
-#[must_use]
-pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
+/// Append soft-wrapped lines for a single `\n`-free segment to `out`.
+/// Continuation lines are prefixed with `> ` followed by the color code
+/// active at the end of the previous soft-wrap line (skipped for default
+/// white `&f`/`&F`). Empty `text` appends nothing.
+fn wrap_line(text: &str, limit: usize, out: &mut Vec<String>) {
     let chars: Vec<char> = text.chars().collect();
-    let mut lines = Vec::new();
     let mut start = 0;
     let mut carry: Option<char> = None;
     let mut first = true;
@@ -44,7 +42,7 @@ pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
         };
 
         let segment: String = chars[start..end].iter().collect();
-        lines.push(if first {
+        out.push(if first {
             segment
         } else {
             match carry {
@@ -64,7 +62,23 @@ pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
 
         start = end;
     }
+}
 
+/// Word-wrap `text` into lines of at most `limit` characters.
+///
+/// The input is first split on `\n`; each resulting segment is wrapped
+/// independently (fresh continuation prefix and color carry per segment).
+/// Within a segment, splits occur at the last space within the limit
+/// (hard-cut at `limit` if there is none). Continuation lines within a
+/// segment are prefixed with `> ` followed by the color code active at the
+/// end of the previous line (skipped for default white `&f`/`&F`). Empty
+/// segments (from consecutive or trailing `\n`) produce no output.
+#[must_use]
+pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
+    let mut lines = Vec::new();
+    for segment in text.split('\n') {
+        wrap_line(segment, limit, &mut lines);
+    }
     lines
 }
 
