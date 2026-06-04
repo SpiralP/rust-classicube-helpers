@@ -1,0 +1,33 @@
+name: install-build-test
+description: "Install rust, build, and test with nextest for the given target."
+
+inputs:
+  target:
+    description: Build target.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install rust
+      run: |
+        rustup default stable
+        rustup target add ${{ inputs.target }}
+      shell: bash
+
+    - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+      with:
+        key: ${{ inputs.target }}
+        save-if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+    - name: Build
+      run: cargo build --target ${{ inputs.target }}
+      shell: bash
+
+    - uses: taiki-e/install-action@184183c2401be73c3bf42c2e61268aa5855379c1 # v2.78.1
+      with:
+        tool: cargo-nextest
+
+    - name: Test
+      run: cargo nextest run --target ${{ inputs.target }} --features ci --no-capture
+      shell: bash

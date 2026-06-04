@@ -1,56 +1,46 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    flake-utils.url = "github:SpiralP/nix-flake-utils";
   };
 
-  outputs = { self, nixpkgs }:
-    let
-      inherit (nixpkgs) lib;
-
-      rustManifest = lib.importTOML ./Cargo.toml;
-
-      revSuffix = lib.optionalString (self ? shortRev || self ? dirtyShortRev)
-        "-${self.shortRev or self.dirtyShortRev}";
-
-      makePackages = (system: dev:
+  outputs = inputs@{ flake-utils, ... }:
+    flake-utils.lib.makeOutputs inputs
+      ({ lib, pkgs, makeRustPackage, ... }:
         let
-          pkgs = import nixpkgs {
-            inherit system;
-          };
+          src = lib.sourceByRegex ./. [
+            "^Cargo\.(lock|toml)$"
+            "^src(/.*)?$"
+          ];
+
+          nativeBuildInputs = with pkgs; [
+            rustPlatform.bindgenHook
+          ];
         in
         {
-          default = pkgs.rustPlatform.buildRustPackage {
-            pname = rustManifest.package.name;
-            version = rustManifest.package.version + revSuffix;
+          default = makeRustPackage pkgs (self: {
+            inherit src nativeBuildInputs;
 
-            src = lib.sourceByRegex ./. [
-              "^\.cargo(/.*)?$"
-              "^build\.rs$"
-              "^Cargo\.(lock|toml)$"
-              "^src(/.*)?$"
-            ];
+            dontUseCargoParallelTests = true;
+          });
 
-            cargoLock = {
-              lockFile = ./Cargo.lock;
-              allowBuiltinFetchGit = true;
-            };
+          docs = makeRustPackage pkgs (self: {
+            inherit src nativeBuildInputs;
 
-            nativeBuildInputs = (with pkgs; [
-              rustPlatform.bindgenHook
-            ]) ++ (if dev then
-              with pkgs; [
-                clippy
-                rust-analyzer
-                (rustfmt.override { asNightly = true; })
-              ] else [ ]);
-          };
-        }
-      );
-    in
-    builtins.foldl' lib.recursiveUpdate { } (builtins.map
-      (system: {
-        devShells.${system} = makePackages system true;
-        packages.${system} = makePackages system false;
-      })
-      lib.systems.flakeExposed);
+            buildPhase = ''
+              runHook preBuild
+              cargo doc --no-deps
+              runHook postBuild
+            '';
+
+            # tests run in the default build; the docs output only needs rustdoc
+            doCheck = false;
+
+            installPhase = ''
+              runHook preInstall
+              mv target/doc $out
+              runHook postInstall
+            '';
+          });
+        });
 }

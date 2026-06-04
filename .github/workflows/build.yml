@@ -2,16 +2,8 @@ name: build
 
 on:
   pull_request:
-    branches: [ main, master ]
-  push:
-    branches-ignore: [ main, master ]
+    branches: [main, master, alpha, beta]
   workflow_call:
-    inputs:
-      release:
-        default: false
-        description: Build in release mode.
-        required: false
-        type: boolean
   workflow_dispatch:
 
 concurrency:
@@ -32,26 +24,13 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - arch: x86_64
-            target: x86_64-pc-windows-msvc
-          # - arch: i686
-          #   target: i686-pc-windows-msvc
-
+          - { arch: x86_64, target: x86_64-pc-windows-msvc }
+          # - { arch: i686, target: i686-pc-windows-msvc }
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Add rust target
-        run: rustup target add ${{ matrix.config.target }}
-
-      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+      - uses: ./.github/actions/install-build-test
         with:
-          key: ${{ matrix.config.target }}
-
-      - name: Build
-        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
-
-      - name: Test
-        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
+          target: ${{ matrix.config.target }}
 
   linux:
     name: Build & Test Linux ${{ matrix.config.arch }}
@@ -60,26 +39,13 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - arch: x86_64
-            target: x86_64-unknown-linux-gnu
-          # - arch: i686
-          #   target: i686-unknown-linux-gnu
-
+          - { arch: x86_64, target: x86_64-unknown-linux-gnu }
+          # - { arch: i686, target: i686-unknown-linux-gnu }
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Add rust target
-        run: rustup target add ${{ matrix.config.target }}
-
-      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+      - uses: ./.github/actions/install-build-test
         with:
-          key: ${{ matrix.config.target }}
-
-      - name: Build
-        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
-
-      - name: Test
-        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
+          target: ${{ matrix.config.target }}
 
   mac:
     name: Build & Test macOS ${{ matrix.config.arch }}
@@ -88,23 +54,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - arch: aarch64
-            target: aarch64-apple-darwin
-          # - arch: x86_64
-          #   target: x86_64-apple-darwin
-
+          - { arch: aarch64, target: aarch64-apple-darwin }
+          # - { arch: x86_64, target: x86_64-apple-darwin }
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Add rust target
-        run: rustup target add ${{ matrix.config.target }}
-
-      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+      - uses: ./.github/actions/install-build-test
         with:
-          key: ${{ matrix.config.target }}
-
-      - name: Build
-        run: cargo build --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }}
-
-      - name: Test
-        run: cargo test --target ${{ matrix.config.target }} ${{ inputs.release && '--release' || '' }} --features ci -- --nocapture --test-threads 1
+          target: ${{ matrix.config.target }}
