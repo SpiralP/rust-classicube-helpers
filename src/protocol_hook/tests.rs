@@ -1,3 +1,5 @@
+use std::hint;
+
 use super::*;
 
 // ------------- is_normal_message ------------------
@@ -16,8 +18,18 @@ fn is_normal_message_nonzero_is_false() {
 
 // ------------- handlers_eq (pure, using local dummy fns) ------------------
 
-unsafe extern "C" fn dummy_a(_: *mut u8) {}
-unsafe extern "C" fn dummy_b(_: *mut u8) {}
+// Distinct, side-effect-free bodies on purpose: two byte-identical empty
+// `extern "C"` functions get folded to one address by LLVM's function-merging
+// pass in optimized (release) builds -- e.g. the `linux_nix` CI job -- which
+// would make `ptr::fn_addr_eq` report them equal. `ptr::fn_addr_eq` does not
+// guarantee distinct functions have distinct addresses, so each gets a unique
+// `black_box` constant that survives optimization and keeps the addresses apart.
+unsafe extern "C" fn dummy_a(_: *mut u8) {
+    hint::black_box(0xAA_u8);
+}
+unsafe extern "C" fn dummy_b(_: *mut u8) {
+    hint::black_box(0xBB_u8);
+}
 
 #[test]
 fn handlers_eq_same_fn_is_true() {
