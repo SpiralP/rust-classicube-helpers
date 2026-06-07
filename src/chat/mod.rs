@@ -1,4 +1,7 @@
+pub mod message_hook;
+
 use classicube_sys::{Chat_Add, Chat_Send, OwnedString};
+pub use message_hook::ProtocolMessageHook;
 use tracing::info;
 
 #[cfg(test)]
