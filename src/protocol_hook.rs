@@ -37,6 +37,13 @@
 //! trampoline stays in the chain as a transparent forwarder (callback cleared,
 //! forwards straight to its saved handler).
 //!
+//! Dropping is also safe during thread-local storage teardown at process exit
+//! (e.g. when a plugin stores a [`ProtocolHook`] in a `thread_local!` and
+//! holds it until the thread is torn down). The `Drop` impl uses `try_with`
+//! so it silently skips the splice when sibling thread-locals (`OLD`,
+//! `IN_CHAIN`, `CALLBACK`) have already been destroyed; the `Protocol` layer
+//! is going away at that point anyway.
+//!
 //! *Reloading* (drop then re-create the handle, e.g. a plugin manager calling a
 //! component's Free then Init) is also handled: a fresh
 //! [`install`](ProtocolHook::install) re-arms in place when our trampoline is
@@ -256,11 +263,19 @@ fn uninstall_inner(opcode: u8) {
     if is_our_handler(opcode, current) {
         // We are the head: splice out by restoring OLD. We are no longer
         // referenced anywhere, so clear IN_CHAIN.
-        let prior = OLD.with(|a| a[opcode as usize].take());
+        //
+        // Use try_with instead of with: if this Drop is reached during
+        // thread-local teardown at process exit (e.g. the consumer stored the
+        // hook in a thread_local!), OLD/IN_CHAIN may already be destroyed and
+        // with would panic with AccessError. The Protocol layer is going away
+        // at that point, so skipping the splice is safe.
+        let Ok(prior) = OLD.try_with(|a| a[opcode as usize].take()) else {
+            return;
+        };
         unsafe {
             Protocol.Handlers[opcode as usize] = prior;
         }
-        IN_CHAIN.with(|a| a[opcode as usize].set(false));
+        let _ = IN_CHAIN.try_with(|a| a[opcode as usize].set(false));
     }
     // Else: a foreign plugin is on top. Leave the slot and OLD alone. The
     // trampoline is still reachable via their chain; with CALLBACK cleared by
@@ -370,6 +385,8 @@ impl Drop for ProtocolHook {
         // Clear CALLBACK unconditionally: even when uninstall_inner no-ops
         // (foreign plugin on top), we must clear the callback so a later
         // `install` call does not spuriously hit the double-install assert.
-        CALLBACK.with(|a| a[self.opcode as usize].set(None));
+        // try_with: CALLBACK may already be destroyed during TLS teardown
+        // (see uninstall_inner); nothing to clear if so.
+        let _ = CALLBACK.try_with(|a| a[self.opcode as usize].set(None));
     }
 }
