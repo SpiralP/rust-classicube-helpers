@@ -124,6 +124,55 @@ fn carry_persists_across_multiple_lines() {
     }
 }
 
+// --------------- wordwrap: continuation lines stay within limit ---------------
+
+#[test]
+fn continuation_respects_limit_with_color_carry() {
+    // Reproduces the original bug: &a + a 100-char space-free token at limit=96.
+    // Before the fix the continuation line was 100 chars (96 content + ">&a"
+    // prefix), which ClassiCube truncated, losing 4 chars.
+    let token = "x".repeat(100);
+    let s = format!("&a{token}");
+    let result = wordwrap(&s, 96);
+    for line in &result {
+        assert!(
+            line.chars().count() <= 96,
+            "line exceeds limit: ({} chars) {:?}",
+            line.chars().count(),
+            line
+        );
+    }
+    // All input characters must be present in the output (nothing dropped).
+    // Strip continuation prefixes ("> &a" or "> ") from lines 1+; line 0
+    // has no prefix so unwrap_or returns it as-is (including the "&a" code).
+    let total_content: usize = result
+        .iter()
+        .map(|l| {
+            let stripped = l
+                .strip_prefix("> &a")
+                .or_else(|| l.strip_prefix("> "))
+                .unwrap_or(l);
+            stripped.chars().count()
+        })
+        .sum();
+    assert_eq!(total_content, s.chars().count());
+}
+
+#[test]
+fn continuation_no_color_respects_limit() {
+    // Same invariant for the "> " (2-char) prefix path.
+    let s = "x".repeat(200);
+    let result = wordwrap(&s, 96);
+    for line in &result {
+        assert!(
+            line.chars().count() <= 96,
+            "line exceeds limit: ({} chars) {:?}",
+            line.chars().count(),
+            line
+        );
+    }
+}
+
 // --------------- wordwrap: \n newline handling ---------------
 
 #[test]

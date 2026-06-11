@@ -24,9 +24,9 @@ fn last_color(text: &[char]) -> Option<char> {
 }
 
 /// Append soft-wrapped lines for a single `\n`-free segment to `out`.
-/// Continuation lines are prefixed with `> ` followed by the color code
-/// active at the end of the previous soft-wrap line (skipped for default
-/// white `&f`/`&F`). Empty `text` appends nothing.
+/// Continuation lines are prefixed with `> ` (2 chars) or `> &X` (4 chars,
+/// with color carry) followed by their content. Each produced line, including
+/// the prefix, fits within `limit` chars. Empty `text` appends nothing.
 fn wrap_line(text: &str, limit: usize, out: &mut Vec<String>) {
     let chars: Vec<char> = text.chars().collect();
     let mut start = 0;
@@ -34,10 +34,20 @@ fn wrap_line(text: &str, limit: usize, out: &mut Vec<String>) {
     let mut first = true;
 
     while start < chars.len() {
-        let end = if chars.len() - start <= limit {
+        // Continuation lines have a "> " (2) or "> &X" (4) prefix; reserve
+        // that width so the rendered line stays within `limit`. First lines
+        // have no prefix and use the full limit.
+        let prefix_len = if first {
+            0
+        } else {
+            2 + if carry.is_some() { 2 } else { 0 }
+        };
+        let effective = limit.saturating_sub(prefix_len).max(1);
+
+        let end = if chars.len() - start <= effective {
             chars.len()
         } else {
-            let window_end = start + limit;
+            let window_end = start + effective;
             match chars[start..window_end].iter().rposition(|&c| c == ' ') {
                 Some(rel) if rel > 0 => start + rel + 1,
                 _ => window_end,
@@ -72,10 +82,11 @@ fn wrap_line(text: &str, limit: usize, out: &mut Vec<String>) {
 /// The input is first split on `\n`; each resulting segment is wrapped
 /// independently (fresh continuation prefix and color carry per segment).
 /// Within a segment, splits occur at the last space within the limit
-/// (hard-cut at `limit` if there is none). Continuation lines within a
-/// segment are prefixed with `> ` followed by the color code active at the
-/// end of the previous line (skipped for default white `&f`/`&F`). Empty
-/// segments (from consecutive or trailing `\n`) produce no output.
+/// (hard-cut at the limit if there is none). Continuation lines are prefixed
+/// with `> ` (2 chars) or `> &X` (4 chars, with active color carry); the
+/// content of those lines is wrapped at `limit - prefix_len` so that the
+/// rendered line including the prefix stays within `limit`. Empty segments
+/// (from consecutive or trailing `\n`) produce no output.
 #[must_use]
 pub fn wordwrap(text: &str, limit: usize) -> Vec<String> {
     let mut lines = Vec::new();
