@@ -395,7 +395,7 @@ mod windows_ffi {
     #[ignore]
     fn new_puts_box_on_top() {
         let before = read_vtable();
-        let hook = LocalPlayerVTableHook::new(LocalPlayerVTableHooks {
+        let hook = LocalPlayerVTableHook::install(LocalPlayerVTableHooks {
             render_model: Some(Box::new(|e, d, t, orig| unsafe { orig(e, d, t) })),
             ..Default::default()
         });
@@ -411,7 +411,7 @@ mod windows_ffi {
     #[ignore]
     fn drop_restores_prior_vtable() {
         let before = read_vtable();
-        let hook = LocalPlayerVTableHook::new(LocalPlayerVTableHooks {
+        let hook = LocalPlayerVTableHook::install(LocalPlayerVTableHooks {
             render_model: Some(Box::new(|e, d, t, orig| unsafe { orig(e, d, t) })),
             ..Default::default()
         });
@@ -428,7 +428,7 @@ mod windows_ffi {
     fn render_tramp_around_calls_original_and_callback() {
         use std::sync::atomic::{AtomicBool, Ordering};
         static CALLED: AtomicBool = AtomicBool::new(false);
-        let _hook = LocalPlayerVTableHook::new(LocalPlayerVTableHooks {
+        let _hook = LocalPlayerVTableHook::install(LocalPlayerVTableHooks {
             render_model: Some(Box::new(|e, d, t, orig| {
                 CALLED.store(true, Ordering::SeqCst);
                 unsafe { orig(e, d, t) };
@@ -445,7 +445,7 @@ mod windows_ffi {
     #[ignore]
     fn get_col_tramp_can_replace_return() {
         let lp = unsafe { &mut *lp_entity() };
-        let _hook = LocalPlayerVTableHook::new(LocalPlayerVTableHooks {
+        let _hook = LocalPlayerVTableHook::install(LocalPlayerVTableHooks {
             get_col: Some(Box::new(|_e, _orig| 0xFF_FF_00_FF)), // opaque yellow
             ..Default::default()
         });

@@ -94,10 +94,10 @@ macro_rules! local_player_vtable_hooks {
             /// `..Default::default()` to leave unneeded fields as `None`.
             ///
             /// The hooked field set is baked into the replacement VTABLE box on the
-            /// first [`LocalPlayerVTableHook::new`] call and is fixed for the
+            /// first [`LocalPlayerVTableHook::install`] call and is fixed for the
             /// lifetime of that box. Supply the same fields on every reload (drop
-            /// then `new` again): fields absent on reload cannot be baked into the
-            /// existing box while it is buried.
+            /// then `install` again): fields absent on reload cannot be baked into
+            /// the existing box while it is buried.
             #[derive(Default)]
             pub struct LocalPlayerVTableHooks {
                 $( pub $snake: Option<Box<[<$vtable_field Cb>]>>, )*
@@ -121,7 +121,7 @@ macro_rules! local_player_vtable_hooks {
             }
 
             /// Clear every callback slot. Used on uninstall (head or buried) so a
-            /// later `new()` does not trip the double-install assert and any
+            /// later `install()` does not trip the double-install assert and any
             /// surviving trampoline degrades to a transparent forwarder. Uses
             /// `try_with` for safety during TLS teardown.
             fn clear_callbacks() {
@@ -205,7 +205,7 @@ fn should_push(current: *const EntityVTABLE, ours: Option<*const EntityVTABLE>) 
 /// Push our replacement VTABLE box onto the chain head. Must be called while
 /// `hooks` is still intact (before callbacks are moved into thread-locals).
 fn push(lp: *mut Entity, hooks: &LocalPlayerVTableHooks) {
-    // SAFETY: lp is non-null (new() asserts it before calling push).
+    // SAFETY: lp is non-null (install() asserts it before calling push).
     let current: *const EntityVTABLE = unsafe { (*lp).VTABLE };
 
     if !should_push(current, OUR_VTABLE.with(Cell::get)) {
@@ -238,7 +238,7 @@ fn push(lp: *mut Entity, hooks: &LocalPlayerVTableHooks) {
 
 fn uninstall_inner() {
     // Clear all callbacks unconditionally, even when buried: prevents the
-    // double-install assert from firing on a later new(), and degrades any
+    // double-install assert from firing on a later install(), and degrades any
     // surviving trampoline to a transparent forwarder.
     //
     // try_with throughout: Drop may fire during TLS teardown (e.g. if the
@@ -283,7 +283,7 @@ fn uninstall_inner() {
 
 /// RAII handle for a chain-safe `EntityVTABLE` hook on the local player.
 ///
-/// Install with [`new`](Self::new); dropping uninstalls (if on top) or
+/// Install with [`install`](Self::install); dropping uninstalls (if on top) or
 /// degrades to a transparent forwarder (if buried). No reinstall method is
 /// needed -- the local player VTABLE is never wiped between map loads.
 #[must_use = "dropping this handle immediately uninstalls the hook"]
@@ -305,8 +305,8 @@ impl LocalPlayerVTableHook {
     /// Panics if the local player entity slot is unset (it is populated by the
     /// engine before plugin `Init` runs, so this should not happen in practice),
     /// or if a hook is already installed for this plugin binary -- drop the
-    /// existing handle before calling `new` again.
-    pub fn new(hooks: LocalPlayerVTableHooks) -> Self {
+    /// existing handle before calling `install` again.
+    pub fn install(hooks: LocalPlayerVTableHooks) -> Self {
         let lp = lp_entity();
         assert!(
             !lp.is_null(),
@@ -316,8 +316,8 @@ impl LocalPlayerVTableHook {
 
         assert!(
             !INSTALLED.with(Cell::get),
-            "LocalPlayerVTableHook already installed; drop the existing handle before calling new \
-             again",
+            "LocalPlayerVTableHook already installed; drop the existing handle before calling \
+             install again",
         );
         INSTALLED.with(|c| c.set(true));
 
