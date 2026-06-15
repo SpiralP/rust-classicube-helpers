@@ -181,8 +181,14 @@ thread_local! {
 // Helpers
 // ---------------------------------------------------------------------------
 
-/// Read `Entities.List[ENTITIES_SELF_ID]`. Returns null if the slot is empty
-/// (before the first map load).
+/// Read `Entities.List[ENTITIES_SELF_ID]`, the local player entity.
+///
+/// The engine populates this slot in `Entities_Init`, which runs before any
+/// plugin's `Init` (the `Entities` component is added ahead of plugin
+/// components, and `Init` runs in add-order), so it is present for the whole
+/// time a plugin is loaded. The one window in which it is null is during
+/// shutdown, after `Entities_Free` removes it -- a Drop firing then sees an
+/// empty slot, which the uninstall path tolerates.
 fn lp_entity() -> *mut Entity {
     // SAFETY: ENTITIES_SELF_ID is a valid index into Entities.List[]; the element
     // is a Copy pointer read by value, so no reference to the static mut is formed.
@@ -199,7 +205,7 @@ fn should_push(current: *const EntityVTABLE, ours: Option<*const EntityVTABLE>) 
 /// Push our replacement VTABLE box onto the chain head. Must be called while
 /// `hooks` is still intact (before callbacks are moved into thread-locals).
 fn push(lp: *mut Entity, hooks: &LocalPlayerVTableHooks) {
-    // SAFETY: lp is non-null (checked in new() before calling push).
+    // SAFETY: lp is non-null (new() asserts it before calling push).
     let current: *const EntityVTABLE = unsafe { (*lp).VTABLE };
 
     if !should_push(current, OUR_VTABLE.with(Cell::get)) {
@@ -241,6 +247,9 @@ fn uninstall_inner() {
     let _ = INSTALLED.try_with(|c| c.set(false));
     clear_callbacks();
 
+    // On shutdown, Entities_Free removes the local player before plugin Free
+    // runs, so a Drop fired during teardown legitimately sees an empty slot.
+    // There is nothing to restore then -- the entity is gone.
     let lp = lp_entity();
     if lp.is_null() {
         return;
@@ -285,10 +294,6 @@ pub struct LocalPlayerVTableHook {
 impl LocalPlayerVTableHook {
     /// Install callbacks for the requested fields and return a RAII handle.
     ///
-    /// Returns `None` if the local player entity slot is still null (e.g.
-    /// called from `Init` before the first map load). Safe to retry; call again
-    /// from `on_new_map_loaded`.
-    ///
     /// If this plugin's box is already believed live in the chain (e.g. the
     /// previous handle was dropped while buried under a foreign plugin), the
     /// new callbacks are armed in place without re-pushing. Re-pushing while
@@ -297,13 +302,17 @@ impl LocalPlayerVTableHook {
     ///
     /// # Panics
     ///
-    /// Panics if a hook is already installed for this plugin binary. Drop the
+    /// Panics if the local player entity slot is unset (it is populated by the
+    /// engine before plugin `Init` runs, so this should not happen in practice),
+    /// or if a hook is already installed for this plugin binary -- drop the
     /// existing handle before calling `new` again.
-    pub fn new(hooks: LocalPlayerVTableHooks) -> Option<Self> {
+    pub fn new(hooks: LocalPlayerVTableHooks) -> Self {
         let lp = lp_entity();
-        if lp.is_null() {
-            return None;
-        }
+        assert!(
+            !lp.is_null(),
+            "local player entity (Entities.List[ENTITIES_SELF_ID]) is unset; the Entities \
+             component populates it before plugin Init runs",
+        );
 
         assert!(
             !INSTALLED.with(Cell::get),
@@ -322,7 +331,7 @@ impl LocalPlayerVTableHook {
 
         arm_all(hooks);
 
-        Some(Self { _private: () })
+        Self { _private: () }
     }
 }
 

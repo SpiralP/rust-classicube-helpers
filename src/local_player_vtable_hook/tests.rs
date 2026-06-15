@@ -399,7 +399,6 @@ mod windows_ffi {
             render_model: Some(Box::new(|e, d, t, orig| unsafe { orig(e, d, t) })),
             ..Default::default()
         });
-        assert!(hook.is_some());
         assert_ne!(
             read_vtable(),
             before,
