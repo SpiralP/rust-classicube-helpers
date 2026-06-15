@@ -1,85 +1,10 @@
-//! Wipe-safe per-opcode `Protocol.Handlers` hook.
-//!
-//! `ClassiCube`'s `Protocol` component wipes `Protocol.Handlers` on every
-//! `Game_Reset` (disconnect), restoring the stock handlers. [`ProtocolHook`]
-//! re-installs the hook for its opcode after each wipe. Re-install is
-//! order-independent and self-healing: it reads the live slot and, unless our
-//! trampoline is already on top, chains onto whatever the wipe restored -- so
-//! it doesn't matter in which order plugins re-install relative to their
-//! original install order. Two guards keep this safe: "already on top" prevents
-//! chaining onto ourselves at the head, and an `IN_CHAIN` flag makes a fresh
-//! `install()` re-arm in place (rather than re-push) when our trampoline is
-//! still buried in the chain after a reload -- re-pushing while buried would
-//! close a cycle.
-//!
-//! Each opcode gets its own independent chain: one `Protocol.Handlers` slot,
-//! one const-generic trampoline address (selected from a `HANDLER_COUNT`-entry
-//! `TRAMPOLINES` table at install time), and one row in per-opcode
-//! `HANDLER_COUNT`-wide thread-local state arrays. Hooks for different opcodes
-//! never interfere.
-//!
-//! Each plugin binary that links classicube-helpers gets its own copy of
-//! the internal `trampoline` functions (rlib static linking), so the hook
-//! addresses are unique per plugin `.so` even though all share this source.
-//!
-//! # Main-thread requirement
-//!
-//! All public methods must be called on `ClassiCube`'s main game-loop thread.
-//! The internal thread-local storage (`OLD`, `CALLBACK`) is keyed to that
-//! thread; calling from a worker thread would silently create a separate,
-//! useless slot.
-//!
-//! # Unloading and module lifetime
-//!
-//! Dropping a [`ProtocolHook`] at runtime is always safe, in any order:
-//! if our trampoline is the chain head it is spliced out (the saved handler is
-//! restored into the slot); if a foreign plugin stacked above us, our
-//! trampoline stays in the chain as a transparent forwarder (callback cleared,
-//! forwards straight to its saved handler).
-//!
-//! Dropping is also safe during thread-local storage teardown at process exit
-//! (e.g. when a plugin stores a [`ProtocolHook`] in a `thread_local!` and
-//! holds it until the thread is torn down). The `Drop` impl uses `try_with`
-//! so it silently skips the splice when sibling thread-locals (`OLD`,
-//! `IN_CHAIN`, `CALLBACK`) have already been destroyed; the `Protocol` layer
-//! is going away at that point anyway.
-//!
-//! *Reloading* (drop then re-create the handle, e.g. a plugin manager calling a
-//! component's Free then Init) is also handled: a fresh
-//! [`install`](ProtocolHook::install) re-arms in place when our trampoline is
-//! still buried, instead of re-pushing into a cycle. One accepted edge: if a
-//! buried plugin is dropped, then a disconnect wipe happens while it is orphaned
-//! (so its `Reset`/[`reinstall`](ProtocolHook::reinstall) never fires), then it
-//! is reloaded, the hook stays silently inactive until the next disconnect
-//! re-fires [`reinstall`](ProtocolHook::reinstall), which heals it. This is a
-//! self-healing lost hook, never a crash.
-//!
-//! What is **not** safe is unmapping the *code* of a plugin whose trampoline is
-//! still live in the chain but is not the head -- i.e. `dlclose`-ing a plugin
-//! `.so` that another plugin has chained above. The link above it cached its
-//! trampoline address, and because each plugin's saved handler lives in a
-//! private per-`.so` thread-local that no other link can read or rewrite, a
-//! buried link can never remove itself. Unmapping it leaves a dangling function
-//! pointer that crashes on the next packet of that opcode. This crate cannot
-//! guard against it -- the chain is not introspectable across plugin boundaries.
-//!
-//! Stock `ClassiCube` never hits this: it `dlopen`s plugins once at startup and
-//! never unloads them. A plugin that loads and unloads *other* plugins at
-//! runtime must uphold the invariant itself. Safe options, best first:
-//!
-//!   * Keep managed plugins resident (do not `dlclose`) -- just drop their hook
-//!     and run their teardown. The inert forwarders left behind are harmless,
-//!     and the next `Protocol` wipe drops them from the chain entirely. This is
-//!     order-independent and mirrors `ClassiCube`'s own load-once model.
-//!   * If memory must be reclaimed, only `dlclose` a plugin that is the current
-//!     chain head (strict LIFO unload order), or do it in the post-disconnect
-//!     window after the wipe has reset the slot and before the unloaded plugin
-//!     would re-install.
-
 #[cfg(test)]
 mod tests;
 
-use std::{cell::Cell, ptr, slice};
+use std::{
+    cell::{Cell, RefCell},
+    ptr, slice,
+};
 
 use classicube_sys::{Net_Handler, OPCODE__OPCODE_COUNT, Protocol, Server};
 
@@ -95,13 +20,13 @@ const _: () = assert!(
     "ClassiCube now defines more opcodes than HANDLER_COUNT; bump it to the next multiple of 16",
 );
 
-type Callback = Cell<Option<Box<dyn FnMut(&[u8]) -> bool>>>;
+type Callback = RefCell<Option<Box<dyn FnMut(&[u8]) -> bool>>>;
 
 thread_local! {
     static OLD: [Cell<Net_Handler>; HANDLER_COUNT] =
         const { [const { Cell::new(None) }; HANDLER_COUNT] };
     static CALLBACK: [Callback; HANDLER_COUNT] =
-        const { [const { Cell::new(None) }; HANDLER_COUNT] };
+        const { [const { RefCell::new(None) }; HANDLER_COUNT] };
     /// Per-opcode in-chain belief. `true` when our trampoline is believed
     /// reachable from the live chain (head or buried) for that opcode. Gates
     /// `install()` so a reload-while-buried re-arms in place instead of
@@ -109,11 +34,6 @@ thread_local! {
     /// Set false only when we splice ourselves out as head, or reset by
     /// `reinstall()` before its forced post-wipe re-push.
     static IN_CHAIN: [Cell<bool>; HANDLER_COUNT] =
-        const { [const { Cell::new(false) }; HANDLER_COUNT] };
-    /// Re-entrancy backstop guarding the forward-to-`OLD` step only, per opcode.
-    /// Breaks any residual chain cycle into a dropped packet instead of a stack
-    /// overflow.
-    static FORWARDING: [Cell<bool>; HANDLER_COUNT] =
         const { [const { Cell::new(false) }; HANDLER_COUNT] };
 }
 
@@ -124,32 +44,23 @@ extern "C" fn trampoline<const OP: u8>(data: *mut u8) {
     // Sizes[opcode] after; payload is Protocol.Sizes[OP] - 1 bytes at data.
     let payload_len = unsafe { Protocol.Sizes[OP as usize] as usize }.saturating_sub(1);
     let bytes = unsafe { slice::from_raw_parts(data, payload_len) };
-    // take/call/put-back: if the callback re-enters the trampoline for this
-    // opcode (e.g. via chat_print -> ChatEvents -> Protocol roundtrip), the slot
-    // holds None during the call, so re-entry naturally skips the callback --
-    // identical suppression semantics without a borrow flag.
+    // borrow_mut is held across the callback: if it re-enters the trampoline for
+    // this opcode (e.g. via chat_print -> ChatEvents -> Protocol roundtrip), the
+    // re-entrant borrow_mut panics with BorrowMutError rather than silently
+    // running again. The borrow is released before the forward below, so a
+    // genuine nested dispatch during the forward still runs the callback.
     let should_suppress = CALLBACK.with(|a| {
-        let slot = &a[OP as usize];
-        let mut cb = slot.take();
-        let suppress = cb.as_mut().is_some_and(|f| f(bytes));
-        slot.set(cb);
-        suppress
+        let mut slot = a[OP as usize].borrow_mut();
+        slot.as_mut().is_some_and(|f| f(bytes))
     });
     if !should_suppress {
-        // Re-entrancy backstop: guard only the forward. A residual chain cycle
-        // (e.g. A.OLD=B, B.OLD=A) would otherwise recurse here forever; instead
-        // we drop the packet.
-        if !FORWARDING.with(|a| a[OP as usize].get()) {
-            FORWARDING.with(|a| a[OP as usize].set(true));
-            OLD.with(|a| {
-                if let Some(f) = a[OP as usize].get() {
-                    // SAFETY: `f` is the previously-installed Net_Handler, which
-                    // ClassiCube guarantees is valid while the Protocol layer is live.
-                    unsafe { f(data) }
-                }
-            });
-            FORWARDING.with(|a| a[OP as usize].set(false));
-        }
+        OLD.with(|a| {
+            if let Some(f) = a[OP as usize].get() {
+                // SAFETY: `f` is the previously-installed Net_Handler, which
+                // ClassiCube guarantees is valid while the Protocol layer is live.
+                unsafe { f(data) }
+            }
+        });
     }
 }
 
@@ -192,39 +103,6 @@ fn handlers_eq(a: Net_Handler, b: Net_Handler) -> bool {
     }
 }
 
-/// Pure chain-install decision, factored out so it can be unit-tested without
-/// the `Protocol` global or the Windows import library. Given the handler
-/// `current` occupying the slot and `ours` (this plugin's trampoline identity),
-/// returns:
-///   * `None` -- `current` is already us; nothing to do (no-op).
-///   * `Some(current)` -- we are not on top; the caller saves this value as the
-///     new `OLD` and writes `ours` into the slot.
-///
-/// It never inspects a cached previous `OLD`, so a stale `OLD` left over from
-/// before a `Protocol` wipe cannot make it wrongly refuse to re-install. Its
-/// only guard is "already on top", which stops pushing self twice when we are
-/// the head. The complementary "buried" case (our trampoline reachable below a
-/// foreign head, which this pure step cannot see) is gated separately by the
-/// `IN_CHAIN` flag in [`ProtocolHook::install`].
-#[must_use]
-fn install_step<T: Copy + PartialEq>(current: T, ours: T) -> Option<T> {
-    if current == ours { None } else { Some(current) }
-}
-
-/// `Net_Handler` wrapped so its `PartialEq` uses `handlers_eq`
-/// (`ptr::fn_addr_eq`) rather than the derived `Option`/`fn`-pointer `==`,
-/// matching the identity semantics the live hook chain relies on. Only
-/// `PartialEq` is implemented (not `Eq`): `ptr::fn_addr_eq` is not a guaranteed
-/// equivalence under LLVM function-merging, and `install_step` needs no more.
-#[derive(Clone, Copy)]
-struct HandlerId(Net_Handler);
-
-impl PartialEq for HandlerId {
-    fn eq(&self, other: &Self) -> bool {
-        handlers_eq(self.0, other.0)
-    }
-}
-
 /// Returns `true` when running in singleplayer, where `ClassiCube`'s `Protocol`
 /// component is inert (its `OnInit`/`OnReset` early-return) -- there is no
 /// handler table to hook or re-hook.
@@ -240,21 +118,25 @@ fn is_single_player() -> bool {
 /// post-wipe). Marks `IN_CHAIN[opcode]` on both outcomes. We deliberately never
 /// consult the cached `OLD` to decide whether to re-push: a stale `OLD` from
 /// before a wipe must not veto it (that was the multi-plugin reorder bug).
+///
+/// The only guard is "already on top" (`is_our_handler`), which stops pushing
+/// self twice when we are the head. The complementary "buried" case (our
+/// trampoline reachable below a foreign head, which the slot read cannot see)
+/// is gated separately by the `IN_CHAIN` flag in [`ProtocolHook::install`].
 fn install_inner(opcode: u8) {
     // SAFETY: reading from the handler table; Protocol is valid once
     // ClassiCube's component chain has initialised (before any Net handler
     // can be invoked).
     let current: Net_Handler = unsafe { Protocol.Handlers[opcode as usize] };
-    let Some(new_old) = install_step(HandlerId(current), HandlerId(TRAMPOLINES[opcode as usize]))
-    else {
+    if is_our_handler(opcode, current) {
         IN_CHAIN.with(|a| a[opcode as usize].set(true)); // already on top -- still in chain
         return;
-    };
+    }
     // SAFETY: writing the same table under the same lifetime constraints.
     unsafe {
         Protocol.Handlers[opcode as usize] = TRAMPOLINES[opcode as usize];
     }
-    OLD.with(|a| a[opcode as usize].set(new_old.0));
+    OLD.with(|a| a[opcode as usize].set(current));
     IN_CHAIN.with(|a| a[opcode as usize].set(true));
 }
 
@@ -289,6 +171,12 @@ fn uninstall_inner(opcode: u8) {
 /// The callback receives the raw payload bytes -- everything after the opcode
 /// byte itself, of length `Protocol.Sizes[opcode] - 1` -- and returns `true` to
 /// suppress (drop) the packet or `false` to pass it on.
+///
+/// The callback must not re-enter its own opcode: the callback slot is held with
+/// a `RefCell` borrow for the duration of the call, so synchronously
+/// re-dispatching this opcode from inside the callback (e.g. via a
+/// `chat_print` -> `ChatEvents` -> `Protocol` roundtrip) panics with
+/// `BorrowMutError` rather than silently running again.
 ///
 /// Call [`reinstall`](Self::reinstall) from your plugin component's `Reset`
 /// callback after each reconnect; `ClassiCube`'s `Protocol` component wipes the
@@ -335,17 +223,11 @@ impl ProtocolHook {
             "ProtocolHook opcode {opcode} exceeds supported range 0..{HANDLER_COUNT}",
         );
         assert!(
-            CALLBACK.with(|a| {
-                let slot = &a[opcode as usize];
-                let prev = slot.take();
-                let empty = prev.is_none();
-                slot.set(prev);
-                empty
-            }),
+            CALLBACK.with(|a| a[opcode as usize].borrow().is_none()),
             "ProtocolHook already installed for opcode {opcode}; drop the existing handle before \
              calling install again",
         );
-        CALLBACK.with(|a| a[opcode as usize].set(Some(Box::new(callback))));
+        CALLBACK.with(|a| *a[opcode as usize].borrow_mut() = Some(Box::new(callback)));
         // If our trampoline is believed already in the chain (buried under a
         // foreign plugin after a reload-while-buried), arming CALLBACK above is
         // enough -- the buried forwarder calls us again. Pushing here would
@@ -387,6 +269,6 @@ impl Drop for ProtocolHook {
         // `install` call does not spuriously hit the double-install assert.
         // try_with: CALLBACK may already be destroyed during TLS teardown
         // (see uninstall_inner); nothing to clear if so.
-        let _ = CALLBACK.try_with(|a| a[self.opcode as usize].set(None));
+        let _ = CALLBACK.try_with(|a| *a[self.opcode as usize].borrow_mut() = None);
     }
 }

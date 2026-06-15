@@ -38,16 +38,17 @@ fn handlers_eq_one_none_is_false() {
     assert!(!handlers_eq(None, Some(dummy_a)));
 }
 
-// ------------- install_step chain model (pure, Linux-CI safe) -------------
+// ------------- chain model (pure, Linux-CI safe) -------------
 //
 // Simulates N plugins detour-chaining a single shared slot: a ClassiCube wipe
 // that resets the slot to the stock handler WITHOUT clearing each plugin's
 // cached `old`/in_chain, re-installing in arbitrary order, and reloading a
 // plugin (drop then re-create) while it is buried under another. The harness
 // mirrors the live install/reinstall/uninstall logic (re-arm-vs-push gated by
-// `in_chain`) and uses the same `install_step` the live `install_inner` uses;
-// here the identity type is a plain integer instead of `HandlerId`. `traverse`
-// has a cycle-guard so a chain that loops back on itself fails fast.
+// `in_chain`), with the head-identity check (`*slot == self.id`) standing in
+// for the live `is_our_handler` comparison; here the identity type is a plain
+// integer instead of a function pointer. `traverse` has a cycle-guard so a
+// chain that loops back on itself fails fast.
 
 const STOCK: u32 = 0;
 
@@ -70,12 +71,12 @@ impl Plugin {
         }
     }
 
-    // Mirror of install_inner (the push primitive): read the shared slot, run
-    // install_step, and on Some(displaced) cache it as our `old` and write
-    // ourselves into the slot. Marks in_chain on both outcomes.
+    // Mirror of install_inner (the push primitive): read the shared slot, and
+    // unless we are already on top, cache the displaced handler as our `old`
+    // and write ourselves into the slot. Marks in_chain on both outcomes.
     fn push(&mut self, slot: &mut u32) {
-        if let Some(displaced) = install_step(*slot, self.id) {
-            self.old = displaced;
+        if *slot != self.id {
+            self.old = *slot;
             *slot = self.id;
         }
         self.in_chain = true;
@@ -130,16 +131,6 @@ fn traverse(slot: u32, plugins: &[Plugin]) -> Vec<u32> {
             .map_or(STOCK, |p| p.old);
     }
     visited
-}
-
-#[test]
-fn install_step_already_on_top_is_none() {
-    assert_eq!(install_step(7_u32, 7_u32), None);
-}
-
-#[test]
-fn install_step_not_on_top_returns_displaced() {
-    assert_eq!(install_step(3_u32, 7_u32), Some(3_u32));
 }
 
 #[test]

@@ -9,6 +9,7 @@ pub mod chat;
 pub mod color;
 pub mod entities;
 pub mod events;
+pub mod local_player_vtable_hook;
 mod macros;
 pub mod protocol_hook;
 pub mod shared;
