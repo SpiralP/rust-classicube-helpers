@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   docs:
-    uses: SpiralP/github-reusable-workflows/.github/workflows/build.yml@8db61cd94fd11042022ca656443eba2ed38db4a1 # main
+    uses: SpiralP/github-reusable-workflows/.github/workflows/build.yml@b1c42133c5f453298747aa0fee0db023d8027226 # main
     with:
       flake-attribute: docs
       upload-pages-artifact: true
